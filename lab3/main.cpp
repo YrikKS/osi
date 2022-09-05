@@ -19,7 +19,7 @@ void startPthread(std::string string) {
     pthread_t pThread;
     string_container container;
     container.str = string;
-    if (pthread_create(&pThread, NULL, childFunc, (void*)&container) {
+    if (pthread_create(&pThread, NULL, childFunc, (void*)&container)) {
         std::cout << "Error: " << std::endl;
         perror("failed to create process");
         return 0;
