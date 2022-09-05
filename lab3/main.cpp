@@ -39,5 +39,6 @@ int main() {
     startPthread("Hello I'm third");
     startPthread("Hello I'm fourth");
 
+    std::cout << "By, I'm main pthread" << std::endl;
     pthread_exit(NULL);
 }
