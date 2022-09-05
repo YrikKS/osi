@@ -21,11 +21,10 @@ void startPthread(std::string string) {
     container.str = string;
     if (pthread_create(&pThread, NULL, childFunc, (void *) &container)) {
         std::cout << "Error: " << std::endl;
-        perror("failed to create process");
+        perror("failed to create pThread");
         return;
     } else {
-        std::cout << "Error: ";
-        perror("faild to create process");
+        std::cout << "Correct end pThread";
 //        int status_addr;
 //        pthread_join(pThread, (void **) &status_addr);
 //        std::cout << "Child end with code: " << status_addr << std::endl;
