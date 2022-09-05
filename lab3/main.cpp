@@ -24,9 +24,11 @@ void startPthread(std::string string) {
         perror("failed to create process");
         return;
     } else {
-        int status_addr;
-        pthread_join(pThread, (void **) &status_addr);
-        std::cout << "Child end with code: " << status_addr << std::endl;
+        std::cout << "Error: ";
+        perror(errno);
+//        int status_addr;
+//        pthread_join(pThread, (void **) &status_addr);
+//        std::cout << "Child end with code: " << status_addr << std::endl;
     }
     return;
 }
