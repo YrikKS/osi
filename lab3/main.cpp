@@ -24,7 +24,7 @@ void startPthread(std::string string) {
         perror("failed to create pThread");
         return;
     } else {
-        std::cout << "Correct end pThread";
+        std::cout << "Correct end pThread" << std::endl;
 //        int status_addr;
 //        pthread_join(pThread, (void **) &status_addr);
 //        std::cout << "Child end with code: " << status_addr << std::endl;
