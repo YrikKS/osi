@@ -12,7 +12,7 @@ void* childFunc(void* arg) {
 
 int main() {
     pthread_t pThread;
-    std::cout << "Hello, World! I'm not parent now " << pthread_self() << std::endl;
+    std::cout << "Hello, World! I'm not parent now " << pthread_self() << " " << getpid() << std::endl;
 
     if(pthread_create(&pThread, NULL, childFunc, NULL)) {
         std::cout << "I'm not parent ((( " << pthread_self() << " Error: ";
