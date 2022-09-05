@@ -7,7 +7,7 @@
 void* childFunc(void* arg) {
     for(int i = 0; i < 10; i++)
         std::cout << "Hello, World! I'm child " << pthread_self() << " " <<  getpid() << std::endl;
-    return ((void*)0);
+    return ((void*)1);
 }
 
 int main() {
@@ -20,7 +20,9 @@ int main() {
         return 0;
     }
     else {
-        pthread_join(pThread, NULL);
+        int status_addr;
+        pthread_join(pThread, (void**)&status_addr);
+        std::cout << "Child end with code: " << status_addr << std::endl;
         std::cout << "I'm have new child " << pThread << std::endl;
         for(int i = 0; i < 10; i++)
             std::cout << "Hello, World! I'm parent " << pthread_self() << std::endl;
