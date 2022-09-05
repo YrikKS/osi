@@ -1,21 +1,29 @@
 #include <iostream>
 #include <pthread.h>
+#include <stdio.h>
+#include <cerrno>
 #include <unistd.h>
 
-void childFunc() {
-    std::cout << "Hello, World! I'm child" << pthread_self() << std::endl;
+void* childFunc(void* arg) {
+    for(int i = 0; i < 10; i++)
+        std::cout << "Hello, World! I'm child " << pthread_self() << std::endl;
+    return ((void*)0);
 }
 
 int main() {
     pthread_t pThread;
+    std::cout << "Hello, World! I'm not parent now " << pthread_self() << std::endl;
 
-    if(!pthread_create(*pThread, NULL, childFunc(), NULL)) {
-        std::cout << "I'm parent" << pthread_self() << " Error: " << errno << std::endl;
+    if(pthread_create(&pThread, NULL, childFunc, NULL)) {
+        std::cout << "I'm not parent ((( " << pthread_self() << " Error: ";
+        perror("faild to create process");
+        return 0;
     }
     else {
-        std::cout << "Hello, World! I'm parent" << pthread_self() << std::endl;
+        for(int i = 0; i < 10; i++)
+            std::cout << "Hello, World! I'm parent " << pthread_self() << std::endl;
     }
-    sleep(1);
+    //sleep(1);
 
-    return 0;
+    pthread_exit(NULL);
 }
