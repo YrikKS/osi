@@ -15,9 +15,8 @@ typedef struct Itearation {
 
 
 void *piCalculatuiion(void *arg) {
-    int pi = 0;
+    double pi = 0;
     Itearation *itearation = (Itearation *) arg;
-    std::cout << itearation->whichToStart << std::endl;
     for (int i = itearation->whichToStart, j = 0; j < itearation->numIteration; i++, j++) {
         pi += 1.0 / (i * 4.0 + 1.0);
         pi -= 1.0 / (i * 4.0 + 3.0);
@@ -53,7 +52,7 @@ int main(int argc, char **argv) {
             return 1;
         }
     }
-    double pi = 0;
+    double pi = 0.0;
     for (int i = 0; i < numbThread; i++) {
         Itearation itearation;
         pthread_join(pthreadVector[i], (void **) &itearation);
