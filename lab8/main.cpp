@@ -35,18 +35,15 @@ int main(int argc, char **argv) {
     for (int i = 0; i < numbThread; i++)
         std::cout << (num_steps % numbThread - i > 0 ? 1 : 0) << std::endl;
 
-    std::vector<pthread_t> pthreadVector;
-    std::vector<Itearation *> ptrIterationStruct;
-    ptrIterationStruct.resize(numbThread);
-    pthreadVector.resize(numbThread);
+    pthread_t *pthreadVector = (pthread_t *) malloc(numbThread * sizeof(pthread_t));
+    Itearation *ptrIterationStruct = (Itearation *) malloc(numbThread * sizeof(Itearation));
 
 
     int lastIterationNumb = 0;
     for (int i = 0; i < numbThread; i++) {
-        ptrIterationStruct[i] = new Itearation;
-        ptrIterationStruct[i]->numIteration = num_steps / numbThread + (num_steps % numbThread - i > 0 ? 1 : 0);
-        lastIterationNumb += ptrIterationStruct[i]->numIteration;
-        ptrIterationStruct[i]->whichToStart = lastIterationNumb;
+        ptrIterationStruct[i].numIteration = num_steps / numbThread + (num_steps % numbThread - i > 0 ? 1 : 0);
+        lastIterationNumb += ptrIterationStruct[i].numIteration;
+        ptrIterationStruct[i].whichToStart = lastIterationNumb;
         if (pthread_create(pthreadVector[i], NULL, piCalculatuiion, (void *) &ptrIterationStruct[i])) {
             std::cout << "Error: " << std::endl;
             perror("failed to create pThread");
@@ -58,7 +55,7 @@ int main(int argc, char **argv) {
         Itearation itearation;
         pthread_join(pthreadVector[i], (void **) &itearation);
         pi += itearation.result;
-        delete ptrIterationStruct[i];
+        delete ptrIterationStruct;
         //        std::cout << "Child end with code: " << itearation. << std::endl;
     }
 
