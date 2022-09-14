@@ -15,12 +15,13 @@ typedef struct Itearation {
 
 
 void *piCalculatuiion(void *arg) {
-    double pi = 0;
+    double pi = 0.0;
     Itearation *itearation = (Itearation *) arg;
     for (int i = itearation->whichToStart, j = 0; j < itearation->numIteration; i++, j++) {
         pi += 1.0 / (i * 4.0 + 1.0);
         pi -= 1.0 / (i * 4.0 + 3.0);
     }
+    std::cout << pi << std::endl;
     itearation->result = pi;
     return (void *) itearation;
 }
