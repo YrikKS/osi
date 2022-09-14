@@ -21,14 +21,14 @@ typedef struct Itearation {
 
 void *piCalculatuiion(void *arg) {
     double pi = 0.0;
-    int numbIteration = 0;
+//    int numbIteration = 0;
     Itearation *itearation = (Itearation *) arg;
     while (!isEnd) {
-        for (int i = itearation->whichToStart * numbIteration * itearation->countThreads, j = 0;
-             j < itearation->numIteration; i++, j++) {
+        for (int i = itearation->whichToStart, j = 0; j < itearation->numIteration; i++, j++) {
             pi += 1.0 / (i * 4.0 + 1.0);
             pi -= 1.0 / (i * 4.0 + 3.0);
         }
+        itearation->whichToStart += num_steps;
     }
     std::cout << pi << std::endl;
     itearation->result = pi;
