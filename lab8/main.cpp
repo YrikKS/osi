@@ -7,10 +7,10 @@
 
 #define num_steps 200000000
 
-typedef struct {
-    int numIteration;
-    int whichToStart;
-    double result;
+typedef struct Itearation {
+    int numIteration = 0;
+    int whichToStart = 0;
+    double result = 1.0;
 } Itearation;
 
 
@@ -41,9 +41,9 @@ int main(int argc, char **argv) {
 
     int lastIterationNumb = 0;
     for (int i = 0; i < numbThread; i++) {
-        ptrIterationStruct[i].numIteration = num_steps / numbThread + (num_steps % numbThread - i > 0 ? 1 : 0);
         lastIterationNumb += ptrIterationStruct[i].numIteration;
         ptrIterationStruct[i].whichToStart = lastIterationNumb;
+        ptrIterationStruct[i].numIteration = num_steps / numbThread + (num_steps % numbThread - i > 0 ? 1 : 0);
         if (pthread_create(&pthreadVector[i], NULL, piCalculatuiion, (void *) &ptrIterationStruct[i])) {
             std::cout << "Error: " << std::endl;
             perror("failed to create pThread");
