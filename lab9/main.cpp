@@ -13,15 +13,12 @@ bool isEnd = false;
 typedef struct Itearation {
     int numIteration;
     int whichToStart;
-    int numbThread;
-    int countThreads;
     double result;
 } Itearation;
 
 
 void *piCalculatuiion(void *arg) {
     double pi = 0.0;
-//    int numbIteration = 0;
     Itearation *itearation = (Itearation *) arg;
     while (!isEnd) {
         for (int i = itearation->whichToStart, j = 0; j < itearation->numIteration; i++, j++) {
@@ -30,7 +27,6 @@ void *piCalculatuiion(void *arg) {
         }
         itearation->whichToStart += num_steps;
     }
-    std::cout << pi << std::endl;
     itearation->result = pi;
     return (void *) itearation;
 }
@@ -45,8 +41,6 @@ int main(int argc, char **argv) {
     }
     int numbThread = atoi(argv[1]);
 
-    for (int i = 0; i < numbThread; i++)
-        std::cout << (num_steps % numbThread - i > 0 ? 1 : 0) << std::endl;
 
     pthread_t *pthreadVector = (pthread_t *) malloc(numbThread * sizeof(pthread_t));
     Itearation *ptrIterationStruct = (Itearation *) malloc(numbThread * sizeof(Itearation));
@@ -55,8 +49,6 @@ int main(int argc, char **argv) {
     int lastIterationNumb = 0;
     for (int i = 0; i < numbThread; i++) {
         ptrIterationStruct[i].whichToStart = lastIterationNumb;
-        ptrIterationStruct[i].countThreads = numbThread;
-        ptrIterationStruct[i].numbThread = i;
         ptrIterationStruct[i].numIteration = num_steps / numbThread + (num_steps % numbThread - i > 0 ? 1 : 0);
         lastIterationNumb += ptrIterationStruct[i].numIteration;
         ptrIterationStruct[i].result = 0.0;
