@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
         ptrIterationStruct[i].numIteration = num_steps / numbThread + (num_steps % numbThread - i > 0 ? 1 : 0);
         lastIterationNumb += ptrIterationStruct[i].numIteration;
         ptrIterationStruct[i].whichToStart = lastIterationNumb;
-        if (pthread_create(pthreadVector[i], NULL, piCalculatuiion, (void *) &ptrIterationStruct[i])) {
+        if (pthread_create(&pthreadVector[i], NULL, piCalculatuiion, (void *) &ptrIterationStruct[i])) {
             std::cout << "Error: " << std::endl;
             perror("failed to create pThread");
             return 1;
