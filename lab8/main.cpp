@@ -55,11 +55,10 @@ int main(int argc, char **argv) {
     }
     double pi = 0.0;
     for (int i = 0; i < numbThread; i++) {
-        Itearation itearation;
+        Itearation *itearation;
         pthread_join(pthreadVector[i], (void **) &itearation);
-        std::cout << itearation.result << std::endl;
-        pi += itearation.result;
-        //        std::cout << "Child end with code: " << itearation. << std::endl;
+        std::cout << itearation->result << std::endl;
+        pi += itearation->result;
     }
 
 
