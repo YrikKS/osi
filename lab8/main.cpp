@@ -1,4 +1,7 @@
 #include <iostream>
+#include <stdio.h>
+#include <cerrno>
+#include <stdlib.h>
 #include <vector>
 #include <pthread.h>
 
