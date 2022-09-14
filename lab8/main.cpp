@@ -55,14 +55,14 @@ int main(int argc, char **argv) {
         Itearation itearation;
         pthread_join(pthreadVector[i], (void **) &itearation);
         pi += itearation.result;
-        delete ptrIterationStruct;
         //        std::cout << "Child end with code: " << itearation. << std::endl;
     }
 
 
     pi = pi * 4.0;
     printf("pi done - %.15g \n", pi);
-
+    free(ptrIterationStruct);
+    free(pthreadVector);
     return (EXIT_SUCCESS);
 }
 
