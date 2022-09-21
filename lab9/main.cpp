@@ -9,6 +9,7 @@
 #define num_steps 200000000
 
 bool isEnd = false;
+pthread_mutex_t mutex;
 
 typedef struct Itearation {
     int numIteration;
@@ -25,7 +26,9 @@ void *piCalculatuiion(void *arg) {
             pi += 1.0 / (i * 4.0 + 1.0);
             pi -= 1.0 / (i * 4.0 + 3.0);
         }
+        pthread_mutex_lock(&mutex);
         itearation->whichToStart += num_steps;
+        pthread_mutex_unlock(&mutex);
     }
     itearation->result = pi;
     return (void *) itearation;
@@ -41,7 +44,7 @@ int main(int argc, char **argv) {
     }
     int numbThread = atoi(argv[1]);
 
-
+    pthread_mutex_init(&mutex, NULL);
     pthread_t *pthreadVector = (pthread_t *) malloc(numbThread * sizeof(pthread_t));
     Itearation *ptrIterationStruct = (Itearation *) malloc(numbThread * sizeof(Itearation));
 
