@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
 
     pthread_mutex_init(&mutex, NULL);
 
-    int status = pthread_barrier_init(&barrier, NULL, numbThread+2);
+    int status = pthread_barrier_init(&barrier, NULL, numbThread);
     if (status != 0) {
         std::cerr << "main error: can't init barrier, status\n" << status << std::endl;
         return 1;
