@@ -45,10 +45,17 @@ void *piCalculatuiion(void *arg) {
         std::cerr << "error wait barrier in thread %d with status = \n" << status << std::endl;
         exit(1); //???
     }
-    std::cout << count_iteration_all_thread << std::endl;
+
+    while (count_iteration_all_thread < count_iteration_each_thread)
+        for (int i = itearation->whichToStart, j = 0; j < itearation->numIteration; i++, j++) {
+            pi += 1.0 / (i * 4.0 + 1.0);
+            pi -= 1.0 / (i * 4.0 + 3.0);
+            count_iteration_each_thread++;
+            itearation->whichToStart += num_steps;
+        }
 
     itearation->result = pi;
-    return (void *) itearation;
+    return (void *)itearation;
 }
 
 void listener(int i) {
