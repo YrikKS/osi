@@ -33,7 +33,6 @@ void *piCalculatuiion(void *arg) {
         itearation->whichToStart += num_steps;
     }
     pthread_mutex_lock(&mutex);
-//    std::cout << count_iteration_each_thread << std::endl;
     if (count_iteration_all_thread < count_iteration_each_thread)
         count_iteration_all_thread = count_iteration_each_thread;
     pthread_mutex_unlock(&mutex);
@@ -46,7 +45,7 @@ void *piCalculatuiion(void *arg) {
         std::cerr << "error wait barrier in thread %d with status = \n" << status << std::endl;
         exit(1); //???
     }
-//    std::cout << count_iteration_all_thread << std::endl;
+
     while (count_iteration_all_thread > count_iteration_each_thread)
         for (int i = itearation->whichToStart, j = 0; j < itearation->numIteration; i++, j++) {
             pi += 1.0 / (i * 4.0 + 1.0);
@@ -54,10 +53,9 @@ void *piCalculatuiion(void *arg) {
             count_iteration_each_thread++;
             itearation->whichToStart += num_steps;
         }
-    std::cout << "count_iteration_each_thread" << std::endl;
-    std::cout << count_iteration_each_thread << std::endl;
+
     itearation->result = pi;
-    return (void *)itearation;
+    return (void *) itearation;
 }
 
 void listener(int i) {
@@ -66,13 +64,13 @@ void listener(int i) {
 
 int main(int argc, char **argv) {
     if (argc != 2) {
-        std::cout << "No input arg" << std::endl;
+        std::cerr << "No input arg" << std::endl;
     }
     int numbThread = atoi(argv[1]);
 
     pthread_mutex_init(&mutex, NULL);
 
-    int status = pthread_barrier_init(&barrier, NULL, numbThread);
+    int status = pthread_barrier_init(&barrier, NULL, numbThread+2);
     if (status != 0) {
         std::cerr << "main error: can't init barrier, status\n" << status << std::endl;
         return 1;
