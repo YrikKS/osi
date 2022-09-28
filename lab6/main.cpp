@@ -32,6 +32,7 @@ int main() {
         my_string myString;
         myString.str = str;
         myString.length = strlen(str);
+        printf("%s\n", myString.str);
         if (pthread_create(&pThread, NULL, childFunc, (void *) &myString)) {
             std::cout << "Error: " << std::endl;
             perror("failed to create pThread");
