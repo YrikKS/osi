@@ -38,7 +38,7 @@ int main() {
         perror("failed to create pThread");
         return 1;
     } else {
-        while (isReady){}
+        while (!isReady){}
         int i = 0;
         for (i = 0; i < 10; i++) {
             pthread_mutex_lock(&mutex[(i + 1) % 3]);
