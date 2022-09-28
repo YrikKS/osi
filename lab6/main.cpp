@@ -4,8 +4,16 @@
 #include <unistd.h>
 #include <string.h>
 
+
+typedef struct {
+    char str[30];
+    int length;
+} my_string;
+
 void *childFunc(void *arg) {
-//    char* str = (arg*)arg;
+    my_string* myString = (my_string*) arg;
+    sleep(myString->length);
+    std::cout << myString->str << std::endl;
     return ((void *) 0);
 }
 
@@ -16,8 +24,10 @@ int main() {
     char str[40];
     while (fscanf(file, "%s", str) != EOF) {
         pthread_t pThread;
-        std::cout << strlen(str) << std::endl;
-        if (pthread_create(&pThread, NULL, childFunc, (void *) &str)) {
+        my_string myString;
+        myString.str = str;
+        myString.length = strlen(str);
+        if (pthread_create(&pThread, NULL, childFunc, (void *) &myString)) {
             std::cout << "Error: " << std::endl;
             perror("failed to create pThread");
             return 1;

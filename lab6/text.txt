@@ -1,5 +1,5 @@
 The
-pthread_mutex_destroy()
+pthread_m
 function
 shall
 destroy
@@ -19,7 +19,7 @@ An
 implementation
 may
 cause
-pthread_mutex_destroy()
+pthread_mut
 to
 set
 the
@@ -39,7 +39,7 @@ can
 be
 reinitialized
 using
-pthread_mutex_init();
+pthread_mutex_i
 the
 results
 of
