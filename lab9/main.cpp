@@ -24,6 +24,7 @@ void *piCalculatuiion(void *arg) {
     double pi = 0.0;
     Itearation *itearation = (Itearation *) arg;
     int count_iteration_each_thread = 0;
+
     while (!isEnd) {
         for (int i = itearation->whichToStart, j = 0; j < itearation->numIteration; i++, j++) {
             pi += 1.0 / (i * 4.0 + 1.0);
@@ -32,11 +33,11 @@ void *piCalculatuiion(void *arg) {
         count_iteration_each_thread++;
         itearation->whichToStart += num_steps;
     }
+
     pthread_mutex_lock(&mutex);
     if (count_iteration_all_thread < count_iteration_each_thread)
         count_iteration_all_thread = count_iteration_each_thread;
     pthread_mutex_unlock(&mutex);
-    std::cout << count_iteration_each_thread << std::endl;
 
     int status = pthread_barrier_wait(&barrier);
     if (status == PTHREAD_BARRIER_SERIAL_THREAD) {
@@ -105,6 +106,7 @@ int main(int argc, char **argv) {
 
     pi = pi * 4.0;
     printf("pi done - %.15g \n", pi);
+    pthread_mutex_destroy(&mutex);
     free(ptrIterationStruct);
     free(pthreadVector);
     return (EXIT_SUCCESS);
