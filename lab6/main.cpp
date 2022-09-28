@@ -6,7 +6,7 @@
 
 
 typedef struct {
-    char str[30];
+    char* str;
     int length;
 } my_string;
 
