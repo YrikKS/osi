@@ -6,12 +6,12 @@
 
 
 typedef struct {
-    char* str;
+    char *str;
     int length;
 } my_string;
 
 void *childFunc(void *arg) {
-    my_string* myString = (my_string*) arg;
+    my_string *myString = (my_string *) arg;
     sleep(myString->length);
     std::cout << myString->str << std::endl;
     return ((void *) 0);
@@ -21,7 +21,7 @@ int main() {
     FILE *file;
     file = fopen("text.txt", "r");
 
-    char str[30];
+    char *str = (char *) malloc(sizeof(char) * 30);
     while (fscanf(file, "%s", str) != EOF) {
         pthread_t pThread;
         my_string myString;
