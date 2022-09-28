@@ -13,8 +13,9 @@ typedef struct {
 
 void *childFunc(void *arg) {
     my_string *myString = (my_string *) arg;
+    printf("%s\n", myString->str);
     sleep(myString->length);
-    std::cout << myString->str << std::endl;
+//    std::cout << myString->str << std::endl;
     return ((void *) 0);
 }
 
@@ -22,7 +23,7 @@ int main() {
     FILE *file;
     file = fopen("text.txt", "r");
 
-    char *str = (char *) malloc(sizeof(char) * 30);
+    char *str = (char *)malloc(sizeof(char) * 30);
     while (fscanf(file, "%s", str) != EOF) {
         pthread_t pThread;
         my_string myString;
