@@ -35,8 +35,9 @@ void *piCalculatuiion(void *arg) {
     }
 
     pthread_mutex_lock(&mutex);
-    if (count_iteration_all_thread < count_iteration_each_thread)
+    if (count_iteration_all_thread < count_iteration_each_thread) {
         count_iteration_all_thread = count_iteration_each_thread;
+    }
     pthread_mutex_unlock(&mutex);
 
     int status = pthread_barrier_wait(&barrier);
@@ -47,14 +48,15 @@ void *piCalculatuiion(void *arg) {
         exit(1); //???
     }
 
-    while (count_iteration_all_thread > count_iteration_each_thread)
+    while (count_iteration_all_thread > count_iteration_each_thread) {
         for (int i = itearation->whichToStart, j = 0; j < itearation->numIteration; i++, j++) {
             pi += 1.0 / (i * 4.0 + 1.0);
             pi -= 1.0 / (i * 4.0 + 3.0);
             count_iteration_each_thread++;
             itearation->whichToStart += num_steps;
         }
-
+    }
+    std::cout << count_iteration_each_thread << std::endl;
     itearation->result = pi;
     return (void *) itearation;
 }
