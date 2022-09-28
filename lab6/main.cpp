@@ -13,7 +13,7 @@ int main() {
     FILE *file;
     file = fopen("text.txt", "r");
 
-    char str[20];
+    char str[40];
     while (fscanf(file, "%s", str) != EOF) {
         printf("%s\n", str);
     }
