@@ -26,7 +26,7 @@ void *childFunc(void *arg) {
         if (pthread_mutex_unlock(&mutex[(i + 2) % 3]))
             perror("error unlock mutex: ");
     }
-    if (pthread_mutex_unlock(&mutex[i % 3]))
+    if (pthread_mutex_unlock(&mutex[(i + 2) % 3]))
         perror("error unlock mutex: ");
 
     return ((void *) 0);
@@ -41,6 +41,7 @@ int main() {
 
     if (pthread_mutex_lock(&mutex[0]))
         perror("error lock mutex: ");
+
     if (pthread_create(&pThread, NULL, childFunc, NULL)) {
         std::cout << "Error: " << std::endl;
         perror("failed to create pThread");
@@ -58,7 +59,7 @@ int main() {
                 perror("error unlock mutex: ");
         }
 
-        if (pthread_mutex_unlock(&mutex[(i + 1) % 3]))
+        if (pthread_mutex_unlock(&mutex[i % 3]))
             perror("error unlock mutex: ");
     }
 
