@@ -26,7 +26,7 @@ void *childFunc(void *arg) {
         if (pthread_mutex_unlock(&mutex[(i + 2) % 3]))
             perror("error unlock mutex: ");
     }
-    if (pthread_mutex_unlock(&mutex[(i + 2) % 3]))
+    if (pthread_mutex_unlock(&mutex[(i - 1) % 3]))
         perror("last child error unlock mutex: ");
 
     return ((void *) 0);
