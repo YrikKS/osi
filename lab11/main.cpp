@@ -13,21 +13,15 @@ void printer(std::string number_thread, int number_string) {
 }
 
 void *childFunc(void *arg) {
-    if (pthread_mutex_lock(&mutex[2]))
-        perror("error lock mutex: ");
+    pthread_mutex_lock(&mutex[2]);
     isReady = 1;
     int i = 0;
     for (i = 0; i < 10; i++) {
-        if (pthread_mutex_lock(&mutex[i % 3]))
-            perror("error lock mutex: ");
-
+        pthread_mutex_lock(&mutex[i % 3]);
         printer("child", i);
-
-        if (pthread_mutex_unlock(&mutex[(i + 2) % 3]))
-            perror("error unlock mutex: ");
+        pthread_mutex_unlock(&mutex[(i + 2) % 3]);
     }
-    if (pthread_mutex_unlock(&mutex[(i - 1) % 3]))
-        perror("last child error unlock mutex: ");
+    pthread_mutex_unlock(&mutex[(i + 1) % 3]);
 
     return ((void *) 0);
 }
@@ -39,28 +33,20 @@ int main() {
     pthread_mutex_init(&(mutex[1]), NULL);
     pthread_mutex_init(&(mutex[2]), NULL);
 
-    if (pthread_mutex_lock(&mutex[0]))
-        perror("error lock mutex: ");
-
+    pthread_mutex_lock(&mutex[0]);
     if (pthread_create(&pThread, NULL, childFunc, NULL)) {
         std::cout << "Error: " << std::endl;
         perror("failed to create pThread");
         return 1;
     } else {
-        while (!isReady) {}
+        while (!isReady){}
         int i = 0;
         for (i = 0; i < 10; i++) {
-            if (pthread_mutex_lock(&mutex[(i + 1) % 3]))
-                perror("error lock mutex: ");
-
+            pthread_mutex_lock(&mutex[(i + 1) % 3]);
             printer("parent", i);
-
-            if (pthread_mutex_unlock(&mutex[i % 3]))
-                perror("error unlock mutex: ");
+            pthread_mutex_unlock(&mutex[i % 3]);
         }
-
-        if (pthread_mutex_unlock(&mutex[i % 3]))
-            perror("last parent error unlock mutex: ");
+        pthread_mutex_unlock(&mutex[i % 3]);
     }
 
 
