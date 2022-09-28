@@ -8,8 +8,8 @@
 pthread_mutex_t mutex[3];
 bool isReady = 0;
 
-void printer(int number_thread, int number_string) {
-    std::cout << number_string << ") thread " << number_thread << std::endl;
+void printer(std::string number_thread, int number_string) {
+    std::cout << number_thread << " thread " << number_string << std::endl;
 }
 
 void *childFunc(void *arg) {
@@ -18,7 +18,7 @@ void *childFunc(void *arg) {
     int i = 0;
     for (i = 0; i < 10; i++) {
         pthread_mutex_lock(&mutex[i % 3]);
-        printer(2, i);
+        printer("child", i);
         pthread_mutex_unlock(&mutex[(i + 2) % 3]);
     }
     pthread_mutex_unlock(&mutex[(i + 1) % 3]);
@@ -43,7 +43,7 @@ int main() {
         int i = 0;
         for (i = 0; i < 10; i++) {
             pthread_mutex_lock(&mutex[(i + 1) % 3]);
-            printer(1, i);
+            printer("parent", i);
             pthread_mutex_unlock(&mutex[i % 3]);
         }
         pthread_mutex_unlock(&mutex[i % 3]);
