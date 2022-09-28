@@ -25,13 +25,13 @@ int main() {
     FILE *file;
     file = fopen("text.txt", "r");
 
-    my_string myString[100];
+    my_string* myString = (my_string*) malloc(100 * sizeof(my_string));
     int i = 0;
     while (fgets(myString[i].str, 30, file) != NULL) {
         pthread_t pThread;
         myString[i].length = strlen(myString[i].str);
 //        printf("%s\n", myString.str);
-        if (pthread_create(&pThread, NULL, childFunc, (void *) &myString)) {
+        if (pthread_create(&pThread, NULL, childFunc, (void *) &myString[i])) {
             std::cout << "Error: " << std::endl;
             perror("failed to create pThread");
             return 1;
