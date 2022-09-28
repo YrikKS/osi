@@ -21,7 +21,7 @@ void *childFunc(void *arg) {
         printer(2, i);
         pthread_mutex_unlock(&mutex[(i + 2) % 3]);
     }
-    pthread_mutex_unlock(&mutex[(i - 1) % 3]);
+    pthread_mutex_unlock(&mutex[(i + 1) % 3]);
 
     return ((void *) 0);
 }
