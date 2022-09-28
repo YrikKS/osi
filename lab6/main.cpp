@@ -15,7 +15,7 @@ int main() {
 
     char str[20];
     while (fscanf(file, "%s", str) != EOF) {
-        std::cout << str << std::endl;
+        printf("%s\n", str);
     }
 
     pthread_t pThread;
