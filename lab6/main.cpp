@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 void *childFunc(void *arg) {
-    char* str = (arg*)arg;
+//    char* str = (arg*)arg;
     return ((void *) 0);
 }
 
