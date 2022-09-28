@@ -17,6 +17,7 @@ void *childFunc(void *arg) {
 //    sleep(myString->length);
     for(int i = 0; i < myString->length; i++)
         printf("%c", myString->str[i]);
+    printf("\n");
 //    std::cout << myString->str << std::endl;
     return ((void *) 0);
 }
