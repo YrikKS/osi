@@ -27,7 +27,7 @@ int main() {
     file = fopen("text.txt", "r");
 
     char *str = (char *)malloc(sizeof(char) * 30);
-    while (fscanf(file, "%s", str) != EOF) {
+    while (fgets(str, 30, file) != NULL) {
         pthread_t pThread;
         my_string myString;
         myString.str = str;
