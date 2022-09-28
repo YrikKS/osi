@@ -33,6 +33,7 @@ int main() {
     pthread_mutex_init(&(mutex[1]), NULL);
     pthread_mutex_init(&(mutex[2]), NULL);
 
+    pthread_mutex_lock(&mutex[0]);
     if (pthread_create(&pThread, NULL, childFunc, NULL)) {
         std::cout << "Error: " << std::endl;
         perror("failed to create pThread");
