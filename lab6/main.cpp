@@ -13,6 +13,8 @@ typedef struct {
 
 void *childFunc(void *arg) {
     my_string *myString = (my_string *) arg;
+
+    printf("%d\n", myString->length);
     sleep(myString->length);
     for(int i = 0; i < myString->length; i++)
         printf("%c", myString->str[i]);
