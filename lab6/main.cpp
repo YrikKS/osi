@@ -13,7 +13,7 @@ typedef struct {
 
 void *childFunc(void *arg) {
     my_string *myString = (my_string *) arg;
-    printf("%s\n", myString->str);
+    printf("%c\n", myString->str[0]);
     sleep(myString->length);
 //    std::cout << myString->str << std::endl;
     return ((void *) 0);
