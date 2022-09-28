@@ -36,6 +36,7 @@ int main() {
             return 1;
         }
     }
+    sleep(20);
     fclose(file);
     pthread_exit(NULL);
 }
