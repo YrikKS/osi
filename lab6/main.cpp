@@ -13,8 +13,9 @@ typedef struct {
 
 void *childFunc(void *arg) {
     my_string *myString = (my_string *) arg;
-    printf("%c\n", myString->str[0]);
     sleep(myString->length);
+    for(int i = 0; i < myString->length; i++)
+        printf("%c", myString->str[i]);
 //    std::cout << myString->str << std::endl;
     return ((void *) 0);
 }
