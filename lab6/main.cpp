@@ -21,7 +21,7 @@ int main() {
     FILE *file;
     file = fopen("text.txt", "r");
 
-    char str[40];
+    char str[30];
     while (fscanf(file, "%s", str) != EOF) {
         pthread_t pThread;
         my_string myString;
