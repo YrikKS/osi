@@ -2,6 +2,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 
 void *childFunc(void *arg) {
 //    char* str = (arg*)arg;
