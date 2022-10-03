@@ -8,6 +8,8 @@
 #include <cstdlib>
 #include <pthread.h>
 #include <iostream>
+#include <stdio.h>
+#include <cerrno>
 
 template<typename T>
 class PthreadSaveList {
