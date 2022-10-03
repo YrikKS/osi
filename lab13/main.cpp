@@ -21,13 +21,13 @@ void printer(std::string numberThread, int number_string) {
 void *childFunc(void *arg) {
     PrinterSettings *printerSettings = (PrinterSettings *) arg;
     for (int i = 0; i < 10; i++) {
-//        pthread_mutex_lock(&mutexOne);
         while (threadTurn != printerSettings->numberThread) {
             pthread_cond_wait(&condition, &mutexOne);
         }
         printer(printerSettings->printedLine, i);
+        pthread_mutex_lock(&mutexOne);
         threadTurn = !threadTurn;
-//        pthread_mutex_unlock(&mutexOne);
+        pthread_mutex_unlock(&mutexOne);
         pthread_cond_signal(&condition);
     }
     std::cout << printerSettings->printedLine << std::endl;
