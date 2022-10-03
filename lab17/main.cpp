@@ -1,8 +1,7 @@
 #include <iostream>
 #include "PthreadSaveList.h"
 
-int main() {
-    std::cout << "1" << std::endl;
+int main() {;
     PthreadSaveList <int> list;
     list.addBegin(3);
     list.printList();

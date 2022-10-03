@@ -41,13 +41,17 @@ template<typename T>
 void PthreadSaveList<T>::printList() {
     lockMutex();
     ElementList *elementList = head;
+    int iteration = 0;
     while (elementList != NULL) {
-        std::cout << elementList->value << " - ";
+        if (iteration == 0) {
+            std::cout << elementList->value;
+        } else {
+            std::cout << " - " << elementList->value;
+        }
+        iteration++;
         elementList = elementList->next;
-        if (elementList->next == NULL)
-            break;
     }
-    std::cout << elementList->value << std::endl;
+    std::cout << std::endl;
     unlockMutex();
 }
 
@@ -55,9 +59,10 @@ template<typename T>
 void PthreadSaveList<T>::addBegin(T element) {
     lockMutex();
     ElementList *newElement = new ElementList;
-    head->before = newElement;
-    newElement->next = head;
+    ElementList *secondElement = head;
     newElement->value = element;
+    newElement->before = NULL;
+    newElement->next = secondElement;
     head = newElement;
     unlockMutex();
 }
@@ -98,7 +103,6 @@ PthreadSaveList<T>::~PthreadSaveList() {
     }
     delete elementList;
 }
-
 
 
 #endif //LAB17_PTHREADSAVELIST_H
