@@ -82,7 +82,7 @@ int main() {
 
     if (pthread_mutex_destroy(&mutexOne)) {
         perror("can't destroy mutex");
-        pthread_cond_destroy(&mutexOne);
+        pthread_cond_destroy(&condition);
         exit(1);
     }
 
