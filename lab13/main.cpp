@@ -30,8 +30,9 @@ void *childFunc(void *arg) {
         pthread_mutex_unlock(&mutexOne);
         pthread_cond_signal(&condition);
     }
-    pthread_mutex_unlock(&mutexOne);
-    pthread_cond_signal(&condition);
+    std::cout << printerSettings->printedLine << std::endl;
+//    pthread_mutex_unlock(&mutexOne);
+//    pthread_cond_signal(&condition);
     return ((void *) 0);
 }
 
