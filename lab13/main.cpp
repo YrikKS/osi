@@ -20,7 +20,7 @@ void printer(std::string numberThread, int number_string) {
 
 void *childFunc(void *arg) {
     PrinterSettings *printerSettings = (PrinterSettings *) arg;
-    if(printerSettings->numberThread == 0) {
+    if(printerSettings->numberThread == 1) {
         sleep(2);
     }
     for (int i = 0; i < 10; i++) {
