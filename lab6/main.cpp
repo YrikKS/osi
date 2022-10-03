@@ -15,7 +15,7 @@ typedef struct {
 } MyString;
 
 void *childFunc(void *arg) {
-    auto *myString = (MyString *) arg;
+    MyString *myString = (MyString *) arg;
     sleep(myString->length);
     printf("%s\n", myString->str);
     return ((void *) 0);
@@ -25,12 +25,12 @@ int main() {
     FILE *file;
     file = fopen("text.txt", "r");
 
-    auto *myString = (MyString *) malloc(MAX_COUNT_WORLDS * sizeof(MyString));
+    MyString *myString = (MyString *) malloc(MAX_COUNT_WORLDS * sizeof(MyString));
     int i = 0;
-    while (fgets(myString[i].str, 30, file) != nullptr) {
+    while (fgets(myString[i].str, 30, file) != NULL) {
         pthread_t pThread;
         myString[i].length = strlen(myString[i].str);
-        if (pthread_create(&pThread, nullptr, childFunc, (void *) &myString[i])) {
+        if (pthread_create(&pThread, NULL, childFunc, (void *) &myString[i])) {
             std::cout << "Error: " << std::endl;
             perror("failed to create pThread");
             return 1;
@@ -39,5 +39,5 @@ int main() {
     }
     fclose(file);
     free(myString);
-    pthread_exit(nullptr);
+    pthread_exit(NULL);
 }
