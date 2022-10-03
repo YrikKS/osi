@@ -71,9 +71,8 @@ int main() {
         }
     }
 
-    int errorCode = 1;
+    int errorCode = 0;
     pthread_join(pThread, (void **) &errorCode);
-    std::cout << errorCode << std::endl;
     if (errorCode) {
         perror("failed in printer function");
         pthread_mutex_destroy(&mutexOne);
