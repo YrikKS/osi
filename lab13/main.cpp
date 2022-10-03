@@ -20,6 +20,9 @@ void printer(std::string numberThread, int number_string) {
 
 void *childFunc(void *arg) {
     PrinterSettings *printerSettings = (PrinterSettings *) arg;
+    if(printerSettings->numberThread == 0) {
+        sleep(2);
+    }
     for (int i = 0; i < 10; i++) {
         pthread_mutex_lock(&mutexOne);
         while (threadTurn != printerSettings->numberThread) {
@@ -30,7 +33,6 @@ void *childFunc(void *arg) {
         pthread_mutex_unlock(&mutexOne);
         pthread_cond_signal(&condition);
     }
-    std::cout << printerSettings->printedLine << std::endl;
 //    pthread_mutex_unlock(&mutexOne);
 //    pthread_cond_signal(&condition);
     return ((void *) 0);
