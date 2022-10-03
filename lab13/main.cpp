@@ -21,6 +21,7 @@ void printer(std::string numberThread, int number_string) {
 void *childFunc(void *arg) {
     PrinterSettings *printerSettings = (PrinterSettings *) arg;
     for (int i = 0; i < 10; i++) {
+        sleep(1);
         pthread_mutex_lock(&mutexOne);
         while (threadTurn != printerSettings->numberThread) {
             pthread_cond_wait(&condition, &mutexOne);
