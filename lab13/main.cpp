@@ -52,6 +52,7 @@ int main() {
         childFunc((void *) &settingsForMainThread);
     }
 
+    pthread_join(pThread, NULL);
 
     pthread_mutex_destroy(&mutexOne);
     pthread_cond_destroy(&condition);
