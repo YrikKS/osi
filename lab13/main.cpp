@@ -56,6 +56,7 @@ int main() {
 
     PrinterSettings settingsForMainThread{0, "Parent thread"};
     PrinterSettings settingsForChildThread{1, "Child thread"};
+
     if (pthread_create(&pThread, NULL, childFunc, (void *) &settingsForChildThread)) {
         perror("failed to create thread");
         pthread_mutex_destroy(&mutexOne);
@@ -70,9 +71,9 @@ int main() {
         }
     }
 
-    int errorCode = 0;
+    int errorCode = 1;
     pthread_join(pThread, (void **) &errorCode);
-
+    std::cout << errorCode << std::endl;
     if (errorCode) {
         perror("failed in printer function");
         pthread_mutex_destroy(&mutexOne);
