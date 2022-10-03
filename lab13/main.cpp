@@ -31,6 +31,7 @@ void *childFunc(void *arg) {
         pthread_cond_signal(&condition);
     }
     pthread_mutex_unlock(&mutexOne);
+    pthread_cond_signal(&condition);
     return ((void *) 0);
 }
 
