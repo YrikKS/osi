@@ -3,13 +3,14 @@
 #include <unistd.h>
 
 #define RETURN_SUCCESS (void*) 0
+#define TIME_TO_SLEEP_CHILD_FUNC 5
 
 bool workContinues = true;
 
 void *sortFunc(void *arg) {
     PthreadSaveList<std::string> *list = (PthreadSaveList<std::string> *) arg;
     while (workContinues) {
-        sleep(5);
+        sleep(TIME_TO_SLEEP_CHILD_FUNC);
         list->sortList();
     }
     return RETURN_SUCCESS;
