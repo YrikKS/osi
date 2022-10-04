@@ -25,10 +25,11 @@ int main() {
 
     while (workContinues) {
         std::string string;
-        std::cin >> string;
+//        std::cin >> string;
+        std::getline(std::cin, string);
         if(string == "end") {
             workContinues = false;
-        } else if(string == "\n\r") {
+        } else if(string.empty()) {
             list.printList();
         } else {
             list.addBegin(string);
