@@ -5,8 +5,9 @@ int main() {
     PthreadSaveList<int> list;
     list.addBegin(3);
     list.printList();
-    list.addBegin(2);
+    list.addBegin(4);
     list.printList();
     list.sortList();
+    list.printList();
     return 0;
 }

@@ -16,7 +16,7 @@ class PthreadSaveList {
     typedef struct ElementList {
         T value;
         ElementList *next;
-        ElementList *before;
+        ElementList *prev;
     } ElementList;
 public:
     void addBegin(T element);
@@ -27,7 +27,11 @@ public:
 
     void printList();
 
+    int getListLenghtNotThreadSave();
+
     void sortList();
+
+    void swapElement(ElementList *element1, ElementList *element2);
 
     virtual ~PthreadSaveList();
 
@@ -63,9 +67,12 @@ void PthreadSaveList<T>::addBegin(T element) {
     ElementList *newElement = new ElementList;
     ElementList *secondElement = head;
     newElement->value = element;
-    newElement->before = NULL;
+    newElement->prev = NULL;
     newElement->next = secondElement;
     head = newElement;
+    if (secondElement != NULL)
+        secondElement->prev = newElement;
+//    secondElement.prev = newElement;
     unlockMutex();
 }
 
@@ -99,27 +106,58 @@ PthreadSaveList<T>::~PthreadSaveList() {
         ElementList *elementList = head;
         while (elementList->next != NULL) {
             elementList = elementList->next;
-            delete elementList->before;
+            delete elementList->prev;
         }
         delete elementList;
     }
     pthread_mutex_destroy(&mutex_);
 }
 
+
 template<typename T>
 void PthreadSaveList<T>::sortList() {
     lockMutex();
+    int countElement = getListLenghtNotThreadSave();
+    for (int i = 0; i < countElement; i++) {
+        ElementList *elementList = head;
+
+        for (int j = 0; j < countElement - i - 1; j++) {
+            if (elementList->value > elementList->next->value) {
+                swapElement(elementList, elementList->next);
+            } else {
+                elementList = elementList->next;
+            }
+        }
+    }
+    unlockMutex();
+}
+
+template<typename T>
+void PthreadSaveList<T>::swapElement(ElementList *element1, ElementList *element2) {
+    if (element1 == head) {
+        head = element2;
+    }
+    element1->next = element2->next;
+    element2->prev = element1->prev;
+    element1->prev = element2;
+    element2->next = element1;
+    if (element1->next != NULL) {
+        element1->next->prev = element1;
+    }
+    if (element2->prev != NULL) {
+        element2->prev->next = element2;
+    }
+}
+
+template<typename T>
+int PthreadSaveList<T>::getListLenghtNotThreadSave() {
+    ElementList *elementList = head;
     int countElement = 0;
-    ElementList* elementList = head;
     while (elementList != NULL) {
         countElement++;
         elementList = elementList->next;
     }
-    std::cout << countElement << std::endl;
-    for (int i = 0; i < countElement; i++) {
-        for(int j = 0; j < countElement - i; j++)
-    }
-    unlockMutex();
+    return countElement;
 }
 
 
