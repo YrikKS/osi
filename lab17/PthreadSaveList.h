@@ -5,6 +5,8 @@
 #ifndef LAB17_PTHREADSAVELIST_H
 #define LAB17_PTHREADSAVELIST_H
 
+#define SUCCSEC 0
+
 #include <cstdlib>
 #include <pthread.h>
 #include <iostream>
@@ -19,24 +21,24 @@ class PthreadSaveList {
         ElementList *prev;
     } ElementList;
 public:
-    void addBegin(T element);
-
     ElementList *head;
+
+    void addBegin(T element);
 
     PthreadSaveList();
 
     void printList();
 
-    int getListLenghtNotThreadSave();
-
     void sortList();
-
-    void swapElement(ElementList *element1, ElementList *element2);
 
     virtual ~PthreadSaveList();
 
 private:
     void lockMutex();
+
+    int getListLengthNotThreadSave();
+
+    void swapElementNotThreadSave(ElementList *element1, ElementList *element2);
 
     void unlockMutex();
 
@@ -70,29 +72,35 @@ void PthreadSaveList<T>::addBegin(T element) {
     newElement->prev = NULL;
     newElement->next = secondElement;
     head = newElement;
-    if (secondElement != NULL)
+    if (secondElement != NULL) {
         secondElement->prev = newElement;
-//    secondElement.prev = newElement;
+    }
     unlockMutex();
 }
 
 template<typename T>
 PthreadSaveList<T>::PthreadSaveList() : head(NULL) {
-    pthread_mutex_init(&mutex_, NULL);
+    int mutexInitErrorCode = pthread_mutex_init(&mutex_, NULL);
+    if (mutexInitErrorCode != SUCCSEC) {
+        fprintf(stderr, "Error mutex lock: ", mutexInitErrorCode);
+        exit(1);
+    }
 }
 
 template<typename T>
 void PthreadSaveList<T>::lockMutex() {
-    if (pthread_mutex_lock(&mutex_)) {
-        perror("Can't lock mutex");
+    int mutexLockErrorCode = pthread_mutex_lock(&mutex_);
+    if (mutexLockErrorCode != SUCCSEC) {
+        fprintf(stderr, "Error mutex lock: ", mutexLockErrorCode);
         exit(1);
     }
 }
 
 template<typename T>
 void PthreadSaveList<T>::unlockMutex() {
-    if (pthread_mutex_unlock(&mutex_)) {
-        perror("Can't unlock mutex");
+    int mutexUnLockErrorCode = pthread_mutex_unlock(&mutex_);
+    if (mutexUnLockErrorCode != SUCCSEC) {
+        fprintf(stderr, "Can't unlock mutex: ", mutexUnLockErrorCode);
         exit(1);
     }
 }
@@ -110,20 +118,24 @@ PthreadSaveList<T>::~PthreadSaveList() {
         }
         delete elementList;
     }
-    pthread_mutex_destroy(&mutex_);
+
+    int mutexDestroyErrorCode = pthread_mutex_destroy(&mutex_);
+    if (mutexDestroyErrorCode != SUCCSEC) {
+        fprintf(stderr, "Error mutex destroy: ", mutexDestroyErrorCode);
+    }
 }
 
 
 template<typename T>
 void PthreadSaveList<T>::sortList() {
     lockMutex();
-    int countElement = getListLenghtNotThreadSave();
+    int countElement = getListLengthNotThreadSave();
     for (int i = 0; i < countElement; i++) {
         ElementList *elementList = head;
 
         for (int j = 0; j < countElement - i - 1; j++) {
             if (elementList->value > elementList->next->value) {
-                swapElement(elementList, elementList->next);
+                swapElementNotThreadSave(elementList, elementList->next);
             } else {
                 elementList = elementList->next;
             }
@@ -133,7 +145,7 @@ void PthreadSaveList<T>::sortList() {
 }
 
 template<typename T>
-void PthreadSaveList<T>::swapElement(ElementList *element1, ElementList *element2) {
+void PthreadSaveList<T>::swapElementNotThreadSave(ElementList *element1, ElementList *element2) {
     if (element1 == head) {
         head = element2;
     }
@@ -150,7 +162,7 @@ void PthreadSaveList<T>::swapElement(ElementList *element1, ElementList *element
 }
 
 template<typename T>
-int PthreadSaveList<T>::getListLenghtNotThreadSave() {
+int PthreadSaveList<T>::getListLengthNotThreadSave() {
     ElementList *elementList = head;
     int countElement = 0;
     while (elementList != NULL) {
