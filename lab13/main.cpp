@@ -111,7 +111,7 @@ int main() {
 //        int childFuncErrorCode = 0;
         void* childFuncErrorCode = childFunc((void *) &settingsForMainThread);
         std::cout << "childFuncErrorCode" << std::endl;
-        std::cout << *((int*)childFuncErrorCode) << std::endl;
+        std::cout << ((int*)childFuncErrorCode) << std::endl;
 //        if (childFuncErrorCode != SUCCESS) {
 //            fprintf(stderr, "Error in printer function: ", childFuncErrorCode);
 //            pthread_mutex_destroy(&mutexOne);
