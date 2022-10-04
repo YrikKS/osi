@@ -27,6 +27,8 @@ public:
 
     void printList();
 
+    void sortList();
+
     virtual ~PthreadSaveList();
 
 private:
@@ -91,17 +93,33 @@ void PthreadSaveList<T>::unlockMutex() {
 template<typename T>
 PthreadSaveList<T>::~PthreadSaveList() {
     if (head == NULL) {
-        return;
-    }
-    if (head->next == NULL) {
+    } else if (head->next == NULL) {
         delete head;
+    } else {
+        ElementList *elementList = head;
+        while (elementList->next != NULL) {
+            elementList = elementList->next;
+            delete elementList->before;
+        }
+        delete elementList;
     }
-    ElementList *elementList = head;
-    while (elementList->next != NULL) {
+    pthread_mutex_destroy(&mutex_);
+}
+
+template<typename T>
+void PthreadSaveList<T>::sortList() {
+    lockMutex();
+    int countElement = 0;
+    ElementList* elementList = head;
+    while (elementList != NULL) {
+        countElement++;
         elementList = elementList->next;
-        delete elementList->before;
     }
-    delete elementList;
+    std::cout << countElement << std::endl;
+    for (int i = 0; i < countElement; i++) {
+        for(int j = 0; j < countElement - i; j++)
+    }
+    unlockMutex();
 }
 
 
