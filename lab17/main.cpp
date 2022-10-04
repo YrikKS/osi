@@ -2,7 +2,7 @@
 #include "PthreadSaveList.h"
 #include <unistd.h>
 
-bool workСontinues = true;
+int workСontinues = true;
 
 void *sortFunc(void *arg) {
     PthreadSaveList<std::string> *list = (PthreadSaveList<std::string> *) arg;
