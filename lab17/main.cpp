@@ -2,11 +2,12 @@
 #include "PthreadSaveList.h"
 #include <unistd.h>
 
-int workСontinues = true;
+
+bool workContinues = true;
 
 void *sortFunc(void *arg) {
     PthreadSaveList<std::string> *list = (PthreadSaveList<std::string> *) arg;
-    while (workСontinues) {
+    while (workContinues) {
         sleep(5);
         list->sortList();
     }
@@ -22,11 +23,11 @@ int main() {
         exit(1);
     }
 
-    while (workСontinues) {
+    while (workContinues) {
         std::string string;
         std::cin >> string;
         if(string == "end") {
-            workСontinues = false;
+            workContinues = false;
         } else if(string == "\n") {
             list.printList();
         } else {
