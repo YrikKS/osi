@@ -5,7 +5,7 @@
 #ifndef LAB17_PTHREADSAVELIST_H
 #define LAB17_PTHREADSAVELIST_H
 
-#define SUCCSEC 0
+#define SUCCESS 0
 
 #include <cstdlib>
 #include <pthread.h>
@@ -81,7 +81,7 @@ void PthreadSaveList<T>::addBegin(T element) {
 template<typename T>
 PthreadSaveList<T>::PthreadSaveList() : head(NULL) {
     int mutexInitErrorCode = pthread_mutex_init(&mutex_, NULL);
-    if (mutexInitErrorCode != SUCCSEC) {
+    if (mutexInitErrorCode != SUCCESS) {
         fprintf(stderr, "Error mutex lock: ", mutexInitErrorCode);
         exit(1);
     }
@@ -90,7 +90,7 @@ PthreadSaveList<T>::PthreadSaveList() : head(NULL) {
 template<typename T>
 void PthreadSaveList<T>::lockMutex() {
     int mutexLockErrorCode = pthread_mutex_lock(&mutex_);
-    if (mutexLockErrorCode != SUCCSEC) {
+    if (mutexLockErrorCode != SUCCESS) {
         fprintf(stderr, "Error mutex lock: ", mutexLockErrorCode);
         exit(1);
     }
@@ -99,7 +99,7 @@ void PthreadSaveList<T>::lockMutex() {
 template<typename T>
 void PthreadSaveList<T>::unlockMutex() {
     int mutexUnLockErrorCode = pthread_mutex_unlock(&mutex_);
-    if (mutexUnLockErrorCode != SUCCSEC) {
+    if (mutexUnLockErrorCode != SUCCESS) {
         fprintf(stderr, "Can't unlock mutex: ", mutexUnLockErrorCode);
         exit(1);
     }
@@ -120,7 +120,7 @@ PthreadSaveList<T>::~PthreadSaveList() {
     }
 
     int mutexDestroyErrorCode = pthread_mutex_destroy(&mutex_);
-    if (mutexDestroyErrorCode != SUCCSEC) {
+    if (mutexDestroyErrorCode != SUCCESS) {
         fprintf(stderr, "Error mutex destroy: ", mutexDestroyErrorCode);
     }
 }
