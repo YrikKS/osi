@@ -110,6 +110,7 @@ int main() {
     } else {
         int childFuncErrorCode = 0;
         childFuncErrorCode = *((int*)childFunc((void *) &settingsForMainThread));
+        std::cout << "childFuncErrorCode" << std::endl;
         std::cout << childFuncErrorCode << std::endl;
         if (childFuncErrorCode != SUCCESS) {
             fprintf(stderr, "Error in printer function: ", childFuncErrorCode);
