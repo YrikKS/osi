@@ -109,7 +109,7 @@ int main() {
         return 1;
     } else {
 //        int childFuncErrorCode = 0;
-        void* childFuncErrorCode = childFunc((void *) &settingsForMainThread));
+        void* childFuncErrorCode = childFunc((void *) &settingsForMainThread);
         std::cout << "childFuncErrorCode" << std::endl;
         std::cout << *((int*)childFuncErrorCode) << std::endl;
 //        if (childFuncErrorCode != SUCCESS) {
