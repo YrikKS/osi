@@ -48,16 +48,14 @@ private:
 template<typename T>
 void PthreadSaveList<T>::printList() {
     lockMutex();
-    ElementList *elementList = head;
     int iteration = 0;
-    while (elementList != NULL) {
+    for (ElementList *elementList = head; elementList != NULL; elementList = elementList->next) {
         if (iteration == 0) {
             std::cout << elementList->value;
         } else {
             std::cout << " - " << elementList->value;
         }
         iteration++;
-        elementList = elementList->next;
     }
     std::cout << std::endl;
     unlockMutex();
@@ -107,18 +105,17 @@ void PthreadSaveList<T>::unlockMutex() {
 
 template<typename T>
 PthreadSaveList<T>::~PthreadSaveList() {
-    if (head == NULL) {
-    } else if (head->next == NULL) {
-        delete head;
-    } else {
-        ElementList *elementList = head;
-        while (elementList->next != NULL) {
-            elementList = elementList->next;
-            delete elementList->prev;
+//    ElementList *elementCopy;
+    for (ElementList *element = head; element != NULL;) {
+        if (element->next != NULL) {
+            element = element->next;
+            delete element->prev;
         }
-        delete elementList;
+        else {
+            delete element;
+            break;
+        }
     }
-
     int mutexDestroyErrorCode = pthread_mutex_destroy(&mutex_);
     if (mutexDestroyErrorCode != SUCCESS) {
         fprintf(stderr, "Error mutex destroy: ", mutexDestroyErrorCode);
