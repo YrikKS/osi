@@ -108,13 +108,13 @@ int main() {
         pthread_cond_destroy(&condition);
         return 1;
     } else {
-        int childFuncErrorCode = *((int *) childFunc((void *) &settingsForMainThread));
-        if (childFuncErrorCode != SUCCESS) {
-            fprintf(stderr, "Error in printer function: ", childFuncErrorCode);
-            pthread_mutex_destroy(&mutexOne);
-            pthread_cond_destroy(&condition);
-            return 1;
-        }
+        childFunc((void *) &settingsForMainThread);
+//        if (childFuncErrorCode != SUCCESS) {
+//            fprintf(stderr, "Error in printer function: ", childFuncErrorCode);
+//            pthread_mutex_destroy(&mutexOne);
+//            pthread_cond_destroy(&condition);
+//            return 1;
+//        }
     }
 
     int errorCode = 0;
