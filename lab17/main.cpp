@@ -28,7 +28,7 @@ int main() {
         std::cin >> string;
         if(string == "end") {
             workContinues = false;
-        } else if(string == "\n") {
+        } else if(string == "\n\r") {
             list.printList();
         } else {
             list.addBegin(string);
