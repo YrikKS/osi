@@ -50,7 +50,7 @@ int conditionWait() {
 }
 
 int conditionSignal() {
-    int condSignalErrorCode = pthread_cond_wait(&condition, &mutexOne);
+    int condSignalErrorCode = pthread_cond_signal(&condition);
     if (condSignalErrorCode != SUCCESS) {
         fprintf(stderr, "Error cond signal: ", condSignalErrorCode);
         return 1;
@@ -62,21 +62,21 @@ int conditionSignal() {
 void *childFunc(void *arg) {
     PrinterSettings *printerSettings = (PrinterSettings *) arg;
     for (int i = 0; i < NUMBER_OF_LINES_TO_PRINT; i++) {
-        if (mutexLock()) {
+        if (mutexLock() != SUCCESS) {
             return RETURN_ERROR;
         }
         while (threadTurn != printerSettings->numberThread) {
-            if (conditionWait()) {
+            if (conditionWait() != SUCCESS) {
                 return RETURN_ERROR;
             }
         }
         printer(printerSettings->printedLine, i);
         threadTurn = !threadTurn;
 
-        if (unlockMutex()) {
+        if (unlockMutex() != SUCCESS) {
             return RETURN_ERROR;
         }
-        if (conditionSignal()) {
+        if (conditionSignal() != SUCCESS) {
             return RETURN_ERROR;
         }
     }
