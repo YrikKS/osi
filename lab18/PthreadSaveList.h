@@ -145,49 +145,69 @@ PthreadSaveList<T>::~PthreadSaveList() {
 
 template<typename T>
 void PthreadSaveList<T>::sortList() {
-
+    if (head == NULL)
+        return;
+    int countSwap = 1;
     lockMutexElement(head);
-    ElementList *first = head;
-    unlockMutexElement(head);
-    for (; first != NULL;) {
-        int countSwap = 0;
-        for (ElementList *second = first; second != NULL;) {
+    ElementList *first;
+    while (countSwap != 0) {
+        countSwap = 0;
+        lockMutexElement(first->next);
+        first = first->next;
+//        std::cout << "head = " << head->value << std::endl;
+        for (ElementList *second = head; second != NULL;) {
             if (second->next != NULL) {
-                lockForSwap(second);
-                if (second->value > second->next->value) {
+                lockMutexElement(second->next);
+                if (first->value > second->next->value) {
                     countSwap++;
-                    std::cout << countSwap << std::endl;
-                    swapElement(second, second->next);
-                    unlockForSwap(second->prev);
+                    swapElement(first, second->next);
                 } else {
-                    unlockForSwap(second);
                     second = second->next;
                 }
             } else {
                 break;
             }
         }
-        if (countSwap == 0) {
-            return;
-        }
+        unlockMutexElement(first);
+//            if (second->next != NULL) {
+//                lockForSwap(second);
+//                if (second->value > second->next->value) {
+//                    countSwap++;
+//                    std::cout << countSwap << std::endl;
+//                    swapElement(second, second->next);
+//                    unlockForSwap(second->prev);
+//                } else {
+//                    unlockForSwap(second);
+//                    second = second->next;
+//                }
+////            } else {
+////                break;
+//            }
+
     }
+    std::cout << "End sort" << std::endl;
 }
 
 template<typename T>
 void PthreadSaveList<T>::swapElement(ElementList *element1, ElementList *element2) {
-    if (element1 == head) {
-        head = element2;
-    }
-    element1->next = element2->next;
-    element2->prev = element1->prev;
-    element1->prev = element2;
-    element2->next = element1;
-    if (element1->next != NULL) {
-        element1->next->prev = element1;
-    }
-    if (element2->prev != NULL) {
-        element2->prev->next = element2;
-    }
+    std::cout << "swap elements " << element1->value << " with " << element2->value << std::endl;
+    T copy = element1->value;
+    element1->value = element2->value;
+    element2->value = copy;
+//    if (element1 == head) {
+//        head = element2;
+//    }
+//    element1->next = element2->next;
+//    element2->prev = element1->prev;
+//    element1->prev = element2;
+//    element2->next = element1;
+//    if (element1->next != NULL) {
+//        element1->next->prev = element1;
+//    }
+//    if (element2->prev != NULL) {
+//        element2->prev->next = element2;
+//    }
+    std::cout << "End swap" << std::endl;
 }
 
 template<typename T>
@@ -232,7 +252,7 @@ void PthreadSaveList<T>::lockForSwap(PthreadSaveList::ElementList *elementList) 
     if (elementList->prev != NULL) {
         lockMutexElement(elementList->prev);
     }
-    lockMutexElement(elementList);
+//    lockMutexElement(elementList);
     lockMutexElement(elementList->next);
     if (elementList->next->next != NULL) {
         lockMutexElement(elementList->next->next);
