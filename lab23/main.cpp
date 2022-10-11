@@ -26,7 +26,7 @@ void *addToList(void *arg) {
 
 int main() {
     FILE *file;
-    file = fopen("text.txt", "r");
+    file = fopen("../text.txt", "r");
     PthreadSaveList<std::string> list;
     MyString *myString = (MyString *) malloc(MAX_COUNT_WORLDS * sizeof(MyString));
     pthread_t pThreads[100];
