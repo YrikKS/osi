@@ -55,7 +55,7 @@ void PthreadSaveList<T>::printList() {
         if (iteration == 0) {
             std::cout << elementList->value << std::endl;
         } else {
-//            std::cout << " - " << elementList->value;
+            std::cout << elementList->value << std::endl;
         }
         iteration++;
     }
