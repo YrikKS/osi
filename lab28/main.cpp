@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
     strncpy(host, argv[1], sl_index * sizeof(char));
     char *path = argv[1] + sl_index;
     if (sl_index == url_size) {
-        path = '/';
+        *path = '/';
     }
     if (getaddrinfo(host, "http", &hints, &res) != 0) {
         perror("Getaddrinfo");
