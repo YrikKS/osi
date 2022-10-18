@@ -27,7 +27,7 @@ std::string parseUrl(char *url) {
 }
 
 int connectSocket(std::string url) {
-    struct hostent *hp = gethostbyname(url.data());
+    struct hostent *hostent = gethostbyname(url.data());
 //    struct sockaddr_in addr;
 //    int on = 1, sock;
 //    bcopy(hp->h_addr, &addr.sin_addr, hp->h_length);
