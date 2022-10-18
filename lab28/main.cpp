@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
 //    sprintf(pszRequest, "GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n", pszResourcePath, pszHostAddress);
 //    std::cout << pszRequest << std::endl;
 
-    send(fd, "GET /", strlen("GET /")); // write(fd, char[]*, len);
+    write(fd, "GET /\r\n", strlen("GET /\r\n")); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
 
     while(read(fd, buffer, BUFFER_SIZE - 1) != 0){
