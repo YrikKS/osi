@@ -35,7 +35,7 @@ int connectSocket(std::string url) {
 
     struct sockaddr_in sockAddr;
     bcopy(hostent->h_addr, &sockAddr.sin_addr, hostent->h_length);
-    sockAddr->sin_port = 80;
+    sockAddr.sin_port = 80;
     sockAddr.sin_family = AF_INET;
 
     int sock = socket(AF_INET, SOCK_STREAM, 0); //PF_INET
