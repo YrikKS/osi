@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
 //    sprintf(pszRequest, "GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n", pszResourcePath, pszHostAddress);
 //    std::cout << pszRequest << std::endl;
 //    char sendBuf[] = "GET / HTTP/1.1\r\nHost: en.wikipedia.org\r\n\r\n";
-    char sendBuf[] = "GET /\r\n";
+    char sendBuf[] = "GET /\r\n\r\n";
     write(fd, sendBuf, strlen(sendBuf)); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
 
