@@ -30,6 +30,8 @@ int main(int argc, char *argv[]) {
     int addressLen = strlen(ADDRESS);                                                                                                                                               // узнаем размер ADDRESS
     strncpy(sockAddress.sun_path, ADDRESS, addressLen);
 
+
+    std::cout << "connect" << std::endl;
     if (connect(sockfd, (struct sockaddr*) &sockAddress, sizeof(sockAddress)) < 0){
         perror("connect");
         return 2;
@@ -37,6 +39,7 @@ int main(int argc, char *argv[]) {
 
     std::cout << "all good" << std::endl;
     close(sockfd);
+//    send(sockfd, pszRequest, 100, 0);
 //    char buffer[1024] = {0};
 
     return 0;
