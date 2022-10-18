@@ -52,7 +52,8 @@ int main(int argc, char *argv[]){
 
     fd = socket_connect(argv[1], atoi(argv[2]));
     char pszRequest[100]= {0};
-    char pszResourcePath[] = "";
+    char pszResourcePath[] = "Dross0/OS-Labs/blob/master/HTTP%20Client%201/http.c";
+//    https://github.com/Dross0/OS-Labs/blob/master/HTTP%20Client%201/http.c
     char* pszHostAddress = argv[1];
     sprintf(pszRequest, "GET /%s HTTP/1.1\r\nHost: %s\r\nContent-Type: text/plain\r\n\r\n", pszResourcePath, pszHostAddress);
     std::cout << pszRequest << std::endl;
