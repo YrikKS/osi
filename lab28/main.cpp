@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     printf("Created Get Request is below:\n\n\n");
     struct hostent *hp;
     hp = gethostbyname(pszHostAddress);
-    std::cout << hp->h_addr << std::endl;
+    std::cout << hp->h_name << std::endl;
 //
 //    char ADDRESS[] = "https://www.opennet.ru/man.shtml?topic=socket&category=2&russian=0";
 //    int sockfd = 0;
