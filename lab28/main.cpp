@@ -54,7 +54,7 @@ int main(int argc, char *argv[]){
     char pszRequest[100]= {0};
     char pszResourcePath[] = "";
     char* pszHostAddress = argv[1];
-    sprintf(pszRequest, "GET %s HTTP/1.1\r\nHost: %s\r\nContent-Type: text/plain\r\n\r\n", pszResourcePath, pszHostAddress);
+    sprintf(pszRequest, "GET /%s HTTP/1.1\r\nHost: %s\r\nContent-Type: text/plain\r\n\r\n", pszResourcePath, pszHostAddress);
     std::cout << pszRequest << std::endl;
 
     write(fd, pszRequest, strlen(pszRequest)); // write(fd, char[]*, len);
