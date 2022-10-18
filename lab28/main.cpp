@@ -9,44 +9,57 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <netdb.h>
-#include <iostream>
 
-int main(int argc, char *argv[]) {
-    char pszRequest[100] = {0};
-    char pszResourcePath[] = "";
-    char pszHostAddress[] = "https://www.opennet.ru";
-    sprintf(pszRequest, "GET /%s HTTP/1.1\r\nHost: %s\r\nContent-Type: text/plain\r\n\r\n", pszResourcePath,
-            pszHostAddress);
-    printf("Created Get Request is below:\n\n\n");
+int socket_connect(char *host, in_port_t port){
     struct hostent *hp;
-    hp = gethostbyname(pszHostAddress);
-    std::cout << hp->h_name << std::endl;
-//
-//    char ADDRESS[] = "https://www.opennet.ru/man.shtml?topic=socket&category=2&russian=0";
-//    int sockfd = 0;
-//    if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) < 0){                                                                                                                                // возращает дискриптор sockfd ()
-//        perror("client socket");
-//        return 1;
-//    }
-//
-//    struct sockaddr_un sockAddress;                                                                                                                                              // Адрес доменного сокета UNIX
-//    memset(&sockAddress, 0, sizeof(struct sockaddr_un));                                                                                                                                    //инициализируем переменную нулями
-//
-//    sockAddress.sun_family = PF_INET;                                                                                                                                                // заполняем поле sun_family
-//    int addressLen = strlen(ADDRESS);                                                                                                                                               // узнаем размер ADDRESS
-//    strncpy(sockAddress.sun_path, ADDRESS, addressLen);
-//
-//
-//    std::cout << "connect" << std::endl;
-//    if (connect(sockfd, (struct sockaddr*) &sockAddress, sizeof(sockAddress)) < 0){
-//        perror("connect");
-//        return 2;
-//    }
-//
-//    std::cout << "all good" << std::endl;
-//    close(sockfd);
-//    send(sockfd, pszRequest, 100, 0);
-//    char buffer[1024] = {0};
+    struct sockaddr_in addr;
+    int on = 1, sock;
+
+    if((hp = gethostbyname(host)) == NULL){
+        herror("gethostbyname");
+        exit(1);
+    }
+    bcopy(hp->h_addr, &addr.sin_addr, hp->h_length);
+    addr.sin_port = htons(port);
+    addr.sin_family = AF_INET;
+    sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&on, sizeof(int));
+
+    if(sock == -1){
+        perror("setsockopt");
+        exit(1);
+    }
+
+    if(connect(sock, (struct sockaddr *)&addr, sizeof(struct sockaddr_in)) == -1){
+        perror("connect");
+        exit(1);
+
+    }
+    return sock;
+}
+
+#define BUFFER_SIZE 1024
+
+int main(int argc, char *argv[]){
+    int fd;
+    char buffer[BUFFER_SIZE];
+
+    if(argc < 3){
+        fprintf(stderr, "Usage: %s <hostname> <port>\n", argv[0]);
+        exit(1);
+    }
+
+    fd = socket_connect(argv[1], atoi(argv[2]));
+    write(fd, "GET /\r\n", strlen("GET /\r\n")); // write(fd, char[]*, len);
+    bzero(buffer, BUFFER_SIZE);
+
+    while(read(fd, buffer, BUFFER_SIZE - 1) != 0){
+        fprintf(stderr, "%s", buffer);
+        bzero(buffer, BUFFER_SIZE);
+    }
+
+    shutdown(fd, SHUT_RDWR);
+    close(fd);
 
     return 0;
 }
