@@ -14,7 +14,7 @@
 int main(int argc, char *argv[]) {
     char pszRequest[100] = {0};
     char pszResourcePath[] = "";
-    char pszHostAddress[] = "https://www.opennet.ru/man.shtml?topic=socket&category=2&russian=0";
+    char pszHostAddress[] = "https://www.opennet.ru";
     sprintf(pszRequest, "GET /%s HTTP/1.1\r\nHost: %s\r\nContent-Type: text/plain\r\n\r\n", pszResourcePath,
             pszHostAddress);
     printf("Created Get Request is below:\n\n\n");
