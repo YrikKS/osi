@@ -43,7 +43,8 @@ int connectSocket(std::string url) {
         perror("setsockopt");
         exit(1);
     }
-
+    int on = 1;
+    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&on, sizeof(int));
     if (connect(sock, (struct sockaddr *) &sockAddr, sizeof(struct sockaddr_in)) == -1) {
         perror("connect");
         exit(1);
