@@ -1,12 +1,14 @@
 #include <stdio.h>
-#include <unistd.h>
-#include <sys/un.h>
-#include <sys/socket.h>
-#include <sys/types.h>
 #include <string.h>
 #include <stdlib.h>
-#include <sys/termios.h>
-#include <iostream>
+#include <unistd.h>
+#include <fcntl.h>
+
+#include <netinet/tcp.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <netdb.h>
 
 int main(int argc, char *argv[]) {
     char pszRequest[100] = {0};
