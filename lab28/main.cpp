@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 
     std::cout << "all good" << std::endl;
     close(sockfd);
-    char buffer[BUFFER_SIZE] = {0};
+//    char buffer[1024] = {0};
 
     return 0;
 }
