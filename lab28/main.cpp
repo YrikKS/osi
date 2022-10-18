@@ -84,10 +84,10 @@ int main(int argc, char *argv[]) {
     char pszResourcePath[] = "";
 //    https://parallel.uran.ru/book/export/html/474
     char* pszHostAddress = argv[1];
-    sprintf(pszRequest, "GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n", pszResourcePath, pszHostAddress);
+//    sprintf(pszRequest, "GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n", pszResourcePath, pszHostAddress);
     std::cout << pszRequest << std::endl;
 
-    write(fd, pszRequest, strlen(pszRequest)); // write(fd, char[]*, len);
+    write(fd, "GET /", strlen("GET /")); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
 
     while(read(fd, buffer, BUFFER_SIZE - 1) != 0){
