@@ -71,7 +71,7 @@ int connectSocket(std::string url) {
     return sock;
 }
 
-void sendRequest
+//void sendRequest
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
