@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <iostream>
 
 int socket_connect(char *host, in_port_t port){
     struct hostent *hp;
@@ -50,7 +51,13 @@ int main(int argc, char *argv[]){
     }
 
     fd = socket_connect(argv[1], atoi(argv[2]));
-    write(fd, "GET /\r\n", strlen("GET /\r\n")); // write(fd, char[]*, len);
+    char pszRequest[100]= {0};
+    char pszResourcePath[] = "";
+    char* pszHostAddress = argv[1];
+    sprintf(pszRequest, "GET /%s HTTP/1.1\r\nHost: %s\r\nContent-Type: text/plain\r\n\r\n", pszResourcePath, pszHostAddress);
+    std::cout << pszRequest << std::endl;
+
+    write(fd, pszRequest, strlen(pszRequest)); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
 
     while(read(fd, buffer, BUFFER_SIZE - 1) != 0){
