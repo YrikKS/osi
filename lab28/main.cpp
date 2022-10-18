@@ -28,17 +28,24 @@ std::string parseUrl(char *url) {
 
 int connectSocket(std::string url) {
     struct hostent *hp = gethostbyname(url.data());
+//    struct hostent *hp;
     struct sockaddr_in addr;
+    int on = 1, sock;
+
+    if((hp = gethostbyname(host)) == NULL){
+        herror("gethostbyname");
+        exit(1);
+    }
     bcopy(hp->h_addr, &addr.sin_addr, hp->h_length);
     addr.sin_port = htons(port);
     addr.sin_family = AF_INET;
-    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&on, sizeof(int));
+
     if(sock == -1){
         perror("setsockopt");
         exit(1);
     }
-    int on = 1;
-    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&on, sizeof(int));
 
     if(connect(sock, (struct sockaddr *)&addr, sizeof(struct sockaddr_in)) == -1){
         perror("connect");
