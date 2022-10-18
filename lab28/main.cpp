@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
     char* pszHostAddress = argv[1];
 //    sprintf(pszRequest, "GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n", pszResourcePath, pszHostAddress);
 //    std::cout << pszRequest << std::endl;
-    char *sendBuf = "GET /wiki/URL HTTP/1.1\r\nHost: en.wikipedia.org\r\n";
+    char sendBuf[] = "GET /wiki/URL HTTP/1.1\r\nHost: en.wikipedia.org\r\n";
     write(fd, sendBuf, strlen(sendBuf)); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
 
