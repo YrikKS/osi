@@ -51,7 +51,7 @@ int main(int argc, char *argv[]){
 
     fd = socket_connect(argv[1], atoi(argv[2]));
     char request[100] = {0};
-    snprintf(request, 100, "GET %s HTTP/1.1\nHost: %s\n\n", "/", "parallels.nsu.ru/WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks");
+    snprintf(request, 100, "GET %s HTTP/1.1\nHost: %s\n\n", "2016/04/create-xml-request-in-c-for-server.html", "www.aticleworld.com");
     write(fd, request, strlen(request)); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
 
