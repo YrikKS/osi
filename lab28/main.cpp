@@ -31,11 +31,6 @@ int connectSocket(std::string url) {
 //    struct hostent *hp;
     struct sockaddr_in addr;
     int on = 1, sock;
-
-    if((hp = gethostbyname(host)) == NULL){
-        herror("gethostbyname");
-        exit(1);
-    }
     bcopy(hp->h_addr, &addr.sin_addr, hp->h_length);
     addr.sin_port = htons(port);
     addr.sin_family = AF_INET;
