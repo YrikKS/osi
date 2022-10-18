@@ -88,8 +88,8 @@ int main(int argc, char *argv[]) {
     char* pszHostAddress = argv[1];
 //    sprintf(pszRequest, "GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n", pszResourcePath, pszHostAddress);
 //    std::cout << pszRequest << std::endl;
-
-    write(fd, "GET /readme.pdf HTTP/1.1\r\nHost: webdav.yandex.ru\r\n", strlen("GET /readme.pdf HTTP/1.1\r\nHost: webdav.yandex.ru\r\n")); // write(fd, char[]*, len);
+    char *sendBuf = "GET /wiki/URL HTTP/1.1\r\nHost: en.wikipedia.org\r\n";
+    write(fd, sendBuf, strlen(sendBuf)); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
 
     while(read(fd, buffer, BUFFER_SIZE - 1) != 0){
