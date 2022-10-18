@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <iostream>
 
 int main(int argc, char *argv[]) {
     char pszRequest[100] = {0};
