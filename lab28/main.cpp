@@ -50,9 +50,20 @@ int main(int argc, char *argv[]){
     }
 
     fd = socket_connect(argv[1], atoi(argv[2]));
-    char request[1000] = {0};
-    snprintf(request, 1000, "GET %s HTTP/2.0\nHost: %s\n\n",
-             "WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks", "parallels.nsu.ru");
+    char request[1200] = "GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\n"
+                         "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9\n"
+                         "Accept-Encoding: gzip, deflate\n"
+                         "Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7\n"
+                         "Cache-Control: max-age=0\n"
+                         "Connection: keep-alive\n"
+                         "Cookie: _ga=GA1.2.1603728761.1662036842; PHPSESSID=26e84d53db8074833447ad2064a72d90\n"
+                         "Host: parallels.nsu.ru\n"
+                         "If-Modified-Since: Tue, 18 Oct 2022 09:56:05 GMT\n"
+                         "If-None-Match: \"Tue, 18 Oct 2022 09:56:05 GMT\"\n"
+                         "Upgrade-Insecure-Requests: 1\n"
+                         "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 OPR/91.0.4516.72 (Edition Yx GX)";
+//    snprintf(request, 1000, "GET %s HTTP/2.0\nHost: %s\n\n",
+//             "WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks", "parallels.nsu.ru");
 //    http://parallels.nsu.ru/WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks
     write(fd, request, strlen(request)); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
