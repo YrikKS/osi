@@ -50,10 +50,9 @@ int main(int argc, char *argv[]){
     }
 
     fd = socket_connect(argv[1], atoi(argv[2]));
-    char request[1200] = "GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\n"
-                         "Host: parallels.nsu.ru\n";
-//    snprintf(request, 1000, "GET %s HTTP/2.0\nHost: %s\n\n",
-//             "WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks", "parallels.nsu.ru");
+    char request[1200] = {0};
+    snprintf(request, 1000, "GET %s HTTP/2.0\nHost: %s\n\n",
+             "WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks", "parallels.nsu.ru");
 //    http://parallels.nsu.ru/WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks
     write(fd, request, strlen(request)); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
