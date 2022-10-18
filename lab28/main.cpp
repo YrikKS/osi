@@ -71,6 +71,8 @@ int connectSocket(std::string url) {
     return sock;
 }
 
+void sendRequest
+
 int main(int argc, char *argv[]) {
     if (argc != 2) {
         std::cout << "Incorrect args!\n exampl: " << argv[0] << "<https://<hostName>" << std::endl;
@@ -87,7 +89,7 @@ int main(int argc, char *argv[]) {
 //    sprintf(pszRequest, "GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n", pszResourcePath, pszHostAddress);
 //    std::cout << pszRequest << std::endl;
 
-    write(fd, "GET /\r\n", strlen("GET /\r\n")); // write(fd, char[]*, len);
+    write(fd, "GET /readme.pdf HTTP/1.1\r\nHost: webdav.yandex.ru\r\n", strlen("GET /readme.pdf HTTP/1.1\r\nHost: webdav.yandex.ru\r\n")); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
 
     while(read(fd, buffer, BUFFER_SIZE - 1) != 0){
