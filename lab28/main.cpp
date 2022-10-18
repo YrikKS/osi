@@ -52,7 +52,7 @@ int main(int argc, char *argv[]){
 
     fd = socket_connect(argv[1], atoi(argv[2]));
     char pszRequest[100]= {0};
-    char pszResourcePath[] = "/book/export/html/474";
+    char pszResourcePath[] = "book/export/html/474";
 //    https://parallel.uran.ru/book/export/html/474
     char* pszHostAddress = argv[1];
     sprintf(pszRequest, "GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n", pszResourcePath, pszHostAddress);
