@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
     if (sl_index == url_size) {
         *path = '/';
     }
-    if (getaddrinfo(host, "http", &hints, &res) != 0) {
+    if (getaddrinfo(host, "http", &hints, &res) == 0) {
         perror("Getaddrinfo");
         return CANT_PARSE_URL;
     }
