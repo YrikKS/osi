@@ -58,7 +58,6 @@ int main(int argc, char *argv[]) {
     }
     std::string url = parseUrl(argv[1]);
     int sock = connectSocket(url);
-    int fd;
     char buffer[BUFFER_SIZE];
     int fd = connectSocket(url);
     char pszRequest[100]= {0};
