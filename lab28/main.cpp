@@ -62,8 +62,8 @@ int connectSocket(std::string url) {
         perror("setsockopt");
         exit(1);
     }
-    int on = 1;
-    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&on, sizeof(int));
+//    int on = 1;
+//    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&on, sizeof(int));
     if (connect(sock, (struct sockaddr *) &sockAddr, sizeof(struct sockaddr_in)) == -1) {
         perror("connect");
         exit(1);
@@ -80,26 +80,18 @@ int main(int argc, char *argv[]) {
     }
     std::string url = parseUrl(argv[1]);
     int sock = connectSocket(url);
-    char buffer[BUFFER_SIZE];
-    int fd = connectSocket(url);
-    char pszRequest[100]= {0};
-    char pszResourcePath[] = "";
-//    https://parallel.uran.ru/book/export/html/474
-    char* pszHostAddress = argv[1];
-//    sprintf(pszRequest, "GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n", pszResourcePath, pszHostAddress);
-//    std::cout << pszRequest << std::endl;
-//    char sendBuf[] = "GET / HTTP/1.1\r\nHost: en.wikipedia.org\r\n\r\n";
-    char sendBuf[] = "GET /\r\n\r\n";
-    write(fd, sendBuf, strlen(sendBuf)); // write(fd, char[]*, len);
+
+    char buffer[BUFFER_SIZE] = "GET /\r\n\r\n";
+    write(sock, buffer, strlen(buffer)); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
 
-    while(read(fd, buffer, BUFFER_SIZE - 1) != 0){
+    while(read(sock, buffer, BUFFER_SIZE - 1) != 0){
         fprintf(stderr, "%s", buffer);
         bzero(buffer, BUFFER_SIZE);
     }
 
-    shutdown(fd, SHUT_RDWR);
-    close(fd);
+    shutdown(sock, SHUT_RDWR);
+    close(sock);
 
     return 0;
 }
