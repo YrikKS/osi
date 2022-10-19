@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
     std::string url = parseUrl(argv[1]);
     int sock = connectSocket(url);
 
-    char buffer[BUFFER_SIZE] = "GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\n\rHost: parallels.nsu.ru\r\n\r\n";
+    char buffer[BUFFER_SIZE] = "GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9\r\nHost: parallels.nsu.ru\r\n\r\n";
     write(sock, buffer, strlen(buffer)); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
 
