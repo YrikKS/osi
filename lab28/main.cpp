@@ -53,7 +53,20 @@ int connectSocket(std::string url) {
 
 std::string getPath(std::string url) {
     int indexEndHostName = url.find("/");
-    return url.substr(indexEndHostName);
+    if(indexEndHostName == url.npos) {
+        return "";
+    } else {
+        return url.substr(indexEndHostName);
+    }
+}
+
+std::string getDomain(std::string url) {
+    int indexEndHostName = url.find("/");
+    if(indexEndHostName == url.npos) {
+        return url;
+    } else {
+        return url.substr(0, indexEndHostName);
+    }
 }
 //void sendRequest
 
@@ -63,11 +76,13 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     std::string url = parseUrl(argv[1]);
+    std::string domain = getDomain(url);
     std::string path = getPath(url);
-    std::cout << path << std::endl;
-    int sock = connectSocket(url);
+    int sock = connectSocket(domain);
+    char buffer[BUFFER_SIZE] = {0};
+    sprintf(buffer, "GET /%s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\n\r\n", path.data(), url.data());
 
-    char buffer[BUFFER_SIZE] = "GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\r\nAccept: */*\r\nHost: parallels.nsu.ru\r\n\r\n";
+//    char buffer[BUFFER_SIZE] = "GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\r\nAccept: */*\r\nHost: parallels.nsu.ru\r\n\r\n";
     write(sock, buffer, strlen(buffer)); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
 
