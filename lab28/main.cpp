@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
 //    bzero(buffer, BUFFER_SIZE);
 
     struct timeval tv;
-    tv.tv_sec = 5;
+    tv.tv_sec = 100;
     tv.tv_usec = 0;
 
     fd_set fd_in;
@@ -98,7 +98,6 @@ int main(int argc, char *argv[]) {
 
     write(sock, buffer, strlen(buffer));
     bzero(buffer, BUFFER_SIZE);
-    std::cout << sock << std::endl;
     while (true) {
         int ret = select(sock + 1, &fd_in, &fd_out, NULL, &tv);
 //        std::cout << ret << std::endl;
