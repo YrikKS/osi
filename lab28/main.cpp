@@ -98,33 +98,33 @@ int main(int argc, char *argv[]) {
 
     write(sock, buffer, strlen(buffer));
     bzero(buffer, BUFFER_SIZE);
-//    while (true) {
-//        int ret = select(sock + 1, &fd_in, &fd_out, NULL, &tv);
-////        std::cout << ret << std::endl;
-//        if (ret == -1) {
-//            //error
-//            perror("select error");
-//            exit(1);
-//        } else if (ret == 0) {
-//            std::cout << "time out" << std::endl;
-//            break;
-//        } else {
-//            if (FD_ISSET(sock, &fd_in)) {
-//                read(sock, buffer, BUFFER_SIZE - 1);
-//                std::cout << "read  ";
-//                fprintf(stderr, "%s", buffer);
-//                bzero(buffer, BUFFER_SIZE);
-//            }
-//            if (FD_ISSET(0, &fd_out)) {
-////                std::cout << "write ";
-//            }
-//        }
-//    }
-
-    while(read(sock, buffer, BUFFER_SIZE - 1) != 0){
-        fprintf(stderr, "%s", buffer);
-        bzero(buffer, BUFFER_SIZE);
+    while (true) {
+        int ret = select(sock + 1, &fd_in, &fd_out, NULL, &tv);
+//        std::cout << ret << std::endl;
+        if (ret == -1) {
+            //error
+            perror("select error");
+            exit(1);
+        } else if (ret == 0) {
+            std::cout << "time out" << std::endl;
+            break;
+        } else {
+            if (FD_ISSET(sock, &fd_in)) {
+                read(sock, buffer, BUFFER_SIZE - 1);
+                std::cout << "read  ";
+                fprintf(stderr, "%s", buffer);
+                bzero(buffer, BUFFER_SIZE);
+            }
+            if (FD_ISSET(0, &fd_out)) {
+//                std::cout << "write ";
+            }
+        }
     }
+
+//    while(read(sock, buffer, BUFFER_SIZE - 1) != 0){
+//        fprintf(stderr, "%s", buffer);
+//        bzero(buffer, BUFFER_SIZE);
+//    }
 
     close(sock);
     return 0;
