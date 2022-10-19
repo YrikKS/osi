@@ -81,8 +81,8 @@ int main(int argc, char *argv[]) {
     int sock = connectSocket(domain);
     char buffer[BUFFER_SIZE] = {0};
     sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\n\r\n", path.data(), domain.data());
-    write(sock, buffer, strlen(buffer));
-    bzero(buffer, BUFFER_SIZE);
+//    write(sock, buffer, strlen(buffer));
+//    bzero(buffer, BUFFER_SIZE);
 
     struct timeval tv;
     tv.tv_sec = 5;
@@ -96,6 +96,9 @@ int main(int argc, char *argv[]) {
     FD_SET(sock, &fd_in);
     FD_SET(0, &fd_out);
 
+    write(sock, buffer, strlen(buffer));
+    bzero(buffer, BUFFER_SIZE);
+
     while (true) {
         int ret = select(sock + 1, &fd_in, &fd_out, NULL, &tv);
         if (ret == -1) {
@@ -103,7 +106,8 @@ int main(int argc, char *argv[]) {
             perror("select error");
             exit(1);
         } else if (ret == 0) {
-            //no work
+            std::cout << "time out" << std::endl;
+            break;
         } else {
             if (FD_ISSET(sock, &fd_in)) {
                 read(sock, buffer, BUFFER_SIZE - 1);
@@ -117,9 +121,10 @@ int main(int argc, char *argv[]) {
         }
     }
 
-//    while (read(sock, buffer, BUFFER_SIZE - 1) != 0) {
-//    while(select() != 0)
-//        }
+//    while(read(fd, buffer, BUFFER_SIZE - 1) != 0){
+//        fprintf(stderr, "%s", buffer);
+//        bzero(buffer, BUFFER_SIZE);
+//    }
 
     close(sock);
     return 0;
