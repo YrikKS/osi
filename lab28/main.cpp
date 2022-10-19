@@ -10,6 +10,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <iostream>
+
 #define BUFFER_SIZE 1024
 
 std::string parseUrl(char *url) {
@@ -81,17 +82,22 @@ int main(int argc, char *argv[]) {
     std::string url = parseUrl(argv[1]);
     int sock = connectSocket(url);
 
-    char buffer[BUFFER_SIZE] = "GET /\r\n\r\n";
+    char buffer[BUFFER_SIZE] = "GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\n\rHost: parallels.nsu.ru\r\n\r\n";
     write(sock, buffer, strlen(buffer)); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
 
-    while(read(sock, buffer, BUFFER_SIZE - 1) != 0){
+//    struct timeval tv;
+//    tv.tv_sec = 5;
+//    tv.tv_usec = 0;
+
+    while (read(sock, buffer, BUFFER_SIZE - 1) != 0) {
+//    while(select() != 0)
         fprintf(stderr, "%s", buffer);
         bzero(buffer, BUFFER_SIZE);
     }
 
-    shutdown(sock, SHUT_RDWR);
     close(sock);
-
     return 0;
 }
+
+//netcat
