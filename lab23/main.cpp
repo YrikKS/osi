@@ -32,7 +32,6 @@ int main() {
     pthread_t pThreads[100];
     int i = 0;
     while (fgets(myString[i].str, 30, file) != NULL) {
-        pthread_t pThread;
         myString[i].length = strlen(myString[i].str);
         myString[i].list = &list;
         if (pthread_create(&(pThreads[i]), NULL, addToList, (void *) &myString[i])) {
