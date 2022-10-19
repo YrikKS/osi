@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
     int sock = connectSocket(domain);
     char buffer[BUFFER_SIZE] = {0};
     sprintf(buffer, "GET /%s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\n\r\n", path.data(), url.data());
-
+    std::cout << buffer << std::endl;
 //    char buffer[BUFFER_SIZE] = "GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\r\nAccept: */*\r\nHost: parallels.nsu.ru\r\n\r\n";
     write(sock, buffer, strlen(buffer)); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
