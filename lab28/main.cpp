@@ -54,7 +54,7 @@ int connectSocket(std::string url) {
 std::string getPath(std::string url) {
     int indexEndHostName = url.find("/");
     if(indexEndHostName == url.npos) {
-        return "";
+        return "/";
     } else {
         return url.substr(indexEndHostName);
     }
@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
     std::string path = getPath(url);
     int sock = connectSocket(domain);
     char buffer[BUFFER_SIZE] = {0};
-    sprintf(buffer, "GET /%s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\n\r\n", path.data(), url.data());
+    sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\n\r\n", path.data(), domain.data());
     std::cout << buffer << std::endl;
 //    char buffer[BUFFER_SIZE] = "GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\r\nAccept: */*\r\nHost: parallels.nsu.ru\r\n\r\n";
     write(sock, buffer, strlen(buffer)); // write(fd, char[]*, len);
