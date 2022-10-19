@@ -98,10 +98,10 @@ int main(int argc, char *argv[]) {
 
     write(sock, buffer, strlen(buffer));
     bzero(buffer, BUFFER_SIZE);
-
+    std::cout << sock << std::endl;
     while (true) {
         int ret = select(sock + 1, &fd_in, &fd_out, NULL, &tv);
-        std::cout << ret << std::endl;
+//        std::cout << ret << std::endl;
         if (ret == -1) {
             //error
             perror("select error");
