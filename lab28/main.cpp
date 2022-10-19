@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
                 bzero(buffer, BUFFER_SIZE);
             }
             if (FD_ISSET(0, &fd_out)) {
-                std::cout << "write ";
+//                std::cout << "write ";
             }
         }
     }
