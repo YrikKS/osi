@@ -96,22 +96,22 @@ int main(int argc, char *argv[]) {
     FD_SET(sock, &fd_in);
     FD_SET(0, &fd_out);
 
-    while(true) {
-        int ret = select( sock + 1, &fd_in, &fd_out, NULL, &tv );
+    while (true) {
+        int ret = select(sock + 1, &fd_in, &fd_out, NULL, &tv);
         if (ret == -1) {
             //error
             perror("select error");
             exit(1);
-        } else if(ret == 0) {
+        } else if (ret == 0) {
             //no work
         } else {
-            if(FD_ISSET(sock, &fd_in)) {
+            if (FD_ISSET(sock, &fd_in)) {
                 read(sock, buffer, BUFFER_SIZE - 1);
                 std::cout << "read  ";
 //                fprintf(stderr, "%s", buffer);
                 bzero(buffer, BUFFER_SIZE);
             }
-            if(FD_ISSET(0, &fd_out)) {
+            if (FD_ISSET(0, &fd_out)) {
                 std::cout << "write ";
             }
         }
