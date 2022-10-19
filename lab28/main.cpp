@@ -53,7 +53,7 @@ int connectSocket(std::string url) {
 
 std::string getPath(std::string url) {
     int indexEndHostName = url.find("/");
-    if(indexEndHostName == url.npos) {
+    if (indexEndHostName == url.npos) {
         return "/";
     } else {
         return url.substr(indexEndHostName);
@@ -62,39 +62,64 @@ std::string getPath(std::string url) {
 
 std::string getDomain(std::string url) {
     int indexEndHostName = url.find("/");
-    if(indexEndHostName == url.npos) {
+    if (indexEndHostName == url.npos) {
         return url;
     } else {
         return url.substr(0, indexEndHostName);
     }
 }
-//void sendRequest
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
         std::cout << "Incorrect args!\n exampl: " << argv[0] << "<https://<hostName>" << std::endl;
         return 1;
     }
-    std::string url = parseUrl(argv[1]);
+
+    std::string url = parseUrl(argv[1]); // убираем http
     std::string domain = getDomain(url);
     std::string path = getPath(url);
     int sock = connectSocket(domain);
     char buffer[BUFFER_SIZE] = {0};
     sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\n\r\n", path.data(), domain.data());
-    std::cout << buffer << std::endl;
-//    char buffer[BUFFER_SIZE] = "GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\r\nAccept: */*\r\nHost: parallels.nsu.ru\r\n\r\n";
-    write(sock, buffer, strlen(buffer)); // write(fd, char[]*, len);
+    write(sock, buffer, strlen(buffer));
     bzero(buffer, BUFFER_SIZE);
 
-//    struct timeval tv;
-//    tv.tv_sec = 5;
-//    tv.tv_usec = 0;
+    struct timeval tv;
+    tv.tv_sec = 5;
+    tv.tv_usec = 0;
 
-    while (read(sock, buffer, BUFFER_SIZE - 1) != 0) {
-//    while(select() != 0)
-        fprintf(stderr, "%s", buffer);
-        bzero(buffer, BUFFER_SIZE);
+    fd_set fd_in;
+    fd_set fd_out;
+    FD_ZERO(&fd_in);
+    FD_ZERO(&fd_out);
+
+    FD_SET(sock, &fd_in);
+    FD_SET(0, &fd_out);
+
+    while(true) {
+        int ret = select( sock + 1, &fd_in, &fd_out, NULL, &tv );
+        if (ret == -1) {
+            //error
+            perror("select error");
+            exit(1);
+        } else if(ret == 0) {
+            //no work
+        } else {
+            if(FD_ISSET(sock, &fd_in)) {
+                read(sock, buffer, BUFFER_SIZE - 1);
+                std::cout << "read  ";
+//                fprintf(stderr, "%s", buffer);
+                bzero(buffer, BUFFER_SIZE);
+            }
+            if(FD_ISSET(0, &fd_out)) {
+                std::cout << "write ";
+            }
+        }
     }
+
+//    while (read(sock, buffer, BUFFER_SIZE - 1) != 0) {
+//    while(select() != 0)
+//        }
 
     close(sock);
     return 0;
