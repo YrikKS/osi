@@ -29,25 +29,6 @@ std::string parseUrl(char *url) {
 
 int connectSocket(std::string url) {
     struct hostent *hostent = gethostbyname(url.data());
-//    struct sockaddr_in addr;
-//    int on = 1, sock;
-//    bcopy(hp->h_addr, &addr.sin_addr, hp->h_length);
-//    addr.sin_port = htons(port);
-//    addr.sin_family = AF_INET;
-//    sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-//    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&on, sizeof(int));
-//
-//    if(sock == -1){
-//        perror("setsockopt");
-//        exit(1);
-//    }
-//
-//    if(connect(sock, (struct sockaddr *)&addr, sizeof(struct sockaddr_in)) == -1){
-//        perror("connect");
-//        exit(1);
-//
-//    }
-//    return sock;
     if (hostent == NULL) {
         herror("gethostbyname");
         exit(1);
@@ -63,8 +44,6 @@ int connectSocket(std::string url) {
         perror("setsockopt");
         exit(1);
     }
-//    int on = 1;
-//    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&on, sizeof(int));
     if (connect(sock, (struct sockaddr *) &sockAddr, sizeof(struct sockaddr_in)) == -1) {
         perror("connect");
         exit(1);
@@ -72,6 +51,10 @@ int connectSocket(std::string url) {
     return sock;
 }
 
+std::string getPath(std::string url) {
+    int indexEndHostName = url.find("/");
+    return url.substr(indexEndHostName);
+}
 //void sendRequest
 
 int main(int argc, char *argv[]) {
@@ -80,6 +63,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     std::string url = parseUrl(argv[1]);
+    std::string path = getPath(url);
+    std::cout << path << std::endl;
     int sock = connectSocket(url);
 
     char buffer[BUFFER_SIZE] = "GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\r\nAccept: */*\r\nHost: parallels.nsu.ru\r\n\r\n";
@@ -90,11 +75,11 @@ int main(int argc, char *argv[]) {
 //    tv.tv_sec = 5;
 //    tv.tv_usec = 0;
 
-    while (read(sock, buffer, BUFFER_SIZE - 1) != 0) {
-//    while(select() != 0)
-        fprintf(stderr, "%s", buffer);
-        bzero(buffer, BUFFER_SIZE);
-    }
+//    while (read(sock, buffer, BUFFER_SIZE - 1) != 0) {
+////    while(select() != 0)
+//        fprintf(stderr, "%s", buffer);
+//        bzero(buffer, BUFFER_SIZE);
+//    }
 
     close(sock);
     return 0;
