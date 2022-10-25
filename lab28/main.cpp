@@ -90,11 +90,11 @@ int main(int argc, char *argv[]) {
 
     fd_set fd_in;
     fd_set fdConsole;
-    FD_ZERO(&fd_in);
-    FD_ZERO(&fdConsole);
-
-    FD_SET(sock, &fd_in);
-    FD_SET(fileno(stdin), &fdConsole);
+//    FD_ZERO(&fd_in);
+//    FD_ZERO(&fdConsole);
+//
+//    FD_SET(sock, &fd_in);
+//    FD_SET(fileno(stdin), &fdConsole);
 
     write(sock, buffer, strlen(buffer));
     bzero(buffer, BUFFER_SIZE);
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
 
     char bufferConsole[BUFFER_SIZE] = {0};
 //    bzero(bufferConsole, BUFFER_SIZE);
-    std::cout << "sock == " << sock << std::endl;
+//    std::cout << "sock == " << sock << std::endl;
     while (true) {
         i++;
         FD_ZERO(&fd_in);
