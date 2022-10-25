@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
     int check2 = 0;
     int i = 0;
     struct pollfd poll_set[2] = {0};
-    poll_set[0].fd = sockfd;
+    poll_set[0].fd = sock;
     poll_set[0].events = POLLIN;
     poll_set[1].fd = fileno(stdin);
     poll_set[1].events = POLLIN;
