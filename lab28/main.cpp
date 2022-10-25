@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
             }
             if (FD_ISSET(1, &fdConsole)) {
                 check++;
-                std::cout << "write ";
+//                std::cout << "write ";
             }
         }
     }
