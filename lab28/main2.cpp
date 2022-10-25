@@ -140,7 +140,7 @@ int main(int argc, char *argv[]) {
                 std::cout.flush();
                 char c;
                 if (read(0, &c, 1) == -1) {
-                if (c == ' '){
+//                if (c == ' '){
                     perror("Read");
                 }
 
