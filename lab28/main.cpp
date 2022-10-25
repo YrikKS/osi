@@ -130,7 +130,7 @@ int main(int argc, char *argv[]) {
             }
             if (FD_ISSET(0, &fdConsole)) {
                 std::cout << "write ";
-                read(0, buffer, BUFFER_SIZE - 1);
+//                read(0, buffer, BUFFER_SIZE - 1);
                 fprintf(stderr, "%s", bufferConsole);
                 bzero(bufferConsole, BUFFER_SIZE);
 //                check++;
