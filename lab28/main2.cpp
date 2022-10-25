@@ -139,10 +139,10 @@ int main(int argc, char *argv[]) {
                 std::cout << "pleas write" << std::endl;
                 std::cout.flush();
                 char c;
-//                if (read(0, &c, 1) == -1) {
-//                if (c == ' '){
-//                    perror("Read");
-//                }
+                if (read(0, &c, 1) == -1) {
+                if (c == ' '){
+                    perror("Read");
+                }
 
                 if (c == '\n') {
                     std::cout << "write ";
