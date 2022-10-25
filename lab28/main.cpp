@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
     tv.tv_usec = 0;
 
     fd_set fd_in;
-    fd_set fd_out;
+    fd_set fdConsole;
 //    FD_ZERO(&fd_in);
 //    FD_ZERO(&fd_out);
 //
@@ -105,11 +105,11 @@ int main(int argc, char *argv[]) {
     while (i < 10000000) {
         i++;
         FD_ZERO(&fd_in);
-        FD_ZERO(&fd_out);
+        FD_ZERO(&fdConsole);
 
         FD_SET(sock, &fd_in);
-        FD_SET(1, &fd_out);
-        int ret = select(sock + 1, &fd_in, &fd_out, NULL, &tv);
+        FD_SET(1, &fdConsole);
+        int ret = select(sock + 1, &fd_in, &fdConsole, NULL, &tv);
 //        std::cout << ret << std::endl;
         if (ret == -1) {
             //error
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
                 check2++;
                 bzero(buffer, BUFFER_SIZE);
             }
-            if (FD_ISSET(1, &fd_out)) {
+            if (FD_ISSET(1, &fdConsole)) {
                 check++;
                 std::cout << "write ";
             }
