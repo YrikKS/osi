@@ -123,12 +123,13 @@ int main(int argc, char *argv[]) {
             break;
         } else {
             if (FD_ISSET(sock, &fd_in)) {
-                read(sock, buffer, BUFFER_SIZE - 1);
                 std::cout << "read  ";
+                read(sock, buffer, BUFFER_SIZE - 1);
                 check2++;
                 bzero(buffer, BUFFER_SIZE);
             }
             if (FD_ISSET(0, &fdConsole)) {
+                std::cout << "write ";
                 read(0, buffer, BUFFER_SIZE - 1);
                 fprintf(stderr, "%s", bufferConsole);
                 bzero(bufferConsole, BUFFER_SIZE);
