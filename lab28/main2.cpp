@@ -134,14 +134,12 @@ int main(int argc, char *argv[]) {
                     socketIsOpen = false;
                 } else {
                     currentReadBuf++;
-                    std::cout << currentReadBuf << std::endl;
+                    std::cout << "currentReadBuf == " << currentReadBuf << std::endl;
                     std::cout.flush();
                 }
             }
             if (poll_set[1].revents & POLLIN) {
                 poll_set[1].revents = 0;
-                std::cout << "pleas write" << std::endl;
-                std::cout.flush();
                 char c;
                 if (read(0, &c, 1) == -1) {
                     perror("Read");
