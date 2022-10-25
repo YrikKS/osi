@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
                 bzero(buffer, BUFFER_SIZE);
             }
             if (FD_ISSET(fileno(stdin), &fdConsole)) {
-                char c = getc(fileno(stdin));
+                char c = getchar();
 //                if (c == ' '){
 //                    perror("Read");
 //                }
