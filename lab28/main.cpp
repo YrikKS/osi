@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
         FD_SET(sock, &fd_in);
         FD_SET(0, &fdConsole);
         int ret = select(sock + 1, &fd_in, &fdConsole, NULL, &tv);
-        std::cout << ret << std::endl;
+//        std::cout << ret << std::endl;
         if (ret == -1) {
             //error
             perror("select error");
