@@ -99,7 +99,10 @@ int main(int argc, char *argv[]) {
     write(sock, buffer, strlen(buffer));
     bzero(buffer, BUFFER_SIZE);
     int check = 0;
-    while (true) {
+    int check2 = 0;
+    int i = 0;
+    while (i < 1000) {
+        i++;
         FD_ZERO(&fd_in);
         FD_ZERO(&fd_out);
 
@@ -117,8 +120,9 @@ int main(int argc, char *argv[]) {
         } else {
             if (FD_ISSET(sock, &fd_in)) {
                 read(sock, buffer, BUFFER_SIZE - 1);
-                std::cout << "read  ";
+//                std::cout << "read  ";
 //                fprintf(stderr, "%s", buffer);
+                check2++;
                 bzero(buffer, BUFFER_SIZE);
             }
             if (FD_ISSET(0, &fd_out)) {
