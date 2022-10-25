@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
     char bufferConsole[BUFFER_SIZE] = {0};
     bzero(bufferConsole, BUFFER_SIZE);
 
-    while (i < 100000) {
+    while (i < 1000000) {
         i++;
         FD_ZERO(&fd_in);
         FD_ZERO(&fdConsole);
