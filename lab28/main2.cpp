@@ -20,7 +20,7 @@
 #define EXIT_WITH_ERROR 1
 
 char** bufferInit() {
-    char* arrBuffer[COUNT_BUFFER];
+    char** arrBuffer = (char**)malloc(sizeof(char*) * COUNT_BUFFER);
     for(int i = 0; i < COUNT_BUFFER; i++) {
         arrBuffer[i] = (char*)malloc(sizeof(char) * BUFFER_SIZE);
     }
@@ -31,6 +31,7 @@ void delBuffer(char** arrBuffer) {
     for(int i = 0; i < COUNT_BUFFER; i++) {
         free(arrBuffer[i]);
     }
+    free(arrBuffer);
 }
 
 std::string parseUrl(char *url) {
