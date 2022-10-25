@@ -10,6 +10,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <iostream>
+#include <sys/poll.h>
 
 #define BUFFER_SIZE 1024
 
@@ -100,7 +101,6 @@ int main(int argc, char *argv[]) {
     bzero(buffer, BUFFER_SIZE);
     int check = 0;
     int check2 = 0;
-    int i = 0;
     struct pollfd poll_set[2] = {0};
     poll_set[0].fd = sock;
     poll_set[0].events = POLLIN;
@@ -109,7 +109,6 @@ int main(int argc, char *argv[]) {
 //    bzero(bufferConsole, BUFFER_SIZE);
 //    std::cout << "sock == " << sock << std::endl;
     while (true) {
-        i++;
         int ret = poll( &poll_set, 2, 10000);
 //        std::cout << ret << std::endl;
         if (ret == -1) {
