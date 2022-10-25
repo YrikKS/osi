@@ -124,14 +124,16 @@ int main(int argc, char *argv[]) {
         } else {
             if (FD_ISSET(sock, &fd_in)) {
                 std::cout << "read  ";
-                read(sock, buffer, BUFFER_SIZE - 1);
+                read(sock, buffer, 80 * 25 - 1);
                 fprintf(stdout, "%s", buffer);
                 check2++;
                 bzero(buffer, BUFFER_SIZE);
             }
             if (FD_ISSET(fileno(stdin), &fdConsole)) {
+                std::cout << "pleas write" << std::endl;
+                std::cout.flush();
                 char c;
-                if(read(0, &c, 1) == -1) {
+                if (read(0, &c, 1) == -1) {
 //                if (c == ' '){
                     perror("Read");
                 }
