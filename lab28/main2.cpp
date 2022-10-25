@@ -83,42 +83,19 @@ int main(int argc, char *argv[]) {
     int sock = connectSocket(domain);
     char buffer[BUFFER_SIZE] = {0};
     sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\n\r\n", path.data(), domain.data());
-//    write(sock, buffer, strlen(buffer));
-//    bzero(buffer, BUFFER_SIZE);
-
-    struct timeval tv;
-    tv.tv_sec = 10;
-    tv.tv_usec = 0;
-
-    fd_set fd_in;
-    fd_set fdConsole;
-//    FD_ZERO(&fd_in);
-//    FD_ZERO(&fdConsole);
-//
-//    FD_SET(sock, &fd_in);
-//    FD_SET(fileno(stdin), &fdConsole);
 
     write(sock, buffer, strlen(buffer));
     bzero(buffer, BUFFER_SIZE);
-    int check = 0;
-    int check2 = 0;
+
     struct pollfd poll_set[2] = {0};
     poll_set[0].fd = sock;
     poll_set[0].events = POLLIN;
     poll_set[1].fd = 0;
     poll_set[1].events = POLLIN;
-//    bzero(bufferConsole, BUFFER_SIZE);
-//    std::cout << "sock == " << sock << std::endl;
-//    struct termios old, newTerm;
-//    tcgetattr(STDIN_FILENO, &old);
-//    newTerm = old;
-//    newTerm.c_lflag &= ~(ICANON | ECHO);
-//    newTerm.c_cc[VMIN] = 1;
-//    tcsetattr(STDIN_FILENO, TCSANOW, &newTerm);
+
     while (true) {
         int ret = poll(poll_set, 2, 10000);
         if (ret == -1) {
-            //error
             perror("select error");
             exit(1);
         } else if (ret == 0) {
@@ -127,11 +104,10 @@ int main(int argc, char *argv[]) {
         } else {
             if (poll_set[0].revents & POLLIN ) {
                 poll_set[0].revents = 0;
-                std::cout << "read  ";
+//                std::cout << "read  ";
                 std::cout.flush();
                 read(sock, buffer, BUFFER_SIZE - 1);
                 fprintf(stdout, "%s", buffer);
-                check2++;
                 bzero(buffer, BUFFER_SIZE);
             }
             if (poll_set[1].revents & POLLIN) {
