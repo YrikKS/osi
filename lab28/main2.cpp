@@ -141,7 +141,7 @@ int main(int argc, char *argv[]) {
 //                if (c == ' '){
                     perror("Read");
                 } else {
-                    if (c == '\n') {
+                    if (c == '\n' && currentWriteBuf < currentReadBuf) {
                         fprintf(stdout, "%s", bufferFromRead[currentWriteBuf]);
                         currentWriteBuf++;
                     }
