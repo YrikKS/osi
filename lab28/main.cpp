@@ -129,10 +129,10 @@ int main(int argc, char *argv[]) {
                 bzero(buffer, BUFFER_SIZE);
             }
             if (FD_ISSET(fileno(stdin), &fdConsole)) {
-                char c;
-                if (read(fileno(stdin), &c, 1) == -1){
-                    perror("Read");
-                }
+                char c = getc(fileno(stdin));
+//                if (c == ' '){
+//                    perror("Read");
+//                }
                 if (c == ' ') {
                     std::cout << "write ";
                 }
