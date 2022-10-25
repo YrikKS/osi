@@ -104,8 +104,8 @@ int main(int argc, char *argv[]) {
 
     char bufferConsole[BUFFER_SIZE] = {0};
 //    bzero(bufferConsole, BUFFER_SIZE);
-
-    while (i < 1000000) {
+    std::cout << "sock == " << sock << std::endl;
+    while (true) {
         i++;
         FD_ZERO(&fd_in);
         FD_ZERO(&fdConsole);
@@ -140,6 +140,10 @@ int main(int argc, char *argv[]) {
 
                 if (c == '\n') {
                     std::cout << "write ";
+                }
+                if (c == 'q') {
+                    std::cout << "end ";
+                    break;
                 }
 //                read(0, buffer, BUFFER_SIZE - 1);
 //                fprintf(stderr, "%s", bufferConsole);
