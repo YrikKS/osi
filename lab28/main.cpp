@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
     int check = 0;
     int check2 = 0;
     int i = 0;
-    while (i < 1000) {
+    while (i < 100000) {
         i++;
         FD_ZERO(&fd_in);
         FD_ZERO(&fd_out);
