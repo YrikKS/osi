@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
         FD_ZERO(&fdConsole);
 
         FD_SET(sock, &fd_in);
-        FD_SET(1, &fdConsole);
+        FD_SET(fileno(stdin), &fdConsole);
         int ret = select(sock + 1, &fd_in, &fdConsole, NULL, &tv);
 //        std::cout << ret << std::endl;
         if (ret == -1) {
@@ -128,7 +128,7 @@ int main(int argc, char *argv[]) {
                 check2++;
                 bzero(buffer, BUFFER_SIZE);
             }
-            if (FD_ISSET(1, &fdConsole)) {
+            if (FD_ISSET(fileno(stdin), &fdConsole)) {
                 if (i < 100)
                     std::cout << "write ";
 //                read(0, buffer, BUFFER_SIZE - 1);
