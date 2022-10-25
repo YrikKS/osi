@@ -110,11 +110,6 @@ int main(int argc, char *argv[]) {
 //    std::cout << "sock == " << sock << std::endl;
     while (true) {
         i++;
-        FD_ZERO(&fd_in);
-        FD_ZERO(&fdConsole);
-
-        FD_SET(sock, &fd_in);
-        FD_SET(fileno(stdin), &fdConsole);
         int ret = poll( &poll_set, 2, 10000);
 //        std::cout << ret << std::endl;
         if (ret == -1) {
