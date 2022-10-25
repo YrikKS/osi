@@ -130,7 +130,7 @@ int main(int argc, char *argv[]) {
             }
             if (FD_ISSET(fileno(stdin), &fdConsole)) {
                 char c;
-                if (read(0, &c, 1) == -1){
+                if (read(fileno(stdin), &c, 1) == -1){
                     perror("Read");
                 }
                 if (c == ' ') {
