@@ -132,6 +132,7 @@ int main(int argc, char *argv[]) {
         }
     }
     std::cout << std::endl << check << std::endl;
+    std::cout << std::endl << check2 << std::endl;
 
 //    while(read(sock, buffer, BUFFER_SIZE - 1) != 0){
 //        fprintf(stderr, "%s", buffer);
