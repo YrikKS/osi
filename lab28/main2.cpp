@@ -19,16 +19,16 @@
 #define ERROR_CODE -1
 #define EXIT_WITH_ERROR 1
 
-char** bufferInit() {
-    char** arrBuffer = (char**)malloc(sizeof(char*) * COUNT_BUFFER);
-    for(int i = 0; i < COUNT_BUFFER; i++) {
-        arrBuffer[i] = (char*)malloc(sizeof(char) * BUFFER_SIZE);
+char **bufferInit() {
+    char **arrBuffer = (char **) malloc(sizeof(char *) * COUNT_BUFFER);
+    for (int i = 0; i < COUNT_BUFFER; i++) {
+        arrBuffer[i] = (char *) malloc(sizeof(char) * BUFFER_SIZE);
     }
     return arrBuffer;
 }
 
-void delBuffer(char** arrBuffer) {
-    for(int i = 0; i < COUNT_BUFFER; i++) {
+void delBuffer(char **arrBuffer) {
+    for (int i = 0; i < COUNT_BUFFER; i++) {
         free(arrBuffer[i]);
     }
     free(arrBuffer);
@@ -111,10 +111,10 @@ int main(int argc, char *argv[]) {
     poll_set[1].fd = 0;
     poll_set[1].events = POLLIN;
 
-    char** bufferFromRead = bufferInit();
+    char **bufferFromRead = bufferInit();
     int currentReadBuf = 0;
     int currentWriteBuf = 0;
-
+    bool socketIsOpen = true;
     while (true) {
         int ret = poll(poll_set, 2, 10000);
         if (ret == -1) {
@@ -124,17 +124,21 @@ int main(int argc, char *argv[]) {
             std::cout << "time out" << std::endl;
             break;
         } else {
-            if (poll_set[0].revents & POLLIN ) {
+            if (poll_set[0].revents & POLLIN) {
                 poll_set[0].revents = 0;
 ////                std::cout << "read  ";
 //                std::cout.flush();
-                read(sock, bufferFromRead[currentReadBuf], BUFFER_SIZE - 1);
-//                fprintf(stdout, "%s", bufferFromRead[currentReadBuf]);
-                currentReadBuf++;
-                std::cout << currentReadBuf << std::endl;
-                std::cout.flush();
-//                fprintf(stdout, "%s", buffer);
-//                bzero(buffer, BUFFER_SIZE);
+                int readByte;
+                if (socketIsOpen) {
+                    readByte = read(sock, bufferFromRead[currentReadBuf], BUFFER_SIZE - 1);
+                }
+                if (readByte == 0) {
+                    socketIsOpen = false;
+                } else {
+                    currentReadBuf++;
+                    std::cout << currentReadBuf << std::endl;
+                    std::cout.flush();
+                }
             }
             if (poll_set[1].revents & POLLIN) {
                 poll_set[1].revents = 0;
