@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
     int i = 0;
 
     char bufferConsole[BUFFER_SIZE] = {0};
-    bzero(bufferConsole, BUFFER_SIZE);
+//    bzero(bufferConsole, BUFFER_SIZE);
 
     while (i < 1000000) {
         i++;
@@ -129,11 +129,16 @@ int main(int argc, char *argv[]) {
                 bzero(buffer, BUFFER_SIZE);
             }
             if (FD_ISSET(fileno(stdin), &fdConsole)) {
-                if (i < 100)
+                char c;
+                if (read(0, &c, 1) == -1){
+                    perror("Read");
+                }
+                if (c == ' ') {
                     std::cout << "write ";
+                }
 //                read(0, buffer, BUFFER_SIZE - 1);
 //                fprintf(stderr, "%s", bufferConsole);
-                bzero(bufferConsole, BUFFER_SIZE);
+//                bzero(bufferConsole, BUFFER_SIZE);
                 check++;
 //                std::cout << "write ";
             }
