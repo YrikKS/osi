@@ -127,12 +127,9 @@ int main(int argc, char *argv[]) {
                     std::cout << "end ";
                     break;
                 }
-                check++;
             }
         }
     }
-    std::cout << std::endl << check << std::endl;
-    std::cout << std::endl << check2 << std::endl;
 
 
     close(sock);
