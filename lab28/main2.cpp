@@ -49,6 +49,8 @@ std::string parseUrl(char *url) {
 }
 
 int connectSocket(std::string url) {
+//    if(url[0] >= '0' && url[0] <= '9') {
+//    }
     struct hostent *hostent = gethostbyname(url.data());
     if (hostent == NULL) {
         herror("gethostbyname");
@@ -56,6 +58,7 @@ int connectSocket(std::string url) {
     }
 
     struct sockaddr_in sockAddr;
+    std::cout << hostent->h_addr << std::endl;
     bcopy(hostent->h_addr, &sockAddr.sin_addr, hostent->h_length);
     sockAddr.sin_port = htons(HTTP_PORT);
     sockAddr.sin_family = AF_INET;
@@ -95,14 +98,12 @@ int main(int argc, char *argv[]) {
         std::cout << "Incorrect args!\n exampl: " << argv[0] << "<https://<hostName>" << std::endl;
         return 1;
     }
-
     std::string url = parseUrl(argv[1]); // убираем http
     std::string domain = getDomain(url);
     std::string path = getPath(url);
     int sock = connectSocket(domain);
     char buffer[BUFFER_SIZE] = {0};
     sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\n\r\n", path.data(), domain.data());
-
     write(sock, buffer, strlen(buffer));
 
     struct pollfd poll_set[2] = {0};
@@ -134,8 +135,8 @@ int main(int argc, char *argv[]) {
                     socketIsOpen = false;
                 } else {
                     currentReadBuf++;
-                    std::cout << "currentReadBuf == " << currentReadBuf << std::endl;
-                    std::cout.flush();
+//                    std::cout << "currentReadBuf == " << currentReadBuf << std::endl;
+//                    std::cout.flush();
                 }
             }
             if (poll_set[1].revents & POLLIN) {
@@ -148,7 +149,7 @@ int main(int argc, char *argv[]) {
                     if (c == '\n' && currentWriteBuf < currentReadBuf) {
                         fprintf(stdout, "%s", bufferFromRead[currentWriteBuf]);
                         currentWriteBuf++;
-                        std::cout << "currentWriteBuf" << currentWriteBuf << std::endl;
+//                        std::cout << "currentWriteBuf" << currentWriteBuf << std::endl;
                         std::cout << std::endl << "Press enter to scroll down" << std::endl;
                     } else if (c == '\n') {
                         std::cout << "pleas wait data" << std::endl;
