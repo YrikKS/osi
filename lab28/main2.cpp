@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
 //    bzero(bufferConsole, BUFFER_SIZE);
 //    std::cout << "sock == " << sock << std::endl;
     while (true) {
-        int ret = poll( &poll_set, 2, 10000);
+        int ret = poll(poll_set, 2, 10000);
 //        std::cout << ret << std::endl;
         if (ret == -1) {
             //error
