@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
     newTerm = old;
     newTerm.c_lflag &= ~(ICANON | ECHO);
     newTerm.c_cc[VMIN] = 1;
-    tcsetattr(STDIN_FILENO, TCSANOW, &new);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newTerm);
     while (true) {
         int ret = poll(poll_set, 2, 10000);
 //        std::cout << ret << std::endl;
