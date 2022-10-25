@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
     struct pollfd poll_set[2] = {0};
     poll_set[0].fd = sock;
     poll_set[0].events = POLLIN;
-    poll_set[1].fd = fileno(stdin);
+    poll_set[1].fd = 0;
     poll_set[1].events = POLLIN;
 //    bzero(bufferConsole, BUFFER_SIZE);
 //    std::cout << "sock == " << sock << std::endl;
