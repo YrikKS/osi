@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
 //    bzero(buffer, BUFFER_SIZE);
 
     struct timeval tv;
-    tv.tv_sec = 100;
+    tv.tv_sec = 10;
     tv.tv_usec = 0;
 
     fd_set fd_in;
