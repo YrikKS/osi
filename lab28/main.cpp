@@ -121,7 +121,7 @@ int main(int argc, char *argv[]) {
             if (FD_ISSET(sock, &fd_in)) {
                 read(sock, buffer, BUFFER_SIZE - 1);
 //                std::cout << "read  ";
-//                fprintf(stderr, "%s", buffer);
+                fprintf(stderr, "%s", buffer);
                 check2++;
                 bzero(buffer, BUFFER_SIZE);
             }
