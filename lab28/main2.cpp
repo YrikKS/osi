@@ -150,6 +150,7 @@ int main(int argc, char *argv[]) {
                     if (c == '\n' && currentWriteBuf < currentReadBuf) {
                         fprintf(stdout, "%s", bufferFromRead[currentWriteBuf]);
                         currentWriteBuf++;
+                        std::cout << currentWriteBuf << std::endl;
                         std::cout << std::endl << "Press enter to scroll down" << std::endl;
                     } else if (c == '\n') {
                         std::cout << "pleas wait data" << std::endl;
