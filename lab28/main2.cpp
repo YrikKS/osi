@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
 ////                std::cout << "read  ";
 //                std::cout.flush();
                 read(sock, bufferFromRead[currentReadBuf], BUFFER_SIZE - 1);
-                fprintf(stdout, "%s", bufferFromRead[currentReadBuf]);
+//                fprintf(stdout, "%s", bufferFromRead[currentReadBuf]);
                 currentReadBuf++;
 //                fprintf(stdout, "%s", buffer);
 //                bzero(buffer, BUFFER_SIZE);
