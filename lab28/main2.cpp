@@ -131,6 +131,8 @@ int main(int argc, char *argv[]) {
                 read(sock, bufferFromRead[currentReadBuf], BUFFER_SIZE - 1);
 //                fprintf(stdout, "%s", bufferFromRead[currentReadBuf]);
                 currentReadBuf++;
+                std::cout << currentReadBuf << std::endl;
+                std::cout.flush();
 //                fprintf(stdout, "%s", buffer);
 //                bzero(buffer, BUFFER_SIZE);
             }
