@@ -108,6 +108,12 @@ int main(int argc, char *argv[]) {
     poll_set[1].events = POLLIN;
 //    bzero(bufferConsole, BUFFER_SIZE);
 //    std::cout << "sock == " << sock << std::endl;
+    struct termios old, newTerm;
+    tcgetattr(STDIN_FILENO, &old);
+    newTerm = old;
+    newTerm.c_lflag &= ~(ICANON | ECHO);
+    newTerm.c_cc[VMIN] = 1;
+    tcsetattr(STDIN_FILENO, TCSANOW, &new);
     while (true) {
         int ret = poll(poll_set, 2, 10000);
 //        std::cout << ret << std::endl;
