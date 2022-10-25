@@ -90,15 +90,20 @@ int main(int argc, char *argv[]) {
 
     fd_set fd_in;
     fd_set fd_out;
-    FD_ZERO(&fd_in);
-    FD_ZERO(&fd_out);
-
-    FD_SET(sock, &fd_in);
-    FD_SET(0, &fd_out);
+//    FD_ZERO(&fd_in);
+//    FD_ZERO(&fd_out);
+//
+//    FD_SET(sock, &fd_in);
+//    FD_SET(0, &fd_out);
 
     write(sock, buffer, strlen(buffer));
     bzero(buffer, BUFFER_SIZE);
     while (true) {
+        FD_ZERO(&fd_in);
+        FD_ZERO(&fd_out);
+
+        FD_SET(sock, &fd_in);
+        FD_SET(0, &fd_out);
         int ret = select(sock + 1, &fd_in, &fd_out, NULL, &tv);
 //        std::cout << ret << std::endl;
         if (ret == -1) {
