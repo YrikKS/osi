@@ -145,7 +145,7 @@ int main(int argc, char *argv[]) {
                     perror("Read");
                     break;
                 } else {
-                    if (c == '\n' && currentWriteBuf < currentReadBuf) {
+                    if (c == '\n' && currentWriteBuf < currentReadBuf + 1) {
                         fprintf(stdout, "%s", bufferFromRead[currentWriteBuf]);
                         currentWriteBuf++;
                         std::cout << currentWriteBuf << std::endl;
