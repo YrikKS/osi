@@ -101,13 +101,14 @@ int main(int argc, char *argv[]) {
     int check = 0;
     int check2 = 0;
     int i = 0;
+
     while (i < 10000000) {
         i++;
         FD_ZERO(&fd_in);
         FD_ZERO(&fd_out);
 
         FD_SET(sock, &fd_in);
-        FD_SET(0, &fd_out);
+        FD_SET(1, &fd_out);
         int ret = select(sock + 1, &fd_in, &fd_out, NULL, &tv);
 //        std::cout << ret << std::endl;
         if (ret == -1) {
@@ -121,13 +122,12 @@ int main(int argc, char *argv[]) {
             if (FD_ISSET(sock, &fd_in)) {
                 read(sock, buffer, BUFFER_SIZE - 1);
 //                std::cout << "read  ";
-                fprintf(stderr, "%s", buffer);
                 check2++;
                 bzero(buffer, BUFFER_SIZE);
             }
             if (FD_ISSET(0, &fd_out)) {
                 check++;
-//                std::cout << "write ";
+                std::cout << "write ";
             }
         }
     }
