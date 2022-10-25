@@ -49,8 +49,6 @@ std::string parseUrl(char *url) {
 }
 
 int connectSocket(std::string url) {
-//    if(url[0] >= '0' && url[0] <= '9') {
-//    }
     struct hostent *hostent = gethostbyname(url.data());
     if (hostent == NULL) {
         herror("gethostbyname");
