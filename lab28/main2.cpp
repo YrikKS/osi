@@ -126,8 +126,6 @@ int main(int argc, char *argv[]) {
         } else {
             if (poll_set[0].revents & POLLIN) {
                 poll_set[0].revents = 0;
-////                std::cout << "read  ";
-//                std::cout.flush();
                 int readByte;
                 if (socketIsOpen) {
                     readByte = read(sock, bufferFromRead[currentReadBuf], BUFFER_SIZE - 1);
@@ -146,12 +144,15 @@ int main(int argc, char *argv[]) {
                 std::cout.flush();
                 char c;
                 if (read(0, &c, 1) == -1) {
-//                if (c == ' '){
                     perror("Read");
+                    break;
                 } else {
                     if (c == '\n' && currentWriteBuf < currentReadBuf) {
                         fprintf(stdout, "%s", bufferFromRead[currentWriteBuf]);
                         currentWriteBuf++;
+                        std::cout << std::endl << "Press enter to scroll down" << std::endl;
+                    } else if (c == '\n') {
+                        std::cout << "pleas wait data" << std::endl;
                     }
                     if (c == 'q') {
                         std::cout << "end ";
