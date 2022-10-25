@@ -107,11 +107,11 @@ int main(int argc, char *argv[]) {
     std::cout << "sock == " << sock << std::endl;
     while (true) {
         i++;
-//        FD_ZERO(&fd_in);
-//        FD_ZERO(&fdConsole);
+        FD_ZERO(&fd_in);
+        FD_ZERO(&fdConsole);
 
-//        FD_SET(sock, &fd_in);
-//        FD_SET(fileno(stdin), &fdConsole);
+        FD_SET(sock, &fd_in);
+        FD_SET(fileno(stdin), &fdConsole);
         int ret = select(sock + 1, &fd_in, &fdConsole, NULL, &tv);
 //        std::cout << ret << std::endl;
         if (ret == -1) {
@@ -124,6 +124,7 @@ int main(int argc, char *argv[]) {
         } else {
             if (FD_ISSET(sock, &fd_in)) {
                 std::cout << "read  ";
+                std::cout.flush();
                 read(sock, buffer, 80 * 25 - 1);
                 fprintf(stdout, "%s", buffer);
                 check2++;
