@@ -102,6 +102,9 @@ int main(int argc, char *argv[]) {
     int check2 = 0;
     int i = 0;
 
+    char bufferConsole[BUFFER_SIZE] = {0};
+    bzero(bufferConsole, BUFFER_SIZE);
+
     while (i < 10000000) {
         i++;
         FD_ZERO(&fd_in);
@@ -126,7 +129,10 @@ int main(int argc, char *argv[]) {
                 bzero(buffer, BUFFER_SIZE);
             }
             if (FD_ISSET(1, &fdConsole)) {
-                check++;
+                read(1, buffer, BUFFER_SIZE - 1);
+                fprintf(stderr, "%s", bufferConsole);
+                bzero(bufferConsole, BUFFER_SIZE);
+//                check++;
 //                std::cout << "write ";
             }
         }
