@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
                 poll_set[0].revents = 0;
                 std::cout << "read  ";
                 std::cout.flush();
-                read(sock, buffer, 80 * 25 - 1);
+                read(sock, buffer, BUFFER_SIZE - 1);
                 fprintf(stdout, "%s", buffer);
                 check2++;
                 bzero(buffer, BUFFER_SIZE);
