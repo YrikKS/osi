@@ -14,6 +14,24 @@
 #include <termios.h>
 
 #define BUFFER_SIZE 1024
+#define COUNT_BUFFER 330
+#define HTTP_PORT 80
+#define ERROR_CODE -1
+#define EXIT_WITH_ERROR 1
+
+char** bufferInit() {
+    char* arrBuffer[COUNT_BUFFER];
+    for(int i = 0; i < COUNT_BUFFER; i++) {
+        arrBuffer[i] = (char*)malloc(sizeof(char) * BUFFER_SIZE);
+    }
+    return arrBuffer;
+}
+
+void delBuffer(char** arrBuffer) {
+    for(int i = 0; i < COUNT_BUFFER; i++) {
+        free(arrBuffer[i]);
+    }
+}
 
 std::string parseUrl(char *url) {
     int sizeUrl = strlen(url);
@@ -33,22 +51,22 @@ int connectSocket(std::string url) {
     struct hostent *hostent = gethostbyname(url.data());
     if (hostent == NULL) {
         herror("gethostbyname");
-        exit(1);
+        exit(EXIT_WITH_ERROR);
     }
 
     struct sockaddr_in sockAddr;
     bcopy(hostent->h_addr, &sockAddr.sin_addr, hostent->h_length);
-    sockAddr.sin_port = htons(80);
+    sockAddr.sin_port = htons(HTTP_PORT);
     sockAddr.sin_family = AF_INET;
 
     int sock = socket(AF_INET, SOCK_STREAM, 0); //PF_INET
-    if (sock == -1) {
+    if (sock == ERROR_CODE) {
         perror("setsockopt");
-        exit(1);
+        exit(EXIT_WITH_ERROR);
     }
-    if (connect(sock, (struct sockaddr *) &sockAddr, sizeof(struct sockaddr_in)) == -1) {
+    if (connect(sock, (struct sockaddr *) &sockAddr, sizeof(struct sockaddr_in)) == ERROR_CODE) {
         perror("connect");
-        exit(1);
+        exit(EXIT_WITH_ERROR);
     }
     return sock;
 }
@@ -85,13 +103,16 @@ int main(int argc, char *argv[]) {
     sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\n\r\n", path.data(), domain.data());
 
     write(sock, buffer, strlen(buffer));
-    bzero(buffer, BUFFER_SIZE);
 
     struct pollfd poll_set[2] = {0};
     poll_set[0].fd = sock;
     poll_set[0].events = POLLIN;
     poll_set[1].fd = 0;
     poll_set[1].events = POLLIN;
+
+    char** bufferFromRead = bufferInit();
+    int currentReadBuf = 0;
+    int currentWriteBuf = 0;
 
     while (true) {
         int ret = poll(poll_set, 2, 10000);
@@ -104,11 +125,12 @@ int main(int argc, char *argv[]) {
         } else {
             if (poll_set[0].revents & POLLIN ) {
                 poll_set[0].revents = 0;
-//                std::cout << "read  ";
-                std::cout.flush();
-                read(sock, buffer, BUFFER_SIZE - 1);
-                fprintf(stdout, "%s", buffer);
-                bzero(buffer, BUFFER_SIZE);
+////                std::cout << "read  ";
+//                std::cout.flush();
+                read(sock, bufferFromRead[currentReadBuf], BUFFER_SIZE - 1);
+                currentReadBuf++;
+//                fprintf(stdout, "%s", buffer);
+//                bzero(buffer, BUFFER_SIZE);
             }
             if (poll_set[1].revents & POLLIN) {
                 poll_set[1].revents = 0;
@@ -118,20 +140,21 @@ int main(int argc, char *argv[]) {
                 if (read(0, &c, 1) == -1) {
 //                if (c == ' '){
                     perror("Read");
-                }
-
-                if (c == '\n') {
-                    std::cout << "write ";
-                }
-                if (c == 'q') {
-                    std::cout << "end ";
-                    break;
+                } else {
+                    if (c == '\n') {
+                        fprintf(stdout, "%s", bufferFromRead[currentWriteBuf]);
+                        currentWriteBuf++;
+                    }
+                    if (c == 'q') {
+                        std::cout << "end ";
+                        break;
+                    }
                 }
             }
         }
     }
 
-
+    delBuffer(bufferFromRead);
     close(sock);
     return 0;
 }
