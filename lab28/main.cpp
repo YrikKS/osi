@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
                 check2++;
                 bzero(buffer, BUFFER_SIZE);
             }
-            if (FD_ISSET(0, &fd_out)) {
+            if (FD_ISSET(1, &fd_out)) {
                 check++;
                 std::cout << "write ";
             }
