@@ -11,6 +11,7 @@
 #include <netdb.h>
 #include <iostream>
 #include <sys/poll.h>
+#include <termios.h>
 
 #define BUFFER_SIZE 1024
 
