@@ -113,6 +113,7 @@ int main(int argc, char *argv[]) {
     int currentReadBuf = 0;
     int currentWriteBuf = 0;
     bool socketIsOpen = true;
+    std::cout << std::endl << "Press enter to scroll down" << std::endl;
     while (true) {
         int ret = poll(poll_set, 2, 10000); // 10000 == 10 src
         if (ret == -1) {
