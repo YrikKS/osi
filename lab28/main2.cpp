@@ -56,7 +56,6 @@ int connectSocket(std::string url) {
     }
 
     struct sockaddr_in sockAddr;
-    std::cout << hostent->h_addr << std::endl;
     bcopy(hostent->h_addr, &sockAddr.sin_addr, hostent->h_length);
     sockAddr.sin_port = htons(HTTP_PORT);
     sockAddr.sin_family = AF_INET;
@@ -115,7 +114,7 @@ int main(int argc, char *argv[]) {
     int currentWriteBuf = 0;
     bool socketIsOpen = true;
     while (true) {
-        int ret = poll(poll_set, 2, 10000);
+        int ret = poll(poll_set, 2, 10000); // 10000 == 10 src
         if (ret == -1) {
             perror("select error");
             exit(1);
