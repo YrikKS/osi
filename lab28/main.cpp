@@ -130,8 +130,8 @@ int main(int argc, char *argv[]) {
     std::string rest;
     addToBuffer(vectorReadStrings, first, &rest);
     addToBuffer(vectorReadStrings, second, &rest);
-    for (const auto &item : vectorReadStrings) {
-        std::cout << item << std::endl;
+    for (int i = 0; i < vectorReadStrings.size(); i++) {
+        std::cout << vectorReadStrings[i] << std::endl;
     }
 
     int currentReadBuf = 0;
