@@ -128,8 +128,8 @@ int main(int argc, char *argv[]) {
 
     char **bufferFromRead = bufferInit();
     std::list<std::string> listReadStings;
-    listReadStings.push_back("asd");
     std::list<std::string>::iterator it = listReadStings.begin();
+    listReadStings.push_back("asd");
     std::cout << (*it) << std::endl;
 
     int currentReadBuf = 0;
