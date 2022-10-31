@@ -125,24 +125,11 @@ int main(int argc, char *argv[]) {
     poll_set[1].fd = 0;
     poll_set[1].events = POLLIN;
 
-    char **bufferFromRead = bufferInit();
+//    char **bufferFromRead = bufferInit();
     std::vector<std::string> vectorReadStrings;
-    char first[] = "eto pervai\neto vtoroi\neto tre";
-    char second[] = "tii\neto chetveti\neto pytui\n";
     std::string rest;
-//    std::cout << "0" << std::endl;
-//    vectorReadStrings.resize(1000);
-//    addToBuffer(&vectorReadStrings, first, &rest);
-//    std::cout << "1" << std::endl;
-//    addToBuffer(&vectorReadStrings, second, &rest);
-//    std::cout << "2" << std::endl;
-
-//    for (int i = 0; i < vectorReadStrings.size(); i++) {
-//        std::cout << vectorReadStrings[i];
-//    }
-
     int currentReadBuf = 0;
-    int currentWriteBuf = 0;
+    int isPrint = 1;
     bool socketIsOpen = true;
     std::cout << std::endl << "Press enter to scroll down" << std::endl;
     while (true) {
@@ -160,6 +147,13 @@ int main(int argc, char *argv[]) {
                 if (socketIsOpen) {
                     readByte = read(sock, buffer, BUFFER_SIZE - 1);
                     addToBuffer(&vectorReadStrings, buffer, &rest);
+                    while (isPrint || currentReadBuf < vectorReadStrings.size()) {
+                        vectorReadStrings[currentReadBuf];
+                        currentReadBuf++;
+                        if(currentReadBuf % 25 == 0) {
+                            isPrint = 0;
+                        }
+                    }
                     bzero(buffer, BUFFER_SIZE);
                 }
                 if (readByte == 0) {
@@ -175,26 +169,27 @@ int main(int argc, char *argv[]) {
                     perror("Read");
                     break;
                 } else {
-                    for (int i = 0; i < vectorReadStrings.size(); i++) {
-                        std::cout << vectorReadStrings[i];
-                    }
-//                    if (c == '\n' && currentWriteBuf < currentReadBuf) {
+//                    for (int i = 0; i < vectorReadStrings.size(); i++) {
+//                        std::cout << vectorReadStrings[i];
+//                    }
+                    if (c == '\n') {
+                        isPrint = 1;
 //                        fprintf(stdout, "%s", bufferFromRead[currentWriteBuf]);
 //                        currentWriteBuf++;
-//                        std::cout << std::endl << "Press enter to scroll down" << std::endl;
+////                        std::cout << std::endl << "Press enter to scroll down" << std::endl;
 //                    } else if (c == '\n') {
-//                        std::cout << "pleas wait data" << std::endl;
+////                        std::cout << "pleas wait data" << std::endl;
 //                    }
-//                    if (c == 'q') {
-//                        std::cout << "end ";
-//                        break;
-//                    }
+                    if (c == 'q') {
+                        std::cout << "end ";
+                        break;
+                    }
                 }
             }
         }
     }
     std::cout << "all good" << std::endl;
-    delBuffer(bufferFromRead);
+//    delBuffer(bufferFromRead);
     close(sock);
     return 0;
 }
