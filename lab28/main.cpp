@@ -95,7 +95,7 @@ void addToBuffer(std::vector<std::string> *vectorReadStrings, char *readBuf, std
     std::string readStrings(readBuf);
     int indexEnter = readStrings.find('\n', 0);
     vectorReadStrings->push_back((*restOfTheLine) + readStrings.substr(0, indexEnter));
-    std::cout << (*vectorReadStrings)[vectorReadStrings->size()-1] << std::endl;
+//    std::cout << (*vectorReadStrings)[vectorReadStrings->size()-1] << std::endl;
     int lastIndex = readStrings.find('\n', indexEnter + 1);
 
     while (lastIndex != readStrings.npos) {
@@ -104,7 +104,7 @@ void addToBuffer(std::vector<std::string> *vectorReadStrings, char *readBuf, std
         lastIndex = readStrings.find('\n', indexEnter + 1);
     }
     *restOfTheLine = readStrings.substr(indexEnter + 1, readStrings.size() - indexEnter);
-    std::cout << "restOfTheLine= " << *restOfTheLine << std::endl;
+//    std::cout << "restOfTheLine= " << *restOfTheLine << std::endl;
 }
 
 int main(int argc, char *argv[]) {
@@ -148,8 +148,8 @@ int main(int argc, char *argv[]) {
                 int readByte;
                 if (socketIsOpen) {
                     readByte = read(sock, buffer, BUFFER_SIZE - 1);
-                    std::cout << "eto buffer:  " << buffer << std::endl;
                     addToBuffer(&vectorReadStrings, buffer, &rest);
+                    std::cout << isPrint << "and << " << (currentReadBuf < vectorReadStrings.size()) << std::endl;
                     while (isPrint && currentReadBuf < vectorReadStrings.size()) { //|| currentReadBuf < vectorReadStrings.size()
                         std::cout << vectorReadStrings[currentReadBuf];
                         currentReadBuf++;
