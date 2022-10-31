@@ -96,6 +96,7 @@ void addToBuffer(std::vector<std::string> vectorReadStrings, char* readBuf, std:
     int indexEnter = readStrings.find('\n', 0);
     vectorReadStrings.push_back(*restOfTheLine + readStrings.substr(0, indexEnter));
     int lastIndex;
+    std::cout << "1.5" << std::endl;
     while((lastIndex = readStrings.find('\n', indexEnter)) != readStrings.npos) {
         vectorReadStrings.push_back(readStrings.substr(indexEnter, lastIndex));
         indexEnter = lastIndex;
@@ -129,7 +130,7 @@ int main(int argc, char *argv[]) {
     char second[] = "tii\n eto chetveti\neto pytui\n";
     std::string rest;
     std::cout << "0" << std::endl;
-    vectorReadStrings.resize(1000);
+//    vectorReadStrings.resize(1000);
     addToBuffer(vectorReadStrings, first, &rest);
     std::cout << "1" << std::endl;
     addToBuffer(vectorReadStrings, second, &rest);
