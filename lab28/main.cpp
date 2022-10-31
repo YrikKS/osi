@@ -95,17 +95,16 @@ void addToBuffer(std::vector<std::string>* vectorReadStrings, char* readBuf, std
     std::string readStrings(readBuf);
     int indexEnter = readStrings.find('\n', 0);
     vectorReadStrings->push_back(*restOfTheLine + readStrings.substr(0, indexEnter));
-    indexEnter++;
-    int lastIndex = readStrings.find('\n', indexEnter);
+    int lastIndex = readStrings.find('\n', indexEnter + 1);
 
     std::cout << "1.5 + " << lastIndex << indexEnter << std::endl;
 
     while(lastIndex != readStrings.npos) {
-        vectorReadStrings->push_back(readStrings.substr(indexEnter, lastIndex));
-        indexEnter = lastIndex + 1;
+        vectorReadStrings->push_back(readStrings.substr(indexEnter + 1, lastIndex));
+        indexEnter = lastIndex;
         lastIndex = readStrings.find('\n', indexEnter);
     }
-    *restOfTheLine = readStrings.substr(indexEnter);
+    *restOfTheLine = readStrings.substr(indexEnter + 1);
 }
 
 int main(int argc, char *argv[]) {
