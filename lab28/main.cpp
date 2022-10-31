@@ -127,10 +127,10 @@ int main(int argc, char *argv[]) {
     poll_set[1].events = POLLIN;
 
     char **bufferFromRead = bufferInit();
-    std::string *arrStrings = (std::string*) malloc(sizeof(std::string) * 1000);
-    arrStrings[0] = "asdasdkmsnajpdn jskadfnkdsn;fknd;slnaflkdasmn;flsd";
-    arrStrings[1] = " eto vtoroi";
-    std::cout << arrStrings[0] << arrStrings[1] << std::endl;
+//    std::string *arrStrings = (std::string*) malloc(sizeof(std::string) * 1000);
+//    arrStrings[0] = "asdasdkmsnajpdn jskadfnkdsn;fknd;slnaflkdasmn;flsd";
+//    arrStrings[1] = " eto vtoroi";
+//    std::cout << arrStrings[0] << arrStrings[1] << std::endl;
     int currentReadBuf = 0;
     int currentWriteBuf = 0;
     bool socketIsOpen = true;
