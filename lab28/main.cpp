@@ -100,8 +100,8 @@ void addToBuffer(std::vector<std::string> *vectorReadStrings, char *readBuf, std
     while (lastIndex != readStrings.npos) {
 
         vectorReadStrings->push_back(readStrings.substr(indexEnter, lastIndex - indexEnter));
-        indexEnter = lastIndex + 1;
-        lastIndex = readStrings.find('\n', indexEnter);
+        indexEnter = lastIndex;
+        lastIndex = readStrings.find('\n', indexEnter + 1);
     }
 
 //    *restOfTheLine = readStrings.substr(indexEnter + 1);
