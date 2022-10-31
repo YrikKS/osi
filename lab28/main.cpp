@@ -152,6 +152,7 @@ int main(int argc, char *argv[]) {
 //                    std::cout << isPrint << "and << " << (currentReadBuf < vectorReadStrings.size()) << std::endl;
                     while (isPrint && currentReadBuf < vectorReadStrings.size()) { //|| currentReadBuf < vectorReadStrings.size()
                         std::cout << vectorReadStrings[currentReadBuf];
+                        std::cout.flush();
                         currentReadBuf++;
                         if (currentReadBuf % 25 == 0) {
                             isPrint = 0;
@@ -174,6 +175,7 @@ int main(int argc, char *argv[]) {
                         isPrint = 1;
                         while (isPrint && currentReadBuf < vectorReadStrings.size()) { //|| currentReadBuf < vectorReadStrings.size()
                             std::cout << vectorReadStrings[currentReadBuf];
+                            std::cout.flush();
                             currentReadBuf++;
                             if (currentReadBuf % 25 == 0) {
                                 isPrint = 0;
