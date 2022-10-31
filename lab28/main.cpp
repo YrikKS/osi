@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
                 if (socketIsOpen) {
                     readByte = read(sock, buffer, BUFFER_SIZE - 1);
                     addToBuffer(&vectorReadStrings, buffer, &rest);
-                    bzero(buffer);
+                    bzero(buffer, BUFFER_SIZE);
                     for (int i = 0; i < vectorReadStrings.size(); i++) {
                         std::cout << vectorReadStrings[i];
                     }
