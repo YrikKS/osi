@@ -35,7 +35,7 @@ void delBuffer(char **arrBuffer) {
 }
 
 std::string parseUrl(char *url) {
-    int sizeUrl = strlen(url);
+//    int sizeUrl = strlen(url);
     std::string strUrl = url;
     std::string subSting;
     if (strUrl.find("http://") != strUrl.npos) {
@@ -48,7 +48,7 @@ std::string parseUrl(char *url) {
     return subSting;
 }
 
-int connectSocket(std::string url) {
+int connectSocket(std::string url, int port) {
     struct hostent *hostent = gethostbyname(url.data());
     if (hostent == NULL) {
         herror("gethostbyname");
@@ -57,7 +57,7 @@ int connectSocket(std::string url) {
 
     struct sockaddr_in sockAddr;
     bcopy(hostent->h_addr, &sockAddr.sin_addr, hostent->h_length);
-    sockAddr.sin_port = htons(HTTP_PORT);
+    sockAddr.sin_port = htons(port);
     sockAddr.sin_family = AF_INET;
 
     int sock = socket(AF_INET, SOCK_STREAM, 0); //PF_INET
@@ -90,15 +90,31 @@ std::string getDomain(std::string url) {
     }
 }
 
+//void addToBuffer(char* readBuf, char** mainBuffer, int* sizeBuf, int* countRead, char* remainsOfPreviousRead) {
+//    char* prevEnter = strstr(readBuf, "\n");
+//    if(strlen(remainsOfPreviousRead) != 0) {
+//        bcopy(readBuf, )
+//    }
+//    char* enter;
+//    while ((enter = strstr(readBuf, "\n")) != NULL) {
+////        enter = strstr(readBuf, "\n");
+//        if(sizeBuf <= countRead) {
+//            //resize
+//        }
+//        bcopy()
+//    }
+//}
+
 int main(int argc, char *argv[]) {
-    if (argc != 2) {
+    if (argc != 3) {
         std::cout << "Incorrect args!\n exampl: " << argv[0] << "<https://<hostName>" << std::endl;
         return 1;
     }
     std::string url = parseUrl(argv[1]); // убираем http
     std::string domain = getDomain(url);
     std::string path = getPath(url);
-    int sock = connectSocket(domain);
+    int port = atoi(argv[2]);
+    int sock = connectSocket(domain, port);
     char buffer[BUFFER_SIZE] = {0};
     sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\n\r\n", path.data(), domain.data());
     write(sock, buffer, strlen(buffer));
@@ -115,7 +131,7 @@ int main(int argc, char *argv[]) {
     bool socketIsOpen = true;
     std::cout << std::endl << "Press enter to scroll down" << std::endl;
     while (true) {
-        int ret = poll(poll_set, 2, 10000); // 10000 == 10 src
+        int ret = poll(poll_set, 2, 100000); // 10000 == 100 src
         if (ret == -1) {
             perror("select error");
             exit(1);
@@ -133,8 +149,6 @@ int main(int argc, char *argv[]) {
                     socketIsOpen = false;
                 } else {
                     currentReadBuf++;
-//                    std::cout << "currentReadBuf == " << currentReadBuf << std::endl;
-//                    std::cout.flush();
                 }
             }
             if (poll_set[1].revents & POLLIN) {
@@ -147,7 +161,6 @@ int main(int argc, char *argv[]) {
                     if (c == '\n' && currentWriteBuf < currentReadBuf) {
                         fprintf(stdout, "%s", bufferFromRead[currentWriteBuf]);
                         currentWriteBuf++;
-//                        std::cout << "currentWriteBuf" << currentWriteBuf << std::endl;
                         std::cout << std::endl << "Press enter to scroll down" << std::endl;
                     } else if (c == '\n') {
                         std::cout << "pleas wait data" << std::endl;
@@ -165,3 +178,7 @@ int main(int argc, char *argv[]) {
     close(sock);
     return 0;
 }
+
+// добавить порт
+// первый 25 + распарсить их
+// nc
