@@ -93,15 +93,15 @@ std::string getDomain(std::string url) {
 
 void addToBuffer(std::vector<std::string> *vectorReadStrings, char *readBuf, std::string *restOfTheLine) {
     std::string readStrings(readBuf);
-    int indexEnter = readStrings.find('\n', 0);
-    vectorReadStrings->push_back((*restOfTheLine) + readStrings.substr(0, indexEnter + 1));
+    int indexEnter = readStrings.find('\n', 0) + 1;
+    vectorReadStrings->push_back((*restOfTheLine) + readStrings.substr(0, indexEnter));
 //    std::cout << (*vectorReadStrings)[vectorReadStrings->size()-1] << std::endl;
-    int lastIndex = readStrings.find('\n', indexEnter + 1);
+    int lastIndex = readStrings.find('\n', indexEnter) + 1;
 
     while (lastIndex != readStrings.npos) {
-        vectorReadStrings->push_back(readStrings.substr(indexEnter, lastIndex - indexEnter + 1));
+        vectorReadStrings->push_back(readStrings.substr(indexEnter, lastIndex - indexEnter));
         indexEnter = lastIndex;
-        lastIndex = readStrings.find('\n', indexEnter + 1);
+        lastIndex = readStrings.find('\n', indexEnter) + 1;
     }
     *restOfTheLine = readStrings.substr(indexEnter + 1);
 //    std::cout << "restOfTheLine= " << *restOfTheLine << std::endl;
