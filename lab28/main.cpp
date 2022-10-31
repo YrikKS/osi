@@ -146,6 +146,7 @@ int main(int argc, char *argv[]) {
                 int readByte;
                 if (socketIsOpen) {
                     readByte = read(sock, buffer, BUFFER_SIZE - 1);
+                    std::cout << "eto buffer:  " << buffer << std::endl;
                     addToBuffer(&vectorReadStrings, buffer, &rest);
                     while (isPrint && currentReadBuf < vectorReadStrings.size()) { //|| currentReadBuf < vectorReadStrings.size()
                         std::cout << vectorReadStrings[currentReadBuf];
@@ -169,9 +170,6 @@ int main(int argc, char *argv[]) {
                     perror("Read");
                     break;
                 } else {
-//                    for (int i = 0; i < vectorReadStrings.size(); i++) {
-//                        std::cout << vectorReadStrings[i];
-//                    }
                     if (c == '\n') {
                         isPrint = 1;
                         while (isPrint && currentReadBuf < vectorReadStrings.size()) { //|| currentReadBuf < vectorReadStrings.size()
@@ -182,12 +180,6 @@ int main(int argc, char *argv[]) {
                             }
                         }
                     }
-//                        fprintf(stdout, "%s", bufferFromRead[currentWriteBuf]);
-//                        currentWriteBuf++;
-////                        std::cout << std::endl << "Press enter to scroll down" << std::endl;
-//                    } else if (c == '\n') {
-////                        std::cout << "pleas wait data" << std::endl;
-//                    }
                     if (c == 'q') {
                         std::cout << "end ";
                         break;
@@ -197,7 +189,6 @@ int main(int argc, char *argv[]) {
         }
     }
     std::cout << "all good" << std::endl;
-//    delBuffer(bufferFromRead);
     close(sock);
     return 0;
 }
