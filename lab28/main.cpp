@@ -155,6 +155,7 @@ int main(int argc, char *argv[]) {
                         std::cout.flush();
                         currentReadBuf++;
                         if (currentReadBuf % 25 == 0) {
+                            std::cout << std::endl << "Press enter to scroll down" << std::endl;
                             isPrint = 0;
                         }
                     }
@@ -178,6 +179,7 @@ int main(int argc, char *argv[]) {
                             std::cout.flush();
                             currentReadBuf++;
                             if (currentReadBuf % 25 == 0) {
+                                std::cout << std::endl << "Press enter to scroll down" << std::endl;
                                 isPrint = 0;
                             }
                         }
