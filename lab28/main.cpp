@@ -99,6 +99,7 @@ void addToBuffer(std::vector<std::string> *vectorReadStrings, char *readBuf, std
     int lastIndex = readStrings.find('\n', indexEnter + 1);
 
     while (lastIndex != readStrings.npos) {
+        std::cout << "(*vectorReadStrings)[vectorReadStrings->size()-1]" << std::endl;
         vectorReadStrings->push_back(readStrings.substr(indexEnter, lastIndex - indexEnter));
         indexEnter = lastIndex;
         lastIndex = readStrings.find('\n', indexEnter + 1);
