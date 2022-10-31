@@ -129,6 +129,7 @@ int main(int argc, char *argv[]) {
     char second[] = "tii\n eto chetveti\neto pytui\n";
     std::string rest;
     std::cout << "0" << std::endl;
+    vectorReadStrings.resize(1000);
     addToBuffer(vectorReadStrings, first, &rest);
     std::cout << "1" << std::endl;
     addToBuffer(vectorReadStrings, second, &rest);
