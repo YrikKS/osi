@@ -127,8 +127,8 @@ int main(int argc, char *argv[]) {
 
     char **bufferFromRead = bufferInit();
     std::vector<std::string> vectorReadStrings;
-    char first[] = "eto pervai\n eto vtoroi\neto tre";
-    char second[] = "tii\n eto chetveti\neto pytui\n";
+    char first[] = "eto pervai\neto vtoroi\neto tre";
+    char second[] = "tii\neto chetveti\neto pytui\n";
     std::string rest;
     std::cout << "0" << std::endl;
 //    vectorReadStrings.resize(1000);
@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
     std::cout << "2" << std::endl;
 
     for (int i = 0; i < vectorReadStrings.size(); i++) {
-        std::cout << vectorReadStrings[i] << std::endl;
+        std::cout << vectorReadStrings[i];
     }
 
     int currentReadBuf = 0;
