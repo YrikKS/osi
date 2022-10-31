@@ -104,6 +104,11 @@ void addToBuffer(std::vector<std::string>* vectorReadStrings, char* readBuf, std
         indexEnter = lastIndex;
         lastIndex = readStrings.find('\n', indexEnter + 1);
     }
+    std::cout << "razzzz" << std::endl;
+    for (int i = 0; i < vectorReadStrings->size(); i++) {
+        std::cout << (*vectorReadStrings)[i];
+    }
+
     *restOfTheLine = readStrings.substr(indexEnter + 1);
 }
 
@@ -139,9 +144,9 @@ int main(int argc, char *argv[]) {
     addToBuffer(&vectorReadStrings, second, &rest);
     std::cout << "2" << std::endl;
 
-    for (int i = 0; i < vectorReadStrings.size(); i++) {
-        std::cout << vectorReadStrings[i];
-    }
+//    for (int i = 0; i < vectorReadStrings.size(); i++) {
+//        std::cout << vectorReadStrings[i];
+//    }
 
     int currentReadBuf = 0;
     int currentWriteBuf = 0;
