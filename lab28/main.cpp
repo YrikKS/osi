@@ -174,6 +174,7 @@ int main(int argc, char *argv[]) {
 //                    }
                     if (c == '\n') {
                         isPrint = 1;
+                    }
 //                        fprintf(stdout, "%s", bufferFromRead[currentWriteBuf]);
 //                        currentWriteBuf++;
 ////                        std::cout << std::endl << "Press enter to scroll down" << std::endl;
