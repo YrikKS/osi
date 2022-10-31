@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <list>
+#include <vector>
 
 #include <netinet/tcp.h>
 #include <sys/socket.h>
@@ -91,20 +91,17 @@ std::string getDomain(std::string url) {
     }
 }
 
-//void addToBuffer(char* readBuf, char** mainBuffer, int* sizeBuf, int* countRead, char* remainsOfPreviousRead) {
-//    char* prevEnter = strstr(readBuf, "\n");
-//    if(strlen(remainsOfPreviousRead) != 0) {
-//        bcopy(readBuf, )
-//    }
-//    char* enter;
-//    while ((enter = strstr(readBuf, "\n")) != NULL) {
-////        enter = strstr(readBuf, "\n");
-//        if(sizeBuf <= countRead) {
-//            //resize
-//        }
-//        bcopy()
-//    }
-//}
+void addToBuffer(std::vector<std::string> vectorReadStrings, char* readBuf, std::string* restOfTheLine) {
+    std::string readStrings(readBuf);
+    int indexEnter = readStrings.find('\n', 0);
+    vectorReadStrings.push_back(*restOfTheLine + readStrings.substr(0, indexEnter));
+    int lastIndex;
+    while((lastIndex = readStrings.find('\n', indexEnter)) != std::string::npos) {
+        vectorReadStrings.push_back(readStrings.substr(indexEnter, lastIndex));
+        indexEnter = lastIndex;
+    }
+    *restOfTheLine = readStrings.substr(indexEnter);
+}
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -127,10 +124,16 @@ int main(int argc, char *argv[]) {
     poll_set[1].events = POLLIN;
 
     char **bufferFromRead = bufferInit();
-//    std::string *arrStrings = (std::string*) malloc(sizeof(std::string) * 1000);
-//    arrStrings[0] = "asdasdkmsnajpdn jskadfnkdsn;fknd;slnaflkdasmn;flsd";
-//    arrStrings[1] = " eto vtoroi";
-//    std::cout << arrStrings[0] << arrStrings[1] << std::endl;
+    std::vector<std::string> vectorReadStrings;
+    char first[] = "eto pervai\n eto vtoroi\neto tre";
+    char second[] = "tii\n eto chetveti\neto pytui\n";
+    std::string rest;
+    addToBuffer(vectorReadStrings, first, &rest);
+    addToBuffer(vectorReadStrings, second, &rest);
+    for (const auto &item : vectorReadStrings) {
+        std::cout << item << std::endl;
+    }
+
     int currentReadBuf = 0;
     int currentWriteBuf = 0;
     bool socketIsOpen = true;
