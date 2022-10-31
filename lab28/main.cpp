@@ -130,12 +130,12 @@ int main(int argc, char *argv[]) {
     char first[] = "eto pervai\neto vtoroi\neto tre";
     char second[] = "tii\neto chetveti\neto pytui\n";
     std::string rest;
-    std::cout << "0" << std::endl;
+//    std::cout << "0" << std::endl;
 //    vectorReadStrings.resize(1000);
-    addToBuffer(&vectorReadStrings, first, &rest);
-    std::cout << "1" << std::endl;
-    addToBuffer(&vectorReadStrings, second, &rest);
-    std::cout << "2" << std::endl;
+//    addToBuffer(&vectorReadStrings, first, &rest);
+//    std::cout << "1" << std::endl;
+//    addToBuffer(&vectorReadStrings, second, &rest);
+//    std::cout << "2" << std::endl;
 
 //    for (int i = 0; i < vectorReadStrings.size(); i++) {
 //        std::cout << vectorReadStrings[i];
