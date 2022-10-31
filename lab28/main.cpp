@@ -91,14 +91,14 @@ std::string getDomain(std::string url) {
     }
 }
 
-void addToBuffer(std::vector<std::string> vectorReadStrings, char* readBuf, std::string* restOfTheLine) {
+void addToBuffer(std::vector<std::string>* vectorReadStrings, char* readBuf, std::string* restOfTheLine) {
     std::string readStrings(readBuf);
     int indexEnter = readStrings.find('\n', 0);
-    vectorReadStrings.push_back(*restOfTheLine + readStrings.substr(0, indexEnter));
+    vectorReadStrings->push_back(*restOfTheLine + readStrings.substr(0, indexEnter));
     int lastIndex = readStrings.find('\n', indexEnter + 1);
     std::cout << "1.5 + " << lastIndex << indexEnter << std::endl;
     while(lastIndex != readStrings.npos) {
-        vectorReadStrings.push_back(readStrings.substr(indexEnter, lastIndex));
+        vectorReadStrings->push_back(readStrings.substr(indexEnter, lastIndex));
         indexEnter = lastIndex;
         lastIndex = readStrings.find('\n', indexEnter + 1);
     }
@@ -132,10 +132,11 @@ int main(int argc, char *argv[]) {
     std::string rest;
     std::cout << "0" << std::endl;
 //    vectorReadStrings.resize(1000);
-    addToBuffer(vectorReadStrings, first, &rest);
+    addToBuffer(&vectorReadStrings, first, &rest);
     std::cout << "1" << std::endl;
-    addToBuffer(vectorReadStrings, second, &rest);
+    addToBuffer(&vectorReadStrings, second, &rest);
     std::cout << "2" << std::endl;
+
     for (int i = 0; i < vectorReadStrings.size(); i++) {
         std::cout << vectorReadStrings[i] << std::endl;
     }
