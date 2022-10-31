@@ -94,7 +94,7 @@ std::string getDomain(std::string url) {
 void addToBuffer(std::vector<std::string> *vectorReadStrings, char *readBuf, std::string *restOfTheLine) {
     std::string readStrings(readBuf);
     int indexEnter = readStrings.find('\n', 0);
-    vectorReadStrings->push_back((*restOfTheLine) + readStrings.substr(0, indexEnter + 1));
+    vectorReadStrings->push_back((*restOfTheLine) + readStrings.substr(0, indexEnter));
 //    std::cout << (*vectorReadStrings)[vectorReadStrings->size()-1] << std::endl;
     int lastIndex = readStrings.find('\n', indexEnter + 1);
 
@@ -133,7 +133,7 @@ int main(int argc, char *argv[]) {
     int currentReadBuf = 0;
     int isPrint = 1;
     bool socketIsOpen = true;
-    std::cout << std::endl << "Press enter to scroll down" << std::endl;
+//    std::cout << std::endl << "Press enter to scroll down" << std::endl;
     while (true) {
         int ret = poll(poll_set, 2, 100000); // 10000 == 100 src
         if (ret == -1) {
