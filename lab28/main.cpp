@@ -147,10 +147,10 @@ int main(int argc, char *argv[]) {
                 if (socketIsOpen) {
                     readByte = read(sock, buffer, BUFFER_SIZE - 1);
                     addToBuffer(&vectorReadStrings, buffer, &rest);
-                    while (isPrint || currentReadBuf < vectorReadStrings.size()) {
+                    while (!isPrint || currentReadBuf >= vectorReadStrings.size()) {
                         vectorReadStrings[currentReadBuf];
                         currentReadBuf++;
-                        if(currentReadBuf % 25 == 0) {
+                        if (currentReadBuf % 25 == 0) {
                             isPrint = 0;
                         }
                     }
