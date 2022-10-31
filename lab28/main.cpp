@@ -162,9 +162,6 @@ int main(int argc, char *argv[]) {
                     readByte = read(sock, buffer, BUFFER_SIZE - 1);
                     addToBuffer(&vectorReadStrings, buffer, &rest);
                     bzero(buffer, BUFFER_SIZE);
-                    for (int i = 0; i < vectorReadStrings.size(); i++) {
-                        std::cout << vectorReadStrings[i];
-                    }
                 }
                 if (readByte == 0) {
                     socketIsOpen = false;
@@ -179,17 +176,20 @@ int main(int argc, char *argv[]) {
                     perror("Read");
                     break;
                 } else {
-                    if (c == '\n' && currentWriteBuf < currentReadBuf) {
-                        fprintf(stdout, "%s", bufferFromRead[currentWriteBuf]);
-                        currentWriteBuf++;
-                        std::cout << std::endl << "Press enter to scroll down" << std::endl;
-                    } else if (c == '\n') {
-                        std::cout << "pleas wait data" << std::endl;
+                    for (int i = 0; i < vectorReadStrings.size(); i++) {
+                        std::cout << vectorReadStrings[i];
                     }
-                    if (c == 'q') {
-                        std::cout << "end ";
-                        break;
-                    }
+//                    if (c == '\n' && currentWriteBuf < currentReadBuf) {
+//                        fprintf(stdout, "%s", bufferFromRead[currentWriteBuf]);
+//                        currentWriteBuf++;
+//                        std::cout << std::endl << "Press enter to scroll down" << std::endl;
+//                    } else if (c == '\n') {
+//                        std::cout << "pleas wait data" << std::endl;
+//                    }
+//                    if (c == 'q') {
+//                        std::cout << "end ";
+//                        break;
+//                    }
                 }
             }
         }
