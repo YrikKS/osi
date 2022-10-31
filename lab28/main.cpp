@@ -102,6 +102,7 @@ void addToBuffer(std::vector<std::string> *vectorReadStrings, char *readBuf, std
         indexEnter = lastIndex;
         lastIndex = readStrings.find('\n', indexEnter + 1);
     }
+
 //    *restOfTheLine = readStrings.substr(indexEnter + 1);
 }
 
@@ -158,8 +159,9 @@ int main(int argc, char *argv[]) {
                 poll_set[0].revents = 0;
                 int readByte;
                 if (socketIsOpen) {
-                    readByte = read(sock, bufferFromRead[currentReadBuf], BUFFER_SIZE - 1);
-                    addToBuffer(&vectorReadStrings, bufferFromRead[currentReadBuf], &rest);
+                    readByte = read(sock, buffer, BUFFER_SIZE - 1);
+                    addToBuffer(&vectorReadStrings, buffer, &rest);
+                    bzero(buffer);
                     for (int i = 0; i < vectorReadStrings.size(); i++) {
                         std::cout << vectorReadStrings[i];
                     }
