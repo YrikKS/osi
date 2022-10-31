@@ -161,8 +161,6 @@ int main(int argc, char *argv[]) {
                 }
                 if (readByte == 0) {
                     socketIsOpen = false;
-                } else {
-                    currentReadBuf++;
                 }
             }
             if (poll_set[1].revents & POLLIN) {
