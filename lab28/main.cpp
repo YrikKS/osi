@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <list>
 
 #include <netinet/tcp.h>
 #include <sys/socket.h>
@@ -10,11 +11,32 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <iostream>
+#include <sys/poll.h>
+#include <termios.h>
 
 #define BUFFER_SIZE 1024
+#define COUNT_BUFFER 330
+#define HTTP_PORT 80
+#define ERROR_CODE -1
+#define EXIT_WITH_ERROR 1
+
+char **bufferInit() {
+    char **arrBuffer = (char **) malloc(sizeof(char *) * COUNT_BUFFER);
+    for (int i = 0; i < COUNT_BUFFER; i++) {
+        arrBuffer[i] = (char *) malloc(sizeof(char) * BUFFER_SIZE);
+    }
+    return arrBuffer;
+}
+
+void delBuffer(char **arrBuffer) {
+    for (int i = 0; i < COUNT_BUFFER; i++) {
+        free(arrBuffer[i]);
+    }
+    free(arrBuffer);
+}
 
 std::string parseUrl(char *url) {
-    int sizeUrl = strlen(url);
+//    int sizeUrl = strlen(url);
     std::string strUrl = url;
     std::string subSting;
     if (strUrl.find("http://") != strUrl.npos) {
@@ -27,26 +49,26 @@ std::string parseUrl(char *url) {
     return subSting;
 }
 
-int connectSocket(std::string url) {
+int connectSocket(std::string url, int port) {
     struct hostent *hostent = gethostbyname(url.data());
     if (hostent == NULL) {
         herror("gethostbyname");
-        exit(1);
+        exit(EXIT_WITH_ERROR);
     }
 
     struct sockaddr_in sockAddr;
     bcopy(hostent->h_addr, &sockAddr.sin_addr, hostent->h_length);
-    sockAddr.sin_port = htons(80);
+    sockAddr.sin_port = htons(port);
     sockAddr.sin_family = AF_INET;
 
     int sock = socket(AF_INET, SOCK_STREAM, 0); //PF_INET
-    if (sock == -1) {
+    if (sock == ERROR_CODE) {
         perror("setsockopt");
-        exit(1);
+        exit(EXIT_WITH_ERROR);
     }
-    if (connect(sock, (struct sockaddr *) &sockAddr, sizeof(struct sockaddr_in)) == -1) {
+    if (connect(sock, (struct sockaddr *) &sockAddr, sizeof(struct sockaddr_in)) == ERROR_CODE) {
         perror("connect");
-        exit(1);
+        exit(EXIT_WITH_ERROR);
     }
     return sock;
 }
@@ -69,101 +91,100 @@ std::string getDomain(std::string url) {
     }
 }
 
+//void addToBuffer(char* readBuf, char** mainBuffer, int* sizeBuf, int* countRead, char* remainsOfPreviousRead) {
+//    char* prevEnter = strstr(readBuf, "\n");
+//    if(strlen(remainsOfPreviousRead) != 0) {
+//        bcopy(readBuf, )
+//    }
+//    char* enter;
+//    while ((enter = strstr(readBuf, "\n")) != NULL) {
+////        enter = strstr(readBuf, "\n");
+//        if(sizeBuf <= countRead) {
+//            //resize
+//        }
+//        bcopy()
+//    }
+//}
+
 int main(int argc, char *argv[]) {
-    if (argc != 2) {
+    if (argc != 3) {
         std::cout << "Incorrect args!\n exampl: " << argv[0] << "<https://<hostName>" << std::endl;
         return 1;
     }
-
     std::string url = parseUrl(argv[1]); // убираем http
     std::string domain = getDomain(url);
     std::string path = getPath(url);
-    int sock = connectSocket(domain);
+    int port = atoi(argv[2]);
+    int sock = connectSocket(domain, port);
     char buffer[BUFFER_SIZE] = {0};
     sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\n\r\n", path.data(), domain.data());
-//    write(sock, buffer, strlen(buffer));
-//    bzero(buffer, BUFFER_SIZE);
-
-    struct timeval tv;
-    tv.tv_sec = 10;
-    tv.tv_usec = 0;
-
-    fd_set fd_in;
-    fd_set fdConsole;
-//    FD_ZERO(&fd_in);
-//    FD_ZERO(&fdConsole);
-//
-//    FD_SET(sock, &fd_in);
-//    FD_SET(fileno(stdin), &fdConsole);
-
     write(sock, buffer, strlen(buffer));
-    bzero(buffer, BUFFER_SIZE);
-    int check = 0;
-    int check2 = 0;
-    int i = 0;
 
-    char bufferConsole[BUFFER_SIZE] = {0};
-//    bzero(bufferConsole, BUFFER_SIZE);
-//    std::cout << "sock == " << sock << std::endl;
+    struct pollfd poll_set[2] = {0};
+    poll_set[0].fd = sock;
+    poll_set[0].events = POLLIN;
+    poll_set[1].fd = 0;
+    poll_set[1].events = POLLIN;
+
+    char **bufferFromRead = bufferInit();
+    std::list<std::string> listReadStings;
+    auto it = listReadStings.begin();
+    listReadStings.push_back("asd");
+    std::cout << (*it) << std::endl;
+
+    int currentReadBuf = 0;
+    int currentWriteBuf = 0;
+    bool socketIsOpen = true;
+    std::cout << std::endl << "Press enter to scroll down" << std::endl;
     while (true) {
-        i++;
-        FD_ZERO(&fd_in);
-        FD_ZERO(&fdConsole);
-
-        FD_SET(sock, &fd_in);
-        FD_SET(fileno(stdin), &fdConsole);
-        int ret = select(sock + 1, &fd_in, &fdConsole, NULL, &tv);
-//        std::cout << ret << std::endl;
+        int ret = poll(poll_set, 2, 100000); // 10000 == 100 src
         if (ret == -1) {
-            //error
             perror("select error");
             exit(1);
         } else if (ret == 0) {
             std::cout << "time out" << std::endl;
             break;
         } else {
-            if (FD_ISSET(sock, &fd_in)) {
-                std::cout << "read  ";
-                std::cout.flush();
-                read(sock, buffer, 80 * 25 - 1);
-                fprintf(stdout, "%s", buffer);
-                check2++;
-                bzero(buffer, BUFFER_SIZE);
+            if (poll_set[0].revents & POLLIN) {
+                poll_set[0].revents = 0;
+                int readByte;
+                if (socketIsOpen) {
+                    readByte = read(sock, bufferFromRead[currentReadBuf], BUFFER_SIZE - 1);
+                }
+                if (readByte == 0) {
+                    socketIsOpen = false;
+                } else {
+                    currentReadBuf++;
+                }
             }
-            if (FD_ISSET(fileno(stdin), &fdConsole)) {
-                std::cout << "pleas write" << std::endl;
-                std::cout.flush();
+            if (poll_set[1].revents & POLLIN) {
+                poll_set[1].revents = 0;
                 char c;
                 if (read(0, &c, 1) == -1) {
-//                if (c == ' '){
                     perror("Read");
-                }
-
-                if (c == '\n') {
-                    std::cout << "write ";
-                }
-                if (c == 'q') {
-                    std::cout << "end ";
                     break;
+                } else {
+                    if (c == '\n' && currentWriteBuf < currentReadBuf) {
+                        fprintf(stdout, "%s", bufferFromRead[currentWriteBuf]);
+                        currentWriteBuf++;
+                        std::cout << std::endl << "Press enter to scroll down" << std::endl;
+                    } else if (c == '\n') {
+                        std::cout << "pleas wait data" << std::endl;
+                    }
+                    if (c == 'q') {
+                        std::cout << "end ";
+                        break;
+                    }
                 }
-//                read(0, buffer, BUFFER_SIZE - 1);
-//                fprintf(stderr, "%s", bufferConsole);
-//                bzero(bufferConsole, BUFFER_SIZE);
-                check++;
-//                std::cout << "write ";
             }
         }
     }
-    std::cout << std::endl << check << std::endl;
-    std::cout << std::endl << check2 << std::endl;
-
-//    while(read(sock, buffer, BUFFER_SIZE - 1) != 0){
-//        fprintf(stderr, "%s", buffer);
-//        bzero(buffer, BUFFER_SIZE);
-//    }
-
+    std::cout << "all good" << std::endl;
+    delBuffer(bufferFromRead);
     close(sock);
     return 0;
 }
 
-//netcat
+// добавить порт
+// первый 25 + распарсить их
+// nc
