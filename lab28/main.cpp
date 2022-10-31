@@ -94,7 +94,7 @@ std::string getDomain(std::string url) {
 void addToBuffer(std::vector<std::string>* vectorReadStrings, char* readBuf, std::string* restOfTheLine) {
     std::string readStrings(readBuf);
     int indexEnter = readStrings.find('\n', 0);
-    vectorReadStrings->push_back(*restOfTheLine + readStrings.substr(0, indexEnter));
+    vectorReadStrings->push_back((*restOfTheLine) + readStrings.substr(0, indexEnter));
     int lastIndex = readStrings.find('\n', indexEnter + 1);
 
     std::cout << "1.5 + " << lastIndex << indexEnter << std::endl;
