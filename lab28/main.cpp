@@ -103,7 +103,7 @@ void addToBuffer(std::vector<std::string> *vectorReadStrings, char *readBuf, std
         indexEnter = lastIndex;
         lastIndex = readStrings.find('\n', indexEnter) + 1;
     }
-    *restOfTheLine = readStrings.substr(indexEnter + 1);
+    *restOfTheLine = readStrings.substr(indexEnter);
 //    std::cout << "restOfTheLine= " << *restOfTheLine << std::endl;
 }
 
