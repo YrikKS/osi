@@ -148,7 +148,7 @@ int main(int argc, char *argv[]) {
                     readByte = read(sock, buffer, BUFFER_SIZE - 1);
                     addToBuffer(&vectorReadStrings, buffer, &rest);
                     while (isPrint) { //|| currentReadBuf < vectorReadStrings.size()
-                        vectorReadStrings[currentReadBuf];
+                        std::cout << vectorReadStrings[currentReadBuf] << std::endl;
                         currentReadBuf++;
                         if (currentReadBuf % 25 == 0) {
                             isPrint = 0;
@@ -175,7 +175,7 @@ int main(int argc, char *argv[]) {
                     if (c == '\n') {
                         isPrint = 1;
                         while (isPrint) { //|| currentReadBuf < vectorReadStrings.size()
-                            vectorReadStrings[currentReadBuf];
+                            std::cout << vectorReadStrings[currentReadBuf] << std::endl;
                             currentReadBuf++;
                             if (currentReadBuf % 25 == 0) {
                                 isPrint = 0;
