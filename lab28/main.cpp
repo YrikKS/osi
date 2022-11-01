@@ -148,7 +148,8 @@ int main(int argc, char *argv[]) {
                 int readByte;
                 if (socketIsOpen) {
                     readByte = read(sock, buffer, BUFFER_SIZE - 1);
-                    std::cout << readByte << std::endl;
+                    std::cout << readByte << "   --   ";
+                    std::cout  << buffer[readByte-3] << buffer[readByte-2] << buffer[readByte-1] << std::endl;
                     addToBuffer(&vectorReadStrings, buffer, &rest);
 //                    std::cout << isPrint << "and << " << (currentReadBuf < vectorReadStrings.size()) << std::endl;
                     while (isPrint && currentReadBuf < vectorReadStrings.size()) { //|| currentReadBuf < vectorReadStrings.size()
