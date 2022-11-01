@@ -87,14 +87,15 @@ void PthreadSaveList<T>::addBegin(T element) {
         fprintf(stderr, "Error mutex lock: ", mutexInitErrorCode);
         exit(1);
     }
+
     lockMutexElement(newElement);
     head = newElement;
-    unlockMutexElement(newElement);
 
     if (secondElement != NULL) {
         secondElement->prev = newElement;
         unlockMutexElement(secondElement);
     }
+    unlockMutexElement(newElement);
 }
 
 template<typename T>
@@ -148,27 +149,44 @@ void PthreadSaveList<T>::sortList() {
     if (head == NULL)
         return;
     int countSwap = 1;
-    lockMutexElement(head);
-    ElementList *first;
+//    lockMutexElement(head);
+//    ElementList *first = head;
     while (countSwap != 0) {
         countSwap = 0;
-        lockMutexElement(first->next); //first prev unlock
-        first = first->next;
+//        lockMutexElement(first->next); //first prev unlock
+//        first = first->next;
 //        std::cout << "head = " << head->value << std::endl;
         for (ElementList *second = head; second != NULL;) {
+            // 1. 2. 3. 4. -> 1. 2. 3 4
+//            if (second->prev != NULL) {
+//                lockMutexElement(second->prev);
+//            }
+            lockMutexElement(second);
             if (second->next != NULL) {
                 lockMutexElement(second->next);
-                if (first->value > second->next->value) {
+                if (second->value > second->next->value) {
+//                    if(second->next->next != NULL) {
+//                        lockMutexElement(second->next->next);
+//                    }
                     countSwap++;
-                    swapElement(first, second->next);
-                } else {
-                    second = second->next;
+                    swapElement(second, second->next); // second = second-next
+//                    if(second->next != NULL) {
+//                        unlockMutexElement(second->next);
+//                    }
                 }
-            } else {
-                break;
+//                } else {
+                unlockMutexElement(second->next);
+//                }
             }
+            unlockMutexElement(second);
+            second = second->next;
+//            unlockMutexElement(second->prev);
+//            if(second->prev->prev != NULL) {
+//                unlockMutexElement(second->prev->prev);
+//            }
         }
-        unlockMutexElement(first->prev);
+    }
+//        unlockMutexElement(first->prev);
 //            if (second->next != NULL) {
 //                lockForSwap(second);
 //                if (second->value > second->next->value) {
@@ -183,8 +201,7 @@ void PthreadSaveList<T>::sortList() {
 ////            } else {
 ////                break;
 //            }
-
-    }
+//}
     std::cout << "End sort" << std::endl;
 }
 
@@ -194,6 +211,7 @@ void PthreadSaveList<T>::swapElement(ElementList *element1, ElementList *element
     T copy = element1->value;
     element1->value = element2->value;
     element2->value = copy;
+
 //    if (element1 == head) {
 //        head = element2;
 //    }
