@@ -213,7 +213,7 @@ void PthreadSaveList<T>::swapElement(ElementList *element1, ElementList *element
     if (element2->prev != NULL) {
         element2->prev->next = element2;
     }
-    std::cout << "End swap" << std::endl;
+//    std::cout << "End swap" << std::endl;
 }
 
 template<typename T>
