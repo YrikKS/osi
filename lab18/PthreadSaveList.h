@@ -152,7 +152,7 @@ void PthreadSaveList<T>::sortList() {
     ElementList *first;
     while (countSwap != 0) {
         countSwap = 0;
-        lockMutexElement(first->next);
+        lockMutexElement(first->next); //first prev unlock
         first = first->next;
 //        std::cout << "head = " << head->value << std::endl;
         for (ElementList *second = head; second != NULL;) {
@@ -168,7 +168,7 @@ void PthreadSaveList<T>::sortList() {
                 break;
             }
         }
-        unlockMutexElement(first);
+        unlockMutexElement(first->prev);
 //            if (second->next != NULL) {
 //                lockForSwap(second);
 //                if (second->value > second->next->value) {
