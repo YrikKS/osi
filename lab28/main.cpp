@@ -149,7 +149,7 @@ int main(int argc, char *argv[]) {
                 if (socketIsOpen) {
                     readByte = read(sock, buffer, BUFFER_SIZE - 1);
                     std::cout << readByte << "   --   ";
-                    std::cout  << (int)buffer[readByte-3] << (int)buffer[readByte-2] << (int)buffer[readByte-1] << std::endl;
+                    std::cout  << (int)buffer[readByte-5] << (int)buffer[readByte-4] << (int)buffer[readByte-3] << (int)buffer[readByte-2] << (int)buffer[readByte-1] << std::endl;
                     addToBuffer(&vectorReadStrings, buffer, &rest);
 //                    std::cout << isPrint << "and << " << (currentReadBuf < vectorReadStrings.size()) << std::endl;
                     while (isPrint && currentReadBuf < vectorReadStrings.size()) { //|| currentReadBuf < vectorReadStrings.size()
