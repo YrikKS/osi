@@ -180,7 +180,6 @@ int main(int argc, char *argv[]) {
                     }
                     bzero(buffer, BUFFER_SIZE);
                     if(currentReadBuf >= vectorReadStrings.size() && !socketIsOpen) {
-                        std::cout << (currentReadBuf < vectorReadStrings.size()) << " and " << !socketIsOpen << std::endl;
                         break;
                     }
                 }
@@ -208,7 +207,6 @@ int main(int argc, char *argv[]) {
                             }
                         }
                         if(currentReadBuf >= vectorReadStrings.size() && !socketIsOpen) {
-                            std::cout << (currentReadBuf < vectorReadStrings.size()) << " and " << !socketIsOpen << std::endl;
                             break;
                         }
                     }

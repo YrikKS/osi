@@ -155,6 +155,7 @@ void PthreadSaveList<T>::sortList() {
             if (second->prev != NULL) {
                 lockMutexElement(second->prev);
             }
+
             lockMutexElement(second);
             if (second->next != NULL) {
                 lockMutexElement(second->next);
