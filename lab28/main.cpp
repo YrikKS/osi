@@ -52,10 +52,10 @@ std::string parseUrl(char *url) {
 int getPortFromUrl(std::string* url) {
     int index = url->find(":") + 1;
     int indexSlash = url->find("/");
-//    std::cout << url->substr(index, indexSlash - index) << std::endl;
+    int port = atoi(url->substr(index, indexSlash - index).c_str());
     (*url) = url->substr(0, index - 1) + url->substr(indexSlash);
-    std::cout << url->substr(index, indexSlash - index) << std::endl;
-    return atoi(url->substr(index, indexSlash - index).data());
+//    std::cout << url->substr(index, indexSlash - index) << std::endl;
+    return port;
 }
 
 int connectSocket(std::string url, int port) {
