@@ -52,8 +52,14 @@ std::string parseUrl(char *url) {
 int getPortFromUrl(std::string *url) {
     int index = url->find(":") + 1;
     int indexSlash = url->find("/");
-    int port = atoi(url->substr(index, indexSlash - index).c_str());
-    (*url) = url->substr(0, index - 1) + url->substr(indexSlash);
+    int port;
+    if (indexSlash == std::string::npos) {
+        port = atoi(url->substr(index).c_str());
+        (*url) = url->substr(0, index - 1);
+    } else {
+        port = atoi(url->substr(index, indexSlash - index).c_str());
+        (*url) = url->substr(0, index - 1) + url->substr(indexSlash);
+    }
 //    std::cout << url->substr(index, indexSlash - index) << std::endl;
     return port;
 }
@@ -129,7 +135,8 @@ int main(int argc, char *argv[]) {
 //    int port = atoi(argv[2]);
     int sock = connectSocket(domain, port);
     char buffer[BUFFER_SIZE] = {0};
-    sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\nConnection: close\r\n\r\n", path.data(), domain.data());
+    sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\nConnection: close\r\n\r\n", path.data(),
+            domain.data());
     write(sock, buffer, strlen(buffer));
     bzero(buffer, BUFFER_SIZE);
 
@@ -179,7 +186,7 @@ int main(int argc, char *argv[]) {
                         }
                     }
                     bzero(buffer, BUFFER_SIZE);
-                    if(currentReadBuf >= vectorReadStrings.size() && !socketIsOpen) {
+                    if (currentReadBuf >= vectorReadStrings.size() && !socketIsOpen) {
                         break;
                     }
                 }
@@ -206,7 +213,7 @@ int main(int argc, char *argv[]) {
                                 isPrint = 0;
                             }
                         }
-                        if(currentReadBuf >= vectorReadStrings.size() && !socketIsOpen) {
+                        if (currentReadBuf >= vectorReadStrings.size() && !socketIsOpen) {
                             break;
                         }
                     }
