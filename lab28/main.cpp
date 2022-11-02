@@ -20,20 +20,20 @@
 #define ERROR_CODE -1
 #define EXIT_WITH_ERROR 1
 
-char **bufferInit() {
-    char **arrBuffer = (char **) malloc(sizeof(char *) * COUNT_BUFFER);
-    for (int i = 0; i < COUNT_BUFFER; i++) {
-        arrBuffer[i] = (char *) malloc(sizeof(char) * BUFFER_SIZE);
-    }
-    return arrBuffer;
-}
-
-void delBuffer(char **arrBuffer) {
-    for (int i = 0; i < COUNT_BUFFER; i++) {
-        free(arrBuffer[i]);
-    }
-    free(arrBuffer);
-}
+//char **bufferInit() {
+//    char **arrBuffer = (char **) malloc(sizeof(char *) * COUNT_BUFFER);
+//    for (int i = 0; i < COUNT_BUFFER; i++) {
+//        arrBuffer[i] = (char *) malloc(sizeof(char) * BUFFER_SIZE);
+//    }
+//    return arrBuffer;
+//}
+//
+//void delBuffer(char **arrBuffer) {
+//    for (int i = 0; i < COUNT_BUFFER; i++) {
+//        free(arrBuffer[i]);
+//    }
+//    free(arrBuffer);
+//}
 
 std::string parseUrl(char *url) {
 //    int sizeUrl = strlen(url);
@@ -141,7 +141,7 @@ int main(int argc, char *argv[]) {
             exit(1);
         } else if (ret == 0) {
             std::cout << "time out" << std::endl;
-            break;
+//            break;
         } else {
             if (poll_set[0].revents & POLLIN) {
                 poll_set[0].revents = 0;
