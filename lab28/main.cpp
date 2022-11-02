@@ -49,7 +49,7 @@ std::string parseUrl(char *url) {
     return subSting;
 }
 
-int getPortFromUrl(std::string* url) {
+int getPortFromUrl(std::string *url) {
     int index = url->find(":") + 1;
     int indexSlash = url->find("/");
     int port = atoi(url->substr(index, indexSlash - index).c_str());
@@ -123,7 +123,7 @@ int main(int argc, char *argv[]) {
     }
     std::string url = parseUrl(argv[1]); // убираем http
     int port = getPortFromUrl(&url);
-    std::cout << url << "\nport = " << port << std::endl;
+//    std::cout << url << "\nport = " << port << std::endl;
     std::string domain = getDomain(url);
     std::string path = getPath(url);
 //    int port = atoi(argv[2]);
@@ -161,9 +161,14 @@ int main(int argc, char *argv[]) {
                     readByte = read(sock, buffer, BUFFER_SIZE - 1);
 //                    std::cout << readByte << "   --   ";
 //                    std::cout  << (int)buffer[readByte-5] << (int)buffer[readByte-4] << (int)buffer[readByte-3] << (int)buffer[readByte-2] << (int)buffer[readByte-1] << std::endl;
+                    if((int)buffer[readByte-5] == '0' && (int)buffer[readByte-5] == '\n' && (int)buffer[readByte-5] == '\r' &&
+                            (int)buffer[readByte-5] == '\n' && (int)buffer[readByte-5] == '0\r') {
+                        std::cout << "end write" << std::endl;
+                    }
                     addToBuffer(&vectorReadStrings, buffer, &rest);
 //                    std::cout << isPrint << "and << " << (currentReadBuf < vectorReadStrings.size()) << std::endl;
-                    while (isPrint && currentReadBuf < vectorReadStrings.size()) { //|| currentReadBuf < vectorReadStrings.size()
+                    while (isPrint &&
+                           currentReadBuf < vectorReadStrings.size()) { //|| currentReadBuf < vectorReadStrings.size()
                         std::cout << vectorReadStrings[currentReadBuf];
                         std::cout.flush();
                         currentReadBuf++;
@@ -187,7 +192,8 @@ int main(int argc, char *argv[]) {
                 } else {
                     if (c == '\n') {
                         isPrint = 1;
-                        while (isPrint && currentReadBuf < vectorReadStrings.size()) { //|| currentReadBuf < vectorReadStrings.size()
+                        while (isPrint && currentReadBuf <
+                                          vectorReadStrings.size()) { //|| currentReadBuf < vectorReadStrings.size()
                             std::cout << vectorReadStrings[currentReadBuf];
                             std::cout.flush();
                             currentReadBuf++;
