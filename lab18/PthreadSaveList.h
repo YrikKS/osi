@@ -62,11 +62,11 @@ void PthreadSaveList<T>::printList() {
     int iteration = 0;
     for (ElementList *elementList = head; elementList != NULL; elementList = elementList->next) {
 //        lockMutexElement(elementList);
-        if (iteration == 0) {
-            std::cout << elementList->value;
-        } else {
-            std::cout << " - " << elementList->value;
-        }
+//        if (iteration == 0) {
+//            std::cout << elementList->value;
+//        } else {
+            std::cout << " - " << elementList->value << std::endl;
+//        }
         iteration++;
 //        unlockMutexElement(elementList);
     }
