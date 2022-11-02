@@ -123,6 +123,7 @@ int main(int argc, char *argv[]) {
     }
     std::string url = parseUrl(argv[1]); // убираем http
     int port = getPortFromUrl(&url);
+    std::cout << url << "\nport = " << port << std::endl;
     std::string domain = getDomain(url);
     std::string path = getPath(url);
 //    int port = atoi(argv[2]);
