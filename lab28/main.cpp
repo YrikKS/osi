@@ -161,9 +161,9 @@ int main(int argc, char *argv[]) {
                     readByte = read(sock, buffer, BUFFER_SIZE - 1);
 //                    std::cout << readByte << "   --   ";
 //                    std::cout  << (int)buffer[readByte-5] << (int)buffer[readByte-4] << (int)buffer[readByte-3] << (int)buffer[readByte-2] << (int)buffer[readByte-1] << std::endl;
-                    if((int)buffer[readByte-5] == '0' && (int)buffer[readByte-5] == '\n' && (int)buffer[readByte-5] == '\r' &&
-                            (int)buffer[readByte-5] == '\n' && (int)buffer[readByte-5] == '\r') {
-                        std::cout << "end write" << std::endl;
+                    if(buffer[readByte-5] == '0' && buffer[readByte-5] == '\n' && buffer[readByte-5] == '\r' &&
+                            buffer[readByte-5] == '\n' && buffer[readByte-5] == '\r') {
+                        std::cout << std::endl << "end write" << std::endl;
                     }
                     addToBuffer(&vectorReadStrings, buffer, &rest);
 //                    std::cout << isPrint << "and << " << (currentReadBuf < vectorReadStrings.size()) << std::endl;
