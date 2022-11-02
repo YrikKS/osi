@@ -179,6 +179,9 @@ int main(int argc, char *argv[]) {
                         }
                     }
                     bzero(buffer, BUFFER_SIZE);
+                    if(currentReadBuf < vectorReadStrings.size() && !socketIsOpen) {
+                        break;
+                    }
                 }
                 if (readByte == 0) {
                     socketIsOpen = false;
@@ -202,6 +205,9 @@ int main(int argc, char *argv[]) {
                                 std::cout << std::endl << "Press enter to scroll down" << std::endl;
                                 isPrint = 0;
                             }
+                        }
+                        if(currentReadBuf < vectorReadStrings.size() && !socketIsOpen) {
+                            break;
                         }
                     }
                     if (c == 'q') {
