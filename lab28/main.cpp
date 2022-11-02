@@ -53,6 +53,8 @@ int getPortFromUrl(std::string url) {
     int index = url.find(":") + 1;
     int indexSlash = url.find("/");
     std::cout << url.substr(index, indexSlash - index) << std::endl;
+    std::string subUrl = url.substr(0, index - 1) + url.substr(indexSlash);
+    std::cout << subUrl << std::endl;
     return 1;
 }
 
