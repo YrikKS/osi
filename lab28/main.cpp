@@ -54,7 +54,7 @@ int getPortFromUrl(std::string* url) {
     int indexSlash = url->find("/");
 //    std::cout << url->substr(index, indexSlash - index) << std::endl;
     (*url) = url->substr(0, index - 1) + url->substr(indexSlash);
-    std::cout << url->substr(index, indexSlash - index).data() << std::endl;
+    std::cout << url->substr(index, indexSlash - index) << std::endl;
     return atoi(url->substr(index, indexSlash - index).data());
 }
 
