@@ -50,7 +50,7 @@ std::string parseUrl(char *url) {
 }
 
 int getPortFromUrl(std::string url) {
-    int index = url.find(":");
+    int index = url.find(":") + 1;
     int indexSlash = url.find("/");
     std::cout << url.substr(index, indexSlash - index) << std::endl;
     return 1;
