@@ -49,13 +49,13 @@ std::string parseUrl(char *url) {
     return subSting;
 }
 
-int getPortFromUrl(std::string url) {
-    int index = url.find(":") + 1;
-    int indexSlash = url.find("/");
-    std::cout << url.substr(index, indexSlash - index) << std::endl;
-    std::string subUrl = url.substr(0, index - 1) + url.substr(indexSlash);
-    std::cout << subUrl << std::endl;
-    return 1;
+int getPortFromUrl(std::string* url) {
+    int index = url->find(":") + 1;
+    int indexSlash = url->find("/");
+//    std::cout << url->substr(index, indexSlash - index) << std::endl;
+    (*url) = url->substr(0, index - 1) + url->substr(indexSlash);
+//    std::cout << subUrl << std::endl;
+    return atoi(url->substr(index, indexSlash - index));
 }
 
 int connectSocket(std::string url, int port) {
@@ -122,10 +122,10 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     std::string url = parseUrl(argv[1]); // убираем http
-    int port1 = getPortFromUrl(url);
+    int port = getPortFromUrl(&url);
     std::string domain = getDomain(url);
     std::string path = getPath(url);
-    int port = atoi(argv[2]);
+//    int port = atoi(argv[2]);
     int sock = connectSocket(domain, port);
     char buffer[BUFFER_SIZE] = {0};
     sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\n\r\n", path.data(), domain.data());
