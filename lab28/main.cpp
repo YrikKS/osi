@@ -186,12 +186,12 @@ int main(int argc, char *argv[]) {
                         }
                     }
                     bzero(buffer, BUFFER_SIZE);
-                    if (currentReadBuf >= vectorReadStrings.size() && !socketIsOpen) {
-                        break;
-                    }
                 }
                 if (readByte == 0) {
                     socketIsOpen = false;
+                }
+                if (currentReadBuf >= vectorReadStrings.size() && !socketIsOpen) {
+                    break;
                 }
             }
             if (poll_set[1].revents & POLLIN) {
