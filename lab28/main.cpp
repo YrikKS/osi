@@ -129,8 +129,9 @@ int main(int argc, char *argv[]) {
 //    int port = atoi(argv[2]);
     int sock = connectSocket(domain, port);
     char buffer[BUFFER_SIZE] = {0};
-    sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\n\r\n", path.data(), domain.data());
+    sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\nConnection: close\r\n\r\n", path.data(), domain.data());
     write(sock, buffer, strlen(buffer));
+    bzero(buffer, BUFFER_SIZE);
 
     struct pollfd poll_set[2] = {0};
     poll_set[0].fd = sock;
@@ -161,10 +162,10 @@ int main(int argc, char *argv[]) {
                     readByte = read(sock, buffer, BUFFER_SIZE - 1);
 //                    std::cout << readByte << "   --   ";
 //                    std::cout  << (int)buffer[readByte-5] << (int)buffer[readByte-4] << (int)buffer[readByte-3] << (int)buffer[readByte-2] << (int)buffer[readByte-1] << std::endl;
-                    if(buffer[readByte-5] == '0' && buffer[readByte-5] == '\n' && buffer[readByte-5] == '\r' &&
-                            buffer[readByte-5] == '\n' && buffer[readByte-5] == '\r') {
-                        std::cout << std::endl << "end write" << std::endl;
-                    }
+//                    if(buffer[readByte-5] == '0' && buffer[readByte-5] == '\n' && buffer[readByte-5] == '\r' &&
+//                            buffer[readByte-5] == '\n' && buffer[readByte-5] == '\r') {
+//                        std::cout << std::endl << "end write" << std::endl;
+//                    }
                     addToBuffer(&vectorReadStrings, buffer, &rest);
 //                    std::cout << isPrint << "and << " << (currentReadBuf < vectorReadStrings.size()) << std::endl;
                     while (isPrint &&
