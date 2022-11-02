@@ -49,6 +49,13 @@ std::string parseUrl(char *url) {
     return subSting;
 }
 
+int getPortFromUrl(std::string url) {
+    int index = url.find(":");
+    int indexSlash = url.find("/");
+    std::cout << url.substr(index, indexSlash - index) << std::endl;
+    return 1;
+}
+
 int connectSocket(std::string url, int port) {
     struct hostent *hostent = gethostbyname(url.data());
     if (hostent == NULL) {
@@ -113,6 +120,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     std::string url = parseUrl(argv[1]); // убираем http
+    int port1 = getPortFromUrl(url);
     std::string domain = getDomain(url);
     std::string path = getPath(url);
     int port = atoi(argv[2]);
@@ -202,3 +210,8 @@ int main(int argc, char *argv[]) {
 // добавить порт
 // первый 25 + распарсить их
 // nc
+
+
+// port :
+//завершение при окончании
+// вывод заголовка запроса ???
