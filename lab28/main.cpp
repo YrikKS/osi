@@ -55,7 +55,7 @@ int getPortFromUrl(std::string* url) {
 //    std::cout << url->substr(index, indexSlash - index) << std::endl;
     (*url) = url->substr(0, index - 1) + url->substr(indexSlash);
 //    std::cout << subUrl << std::endl;
-    return atoi(url->substr(index, indexSlash - index));
+    return atoi(url->substr(index, indexSlash - index).data());
 }
 
 int connectSocket(std::string url, int port) {
@@ -117,7 +117,7 @@ void addToBuffer(std::vector<std::string> *vectorReadStrings, char *readBuf, std
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 3) {
+    if (argc != 2) {
         std::cout << "Incorrect args!\n exampl: " << argv[0] << "<https://<hostName>" << std::endl;
         return 1;
     }
