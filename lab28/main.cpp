@@ -166,7 +166,7 @@ int main(int argc, char *argv[]) {
 //            break;
         } else {
             if (poll_set[0].revents & POLLIN) {
-                std::cout << poll_set[0].revents << " || " << (poll_set[0].revents & POLLIN) << std::endl;
+//                std::cout << poll_set[0].revents << " || " << (poll_set[0].revents & POLLIN) << std::endl;
                 poll_set[0].revents = 0;
                 int readByte;
                 if (socketIsOpen) {
