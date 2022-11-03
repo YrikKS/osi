@@ -20,6 +20,8 @@ namespace ProxyServer {
 
         char *readBuf() override;
 
+        ~ClientImpl();
+
     private:
         int fd;
 

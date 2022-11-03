@@ -3,6 +3,7 @@
 //
 
 #include <cstring>
+#include <io.h>
 #include "ClientImpl.h"
 
 void ProxyServer::ClientImpl::sendResponse() {
@@ -23,4 +24,8 @@ char *ProxyServer::ClientImpl::readBuf() {
 
 ProxyServer::ClientImpl::ClientImpl(int sock) {
     fd = sock;
+}
+
+ProxyServer::ClientImpl::~ClientImpl() {
+    close(fd);
 }
