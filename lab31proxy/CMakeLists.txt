@@ -23,7 +23,7 @@ add_executable(lab31proxy
         Socket/ServerSocketImpl.h
         )
 
-target_link_libraries(lab1
+target_link_libraries(lab31proxy
         ${Boost_LIBRARIES}
 #        ${BOOST_ROOT}/libs/regex/src/regex.cpp
 #        ${BOOST_ROOT}/libs/regex/src/static_mutex.cpp
