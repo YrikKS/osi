@@ -20,6 +20,7 @@ void ServerImpl::startServer() {
             handlingEvent();
             if (_pollSet[0].revents & POLLIN) { // poll sock
                 _pollSet[0].revents = 0;
+                std::cout << "add new client" << std::endl;
                 _clientList.push_back(_serverSocket->acceptNewClient());
                 updatePollFd();
                 //TODO client connect: create Client + add to _pollSet
@@ -53,6 +54,7 @@ void ServerImpl::handlingEvent() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         if (_pollSet[i].revents & POLLIN) { // poll sock
             _pollSet[i].revents = 0;
+            std::cout << "read" << std::endl;
             (*it)->readBuf();
         }
     }
