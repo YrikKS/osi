@@ -14,10 +14,10 @@ int ProxyServer::ServerSocketImpl::connectSocket() {
 
     struct sockaddr_in sockAddr;
     sockAddr.sin_port = htons(PORT_SERVER_SOCKET);
-    sockAddr.sin_addr.s_addr = INADDR_ANY;
+//    sockAddr.sin_addr.s_addr = INADDR_ANY;
     sockAddr.sin_family = AF_INET;
 
-    if (bind(sockFd, (struct sockaddr*) &sockAddr, sizeof(struct sockaddr_in)) < 0) {                                                                                         // назначаем имя сокету
+    if (bind(sockFd, (struct sockaddr_in*) &sockAddr, sizeof(struct sockaddr_in)) < 0) {                                                                                         // назначаем имя сокету
         perror("bind");
         return 2;
     }
