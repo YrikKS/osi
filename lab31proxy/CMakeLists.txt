@@ -24,12 +24,13 @@ add_executable(lab31proxy
         Socket/ServerSocket.h
         Socket/ServerSocketImpl.cpp
         Socket/ServerSocketImpl.h
+        boost/version.hpp
         )
 #include_directories(${Boost_INCLUDE_DIRS})
 
-target_link_libraries(lab31proxy
-        boost/version.hpp
+#target_link_libraries(lab31proxy
+#        boost/version.hpp
 #        ${BOOST_ROOT}/libs/regex/src/regex.cpp
 #        ${BOOST_ROOT}/libs/regex/src/static_mutex.cpp
 #        ${BOOST_ROOT}/libs/thread/src/win32/thread.cpp
-        )
+#        )
