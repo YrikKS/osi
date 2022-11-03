@@ -38,7 +38,7 @@ ProxyServer::Client *ProxyServer::ServerSocketImpl::acceptNewClient() {
     int clientSock = 0;
     struct sockaddr clientAddr;
     socklen_t len = 0;
-    if ((clientSock = accept(sockFd, (struct sockaddr *) &clientAddr, &len)) <
+    if ((clientSock = accept(proxyServerSocket_, (struct sockaddr *) &clientAddr, &len)) <
         0) {                                                                                                         // вытаскивает из очереди 1 элемент и устанавливает соединение
         perror("accept");
         return NULL; // TODO exeption
