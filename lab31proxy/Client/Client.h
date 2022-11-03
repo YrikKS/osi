@@ -10,7 +10,7 @@ namespace ProxyServer {
     public:
         virtual void sendResponse() = 0;
 
-        virtual void getFdClient() = 0;
+        virtual int getFdClient() = 0;
 
         virtual void sendBuf(char *buf) = 0;
 

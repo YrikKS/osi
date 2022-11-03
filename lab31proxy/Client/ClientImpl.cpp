@@ -8,8 +8,8 @@ void ProxyServer::ClientImpl::sendResponse() {
 
 }
 
-void ProxyServer::ClientImpl::getFdClient() {
-
+int ProxyServer::ClientImpl::getFdClient() {
+    return fd;
 }
 
 void ProxyServer::ClientImpl::sendBuf(char *buf) {
