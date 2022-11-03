@@ -38,6 +38,8 @@ void ServerImpl::updatePollFd() {
 
     int i = 1;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
+        std::cout << "updatePollFd" << std::endl;
+        std::cout << "client fd = " << (*it)->getFdClient() << std::endl;
         _pollSet[i].fd = (*it)->getFdClient();
         _pollSet[i].events = POLLIN;
     }
