@@ -3,7 +3,7 @@
 //
 
 #include <cstring>
-#include <io.h>
+#include <unistd.h>
 #include "ClientImpl.h"
 
 void ProxyServer::ClientImpl::sendResponse() {
