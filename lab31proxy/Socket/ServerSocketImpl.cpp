@@ -52,5 +52,6 @@ void ProxyServer::ServerSocketImpl::closeSocket() {
 }
 
 ProxyServer::ServerSocketImpl::~ServerSocketImpl() {
-    closeSocket();
+    std::cout << "del" << std::endl;
+    close(serverSocket_);
 }
