@@ -28,7 +28,7 @@ namespace ProxyServer {
         void handlingEvent();
         bool _isWork = true;
         ServerSocket* _serverSocket;
-        struct pollfd _pollSet[MAX_COUNT_CONNECTIONS] = {0};
+        struct pollfd _pollSet[MAX_COUNT_CONNECTIONS];
         std::list<Client*> _clientList;
     };
 }

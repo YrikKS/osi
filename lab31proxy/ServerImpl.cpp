@@ -43,6 +43,7 @@ void ServerImpl::updatePollFd() {
 }
 
 ServerImpl::ServerImpl() {
+    memset(_pollSet, 0, MAX_COUNT_CONNECTIONS * sizeof(struct pollfd));
     _serverSocket = new ServerSocketImpl();
     _serverSocket->connectSocket();
 }
