@@ -13,6 +13,7 @@
 #include <iostream>
 #include <sys/poll.h>
 #include <termios.h>
+#include <sys/stat.h>
 
 #define BUFFER_SIZE 1024
 #define COUNT_BUFFER 330
@@ -145,7 +146,9 @@ int main(int argc, char *argv[]) {
     poll_set[0].events = POLLIN;
     poll_set[1].fd = 0;
     poll_set[1].events = POLLIN;
-
+    int file = open("file.txt", O_RDONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+    poll_set.fd = file;
+    poll_set.events = POLLIN;
 //    char **bufferFromRead = bufferInit();
     std::vector<std::string> vectorReadStrings;
     std::string rest;
@@ -163,6 +166,7 @@ int main(int argc, char *argv[]) {
 //            break;
         } else {
             if (poll_set[0].revents & POLLIN) {
+                std::cout << poll_set[0].revents << " || " << (poll_set[0].revents & POLLIN) << std::endl;
                 poll_set[0].revents = 0;
                 int readByte;
                 if (socketIsOpen) {
