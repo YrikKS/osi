@@ -22,6 +22,7 @@ add_executable(lab31proxy
         Socket/ServerSocketImpl.cpp
         Socket/ServerSocketImpl.h
         )
+include_directories(${Boost_INCLUDE_DIRS})
 
 target_link_libraries(lab31proxy
         ${Boost_LIBRARIES}
