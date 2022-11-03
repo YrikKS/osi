@@ -35,8 +35,8 @@ void ServerImpl::updatePollFd() {
 
     int i = 1;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-        poll_set[i].fd = (*it)->getFdClient();
-        poll_set[i].events = POLLIN;
+        _pollSet[i].fd = (*it)->getFdClient();
+        _pollSet[i].events = POLLIN;
     }
 }
 
@@ -48,7 +48,7 @@ ServerImpl::ServerImpl() {
 void ServerImpl::handlingEvent() {
     int i = 0;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-        if (poll_set[i].revents & POLLIN) { // poll sock
+        if (_pollSet[i].revents & POLLIN) { // poll sock
             (*it)->readBuf();
         }
     }
