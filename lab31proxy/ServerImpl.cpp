@@ -23,7 +23,7 @@ void ServerImpl::startServer() {
                 std::cout << "add new client" << std::endl;
                 _clientList.push_back(_serverSocket->acceptNewClient());
                 updatePollFd();
-                //TODO client connect: create Client + add to _pollSet
+                //TODO client connect: create client + add to _pollSet
             }
         }
     }

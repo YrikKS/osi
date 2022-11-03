@@ -10,21 +10,20 @@ set(CMAKE_CXX_FLAGS -std=c++11)
 #FIND_PACKAGE(Boost)
 #add_executable(testSocket
 #        main.cpp
-#        Socket/ServerSocketImpl.cpp
-#        Client/ClientImpl.cpp
-#        Client/Client.h
+#        socket/ServerSocketImpl.cpp
+#        client/ClientImpl.cpp
+#        client/client.h
 #        )
 add_executable(lab31proxy
         main.cpp
         Server.h
         ServerImpl.cpp
         Constants.h
-        Client/Client.h
-        Client/ClientImpl.cpp
-        Socket/ServerSocket.h
-        Socket/ServerSocketImpl.cpp
-        Socket/ServerSocketImpl.h
-        boost/version.hpp
+        client/Client.h
+        client/ClientImpl.cpp
+        socket/ServerSocket.h
+        socket/ServerSocketImpl.cpp
+        socket/ServerSocketImpl.h
         )
 #include_directories(${Boost_INCLUDE_DIRS})
 
