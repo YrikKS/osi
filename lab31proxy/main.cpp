@@ -1,5 +1,4 @@
 #include <iostream>
-#include "Client/ClientsContainer.h"
 #include "Socket/ServerSocketImpl.h"
 
 int main() {
