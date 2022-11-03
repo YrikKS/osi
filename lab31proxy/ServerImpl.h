@@ -13,17 +13,23 @@
 #include <list>
 #include "Constants.h"
 #include "Client/Client.h"
+#include "Socket/ServerSocket.h"
+#include "Socket/ServerSocketImpl.h"
 
 namespace ProxyServer {
     class ServerImpl : public Server {
     public:
+        ServerImpl();
         void startServer() override;
 
+
     private:
-        bool isWork = true;
-        int countClient = 0;
-        struct pollfd *pollSet;
-        std::list<Client> clientList;
+        void updatePollFd();
+        void handlingEvent();
+        bool _isWork = true;
+        ServerSocket* _serverSocket;
+        struct pollfd _pollSet[MAX_COUNT_CONNECTIONS] = {0};
+        std::list<Client*> _clientList;
     };
 }
 

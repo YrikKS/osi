@@ -21,7 +21,7 @@ int ProxyServer::ServerSocketImpl::connectSocket() {
         perror("bind");
         return 2;
     }
-    std::cout << "listen" << std::endl;
+
     if (listen(sockFd, 3) <
         0) {                                                                                                                                                 // выразить готовность принимать входящие соединения и задать размер очереди
         perror("listen");
@@ -52,6 +52,5 @@ void ProxyServer::ServerSocketImpl::closeSocket() {
 }
 
 ProxyServer::ServerSocketImpl::~ServerSocketImpl() {
-    std::cout << "del" << std::endl;
     close(serverSocket_);
 }
