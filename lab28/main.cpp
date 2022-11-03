@@ -146,9 +146,9 @@ int main(int argc, char *argv[]) {
     poll_set[0].events = POLLIN;
     poll_set[1].fd = 0;
     poll_set[1].events = POLLIN;
-    int file = open("file.txt", O_RDONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-    poll_set.fd = file;
-    poll_set.events = POLLIN;
+//    int file = open("file.txt", O_RDONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+//    poll_set.fd = file;
+//    poll_set.events = POLLIN;
 //    char **bufferFromRead = bufferInit();
     std::vector<std::string> vectorReadStrings;
     std::string rest;
