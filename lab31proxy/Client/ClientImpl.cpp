@@ -21,6 +21,7 @@ void ProxyServer::ClientImpl::sendBuf(char *buf) {
 
 char *ProxyServer::ClientImpl::readBuf() {
     char buf[1024] = {0};
+    std::cout << "read :: size == ";
     std::cout << read(fd, buf, 1024 - 1) << std::endl;
     std::cout << buf << std::endl;
     return NULL;

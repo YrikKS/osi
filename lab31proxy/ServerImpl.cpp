@@ -52,7 +52,7 @@ ServerImpl::ServerImpl() {
 }
 
 void ServerImpl::handlingEvent() {
-    int i = 0;
+    int i = 1;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         if (_pollSet[i].revents & POLLIN) { // poll sock
             _pollSet[i].revents = 0;
