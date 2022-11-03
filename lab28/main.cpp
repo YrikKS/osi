@@ -136,7 +136,7 @@ int main(int argc, char *argv[]) {
 //    int port = atoi(argv[2]);
     int sock = connectSocket(domain, port);
     char buffer[BUFFER_SIZE] = {0};
-    sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\nConnection: close\r\n\r\n", path.data(),
+    sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\nConnection: close\r\nContent-Length: 1\r\n\r\n", path.data(),
             domain.data());
     write(sock, buffer, strlen(buffer));
     bzero(buffer, BUFFER_SIZE);
