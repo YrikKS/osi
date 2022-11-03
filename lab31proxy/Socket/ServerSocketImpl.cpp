@@ -44,6 +44,7 @@ int ProxyServer::ServerSocketImpl::connectSocket() {
         }
         printf("\n");
     }
+    close(sockFd);
 }
 
 int ProxyServer::ServerSocketImpl::getFdSocket() {
