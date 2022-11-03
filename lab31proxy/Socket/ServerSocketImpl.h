@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <sys/un.h>
 #include <unistd.h>
+#include <netinet/in.h>
 #include "../Constants.h"
 
 namespace ProxyServer {
