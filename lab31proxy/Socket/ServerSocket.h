@@ -4,6 +4,9 @@
 
 #ifndef LAB31PROXY_SERVERSOCKET_H
 #define LAB31PROXY_SERVERSOCKET_H
+
+#include "Client/Client.h"
+
 namespace ProxyServer {
     class ServerSocket {
     public:
@@ -11,7 +14,9 @@ namespace ProxyServer {
 
         virtual int getFdSocket() = 0;
 
-        virtual int acceptNewClient() = 0;
+        virtual Client* acceptNewClient() = 0;
+
+        virtual void closeSocket() = 0;
     };
 }
 #endif //LAB31PROXY_SERVERSOCKET_H

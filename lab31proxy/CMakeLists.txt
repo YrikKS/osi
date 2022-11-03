@@ -7,12 +7,12 @@ add_executable(testSocket
         main.cpp
         Socket/ServerSocketImpl.cpp
         )
-#add_executable(lab31proxy main.cpp
-#        Server.h
-#        ServerImpl.cpp
-#        Constants.h
-#        Client/Client.h
-#        Client/ClientImpl.cpp
-#        Socket/ServerSocket.h
-#        Socket/ServerSocketImpl.cpp Socket/ServerSocketImpl.h
-#        )
+add_executable(lab31proxy main.cpp
+        Server.h
+        ServerImpl.cpp
+        Constants.h
+        Client/Client.h
+        Client/ClientImpl.cpp
+        Socket/ServerSocket.h
+        Socket/ServerSocketImpl.cpp Socket/ServerSocketImpl.h
+        )

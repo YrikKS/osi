@@ -7,7 +7,7 @@
 
 int ProxyServer::ServerSocketImpl::connectSocket() {
     int sockFd = 0;
-    if ((sockFd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
+    if ((sockFd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         perror("socket");
         return 1;
     }
@@ -17,41 +17,36 @@ int ProxyServer::ServerSocketImpl::connectSocket() {
     sockAddr.sin_addr.s_addr = INADDR_ANY;
     sockAddr.sin_family = AF_INET;
 
-    if (bind(sockFd, (struct sockaddr*) &sockAddr, sizeof(struct sockaddr_in)) < 0) {                                                                                         // назначаем имя сокету
+    if (bind(sockFd, (struct sockaddr *) &sockAddr, sizeof(struct sockaddr_in)) < 0) {
         perror("bind");
         return 2;
     }
     std::cout << "listen" << std::endl;
-    if (listen(sockFd, 3) < 0) {                                                                                                                                                 // выразить готовность принимать входящие соединения и задать размер очереди
+    if (listen(sockFd, 3) <
+        0) {                                                                                                                                                 // выразить готовность принимать входящие соединения и задать размер очереди
         perror("listen");
         return 3;
     }
-
-    int clientSock = 0;
-    struct sockaddr clientAddr;
-    socklen_t len = 0;                                                                                                                                                             //  перед вызовом он содержит размер структуры, на которую ссылается addr, а после вызова~-- действительную длину адреса в байтах
-    std::cout << "accept" << std::endl;
-    if ((clientSock = accept(sockFd, (struct sockaddr *)&clientAddr, &len)) < 0) {                                                                                                         // вытаскивает из очереди 1 элемент и устанавливает соединение
-        perror("accept");
-        return 4;
-    }
-    std::cout << "read" << std::endl;
-    char buffer[1024] = {0};
-    int strSize = 0;
-    while ((strSize = recv(clientSock, buffer, 1023, 0) > 0)) {
-        for (int i = 0; i < strSize; ++i){
-            printf("%c", toupper(buffer[i]));
-        }
-        printf("\n");
-    }
-    close(sockFd);
+    proxyServerSocket_ = sockFd;
 }
 
 int ProxyServer::ServerSocketImpl::getFdSocket() {
-    return fdSocket;
+    return proxyServerSocket_;
 }
 
-int ProxyServer::ServerSocketImpl::acceptNewClient() {
+ProxyServer::Client *ProxyServer::ServerSocketImpl::acceptNewClient() {
+    int clientSock = 0;
+    struct sockaddr clientAddr;
+    socklen_t len = 0;
+    if ((clientSock = accept(sockFd, (struct sockaddr *) &clientAddr, &len)) <
+        0) {                                                                                                         // вытаскивает из очереди 1 элемент и устанавливает соединение
+        perror("accept");
+        return NULL; // TODO exeption
+    }
+    Client *client = new ClientImpl(clientSock);
+    return client;
+}
 
-    return 0;
+void ProxyServer::ServerSocketImpl::closeSocket() {
+    close(proxyServerSocket_);
 }
