@@ -50,3 +50,7 @@ ProxyServer::Client *ProxyServer::ServerSocketImpl::acceptNewClient() {
 void ProxyServer::ServerSocketImpl::closeSocket() {
     close(serverSocket_);
 }
+
+ProxyServer::ServerSocketImpl::~ServerSocketImpl() {
+    closeSocket();
+}

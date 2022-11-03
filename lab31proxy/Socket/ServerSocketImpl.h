@@ -30,6 +30,8 @@ namespace ProxyServer {
 
         void closeSocket() override;
 
+        ~ServerSocketImpl();
+
     private:
         int serverSocket_;
     };
