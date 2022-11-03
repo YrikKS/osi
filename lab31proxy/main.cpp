@@ -1,10 +1,9 @@
 #include <iostream>
-#include "Socket/ServerSocketImpl.h"
+#include "ServerImpl.h"
+
 
 int main() {
-    ProxyServer::ServerSocketImpl serverSocket;
-    serverSocket.connectSocket();
-    ProxyServer::Client* client = serverSocket.acceptNewClient();
-    std::cout << "client fd == " << client->getFdClient() << std::endl;
+    ProxyServer::ServerImpl server = ProxyServer::ServerImpl();
+    server.startServer();
     return 0;
 }

@@ -7,6 +7,7 @@
 using namespace ProxyServer;
 
 void ServerImpl::startServer() {
+    updatePollFd();
     while (_isWork) {
         int code = poll(_pollSet, _clientList.size() + 1, TIME_OUT_POLL);
 
@@ -17,7 +18,8 @@ void ServerImpl::startServer() {
             //??
         } else {
             handlingEvent();
-            if (poll_set[0].revents & POLLIN) { // poll sock
+            if (_pollSet[0].revents & POLLIN) { // poll sock
+                _pollSet[0].revents = 0;
                 _clientList.push_back(_serverSocket->acceptNewClient());
                 updatePollFd();
                 //TODO client connect: create Client + add to _pollSet
@@ -49,6 +51,7 @@ void ServerImpl::handlingEvent() {
     int i = 0;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         if (_pollSet[i].revents & POLLIN) { // poll sock
+            _pollSet[i].revents = 0;
             (*it)->readBuf();
         }
     }
