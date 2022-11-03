@@ -21,7 +21,7 @@ int ProxyServer::ServerSocketImpl::connectSocket() {
         perror("bind");
         return 2;
     }
-
+    std::cout << "listen" << std::endl;
     if (listen(sockFd, 3) < 0) {                                                                                                                                                 // выразить готовность принимать входящие соединения и задать размер очереди
         perror("listen");
         return 3;
@@ -30,12 +30,12 @@ int ProxyServer::ServerSocketImpl::connectSocket() {
     int clientSock = 0;
     struct sockaddr clientAddr;
     socklen_t len = 0;                                                                                                                                                             //  перед вызовом он содержит размер структуры, на которую ссылается addr, а после вызова~-- действительную длину адреса в байтах
-
+    std::cout << "accept" << std::endl;
     if ((clientSock = accept(sockFd, (struct sockaddr *)&clientAddr, &len)) < 0) {                                                                                                         // вытаскивает из очереди 1 элемент и устанавливает соединение
         perror("accept");
         return 4;
     }
-
+    std::cout << "read" << std::endl;
     char buffer[1024] = {0};
     int strSize = 0;
     while ((strSize = recv(clientSock, buffer, 1023, 0) > 0)) {
