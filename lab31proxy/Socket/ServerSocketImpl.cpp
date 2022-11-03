@@ -27,18 +27,18 @@ int ProxyServer::ServerSocketImpl::connectSocket() {
         perror("listen");
         return 3;
     }
-    proxyServerSocket_ = sockFd;
+    serverSocket_ = sockFd;
 }
 
 int ProxyServer::ServerSocketImpl::getFdSocket() {
-    return proxyServerSocket_;
+    return serverSocket_;
 }
 
 ProxyServer::Client *ProxyServer::ServerSocketImpl::acceptNewClient() {
     int clientSock = 0;
     struct sockaddr clientAddr;
     socklen_t len = 0;
-    if ((clientSock = accept(proxyServerSocket_, (struct sockaddr *) &clientAddr, &len)) <
+    if ((clientSock = accept(serverSocket_, (struct sockaddr *) &clientAddr, &len)) <
         0) {                                                                                                         // вытаскивает из очереди 1 элемент и устанавливает соединение
         perror("accept");
         return NULL; // TODO exeption
@@ -48,5 +48,5 @@ ProxyServer::Client *ProxyServer::ServerSocketImpl::acceptNewClient() {
 }
 
 void ProxyServer::ServerSocketImpl::closeSocket() {
-    close(proxyServerSocket_);
+    close(serverSocket_);
 }
