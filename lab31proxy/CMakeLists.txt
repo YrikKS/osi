@@ -4,6 +4,9 @@ project(lab31proxy)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_FLAGS -pthread)
 set(CMAKE_CXX_FLAGS -std=c++11)
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
 FIND_PACKAGE(Boost)
 #add_executable(testSocket
 #        main.cpp
