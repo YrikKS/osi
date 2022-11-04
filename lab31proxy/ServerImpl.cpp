@@ -89,11 +89,11 @@ void ServerImpl::handlingReadBuf(char *buf, Client *client) {
     std::cout << buf << std::endl;
     if (client->getStatusRequest() == STATUS_REQUEST::READ_REQUEST_HEADING) {
         int posEndHeading = 0;
-        if (ParserImpl::pars(buf, &posEndHeading) == ResultPars::END_REQUEST_HEADING) {
+        if (ParserImpl::findEndHeading(buf, &posEndHeading) == ResultPars::END_REQUEST_HEADING) {
             client->setStatusRequest(STATUS_REQUEST::READ_REQUEST_BODY);
             client->setRequestHeading(client->getRequestHeading() + std::string(buf).substr(0, posEndHeading));
-            std::cout << "all heading == " << std::endl;
-            std::cout << client->getRequestHeading() << std::endl;
+            ParserImpl::parsingHeading(client->getRequestHeading());
+            //TODO может быть подругому ???
         } else {
             client->setRequestHeading(client->getRequestHeading() + std::string(buf));
         }
