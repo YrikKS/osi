@@ -58,6 +58,7 @@ void ServerImpl::handlingEvent() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         if (_pollSet[i].revents & POLLIN) { // poll sock
             _pollSet[i].revents = 0;
+            memset(buf, 0, BUF_SIZE);
             int countByteRead = (*it)->readBuf(buf);
             if (countByteRead == 0) {
                 LOG_EVENT("user logout");
