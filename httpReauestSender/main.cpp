@@ -14,7 +14,6 @@
 #include <sys/poll.h>
 #include <termios.h>
 #include <sys/stat.h>
-#include <lm.h>
 
 #define BUFFER_SIZE 1024
 #define COUNT_BUFFER 330
