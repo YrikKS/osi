@@ -63,6 +63,7 @@ void ServerImpl::handlingEvent() {
                 _clientList.erase(it);
                 delete (*it);
 //                isNeedUpdatePollSet = true;
+                LOG_EVENT("user logout");
                 updatePollFd();
             } else {
 
