@@ -60,14 +60,15 @@ void ServerImpl::handlingEvent() {
             _pollSet[i].revents = 0;
             int countByteRead = (*it)->readBuf(buf);
             if(countByteRead == 0) {
+                delete (*it);
                 _clientList.erase(it);
-                isNeedUpdatePollSet = true;
+//                isNeedUpdatePollSet = true;
+                updatePollFd();
             } else {
 
             }
         }
     }
-    updatePollFd();
 }
 
 void ServerImpl::handlingReadBuf(char* buf) {
