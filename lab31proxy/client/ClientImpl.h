@@ -12,13 +12,11 @@ namespace ProxyServer {
     public:
         explicit ClientImpl(int sock);
 
-        void sendResponse() override;
-
         int getFdClient() override;
 
         void sendBuf(char *buf) override;
 
-        char *readBuf() override;
+        int readBuf(char *buf) override;
 
         ~ClientImpl();
 

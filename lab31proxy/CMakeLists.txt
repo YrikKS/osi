@@ -8,12 +8,10 @@ set(CMAKE_CXX_FLAGS -std=c++11)
 #set(Boost_USE_MULTITHREADED ON)
 #set(Boost_USE_STATIC_RUNTIME OFF)
 #FIND_PACKAGE(Boost)
-#add_executable(testSocket
-#        main.cpp
-#        socket/ServerSocketImpl.cpp
-#        client/ClientImpl.cpp
-#        client/client.h
-#        )
+add_executable(testlog
+        main.cpp
+        logger/Logger.h
+        )
 add_executable(lab31proxy
         main.cpp
         Server.h
@@ -24,7 +22,7 @@ add_executable(lab31proxy
         socket/ServerSocket.h
         socket/ServerSocketImpl.cpp
         socket/ServerSocketImpl.h
-        )
+        parser/ParserTypeRequest.h parser/ParserImpl.cpp parser/ParserImpl.h logger/Logger.h)
 #include_directories(${Boost_INCLUDE_DIRS})
 
 #target_link_libraries(lab31proxy

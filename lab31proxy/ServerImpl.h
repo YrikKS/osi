@@ -7,6 +7,7 @@
 
 
 #include "Server.h"
+#include "logger/Logger.h"
 #include <poll.h>
 #include <iostream>
 #include <map>
@@ -26,6 +27,7 @@ namespace ProxyServer {
     private:
         void updatePollFd();
         void handlingEvent();
+        void handlingReadBuf(char* buf);
         bool _isWork = true;
         ServerSocket* _serverSocket;
         struct pollfd _pollSet[MAX_COUNT_CONNECTIONS];

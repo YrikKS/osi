@@ -12,6 +12,7 @@ void ServerImpl::startServer() {
         int code = poll(_pollSet, _clientList.size() + 1, TIME_OUT_POLL);
 
         if (code == -1) {
+            LOG_ERROR("poll error");
             perror("poll error");
             //TODO exit
         } else if (code == 0) {
@@ -20,7 +21,7 @@ void ServerImpl::startServer() {
             handlingEvent();
             if (_pollSet[0].revents & POLLIN) { // poll sock
                 _pollSet[0].revents = 0;
-                std::cout << "add new client" << std::endl;
+                LOG_EVENT("add new client");
                 _clientList.push_back(_serverSocket->acceptNewClient());
                 updatePollFd();
                 //TODO client connect: create client + add to _pollSet
@@ -32,14 +33,13 @@ void ServerImpl::startServer() {
 
 
 void ServerImpl::updatePollFd() {
+    LOG_EVENT("update pollSet");
     memset(_pollSet, 0, MAX_COUNT_CONNECTIONS * sizeof(struct pollfd));
     _pollSet[0].fd = _serverSocket->getFdSocket();
     _pollSet[0].events = POLLIN;
 
     int i = 1;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-        std::cout << "updatePollFd" << std::endl;
-        std::cout << "client fd = " << (*it)->getFdClient() << std::endl;
         _pollSet[i].fd = (*it)->getFdClient();
         _pollSet[i].events = POLLIN;
     }
@@ -53,11 +53,23 @@ ServerImpl::ServerImpl() {
 
 void ServerImpl::handlingEvent() {
     int i = 1;
+    char buf[1024] = {0};
+    bool isNeedUpdatePollSet = false;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         if (_pollSet[i].revents & POLLIN) { // poll sock
             _pollSet[i].revents = 0;
-            std::cout << "read" << std::endl;
-            (*it)->readBuf();
+            int countByteRead = (*it)->readBuf(buf);
+            if(countByteRead == 0) {
+                _clientList.erase(it);
+                isNeedUpdatePollSet = true;
+            } else {
+
+            }
         }
     }
+    updatePollFd();
+}
+
+void ServerImpl::handlingReadBuf(char* buf) {
+    std::cout << "handlingEvent" << std::endl;
 }

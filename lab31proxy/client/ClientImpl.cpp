@@ -6,25 +6,18 @@
 #include <unistd.h>
 #include <iostream>
 #include "ClientImpl.h"
-
-void ProxyServer::ClientImpl::sendResponse() {
-
-}
+#include "../Constants.h"
 
 int ProxyServer::ClientImpl::getFdClient() {
     return fd;
 }
 
 void ProxyServer::ClientImpl::sendBuf(char *buf) {
-
+    write(fd, buf, BUF_SIZE);
 }
 
-char *ProxyServer::ClientImpl::readBuf() {
-    char buf[1024] = {0};
-    std::cout << "read :: size == ";
-    std::cout << read(fd, buf, 1024 - 1) << std::endl;
-    std::cout << buf << std::endl;
-    return NULL;
+int ProxyServer::ClientImpl::readBuf(char *buf) {
+    return read(fd, buf, BUF_SIZE);
 }
 
 ProxyServer::ClientImpl::ClientImpl(int sock) {

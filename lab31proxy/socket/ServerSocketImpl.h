@@ -6,6 +6,7 @@
 #define LAB31PROXY_SERVERSOCKETIMPL_H
 
 #include "ServerSocket.h"
+#include "../logger/Logger.h"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <ctype.h>

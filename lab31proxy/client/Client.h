@@ -8,13 +8,11 @@
 namespace ProxyServer {
     class Client {
     public:
-        virtual void sendResponse() = 0;
-
         virtual int getFdClient() = 0;
 
         virtual void sendBuf(char *buf) = 0;
 
-        virtual char *readBuf() = 0;
+        virtual int readBuf(char *buf) = 0;
 
     };
 }
