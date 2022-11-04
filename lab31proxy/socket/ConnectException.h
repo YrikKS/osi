@@ -12,7 +12,9 @@ namespace ProxyServer {
     public:
         explicit ConnectException(std::string msg) : msg(std::move(msg)) {}
 
-        [[nodiscard]] const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_USE_NOEXCEPT override { return msg.c_str(); }
+        const char* what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_USE_NOEXCEPT override {
+            return msg.c_str();
+        }
 
     private:
         std::string msg{};
