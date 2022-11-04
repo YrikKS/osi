@@ -8,6 +8,7 @@ using namespace ProxyServer;
 
 void ServerImpl::startServer() {
     updatePollFd();
+    std::cout << "start server" << std::endl;
     while (_isWork) {
         int code = poll(_pollSet, _clientList.size() + 1, TIME_OUT_POLL);
 
@@ -84,8 +85,8 @@ void ServerImpl::handlingEvent() {
 
 void ServerImpl::handlingReadBuf(char *buf, Client *client) {
     LOG_EVENT("Handling event read");
-//    std::cout << "handlingEvent" << std::endl;
-//    std::cout << buf << std::endl;
+    std::cout << "handlingEvent" << std::endl;
+    std::cout << buf << std::endl;
     if (client->getStatusRequest() == STATUS_REQUEST::READ_REQUEST_HEADING) {
         int posEndHeading = 0;
         if (ParserImpl::pars(buf, &posEndHeading) == ResultPars::END_REQUEST_HEADING) {
