@@ -5,7 +5,7 @@
 #ifndef LAB31PROXY_SERVERSOCKET_H
 #define LAB31PROXY_SERVERSOCKET_H
 
-#include "../Client/Client.h"
+#include "../client/Client.h"
 
 namespace ProxyServer {
     class ServerSocket {
