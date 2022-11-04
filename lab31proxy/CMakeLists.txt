@@ -8,10 +8,10 @@ set(CMAKE_CXX_FLAGS -std=c++11)
 #set(Boost_USE_MULTITHREADED ON)
 #set(Boost_USE_STATIC_RUNTIME OFF)
 #FIND_PACKAGE(Boost)
-add_executable(testlog
-        main.cpp
-        logger/Logger.h
-        )
+#add_executable(testlog
+#        main.cpp
+#        logger/Logger.h
+#        )
 add_executable(lab31proxy
         main.cpp
         Server.h
