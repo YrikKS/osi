@@ -102,3 +102,11 @@ void ServerImpl::handlingReadBuf(char *buf, Client *client) {
 //
 //    }
 }
+
+ServerImpl::~ServerImpl() {
+    _serverSocket->closeSocket();
+    delete _serverSocket;
+    for(auto it = _clientList.begin(); it != _clientList.end(); it++) {
+        delete (*it);
+    }
+}
