@@ -33,7 +33,7 @@ void ServerImpl::startServer() {
 
 
 void ServerImpl::updatePollFd() {
-    LOG_EVENT("update pollSet");
+//    LOG_EVENT("update pollSet");
     memset(_pollSet, 0, MAX_COUNT_CONNECTIONS * sizeof(struct pollfd));
     _pollSet[0].fd = _serverSocket->getFdSocket();
     _pollSet[0].events = POLLIN;
