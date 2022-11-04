@@ -8,6 +8,10 @@
 #include "Client.h"
 
 namespace ProxyServer {
+    typedef enum {
+
+    } ;
+
     class ClientImpl : public Client {
     public:
         explicit ClientImpl(int sock);
