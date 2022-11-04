@@ -17,8 +17,8 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include "../Constants.h"
-#include "../Client/Client.h"
-#include "../Client/ClientImpl.h"
+#include "../client/Client.h"
+#include "../client/ClientImpl.h"
 
 namespace ProxyServer {
     class ServerSocketImpl : public ServerSocket{
