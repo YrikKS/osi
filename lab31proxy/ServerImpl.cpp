@@ -93,6 +93,7 @@ void ServerImpl::handlingReadBuf(char *buf, Client *client) {
             client->setStatusRequest(STATUS_REQUEST::READ_REQUEST_BODY);
         } else {
             client->setRequestHeading(client->getRequestHeading() + std::string(buf).substr(0, posEndHeading));
+            std::cout << "all heading == " << std::endl;
             std::cout << client->getRequestHeading() << std::endl;
         }
     }

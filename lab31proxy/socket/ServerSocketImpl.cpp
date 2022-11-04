@@ -43,7 +43,7 @@ ProxyServer::Client *ProxyServer::ServerSocketImpl::acceptNewClient() {
         throw ConnectException("accept new client");
     }
 
-    Client *client = new ClientImpl(clientSock, STATUS_REQUEST::READ_REQUEST_BODY);
+    Client *client = new ClientImpl(clientSock, STATUS_REQUEST::READ_REQUEST_HEADING);
     LOG_EVENT("accept new client");
     return client;
 }
