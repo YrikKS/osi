@@ -50,6 +50,7 @@ private:
     }
 
     ~Logger() { //???
+        std::cout << "clea5" << std::endl;
         loggerFile.close();
     }
 

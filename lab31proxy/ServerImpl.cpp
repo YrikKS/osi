@@ -105,9 +105,13 @@ void ServerImpl::handlingReadBuf(char *buf, Client *client) {
 }
 
 ServerImpl::~ServerImpl() {
+    std::cout << "clea" << std::endl;
     _serverSocket->closeSocket();
+    std::cout << "clea1" << std::endl;
     delete _serverSocket;
+    std::cout << "clea2" << std::endl;
     for(auto it = _clientList.begin(); it != _clientList.end(); it++) {
         delete (*it);
     }
+    std::cout << "clea3" << std::endl;
 }

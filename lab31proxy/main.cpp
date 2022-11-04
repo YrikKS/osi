@@ -10,6 +10,7 @@ int main() {
     } catch (ProxyServer::ConnectException *ex) {
         std::cerr << ex->what() << std::endl;
         LOG_ERROR("close app by exception");
+        std::cout << "clea4" << std::endl;
         LOGGER_CLOSE;
         return 1;
     }
