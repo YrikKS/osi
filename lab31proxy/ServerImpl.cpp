@@ -60,16 +60,17 @@ void ServerImpl::handlingEvent() {
             _pollSet[i].revents = 0;
             int countByteRead = (*it)->readBuf(buf);
             if(countByteRead == 0) {
+                LOG_EVENT("user logout");
                 _clientList.erase(it);
                 delete (*it);
 //                isNeedUpdatePollSet = true;
-                LOG_EVENT("user logout");
                 updatePollFd();
             } else {
 
             }
         }
     }
+    LOG_EVENT("end handlingEvent");
 }
 
 void ServerImpl::handlingReadBuf(char* buf) {
