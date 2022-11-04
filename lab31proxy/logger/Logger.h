@@ -6,6 +6,7 @@
 #define LAB31PROXY_LOGGER_H
 
 #include <string>
+#include <iostream>
 #include <fstream>
 #include <ctime>
 #include <chrono>
