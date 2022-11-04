@@ -8,9 +8,9 @@
 #include "Client.h"
 
 namespace ProxyServer {
-    typedef enum {
-
-    } ;
+//    typedef enum {
+//
+//    } ;
 
     class ClientImpl : public Client {
     public:

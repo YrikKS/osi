@@ -41,7 +41,7 @@ void ServerImpl::updatePollFd() {
     int i = 1;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         _pollSet[i].fd = (*it)->getFdClient();
-        _pollSet[i].events = POLLIN | POLLOUT;
+        _pollSet[i].events = POLLIN & POLLOUT;
     }
 }
 
@@ -58,7 +58,6 @@ void ServerImpl::handlingEvent() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         int readFlag = false;
         if (_pollSet[i].revents & POLLIN) { // poll sock
-            _pollSet[i].revents = 0;
             memset(buf, 0, BUF_SIZE);
             int countByteRead = (*it)->readBuf(buf);
             readFlag = true;
@@ -75,6 +74,7 @@ void ServerImpl::handlingEvent() {
             if (readFlag)
                 std::cout << i << " cat send" << std::endl;
         }
+        _pollSet[i].revents = 0;
     }
     if (isNeedUpdatePollSet) {
         updatePollFd();
