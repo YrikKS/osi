@@ -22,19 +22,46 @@ ProxyServer::TypeRequest ProxyServer::ParserImpl::parsingRequest(char *buf, char
     return ProxyServer::NOT_GET_REQUEST;
 }
 
-ProxyServer::ResultParseHeading ProxyServer::ParserImpl::parsingHeading(std::string heading) {
-//    if(heading.substr(0, 3))
-    std::cout << heading.substr(0, 3) << std::endl;
-    int contentLength = heading.find("Content-Length: ");
-    if(contentLength != std::string::npos) {
-        int endContentLength = heading.find("\n", contentLength);
-        std::cout << heading.substr(contentLength, endContentLength - contentLength) << std::endl;
-    }
-    int host = heading.find("Host: ");
-    if(host != std::string::npos) {
-        int endContentLength = heading.find("\n", contentLength);
-        std::cout << heading.substr(host, endContentLength - host) << std::endl;
+ProxyServer::ResultParseHeading *ProxyServer::ParserImpl::parsingHeading(std::string heading) {
+    ResultParseHeading *result = new ResultParseHeading;
+    if (heading.size() > 3) {
+        if (heading.substr(0, 3) == "GET") {
+            result->setType(TypeRequest::GET_REQUEST);
+        } else {
+            result->setType(TypeRequest::NOT_GET_REQUEST);
+        }
+    } else {
+        result->setType(TypeRequest::INVAILD_REQUEST);
+        LOG_ERROR("incorrect heading");
+        throw ParseException("incorrect heading");
     }
 
-    std::cout << "end parse" << std::endl;
+    int contentLength = heading.find("Content-Length: ");
+    if (contentLength != std::string::npos) {
+        int endContentLength = heading.find("\n", contentLength);
+        if (endContentLength != std::string::npos) {
+            contentLength += std::string("Content-Length: ").size();
+            result->setContentLength(atoi(heading.substr(contentLength, endContentLength - contentLength).c_str()));
+        }
+    } else {
+        if(result->getType() == TypeRequest::GET_REQUEST) {
+            result->setType(TypeRequest::GET_REQUEST_NOT_CASH);
+        }
+        result->setContentLength(-1);
+    }
+
+    int host = heading.find("Host: ");
+    if (host != std::string::npos) {
+        int endContentLength = heading.find("\n", contentLength);
+        if (endContentLength != std::string::npos) {
+            host += std::string("Host: ").size();
+            result->setHostName(heading.substr(host, endContentLength - host));
+        }
+    } else {
+        result->setType(TypeRequest::INVAILD_REQUEST);
+        LOG_ERROR("incorrect heading");
+        throw ParseException("incorrect heading");
+    }
+
+    return result;
 }

@@ -7,13 +7,15 @@
 
 #include "ParserTypeRequest.h"
 #include "ResultParseHeading.h"
+#include "ParseException.h"
+#include "../logger/Logger.h"
 
 namespace ProxyServer {
     class ParserImpl {
     public:
         static TypeRequest parsingRequest(char *buf, char* host);
         static ResultPars findEndHeading(char* buf, int* posEnd);
-        static ResultParseHeading parsingHeading(std::string heading);
+        static ResultParseHeading* parsingHeading(std::string heading);
     };
 }
 
