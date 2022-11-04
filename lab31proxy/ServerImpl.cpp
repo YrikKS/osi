@@ -60,8 +60,8 @@ void ServerImpl::handlingEvent() {
             _pollSet[i].revents = 0;
             int countByteRead = (*it)->readBuf(buf);
             if(countByteRead == 0) {
-                delete (*it);
                 _clientList.erase(it);
+                delete (*it);
 //                isNeedUpdatePollSet = true;
                 updatePollFd();
             } else {
