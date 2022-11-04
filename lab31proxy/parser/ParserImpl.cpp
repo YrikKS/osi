@@ -41,7 +41,8 @@ ProxyServer::ResultParseHeading *ProxyServer::ParserImpl::parsingHeading(std::st
         int endContentLength = heading.find("\n", contentLength);
         if (endContentLength != std::string::npos) {
             contentLength += std::string("Content-Length: ").size();
-            result->setContentLength(atoi(heading.substr(contentLength, endContentLength - contentLength).c_str()));
+            result->setContentLength(atoi(
+                    heading.substr(contentLength, endContentLength - contentLength).c_str()));
         }
     } else {
         if(result->getType() == TypeRequest::GET_REQUEST) {
@@ -56,11 +57,9 @@ ProxyServer::ResultParseHeading *ProxyServer::ParserImpl::parsingHeading(std::st
         if (endContentLength != std::string::npos) {
             host += std::string("Host: ").size();
             result->setHostName(heading.substr(host, endContentLength - host));
-            std::cout << "host name == " << result->getHostName() << std::endl;
         } else {
             host += std::string("Host: ").size();
             result->setHostName(heading.substr(host));
-            std::cout << "host name == " << result->getHostName() << std::endl;
         }
     } else {
         result->setType(TypeRequest::INVAILD_REQUEST);

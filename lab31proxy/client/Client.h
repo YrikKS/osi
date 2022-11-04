@@ -5,6 +5,8 @@
 #ifndef LAB31PROXY_CLIENTINTERFACE_H
 #define LAB31PROXY_CLIENTINTERFACE_H
 
+#include "../parser/ResultParseHeading.h"
+
 namespace ProxyServer {
     typedef enum {
         READ_REQUEST_HEADING,
@@ -31,6 +33,9 @@ namespace ProxyServer {
 
         virtual void setRequestHeading(const std::string &requestHeading) = 0;
 
+        virtual void setResultParseHeading(ResultParseHeading *parseHeading) = 0;
+
+        virtual ResultParseHeading* getResultParseHeading() = 0;
     };
 }
 #endif //LAB31PROXY_CLIENTINTERFACE_H

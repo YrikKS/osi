@@ -25,10 +25,15 @@ int ProxyServer::ClientImpl::readBuf(char *buf) {
 ProxyServer::ClientImpl::ClientImpl(int sock, STATUS_REQUEST statusRequest) {
     fd = sock;
     this->statusRequest = statusRequest;
+    resultParseHeading = NULL;
 }
 
 ProxyServer::ClientImpl::~ClientImpl() {
+    LOG_EVENT("destructor client");
     close(fd);
+    if(resultParseHeading != NULL) {
+        delete resultParseHeading;
+    }
 }
 
 ProxyServer::STATUS_REQUEST ProxyServer::ClientImpl::getStatusRequest() {
@@ -45,4 +50,12 @@ void ProxyServer::ClientImpl::setRequestHeading(const std::string &requestHeadin
 
 std::string &ProxyServer::ClientImpl::getRequestHeading() {
     return requestHeading;
+}
+
+void ProxyServer::ClientImpl::setResultParseHeading(ProxyServer::ResultParseHeading *parseHeading) {
+    resultParseHeading = parseHeading;
+}
+
+ProxyServer::ResultParseHeading *ProxyServer::ClientImpl::getResultParseHeading() {
+    return resultParseHeading;
 }

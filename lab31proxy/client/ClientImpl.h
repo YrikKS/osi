@@ -6,6 +6,7 @@
 #define LAB31PROXY_CLIENTIMPL_H
 
 #include "Client.h"
+#include "../logger/Logger.h"
 
 namespace ProxyServer {
     class ClientImpl : public Client {
@@ -28,10 +29,15 @@ namespace ProxyServer {
 
         void setRequestHeading(const std::string &requestHeading) override;
 
+        void setResultParseHeading(ResultParseHeading *parseHeading) override;
+
+        ResultParseHeading *getResultParseHeading() override;
+
     private:
         int fd;
         STATUS_REQUEST statusRequest;
         std::string requestHeading;
+        ResultParseHeading* resultParseHeading;
     };
 }
 
