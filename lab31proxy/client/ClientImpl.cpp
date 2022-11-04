@@ -39,10 +39,10 @@ void ProxyServer::ClientImpl::setStatusRequest(ProxyServer::STATUS_REQUEST statu
     ClientImpl::statusRequest = statusRequest;
 }
 
-const std::string &ProxyServer::ClientImpl::getRequestHeading() const {
-    return requestHeading;
-}
-
 void ProxyServer::ClientImpl::setRequestHeading(const std::string &requestHeading) {
     ClientImpl::requestHeading = requestHeading;
+}
+
+std::string &ProxyServer::ClientImpl::getRequestHeading() {
+    return requestHeading;
 }
