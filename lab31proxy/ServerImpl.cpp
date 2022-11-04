@@ -34,16 +34,18 @@ void ServerImpl::startServer() {
 
 void ServerImpl::updatePollFd() {
 //    LOG_EVENT("update pollSet");
-    std::cout << "helo" << std::endl;
     memset(_pollSet, 0, MAX_COUNT_CONNECTIONS * sizeof(struct pollfd));
     _pollSet[0].fd = _serverSocket->getFdSocket();
     _pollSet[0].events = POLLIN;
 
     int i = 1;
+    std::cout << "helo1" << std::endl;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
+        std::cout << "helo2" << std::endl;
         _pollSet[i].fd = (*it)->getFdClient();
         _pollSet[i].events = POLLIN;
     }
+    std::cout << "end updatePollFd" << std::endl;
 }
 
 ServerImpl::ServerImpl() {
