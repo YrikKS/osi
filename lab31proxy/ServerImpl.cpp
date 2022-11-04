@@ -41,7 +41,7 @@ void ServerImpl::updatePollFd() {
     int i = 1;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         _pollSet[i].fd = (*it)->getFdClient();
-        _pollSet[i].events = POLLIN & POLLOUT;
+        _pollSet[i].events = POLLIN | POLLOUT;
     }
 }
 
