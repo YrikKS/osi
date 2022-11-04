@@ -22,7 +22,7 @@ add_executable(lab31proxy
         socket/ServerSocket.h
         socket/ServerSocketImpl.cpp
         socket/ServerSocketImpl.h
-        parser/ParserTypeRequest.h parser/ParserImpl.cpp parser/ParserImpl.h logger/Logger.h)
+        parser/ParserTypeRequest.h parser/ParserImpl.cpp parser/ParserImpl.h logger/Logger.h socket/ConnectException.h)
 #include_directories(${Boost_INCLUDE_DIRS})
 
 #target_link_libraries(lab31proxy
