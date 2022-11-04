@@ -64,8 +64,8 @@ void ServerImpl::handlingEvent() {
             int countByteRead = (*it)->readBuf(buf);
             if (countByteRead == 0) {
                 LOG_EVENT("user logout");
-                it = _clientList.erase(it);
                 delete (*it);
+                it = _clientList.erase(it);
 //                isNeedUpdatePollSet = true;
                 updatePollFd();
             } else {
