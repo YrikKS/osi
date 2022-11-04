@@ -25,6 +25,8 @@ namespace ProxyServer {
     public:
         int connectSocket() override;
 
+        Client *connectToClient(std::string url, int port) override;
+
         int getFdSocket() override;
 
         Client* acceptNewClient() override;
@@ -34,7 +36,7 @@ namespace ProxyServer {
         ~ServerSocketImpl();
 
     private:
-        int serverSocket_;
+        int serverSocket_ = 0;
     };
 }
 

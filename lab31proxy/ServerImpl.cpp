@@ -12,7 +12,7 @@ void ServerImpl::startServer() {
         int code = poll(_pollSet, _clientList.size() + 1, TIME_OUT_POLL);
 
         if (code == -1) {
-            LOG_ERROR("poll error");
+            LOG_ERROR_WITH_ERRNO("poll error");
             perror("poll error");
             //TODO exit
         } else if (code == 0) {
@@ -21,10 +21,16 @@ void ServerImpl::startServer() {
             handlingEvent();
             if (_pollSet[0].revents & POLLIN) { // poll sock
                 _pollSet[0].revents = 0;
+                try {
+                    _clientList.push_back(_serverSocket->acceptNewClient());
+                    updatePollFd();
+                    //TODO client connect: create client + add to _pollSet
+                } catch (ConnectException *exception) {
+                    std::cerr << exception->what() << std::endl;
+                    LOG_ERROR("exception is close");
+                }
+
                 LOG_EVENT("add new client");
-                _clientList.push_back(_serverSocket->acceptNewClient());
-                updatePollFd();
-                //TODO client connect: create client + add to _pollSet
             }
         }
     }
@@ -41,7 +47,8 @@ void ServerImpl::updatePollFd() {
     int i = 1;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         _pollSet[i].fd = (*it)->getFdClient();
-        _pollSet[i].events = POLLIN | POLLOUT;
+        _pollSet[i].events = POLLIN;
+//        _pollSet[i].events = POLLIN | POLLOUT;
     }
 }
 
@@ -56,23 +63,17 @@ void ServerImpl::handlingEvent() {
     char buf[1024] = {0};
     bool isNeedUpdatePollSet = false;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-        int readFlag = false;
         if (_pollSet[i].revents & POLLIN) { // poll sock
             memset(buf, 0, BUF_SIZE);
             int countByteRead = (*it)->readBuf(buf);
-            readFlag = true;
             if (countByteRead == 0) {
                 LOG_EVENT("user logout");
                 delete (*it);
                 it = _clientList.erase(it);
                 isNeedUpdatePollSet = true;
             } else {
-                handlingReadBuf(buf);
+                handlingReadBuf(buf, *it);
             }
-        }
-        if (_pollSet[i].revents & POLLOUT) {
-            if (readFlag)
-                std::cout << i << " cat send" << std::endl;
         }
         _pollSet[i].revents = 0;
     }
@@ -81,7 +82,20 @@ void ServerImpl::handlingEvent() {
     }
 }
 
-void ServerImpl::handlingReadBuf(char *buf) {
-    std::cout << "handlingEvent" << std::endl;
-    std::cout << buf << std::endl;
+void ServerImpl::handlingReadBuf(char *buf, Client *client) {
+    LOG_EVENT("Handling event read");
+//    std::cout << "handlingEvent" << std::endl;
+//    std::cout << buf << std::endl;
+    if (client->getStatusRequest() == STATUS_REQUEST::READ_REQUEST_HEADING) {
+        int posEndHeading = 0;
+        if (ParserImpl::pars(buf, &posEndHeading) == ResultPars::END_REQUEST_HEADING) {
+            client->setStatusRequest(STATUS_REQUEST::READ_REQUEST_BODY);
+        } else {
+            client->setRequestHeading(client->getRequestHeading() + std::string(buf).substr(0, posEndHeading));
+            std::cout << client->getRequestHeading() << std::endl;
+        }
+    }
+//    if (client->getStatusRequest() == STATUS_REQUEST::READ_REQUEST_BODY) {
+//
+//    }
 }

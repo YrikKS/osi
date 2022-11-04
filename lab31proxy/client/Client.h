@@ -6,6 +6,15 @@
 #define LAB31PROXY_CLIENTINTERFACE_H
 
 namespace ProxyServer {
+    typedef enum {
+        READ_REQUEST_HEADING,
+        READ_REQUEST_BODY,
+        READ_RESPONESE_HEADING,
+        READ_RESPONESE_BODY,
+        WRITE_RESPONSE,
+        WRITE_REQUEST
+    } STATUS_REQUEST;
+
     class Client {
     public:
         virtual int getFdClient() = 0;
@@ -13,6 +22,14 @@ namespace ProxyServer {
         virtual void sendBuf(char *buf) = 0;
 
         virtual int readBuf(char *buf) = 0;
+
+        virtual STATUS_REQUEST getStatusRequest() = 0;
+
+        virtual void setStatusRequest(STATUS_REQUEST statusRequest) = 0;
+
+        virtual std::string &getRequestHeading() = 0;
+
+        virtual void setRequestHeading(const std::string &requestHeading) = 0;
 
     };
 }

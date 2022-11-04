@@ -6,6 +6,8 @@
 #define LAB31PROXY_SERVERSOCKET_H
 
 #include "../client/Client.h"
+#include "ConnectException.h"
+#include "parser/ParserImpl.h"
 
 namespace ProxyServer {
     class ServerSocket {
@@ -15,6 +17,8 @@ namespace ProxyServer {
         virtual int getFdSocket() = 0;
 
         virtual Client* acceptNewClient() = 0;
+
+        virtual Client* connectToClient(std::string url, int port) = 0;
 
         virtual void closeSocket() = 0;
     };

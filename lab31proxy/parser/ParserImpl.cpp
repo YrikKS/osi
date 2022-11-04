@@ -5,7 +5,19 @@
 #include <iostream>
 #include "ParserImpl.h"
 
-ProxyServer::TypeRequest ProxyServer::ParserImpl::parsingRequest(char *buf) {
-    std::cout << "parsing request..." << std::endl;
+ProxyServer::ResultPars ProxyServer::ParserImpl::pars(char *buf, int *posEnd) {
+    std::string buffer(buf);
+    int resultFinding = buffer.find("\r\n\r\n");
+    if (resultFinding == std::string::npos) {
+        *posEnd = -1;
+        return ResultPars::NOTHING;
+    } else {
+        *posEnd = resultFinding;
+        return ResultPars::END_REQUEST_HEADING;
+    }
+}
+
+ProxyServer::TypeRequest ProxyServer::ParserImpl::parsingRequest(char *buf, char *host) {
+
     return ProxyServer::NOT_GET_REQUEST;
 }

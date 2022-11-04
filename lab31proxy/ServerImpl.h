@@ -27,7 +27,7 @@ namespace ProxyServer {
     private:
         void updatePollFd();
         void handlingEvent();
-        void handlingReadBuf(char* buf);
+        void handlingReadBuf(char* buf, Client* client);
         bool _isWork = true;
         ServerSocket* _serverSocket;
         struct pollfd _pollSet[MAX_COUNT_CONNECTIONS];

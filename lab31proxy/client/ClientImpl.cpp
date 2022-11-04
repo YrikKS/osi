@@ -18,14 +18,31 @@ void ProxyServer::ClientImpl::sendBuf(char *buf) {
 
 int ProxyServer::ClientImpl::readBuf(char *buf) {
     int byte = read(fd, buf, BUF_SIZE);
-    std::cout << buf << std::endl;
+//    std::cout << buf << std::endl;
     return byte;
 }
 
-ProxyServer::ClientImpl::ClientImpl(int sock) {
+ProxyServer::ClientImpl::ClientImpl(int sock, STATUS_REQUEST statusRequest) {
     fd = sock;
+    this->statusRequest = statusRequest;
 }
 
 ProxyServer::ClientImpl::~ClientImpl() {
     close(fd);
+}
+
+ProxyServer::STATUS_REQUEST ProxyServer::ClientImpl::getStatusRequest() {
+    return statusRequest;
+}
+
+void ProxyServer::ClientImpl::setStatusRequest(ProxyServer::STATUS_REQUEST statusRequest) {
+    ClientImpl::statusRequest = statusRequest;
+}
+
+const std::string &ProxyServer::ClientImpl::getRequestHeading() const {
+    return requestHeading;
+}
+
+void ProxyServer::ClientImpl::setRequestHeading(const std::string &requestHeading) {
+    ClientImpl::requestHeading = requestHeading;
 }

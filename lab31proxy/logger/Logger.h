@@ -13,6 +13,7 @@
 
 #define TIME_NOW now->tm_hour << ":" << now->tm_min << ":" << now->tm_sec
 #define LOG_EVENT(event) Logger::getInstance().logEvent(event)
+#define LOG_ERROR_WITH_ERRNO(event) Logger::getInstance().logError(event + std::string(strerror(errno)))
 #define LOG_ERROR(event) Logger::getInstance().logError(event)
 #define LOGGER_CLOSE Logger::getInstance().closeFile()
 

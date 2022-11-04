@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
         perror("connect");
         exit(EXIT_WITH_ERROR);
     }
+
     char buffer[BUFFER_SIZE] = {0};
 
     std::string domain("parallels.nsu.ru");

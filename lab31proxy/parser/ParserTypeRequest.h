@@ -11,5 +11,13 @@ namespace ProxyServer {
         NOT_GET_REQUEST,
         INVAILD_REQUEST
     } TypeRequest;
+
+    typedef enum {
+        END_REQUEST_HEADING,
+        END_RESPONESE_HEADING,
+        END_REQUEST_BODY,
+        END_RESPONESE_BODY,
+        NOTHING
+    } ResultPars;
 }
 #endif //LAB31PROXY_PARSERTYPEREQUEST_H

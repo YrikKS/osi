@@ -10,7 +10,8 @@
 namespace ProxyServer {
     class ParserImpl {
     public:
-        static TypeRequest parsingRequest(char *buf);
+        static TypeRequest parsingRequest(char *buf, char* host);
+        static ResultPars pars(char* buf, int* posEnd);
     };
 }
 
