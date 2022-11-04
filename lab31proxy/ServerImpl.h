@@ -13,9 +13,9 @@
 #include <map>
 #include <list>
 #include "Constants.h"
-#include "Client/Client.h"
-#include "Socket/ServerSocket.h"
-#include "Socket/ServerSocketImpl.h"
+#include "client/Client.h"
+#include "socket/ServerSocket.h"
+#include "socket/ServerSocketImpl.h"
 
 namespace ProxyServer {
     class ServerImpl : public Server {
