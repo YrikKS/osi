@@ -34,6 +34,7 @@ void ServerImpl::startServer() {
 
 void ServerImpl::updatePollFd() {
 //    LOG_EVENT("update pollSet");
+    std::cout << "helo" << std::endl;
     memset(_pollSet, 0, MAX_COUNT_CONNECTIONS * sizeof(struct pollfd));
     _pollSet[0].fd = _serverSocket->getFdSocket();
     _pollSet[0].events = POLLIN;
@@ -59,7 +60,7 @@ void ServerImpl::handlingEvent() {
         if (_pollSet[i].revents & POLLIN) { // poll sock
             _pollSet[i].revents = 0;
             int countByteRead = (*it)->readBuf(buf);
-            if(countByteRead == 0) {
+            if (countByteRead == 0) {
                 LOG_EVENT("user logout");
                 _clientList.erase(it);
                 delete (*it);
@@ -73,6 +74,6 @@ void ServerImpl::handlingEvent() {
     LOG_EVENT("end handlingEvent");
 }
 
-void ServerImpl::handlingReadBuf(char* buf) {
+void ServerImpl::handlingReadBuf(char *buf) {
     std::cout << "handlingEvent" << std::endl;
 }
