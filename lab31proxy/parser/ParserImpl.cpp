@@ -60,6 +60,7 @@ ProxyServer::ResultParseHeading *ProxyServer::ParserImpl::parsingHeading(std::st
         } else {
             host += std::string("Host: ").size();
             result->setHostName(heading.substr(host));
+            std::cout << "host name == " << result->getHostName() << std::endl;
         }
     } else {
         result->setType(TypeRequest::INVAILD_REQUEST);

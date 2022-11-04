@@ -8,7 +8,8 @@ int main() {
         ProxyServer::ServerImpl server = ProxyServer::ServerImpl();
         server.startServer();
     } catch (ProxyServer::ConnectException *ex) {
-        std::cerr << ex->what() << std::endl;
+        std::cerr << ex->what() << " eee" << std::endl;
+        std::cout << "stop1" << std::endl;
         LOG_ERROR("close app by exception");
         std::cout << "clea4" << std::endl;
         LOGGER_CLOSE;
