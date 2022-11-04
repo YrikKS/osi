@@ -47,6 +47,11 @@ private:
         openFile();
     }
 
+    ~Logger() {
+        std::cout << "close" << std::endl;
+        loggerFile.close();
+    }
+
     std::ofstream loggerFile;
 };
 
