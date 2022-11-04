@@ -8,7 +8,7 @@
 #include <exception>
 
 namespace ProxyServer {
-    class ConnectException : public std::exeption {
+    class ConnectException : public std::exception {
     public:
         explicit ConnectException(std::string msg) : msg(std::move(msg)) {}
 
