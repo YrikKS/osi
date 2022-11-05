@@ -58,9 +58,9 @@ ProxyServer::ServerSocketImpl::~ServerSocketImpl() {
 }
 
 ProxyServer::Client *ProxyServer::ServerSocketImpl::connectToClient(std::string url, int port) {
-    for(int i =0; i < url.size(); i++) {
-        std::cout << "i = " << (int) url.c_str()[i] << std::endl;
-    }
+//    for(int i =0; i < url.size(); i++) {
+//        std::cout << "i = " << (int) url.c_str()[i] << std::endl;
+//    }
 //    std::cout.flush();
     struct hostent *hostent = gethostbyname(url.data());
     if (hostent == NULL) {
@@ -85,5 +85,6 @@ ProxyServer::Client *ProxyServer::ServerSocketImpl::connectToClient(std::string 
     }
 
     Client *client = new ClientImpl(sock, StatusHttp::READ_REQUEST, TypeClient::HTTP_SERVER);
+    std::cout << "client connect!" << std::endl;
     return client;
 }
