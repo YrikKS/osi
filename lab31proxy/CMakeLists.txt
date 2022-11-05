@@ -27,7 +27,9 @@ add_executable(lab31proxy
         parser/ParserImpl.h
         logger/Logger.h
         socket/ConnectException.h
-        parser/ResultParseHeading.h parser/ParseException.h)
+        parser/ResultParseHeading.h
+        parser/ParseException.h
+        )
 #include_directories(${Boost_INCLUDE_DIRS})
 
 #target_link_libraries(lab31proxy

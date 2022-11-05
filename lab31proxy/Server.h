@@ -9,7 +9,7 @@
 namespace ProxyServer {
     class Server {
     public:
-        virtual ~Server() = 0;
+        virtual ~Server() = default;
         virtual void startServer() = 0;
     };
 }
