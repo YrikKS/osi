@@ -4,10 +4,10 @@
 
 int main() {
     LOG_EVENT("start program");
-    ProxyServer::ServerImpl* server;
     try {
-        server = new ProxyServer::ServerImpl();
-        server->startServer();
+        ProxyServer::ServerImpl* server = new ProxyServer::ServerImpl();
+        delete server;
+//        server->startServer();
     } catch (std::exception& ex) {
         ex.what();
         std::cout.flush();
@@ -15,7 +15,7 @@ int main() {
         std::cout.flush();
         LOG_ERROR("close app by exception");
         std::cout << "clea4" << std::endl;
-        delete server;
+//        delete server;
         LOGGER_CLOSE;
         return 1;
     }
