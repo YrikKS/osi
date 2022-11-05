@@ -6,7 +6,7 @@ int main() {
     LOG_EVENT("start program");
     try {
         ProxyServer::ServerImpl* server = new ProxyServer::ServerImpl();
-        delete server;
+//        delete server;
 //        server->startServer();
     } catch (std::exception& ex) {
         ex.what();
