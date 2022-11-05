@@ -88,8 +88,10 @@ void ServerImpl::handlingEvent() {
                     std::string strSending = (*it)->getClientData()->getRequestHeading()
                             .substr(0, BUF_SIZE);
 
-                    (*it)->getClientData()->setRequestHeading(
-                            (*it)->getClientData()->getRequestHeading().substr(BUF_SIZE));
+                    if ((*it)->getClientData()->getRequestHeading().size() > BUF_SIZE) {
+                        (*it)->getClientData()->setRequestHeading(
+                                (*it)->getClientData()->getRequestHeading().substr(BUF_SIZE));
+                    }
 
                     std::cout << "wright" << std::endl;
                     (*it)->sendBuf(strSending.c_str());
@@ -97,8 +99,10 @@ void ServerImpl::handlingEvent() {
                     std::string strSending = (*it)->getClientData()->getRequestBody()
                             .substr(0, BUF_SIZE);
 
-                    (*it)->getClientData()->setRequestBody(
-                            (*it)->getClientData()->getRequestBody().substr(BUF_SIZE));
+                    if ((*it)->getClientData()->getRequestBody().size() > BUF_SIZE) {
+                        (*it)->getClientData()->setRequestBody(
+                                (*it)->getClientData()->getRequestBody().substr(BUF_SIZE));
+                    }
                     (*it)->sendBuf(strSending.c_str());
 
                 } else {
