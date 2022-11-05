@@ -17,8 +17,6 @@ int main() {
         LOG_ERROR("close app by exception");
         std::cout << "clea4" << std::endl;
 //        delete server;
-        LOGGER_CLOSE;
-        return 1;
     }
 //    delete server;
     LOG_EVENT("close app");
