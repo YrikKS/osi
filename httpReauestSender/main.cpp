@@ -58,16 +58,16 @@ int main(int argc, char *argv[]) {
 
 
 
-    write(sock, "GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\r\n", strlen("GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\r\n"));
-    sleep(1);
-    write(sock, "Accept: */*\r\n", strlen("Accept: */*\r\n"));
-    sleep(1);
-    write(sock, "Host: parallels.nsu.ru\r\n", strlen("Host: parallels.nsu.ru\r\n"));
-    sleep(1);
-    write(sock, "Connection: close", strlen("Connection: close"));
-    sleep(1);
-    write(sock, "\r\n\r\n", strlen("\r\n\r\n"));
-    sleep(1);
+//    write(sock, "GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\r\n", strlen("GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1\r\n"));
+//    sleep(1);
+//    write(sock, "Accept: */*\r\n", strlen("Accept: */*\r\n"));
+//    sleep(1);
+//    write(sock, "Host: parallels.nsu.ru\r\n", strlen("Host: parallels.nsu.ru\r\n"));
+//    sleep(1);
+//    write(sock, "Connection: close", strlen("Connection: close"));
+//    sleep(1);
+//    write(sock, "\r\n\r\n", strlen("\r\n\r\n"));
+//    sleep(1);
 
     write(sock, buffer, strlen(buffer)); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
