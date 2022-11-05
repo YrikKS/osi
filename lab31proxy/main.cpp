@@ -9,13 +9,13 @@ int main() {
         server = new ProxyServer::ServerImpl();
         server->startServer();
     } catch (std::exception& ex) {
-//        delete server;
         ex.what();
         std::cout.flush();
         std::cout << "stop1" << std::endl;
         std::cout.flush();
         LOG_ERROR("close app by exception");
         std::cout << "clea4" << std::endl;
+        delete server;
         LOGGER_CLOSE;
         return 1;
     }
