@@ -38,7 +38,7 @@ ProxyServer::ResultParseHeading *ProxyServer::ParserImpl::parsingHeading(std::st
 
     int contentLength = heading.find("Content-Length: ");
     if (contentLength != std::string::npos) {
-        int endContentLength = heading.find("\n", contentLength);
+        int endContentLength = heading.find("\r\n", contentLength);
         if (endContentLength != std::string::npos) {
             contentLength += std::string("Content-Length: ").size();
             result->setContentLength(atoi(
@@ -53,7 +53,7 @@ ProxyServer::ResultParseHeading *ProxyServer::ParserImpl::parsingHeading(std::st
 
     int host = heading.find("Host: ");
     if (host != std::string::npos) {
-        int endContentLength = heading.find("\n", contentLength);
+        int endContentLength = heading.find("\r\n", contentLength);
         if (endContentLength != std::string::npos) {
             host += std::string("Host: ").size();
             result->setHostName(heading.substr(host, endContentLength - host));
