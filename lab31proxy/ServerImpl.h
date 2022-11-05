@@ -22,7 +22,7 @@ namespace ProxyServer {
     public:
         ServerImpl();
         void startServer() override;
-~ServerImpl();
+        ~ServerImpl();
 
     private:
         void updatePollFd();
