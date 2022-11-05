@@ -13,7 +13,7 @@ namespace ProxyServer {
 
         virtual int getFdClient() = 0;
 
-        virtual void sendBuf(char *buf) = 0;
+        virtual void sendBuf(const char *buf) = 0;
 
         virtual int readBuf(char *buf) = 0;
 

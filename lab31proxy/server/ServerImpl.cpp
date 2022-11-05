@@ -108,7 +108,7 @@ void ServerImpl::handlingReadBuf(char *buf, Client *client) {
 
 //            std::cout << "try send ::: " << client->getClientData()->getRequestHeading() << std::endl;
             char newBuf[1024] = {0};
-            httpServer->sendBuf((client->getClientData()->getRequestHeading()).data());
+            httpServer->sendBuf((client->getClientData()->getRequestHeading()).c_str());
             std::cout << httpServer->readBuf(newBuf) << std::endl;
 
         } else {
