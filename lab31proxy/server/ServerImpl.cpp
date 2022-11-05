@@ -106,8 +106,8 @@ void ServerImpl::handlingReadBuf(char *buf, Client *client) {
             _clientList.push_back(httpServer);
             updatePollFd();
 
+            char newBuf[1024] = {0};
             httpServer->sendBuf(client->getClientData()->getRequestHeading().data());
-            char newBuf[BUF_SIZE] = {0};
             std::cout << httpServer->readBuf(newBuf) << std::endl;
 
         } else {
