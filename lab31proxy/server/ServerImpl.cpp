@@ -92,14 +92,14 @@ void ServerImpl::handlingEvent() {
                     (*it)->getClientData()->setRequestHeading(
                             (*it)->getClientData()->getRequestHeading().substr(BUF_SIZE));
 
-                    (*it)->getPair()->sendBuf(strSending.c_str());
+                    (*it)->sendBuf(strSending.c_str());
                 } else if (!(*it)->getClientData()->getRequestBody().empty()) {
                     std::string strSending = (*it)->getClientData()->getRequestBody()
                             .substr(0, BUF_SIZE);
 
                     (*it)->getClientData()->setRequestBody(
                             (*it)->getClientData()->getRequestBody().substr(BUF_SIZE));
-                    (*it)->getPair()->sendBuf(strSending.c_str());
+                    (*it)->sendBuf(strSending.c_str());
 
                 } else {
                     (*it)->getClientData()->setIsReadyToSend(false);
