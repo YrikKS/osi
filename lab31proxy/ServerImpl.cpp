@@ -107,7 +107,7 @@ void ServerImpl::handlingReadBuf(char *buf, Client *client) {
 //    }
 }
 
-ServerImpl::~ServerImpl() {
+ServerImpl::~ServerImpl() noexcept{
     std::cout << "clea" << std::endl;
     std::cout.flush();
     _serverSocket->closeSocket();
@@ -116,8 +116,8 @@ ServerImpl::~ServerImpl() {
     delete (ServerSocketImpl*)_serverSocket;
     std::cout << "clea2" << std::endl;
     std::cout.flush();
-    for(auto it = _clientList.begin(); it != _clientList.end(); it++) {
-        delete (ClientImpl*)(*it);
+    for(auto & it : _clientList) {
+        delete (ClientImpl*)it;
     }
     std::cout << "clea3" << std::endl;
     std::cout.flush();
