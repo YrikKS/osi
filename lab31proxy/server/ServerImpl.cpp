@@ -82,6 +82,7 @@ void ServerImpl::handlingEvent() {
                    && ((*it)->getClientData()->getStatusRequest() == StatusHttp::READ_REQUEST
                        || (*it)->getClientData()->getStatusRequest() == StatusHttp::READ_RESPONSE)) {
 //            if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER) {
+//
             if ((*it)->getPair()->getClientData()->getIsReadyToSend()) {
                 std::cout << "wright" << std::endl;
                 if (!(*it)->getPair()->getClientData()->getRequestHeading().empty()) {
@@ -120,7 +121,7 @@ void ServerImpl::handlingReadBuf(char *buf, Client *client) {
         readRequestHeading(buf, client);
     } else if (client->getClientData()->getStatusRequest() == StatusHttp::WRITE_REQUEST_BODY) {
         client->getClientData()->addToRequestBody(std::string(buf));
-        client->getClientData()->setIsReadyToSend(true);
+//        client->getClientData()->setIsReadyToSend(true);
         int pos = 0;
         if (ParserImpl::findEndBody(buf, &pos) == ResultPars::END_BODY) {
             client->getClientData()->setStatusRequest(StatusHttp::READ_RESPONSE);
@@ -128,13 +129,14 @@ void ServerImpl::handlingReadBuf(char *buf, Client *client) {
 
     } else if (client->getClientData()->getStatusRequest() == StatusHttp::WRITE_RESPONSE) {
         client->getClientData()->addToRequestBody(std::string(buf));
-        client->getClientData()->setIsReadyToSend(true);
+//        client->getClientData()->setIsReadyToSend(true);
         int pos = 0;
         if (ParserImpl::findEndBody(buf, &pos) == ResultPars::END_BODY) {
 //            client->getClientData()->setStatusRequest(StatusHttp::WRITE_RESPONSE);
             //TODO end reading
         }
     }
+    client->getClientData()->setIsReadyToSend(true);
 }
 
 ServerImpl::~ServerImpl() {
@@ -155,19 +157,19 @@ ServerImpl::~ServerImpl() {
 
 void ServerImpl::readRequestHeading(char *buf, Client *client) {
     int posEndHeading = 0;
-    client->getClientData()->setIsReadyToSend(true);
+//    client->getClientData()->setIsReadyToSend(true);
     if (ParserImpl::findEndHeading(buf, &posEndHeading) == ResultPars::END_HEADING) {
         client->getClientData()->setRequestHeading(
                 client->getClientData()->getRequestHeading() + std::string(buf).substr(0, posEndHeading));
         client->getClientData()->setResultParseHeading(
                 ParserImpl::parsingHeading(client->getClientData()->getRequestHeading()));
 
-        if (client->getClientData()->getResultParseHeading()->getType() == TypeRequest::GET_REQUEST) {
+//        if (client->getClientData()->getResultParseHeading()->getType() == TypeRequest::GET_REQUEST) {
             client->getClientData()->setStatusRequest(StatusHttp::READ_RESPONSE);
-        } else {
-            client->getClientData()->setStatusRequest(StatusHttp::WRITE_REQUEST_BODY);
-            client->getClientData()->setRequestBody(std::string(buf).substr(posEndHeading));
-        }
+//        } else {
+//            client->getClientData()->setStatusRequest(StatusHttp::WRITE_REQUEST_BODY);
+//            client->getClientData()->setRequestBody(std::string(buf).substr(posEndHeading));
+//        }
         //TODO может быть подругому ???
 
         Client *httpServer = _serverSocket->connectToClient(
