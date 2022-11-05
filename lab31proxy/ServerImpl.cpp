@@ -107,7 +107,7 @@ void ServerImpl::handlingReadBuf(char *buf, Client *client) {
 //    }
 }
 
-ServerImpl::~ServerImpl() noexcept{
+ServerImpl::~ServerImpl() {
     std::cout << "clea" << std::endl;
     std::cout.flush();
     _serverSocket->closeSocket();
