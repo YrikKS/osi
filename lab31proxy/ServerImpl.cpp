@@ -69,7 +69,7 @@ void ServerImpl::handlingEvent() {
             int countByteRead = (*it)->readBuf(buf);
             if (countByteRead == 0) {
                 LOG_EVENT("user logout");
-                delete (ServerSocketImpl*)(*it);
+                delete (ClientImpl*)(*it);
                 it = _clientList.erase(it);
                 isNeedUpdatePollSet = true;
             } else {
