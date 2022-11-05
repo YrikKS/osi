@@ -58,6 +58,7 @@ ProxyServer::ServerSocketImpl::~ServerSocketImpl() {
 }
 
 ProxyServer::Client *ProxyServer::ServerSocketImpl::connectToClient(std::string url, int port) {
+    std::cout << "url connect == " << url << std::endl;
     struct hostent *hostent = gethostbyname(url.data());
     if (hostent == NULL) {
         LOG_ERROR("gethostbyname");
