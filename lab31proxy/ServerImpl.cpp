@@ -117,7 +117,7 @@ ServerImpl::~ServerImpl() {
     std::cout << "clea2" << std::endl;
     std::cout.flush();
     for(auto it = _clientList.begin(); it != _clientList.end(); it++) {
-        delete (ServerSocketImpl*)(*it);
+        delete (ClientImpl*)(*it);
     }
     std::cout << "clea3" << std::endl;
     std::cout.flush();
