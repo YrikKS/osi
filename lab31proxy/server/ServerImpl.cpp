@@ -49,7 +49,7 @@ void ServerImpl::updatePollFd() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         _pollSet[i].fd = (*it)->getFdClient();
         _pollSet[i].events = POLLIN;
-//        _pollSet[i].events = POLLIN | POLLOUT;
+        _pollSet[i].events = POLLIN | POLLOUT;
     }
 }
 
@@ -95,16 +95,25 @@ void ServerImpl::handlingReadBuf(char *buf, Client *client) {
                     client->getClientData()->getRequestHeading() + std::string(buf).substr(0, posEndHeading));
             client->getClientData()->setResultParseHeading(
                     ParserImpl::parsingHeading(client->getClientData()->getRequestHeading()));
-            std::cout << "getType == " << client->getClientData()->getResultParseHeading()->getType() <<
-                      std::endl << "getHostName == " << client->getClientData()->getResultParseHeading()->getHostName()
-                      <<
-                      std::endl << "getContentLength == "
-                      << client->getClientData()->getResultParseHeading()->getContentLength()
-                      << std::endl;
+
+            client->getClientData()->setRequestBody(std::string(buf).substr(posEndHeading));
             //TODO может быть подругому ???
+
+            Client *httpServer = _serverSocket->connectToClient(
+                    client->getClientData()->getResultParseHeading()->getHostName(),
+                    DEFAULT_PORT);
+
+            _clientList.push_back(httpServer);
+            updatePollFd();
+
+            httpServer->sendBuf(client->getClientData()->getRequestHeading().data());
+            char newBuf[BUF_SIZE] = {0};
+            std::cout << httpServer->readBuf(newBuf) << std::endl;
+
         } else {
             client->getClientData()->setRequestHeading(client->getClientData()->getRequestHeading() + std::string(buf));
         }
+
     }
 //    if (client->getStatusRequest() == STATUS_REQUEST::READ_REQUEST_BODY) {
 //

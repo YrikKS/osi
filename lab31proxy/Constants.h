@@ -10,6 +10,7 @@ namespace ProxyServer {
     static const int PORT_SERVER_SOCKET = 8080; //???
     static const int MAX_COUNT_CONNECTIONS = 1024;
     static const int BUF_SIZE = 1024;
+    static const int DEFAULT_PORT = 80;
 }
 
 #endif //LAB31PROXY_CONSTANTS_H
