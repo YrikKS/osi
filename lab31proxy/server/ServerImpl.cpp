@@ -84,7 +84,6 @@ void ServerImpl::handlingEvent() {
 //            if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER) {
 //
             if ((*it)->getClientData()->getIsReadyToSend()) {
-                std::cout << "wright" << std::endl;
                 if (!(*it)->getClientData()->getRequestHeading().empty()) {
                     std::string strSending = (*it)->getClientData()->getRequestHeading()
                             .substr(0, BUF_SIZE);
@@ -92,6 +91,7 @@ void ServerImpl::handlingEvent() {
                     (*it)->getClientData()->setRequestHeading(
                             (*it)->getClientData()->getRequestHeading().substr(BUF_SIZE));
 
+                    std::cout << "wright" << std::endl;
                     (*it)->sendBuf(strSending.c_str());
                 } else if (!(*it)->getClientData()->getRequestBody().empty()) {
                     std::string strSending = (*it)->getClientData()->getRequestBody()
@@ -105,6 +105,7 @@ void ServerImpl::handlingEvent() {
                     (*it)->getClientData()->setIsReadyToSend(false);
                 }
             }
+            std::cout << "wright0" << std::endl;
         }
         _pollSet[i].revents = 0;
     }

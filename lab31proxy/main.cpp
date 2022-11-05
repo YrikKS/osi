@@ -10,7 +10,7 @@ int main() {
 //        delete server;
         server->startServer();
     } catch (std::exception& ex) {
-        ex.what();
+        std::cout << ex.what() << std::endl;
         LOG_ERROR("close app by exception");
         std::cout << "clea4" << std::endl;
     }
