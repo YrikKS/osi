@@ -48,7 +48,7 @@ void ServerImpl::updatePollFd() {
     int i = 1;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         _pollSet[i].fd = (*it)->getFdClient();
-        _pollSet[i].events = POLLIN;
+//        _pollSet[i].events = POLLIN;
         _pollSet[i].events = POLLIN | POLLOUT;
     }
 }
@@ -82,7 +82,8 @@ void ServerImpl::handlingEvent() {
                    && ((*it)->getClientData()->getStatusRequest() == StatusHttp::READ_REQUEST
                        || (*it)->getClientData()->getStatusRequest() == StatusHttp::READ_RESPONSE)) {
 //            if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER) {
-            if ((*it)->getClientData()->getIsReadyToSend()) {
+//            std::cout << "wright" << std::endl;
+            if ((*it)->getPair()->getClientData()->getIsReadyToSend()) {
                 if (!(*it)->getPair()->getClientData()->getRequestHeading().empty()) {
                     std::string strSending = (*it)->getPair()->getClientData()->getRequestHeading()
                             .substr(0, BUF_SIZE);
