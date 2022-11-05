@@ -13,7 +13,7 @@ ProxyServer::ResultPars ProxyServer::ParserImpl::findEndHeading(char *buf, int *
         return ResultPars::NOTHING;
     } else {
         *posEnd = resultFinding + 4;
-        return ResultPars::END_REQUEST_HEADING;
+        return ResultPars::END_HEADING;
     }
 }
 
@@ -31,7 +31,7 @@ ProxyServer::ResultParseHeading *ProxyServer::ParserImpl::parsingHeading(std::st
             result->setType(TypeRequest::NOT_GET_REQUEST);
         }
     } else {
-        result->setType(TypeRequest::INVAILD_REQUEST);
+        result->setType(TypeRequest::INVALID_REQUEST);
         LOG_ERROR("incorrect heading");
         throw ParseException("incorrect heading");
     }
@@ -62,10 +62,22 @@ ProxyServer::ResultParseHeading *ProxyServer::ParserImpl::parsingHeading(std::st
             result->setHostName(heading.substr(host));
         }
     } else {
-        result->setType(TypeRequest::INVAILD_REQUEST);
+        result->setType(TypeRequest::INVALID_REQUEST);
         LOG_ERROR("incorrect heading");
         throw ParseException("incorrect heading");
     }
 
     return result;
+}
+
+ProxyServer::ResultPars ProxyServer::ParserImpl::findEndBody(char *buf, int *posEnd) {
+    std::string buffer(buf);
+    int resultFinding = buffer.find("0\r\n\r\n");
+    if (resultFinding == std::string::npos) {
+        *posEnd = -1;
+        return ResultPars::NOTHING;
+    } else {
+        *posEnd = resultFinding + 4;
+        return ResultPars::END_BODY;
+    }
 }

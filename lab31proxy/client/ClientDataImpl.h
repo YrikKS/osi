@@ -13,13 +13,13 @@ namespace ProxyServer {
     public:
         ~ClientDataImpl() override;
 
-        ClientDataImpl(STATUS_REQUEST statusRequest);
+        ClientDataImpl(StatusHttp statusRequest);
 
-        STATUS_REQUEST getStatusRequest() override;
+        StatusHttp getStatusRequest() override;
 
         std::string &getRequestHeading() override;
 
-        void setStatusRequest(STATUS_REQUEST statusRequest) override;
+        void setStatusRequest(StatusHttp statusRequest) override;
 
         void setRequestHeading(const std::string &basicString) override;
 
@@ -31,11 +31,17 @@ namespace ProxyServer {
 
         void setRequestBody(const std::string &requestBody) override;
 
+        bool getIsReadyToSend() override;
+
+        void setIsReadyToSend(bool isReadyToSend) override;
+
+        void addToRequestBody(std::string string) override;
     private:
-        STATUS_REQUEST statusRequest;
-        std::string requestHeading;
-        std::string requestBody;
-        ResultParseHeading *resultParseHeading;
+        StatusHttp _statusRequest;
+        std::string _requestHeading;
+        std::string _requestBody;
+        bool _isReadyToSend = false;
+        ResultParseHeading *_resultParseHeading;
     };
 
 }

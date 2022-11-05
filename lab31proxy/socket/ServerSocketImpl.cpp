@@ -43,7 +43,7 @@ ProxyServer::Client *ProxyServer::ServerSocketImpl::acceptNewClient() {
         throw ConnectException("accept new client");
     }
 
-    Client *client = new ClientImpl(clientSock, STATUS_REQUEST::READ_REQUEST_HEADING);
+    Client *client = new ClientImpl(clientSock, StatusHttp::WRITE_REQUEST_HEADING, TypeClient::USER);
     LOG_EVENT("accept new client");
     return client;
 }
@@ -84,6 +84,6 @@ ProxyServer::Client *ProxyServer::ServerSocketImpl::connectToClient(std::string 
         throw ConnectException("setsockport");
     }
 
-    Client *client = new ClientImpl(sock, STATUS_REQUEST::WRITE_REQUEST);
+    Client *client = new ClientImpl(sock, StatusHttp::READ_REQUEST, TypeClient::HTTP_SERVER);
     return client;
 }

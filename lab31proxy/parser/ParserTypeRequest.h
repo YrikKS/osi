@@ -9,14 +9,12 @@ namespace ProxyServer {
         GET_REQUEST,
         GET_REQUEST_NOT_CASH,
         NOT_GET_REQUEST,
-        INVAILD_REQUEST
+        INVALID_REQUEST
     } TypeRequest;
 
     typedef enum {
-        END_REQUEST_HEADING,
-        END_RESPONESE_HEADING,
-        END_REQUEST_BODY,
-        END_RESPONESE_BODY,
+        END_HEADING,
+        END_BODY,
         NOTHING
     } ResultPars;
 }

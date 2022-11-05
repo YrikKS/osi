@@ -4,47 +4,59 @@
 
 #include "ClientDataImpl.h"
 
-ProxyServer::STATUS_REQUEST ProxyServer::ClientDataImpl::getStatusRequest() {
-    return statusRequest;
+ProxyServer::StatusHttp ProxyServer::ClientDataImpl::getStatusRequest() {
+    return _statusRequest;
 }
 
-void ProxyServer::ClientDataImpl::setStatusRequest(ProxyServer::STATUS_REQUEST statusRequest) {
-    ClientDataImpl::statusRequest = statusRequest;
+void ProxyServer::ClientDataImpl::setStatusRequest(ProxyServer::StatusHttp statusRequest) {
+    ClientDataImpl::_statusRequest = statusRequest;
 }
 
 void ProxyServer::ClientDataImpl::setRequestHeading(const std::string &basicString) {
-    ClientDataImpl::requestHeading = basicString;
+    ClientDataImpl::_requestHeading = basicString;
 }
 
 std::string& ProxyServer::ClientDataImpl::getRequestHeading() {
-    return requestHeading;
+    return _requestHeading;
 }
 
 void ProxyServer::ClientDataImpl::setResultParseHeading(ProxyServer::ResultParseHeading *parseHeading) {
-    resultParseHeading = parseHeading;
+    _resultParseHeading = parseHeading;
 }
 
 ProxyServer::ResultParseHeading *ProxyServer::ClientDataImpl::getResultParseHeading() {
-    return resultParseHeading;
+    return _resultParseHeading;
 }
 
-ProxyServer::ClientDataImpl::ClientDataImpl(STATUS_REQUEST statusRequest) {
-    this->statusRequest = statusRequest;
-    resultParseHeading = NULL;
+ProxyServer::ClientDataImpl::ClientDataImpl(StatusHttp statusRequest) {
+    this->_statusRequest = statusRequest;
+    _resultParseHeading = NULL;
 }
 
 ProxyServer::ClientDataImpl::~ClientDataImpl() {
-    if(resultParseHeading != NULL) {
-        delete resultParseHeading;
+    if(_resultParseHeading != NULL) {
+        delete _resultParseHeading;
     }
 }
 
 const std::string &ProxyServer::ClientDataImpl::getRequestBody() {
-    return requestBody;
+    return _requestBody;
 }
 
 void ProxyServer::ClientDataImpl::setRequestBody(const std::string &requestBody) {
-    ClientDataImpl::requestBody = requestBody;
+    ClientDataImpl::_requestBody = requestBody;
+}
+
+bool ProxyServer::ClientDataImpl::getIsReadyToSend() {
+    return _isReadyToSend;
+}
+
+void ProxyServer::ClientDataImpl::setIsReadyToSend(bool isReadyToSend) {
+    ClientDataImpl::_isReadyToSend = isReadyToSend;
+}
+
+void ProxyServer::ClientDataImpl::addToRequestBody(std::string string) {
+    _requestBody += string;
 }
 
 

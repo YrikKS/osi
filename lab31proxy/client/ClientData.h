@@ -12,21 +12,21 @@
 
 namespace ProxyServer {
     typedef enum {
-        READ_REQUEST_HEADING,
-        READ_REQUEST_BODY,
-        READ_RESPONESE_HEADING,
-        READ_RESPONESE_BODY,
-        WRITE_RESPONSE,
-        WRITE_REQUEST
-    } STATUS_REQUEST;
+        WRITE_REQUEST_HEADING,
+        WRITE_REQUEST_BODY,
+        READ_RESPONSE,
+        READ_REQUEST,
+        WRITE_RESPONSE
+        //WRITE_REQUEST
+    } StatusHttp;
 
     class ClientData {
     public:
         virtual ~ClientData() = default;
 
-        virtual STATUS_REQUEST getStatusRequest() = 0;
+        virtual StatusHttp getStatusRequest() = 0;
 
-        virtual void setStatusRequest(STATUS_REQUEST statusRequest) = 0;
+        virtual void setStatusRequest(StatusHttp statusRequest) = 0;
 
         virtual std::string &getRequestHeading() = 0;
 
@@ -39,6 +39,12 @@ namespace ProxyServer {
         virtual const std::string &getRequestBody() = 0;
 
         virtual void setRequestBody(const std::string &requestBody) = 0;
+
+        virtual bool getIsReadyToSend() = 0;
+
+        virtual void setIsReadyToSend(bool isReadyToSend) = 0;
+
+        virtual void addToRequestBody(std::string string) = 0;
     };
 }
 
