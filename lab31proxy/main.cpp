@@ -8,7 +8,7 @@ int main() {
         ProxyServer::ServerImpl* server = new ProxyServer::ServerImpl();
         std::cout << server << std::endl;
 //        delete server;
-//        server->startServer();
+        server->startServer();
     } catch (std::exception& ex) {
         ex.what();
         std::cout.flush();
