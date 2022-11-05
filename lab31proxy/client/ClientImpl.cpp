@@ -42,6 +42,6 @@ void ProxyServer::ClientImpl::setPair(ProxyServer::Client *pair) {
     ClientImpl::_pair = pair;
 }
 
-ProxyServer::TypeClient ProxyServer::ClientImpl::getTypeClient() const {
+ProxyServer::TypeClient ProxyServer::ClientImpl::getTypeClient() {
     return _typeClient;
 }

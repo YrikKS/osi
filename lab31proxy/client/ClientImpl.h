@@ -33,7 +33,7 @@ namespace ProxyServer {
 
         void setPair(Client *pair) override;
 
-        TypeClient getTypeClient() const;
+        TypeClient getTypeClient() override;
 
     private:
         int _fd;
