@@ -18,7 +18,7 @@
 #include "socket/ServerSocketImpl.h"
 
 namespace ProxyServer {
-    class ServerImpl : public Server {
+    class ServerImpl : protected Server {
     public:
         ServerImpl();
         void startServer() override;
