@@ -28,7 +28,7 @@ namespace ProxyServer {
 
         virtual void setStatusRequest(STATUS_REQUEST statusRequest) = 0;
 
-        virtual std::string &getRequestHeading() = 0;
+        virtual std::string getRequestHeading() = 0;
 
         virtual void setRequestHeading(const std::string &basicString) = 0;
 

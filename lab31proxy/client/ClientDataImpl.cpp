@@ -16,7 +16,7 @@ void ProxyServer::ClientDataImpl::setRequestHeading(const std::string &basicStri
     ClientDataImpl::requestHeading = basicString;
 }
 
-std::string &ProxyServer::ClientDataImpl::getRequestHeading() {
+std::string ProxyServer::ClientDataImpl::getRequestHeading() {
     return requestHeading;
 }
 
