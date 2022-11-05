@@ -83,30 +83,34 @@ void ServerImpl::handlingEvent() {
                        || (*it)->getClientData()->getStatusRequest() == StatusHttp::READ_RESPONSE)) {
 //            if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER) {
 //
-            if ((*it)->getClientData()->getIsReadyToSend()) {
-                if (!(*it)->getClientData()->getRequestHeading().empty()) {
-                    std::string strSending = (*it)->getClientData()->getRequestHeading()
+            if ((*it)->getPair()->getClientData()->getIsReadyToSend()) {
+                if (!(*it)->getPair()->getClientData()->getRequestHeading().empty()) {
+                    std::string strSending = (*it)->getPair()->getClientData()->getRequestHeading()
                             .substr(0, BUF_SIZE);
 
-                    if ((*it)->getClientData()->getRequestHeading().size() > BUF_SIZE) {
-                        (*it)->getClientData()->setRequestHeading(
-                                (*it)->getClientData()->getRequestHeading().substr(BUF_SIZE));
+                    if ((*it)->getPair()->getClientData()->getRequestHeading().size() > BUF_SIZE) {
+                        (*it)->getPair()->getClientData()->setRequestHeading(
+                                (*it)->getPair()->getClientData()->getRequestHeading().substr(BUF_SIZE));
+                    } else {
+                        (*it)->getPair()->getClientData()->setRequestHeading(std::string(""));
                     }
 
                     std::cout << "wright" << std::endl;
                     (*it)->sendBuf(strSending.c_str());
-                } else if (!(*it)->getClientData()->getRequestBody().empty()) {
-                    std::string strSending = (*it)->getClientData()->getRequestBody()
+                } else if (!(*it)->getPair()->getClientData()->getRequestBody().empty()) {
+                    std::string strSending = (*it)->getPair()->getClientData()->getRequestBody()
                             .substr(0, BUF_SIZE);
 
-                    if ((*it)->getClientData()->getRequestBody().size() > BUF_SIZE) {
-                        (*it)->getClientData()->setRequestBody(
-                                (*it)->getClientData()->getRequestBody().substr(BUF_SIZE));
+                    if ((*it)->getPair()->getClientData()->getRequestBody().size() > BUF_SIZE) {
+                        (*it)->getPair()->getClientData()->setRequestBody(
+                                (*it)->getPair()->getClientData()->getRequestBody().substr(BUF_SIZE));
+                    } else {
+                        (*it)->getPair()->getClientData()->setRequestBody(std::string(""));
                     }
                     (*it)->sendBuf(strSending.c_str());
 
                 } else {
-                    (*it)->getClientData()->setIsReadyToSend(false);
+                    (*it)->getPair()->getClientData()->setIsReadyToSend(false);
                 }
             }
             std::cout << "wright0" << std::endl;
