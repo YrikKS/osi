@@ -18,11 +18,11 @@
 #include "socket/ServerSocketImpl.h"
 
 namespace ProxyServer {
-    class ServerImpl : protected Server {
+    class ServerImpl : public Server {
     public:
         ServerImpl();
         void startServer() override;
-        ~ServerImpl() override;
+        ~ServerImpl();
 
     private:
         void updatePollFd();

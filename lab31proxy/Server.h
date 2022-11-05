@@ -10,8 +10,8 @@ namespace ProxyServer {
     class Server {
     public:
         virtual void startServer() = 0;
-    protected:
-        virtual ~Server() = 0;
+//    protected:
+//        virtual ~Server() = 0;
     };
 }
 
