@@ -83,6 +83,7 @@ ProxyServer::Client *ProxyServer::ServerSocketImpl::connectToClient(std::string 
         LOG_ERROR_WITH_ERRNO("connect");
         throw ConnectException("setsockport");
     }
+
     Client *client = new ClientImpl(sock, STATUS_REQUEST::WRITE_REQUEST);
     return client;
 }

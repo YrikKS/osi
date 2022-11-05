@@ -17,7 +17,7 @@ namespace ProxyServer {
 
         STATUS_REQUEST getStatusRequest() override;
 
-        std::string getRequestHeading() override;
+        std::string &getRequestHeading() override;
 
         void setStatusRequest(STATUS_REQUEST statusRequest) override;
 
