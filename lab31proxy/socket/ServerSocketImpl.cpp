@@ -62,7 +62,7 @@ ProxyServer::Client *ProxyServer::ServerSocketImpl::connectToClient(std::string 
         std::cout << "i = " << (int) url.c_str()[i] << std::endl;
     }
 //    std::cout.flush();
-    struct hostent *hostent = gethostbyname(url.substr(0, url.size() - 1).data());
+    struct hostent *hostent = gethostbyname(url.data());
     if (hostent == NULL) {
         LOG_ERROR("gethostbyname");
         herror("gethostbyname");
