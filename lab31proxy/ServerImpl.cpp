@@ -69,7 +69,7 @@ void ServerImpl::handlingEvent() {
             int countByteRead = (*it)->readBuf(buf);
             if (countByteRead == 0) {
                 LOG_EVENT("user logout");
-                delete (*it);
+                delete (ServerSocketImpl*)(*it);
                 it = _clientList.erase(it);
                 isNeedUpdatePollSet = true;
             } else {
@@ -113,11 +113,11 @@ ServerImpl::~ServerImpl() {
     _serverSocket->closeSocket();
     std::cout << "clea1" << std::endl;
     std::cout.flush();
-    delete _serverSocket;
+    delete (ServerSocketImpl*)_serverSocket;
     std::cout << "clea2" << std::endl;
     std::cout.flush();
     for(auto it = _clientList.begin(); it != _clientList.end(); it++) {
-        delete (*it);
+        delete (ServerSocketImpl*)(*it);
     }
     std::cout << "clea3" << std::endl;
     std::cout.flush();
