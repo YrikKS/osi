@@ -113,7 +113,7 @@ void ServerImpl::handlingEvent() {
                     (*it)->getPair()->getClientData()->setIsReadyToSend(false);
                 }
             }
-            std::cout << "wright0" << std::endl;
+//            std::cout << "wright0" << std::endl;
         }
         _pollSet[i].revents = 0;
     }
