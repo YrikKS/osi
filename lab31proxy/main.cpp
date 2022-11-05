@@ -5,8 +5,8 @@
 int main() {
     LOG_EVENT("start program");
     try {
-        ProxyServer::ServerImpl server = ProxyServer::ServerImpl();
-        server.startServer();
+        ProxyServer::Server* server = new ProxyServer::ServerImpl();
+        server->startServer();
     } catch (std::exception& ex) {
         ex.what();
         std::cout.flush();
