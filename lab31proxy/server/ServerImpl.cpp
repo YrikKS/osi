@@ -82,7 +82,7 @@ void ServerImpl::handlingEvent() {
                    && ((*it)->getClientData()->getStatusRequest() == StatusHttp::READ_REQUEST
                        || (*it)->getClientData()->getStatusRequest() == StatusHttp::READ_RESPONSE)) {
 //            if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER) {
-//            std::cout << "wright" << std::endl;
+            std::cout << "wright" << std::endl;
             if ((*it)->getPair()->getClientData()->getIsReadyToSend()) {
                 if (!(*it)->getPair()->getClientData()->getRequestHeading().empty()) {
                     std::string strSending = (*it)->getPair()->getClientData()->getRequestHeading()
