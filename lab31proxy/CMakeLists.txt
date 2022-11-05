@@ -15,8 +15,8 @@ set(CMAKE_CXX_FLAGS -std=c++11)
 #        )
 add_executable(lab31proxy
         main.cpp
-        Server.h
-        ServerImpl.cpp
+        server/Server.h
+        server/ServerImpl.cpp
         Constants.h
         client/Client.h
         client/ClientImpl.cpp
@@ -30,7 +30,9 @@ add_executable(lab31proxy
         socket/ConnectException.h
         parser/ResultParseHeading.h
         parser/ParseException.h
-        )
+        client/ClientData.h
+        client/ClientDataImpl.cpp
+        client/ClientDataImpl.h)
 #include_directories(${Boost_INCLUDE_DIRS})
 
 #target_link_libraries(lab31proxy

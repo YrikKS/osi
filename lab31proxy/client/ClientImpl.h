@@ -7,6 +7,12 @@
 
 #include "Client.h"
 #include "../logger/Logger.h"
+#include <cstring>
+#include <unistd.h>
+#include <iostream>
+#include "ClientImpl.h"
+#include "../Constants.h"
+#include "ClientDataImpl.h"
 
 namespace ProxyServer {
     class ClientImpl : public Client {
@@ -19,25 +25,12 @@ namespace ProxyServer {
 
         int readBuf(char *buf) override;
 
-        ~ClientImpl();
+        ClientData* getClientData() override;
 
-        STATUS_REQUEST getStatusRequest() override;
-
-        void setStatusRequest(STATUS_REQUEST statusRequest) override;
-
-        std::string &getRequestHeading() override;
-
-        void setRequestHeading(const std::string &requestHeading) override;
-
-        void setResultParseHeading(ResultParseHeading *parseHeading) override;
-
-        ResultParseHeading *getResultParseHeading() override;
-
+        ~ClientImpl() override;
     private:
         int fd;
-        STATUS_REQUEST statusRequest;
-        std::string requestHeading;
-        ResultParseHeading* resultParseHeading;
+        ClientData* clientData;
     };
 }
 

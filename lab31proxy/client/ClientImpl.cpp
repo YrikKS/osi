@@ -2,11 +2,7 @@
 // Created by kurya on 03.11.2022.
 //
 
-#include <cstring>
-#include <unistd.h>
-#include <iostream>
 #include "ClientImpl.h"
-#include "../Constants.h"
 
 int ProxyServer::ClientImpl::getFdClient() {
     return fd;
@@ -24,38 +20,15 @@ int ProxyServer::ClientImpl::readBuf(char *buf) {
 
 ProxyServer::ClientImpl::ClientImpl(int sock, STATUS_REQUEST statusRequest) {
     fd = sock;
-    this->statusRequest = statusRequest;
-    resultParseHeading = NULL;
+    clientData = new ClientDataImpl(statusRequest);
 }
 
 ProxyServer::ClientImpl::~ClientImpl() {
     LOG_EVENT("destructor client");
     close(fd);
-    if(resultParseHeading != NULL) {
-        delete resultParseHeading;
-    }
+    delete clientData;
 }
 
-ProxyServer::STATUS_REQUEST ProxyServer::ClientImpl::getStatusRequest() {
-    return statusRequest;
-}
-
-void ProxyServer::ClientImpl::setStatusRequest(ProxyServer::STATUS_REQUEST statusRequest) {
-    ClientImpl::statusRequest = statusRequest;
-}
-
-void ProxyServer::ClientImpl::setRequestHeading(const std::string &requestHeading) {
-    ClientImpl::requestHeading = requestHeading;
-}
-
-std::string &ProxyServer::ClientImpl::getRequestHeading() {
-    return requestHeading;
-}
-
-void ProxyServer::ClientImpl::setResultParseHeading(ProxyServer::ResultParseHeading *parseHeading) {
-    resultParseHeading = parseHeading;
-}
-
-ProxyServer::ResultParseHeading *ProxyServer::ClientImpl::getResultParseHeading() {
-    return resultParseHeading;
+ProxyServer::ClientData* ProxyServer::ClientImpl::getClientData() {
+    return clientData;
 }

@@ -7,15 +7,15 @@
 
 
 #include "Server.h"
-#include "logger/Logger.h"
+#include "../logger/Logger.h"
 #include <poll.h>
 #include <iostream>
 #include <map>
 #include <list>
-#include "Constants.h"
-#include "client/Client.h"
-#include "socket/ServerSocket.h"
-#include "socket/ServerSocketImpl.h"
+#include "../Constants.h"
+#include "../client/Client.h"
+#include "../socket/ServerSocket.h"
+#include "../socket/ServerSocketImpl.h"
 
 namespace ProxyServer {
     class ServerImpl : public Server {

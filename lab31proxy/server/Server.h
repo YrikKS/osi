@@ -11,7 +11,7 @@ namespace ProxyServer {
     public:
         virtual void startServer() = 0;
 //    protected:
-//        virtual ~Server() = 0;
+//        virtual ~server() = 0;
     };
 }
 

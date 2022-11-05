@@ -69,7 +69,7 @@ void ServerImpl::handlingEvent() {
             int countByteRead = (*it)->readBuf(buf);
             if (countByteRead == 0) {
                 LOG_EVENT("user logout");
-                delete (ClientImpl*)(*it);
+                delete (*it);
                 it = _clientList.erase(it);
                 isNeedUpdatePollSet = true;
             } else {
@@ -87,19 +87,23 @@ void ServerImpl::handlingReadBuf(char *buf, Client *client) {
     LOG_EVENT("Handling event read");
     std::cout << "handlingEvent" << std::endl;
     std::cout << buf << std::endl;
-    if (client->getStatusRequest() == STATUS_REQUEST::READ_REQUEST_HEADING) {
+    if (client->getClientData()->getStatusRequest() == STATUS_REQUEST::READ_REQUEST_HEADING) {
         int posEndHeading = 0;
         if (ParserImpl::findEndHeading(buf, &posEndHeading) == ResultPars::END_REQUEST_HEADING) {
-            client->setStatusRequest(STATUS_REQUEST::READ_REQUEST_BODY);
-            client->setRequestHeading(client->getRequestHeading() + std::string(buf).substr(0, posEndHeading));
-            client->setResultParseHeading(ParserImpl::parsingHeading(client->getRequestHeading()));
-            std::cout << "getType == " << client->getResultParseHeading()->getType() <<
-            std::endl << "getHostName == " << client->getResultParseHeading()->getHostName() <<
-            std::endl << "getContentLength == " << client->getResultParseHeading()->getContentLength()
-            << std::endl;
+            client->getClientData()->setStatusRequest(STATUS_REQUEST::READ_REQUEST_BODY);
+            client->getClientData()->setRequestHeading(
+                    client->getClientData()->getRequestHeading() + std::string(buf).substr(0, posEndHeading));
+            client->getClientData()->setResultParseHeading(
+                    ParserImpl::parsingHeading(client->getClientData()->getRequestHeading()));
+            std::cout << "getType == " << client->getClientData()->getResultParseHeading()->getType() <<
+                      std::endl << "getHostName == " << client->getClientData()->getResultParseHeading()->getHostName()
+                      <<
+                      std::endl << "getContentLength == "
+                      << client->getClientData()->getResultParseHeading()->getContentLength()
+                      << std::endl;
             //TODO может быть подругому ???
         } else {
-            client->setRequestHeading(client->getRequestHeading() + std::string(buf));
+            client->getClientData()->setRequestHeading(client->getClientData()->getRequestHeading() + std::string(buf));
         }
     }
 //    if (client->getStatusRequest() == STATUS_REQUEST::READ_REQUEST_BODY) {
@@ -113,11 +117,11 @@ ServerImpl::~ServerImpl() {
     _serverSocket->closeSocket();
     std::cout << "clea1" << std::endl;
     std::cout.flush();
-    delete (ServerSocketImpl*)_serverSocket;
+    delete (ServerSocketImpl *) _serverSocket;
     std::cout << "clea2" << std::endl;
     std::cout.flush();
-    for(auto & it : _clientList) {
-        delete (ClientImpl*)it;
+    for (auto &it: _clientList) {
+        delete it;
     }
     std::cout << "clea3" << std::endl;
     std::cout.flush();
