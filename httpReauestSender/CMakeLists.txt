@@ -8,3 +8,5 @@ add_executable(httpReauestSender main.cpp)
 add_executable(withUrl withUrl.cpp)
 
 add_executable(server server.cpp)
+
+add_executable(writer writer.cpp)
