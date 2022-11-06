@@ -12,7 +12,7 @@
 #include <iostream>
 #include "ClientImpl.h"
 #include "../Constants.h"
-#include "ClientDataImpl.h"
+//#include "ClientDataImpl.h"
 
 namespace ProxyServer {
     class ClientImpl : public Client {

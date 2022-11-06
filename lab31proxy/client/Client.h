@@ -4,7 +4,7 @@
 
 #ifndef LAB31PROXY_CLIENTINTERFACE_H
 #define LAB31PROXY_CLIENTINTERFACE_H
-#include "ClientData.h"
+//#include "ClientData.h"
 #include "../buffer/Buffer.h"
 
 namespace ProxyServer {
