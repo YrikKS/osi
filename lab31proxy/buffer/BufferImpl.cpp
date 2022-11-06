@@ -65,7 +65,9 @@ const char *BufferImpl::sendBuf() {
 
 void BufferImpl::proofSend(const char *buf) {
     _buf = _buf.erase(0, std::strlen(buf));
-
+    if (_buf.empty() && !_isEndSend) {
+        _isReadyToSend = false;
+    }
     if (_buf.empty() && _isEndSend) {
         if (_statusHttpServer == StatusHttp::READ_REQUEST) {
             _statusClient = StatusHttp::READ_RESPONSE;
