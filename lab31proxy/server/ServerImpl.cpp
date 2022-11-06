@@ -28,7 +28,7 @@ void ServerImpl::startServer() {
                     //TODO client connect: create client + add to _pollSet
                 } catch (ConnectException *exception) {
                     std::cerr << exception->what() << std::endl;
-                    LOG_ERROR("exception is close");
+                    LOG_ERROR("exception in connect");
                 }
 
                 LOG_EVENT("add new client");
@@ -82,7 +82,6 @@ void ServerImpl::handlingEvent() {
                    && ((*it)->getClientData()->getStatusRequest() == StatusHttp::READ_REQUEST
                        || (*it)->getClientData()->getStatusRequest() == StatusHttp::READ_RESPONSE)) {
 //            if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER) {
-//
             if ((*it)->getPair()->getClientData()->getIsReadyToSend()) {
                 if (!(*it)->getPair()->getClientData()->getRequestHeading().empty()) {
                     std::string strSending = (*it)->getPair()->getClientData()->getRequestHeading()
@@ -127,6 +126,7 @@ void ServerImpl::handlingReadBuf(char *buf, Client *client) {
     LOG_EVENT("Handling event read");
     std::cout << "handlingEvent" << std::endl;
     std::cout << buf << std::endl;
+
     if (client->getClientData()->getStatusRequest() == StatusHttp::WRITE_REQUEST_HEADING) {
         readRequestHeading(buf, client);
     } else if (client->getClientData()->getStatusRequest() == StatusHttp::WRITE_REQUEST_BODY) {
@@ -171,6 +171,7 @@ void ServerImpl::readRequestHeading(char *buf, Client *client) {
     if (ParserImpl::findEndHeading(buf, &posEndHeading) == ResultPars::END_HEADING) {
         client->getClientData()->setRequestHeading(
                 client->getClientData()->getRequestHeading() + std::string(buf).substr(0, posEndHeading));
+
         client->getClientData()->setResultParseHeading(
                 ParserImpl::parsingHeading(client->getClientData()->getRequestHeading()));
 
@@ -178,7 +179,8 @@ void ServerImpl::readRequestHeading(char *buf, Client *client) {
         client->getClientData()->setStatusRequest(StatusHttp::READ_RESPONSE);
 //        } else {
 //            client->getClientData()->setStatusRequest(StatusHttp::WRITE_REQUEST_BODY);
-//            client->getClientData()->setRequestBody(std::string(buf).substr(posEndHeading));
+            std::cout << "size body == " << std::string(buf).substr(posEndHeading).size() << std::endl;
+            client->getClientData()->setRequestBody(std::string(buf).substr(posEndHeading));
 //        }
         //TODO может быть подругому ???
 
