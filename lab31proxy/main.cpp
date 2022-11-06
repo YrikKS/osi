@@ -2,8 +2,13 @@
 #include "server/ServerImpl.h"
 #include "logger/Logger.h"
 
-int main() {
+int main(int argc, char *argv[]) {
     LOG_EVENT("start program");
+    if(argc != 2) {
+        LOG_ERROR("error count arg");
+        return 1;
+    }
+    ProxyServer::DEFAULT_PORT = atoi(argv[1]);
     try {
         ProxyServer::ServerImpl* server = new ProxyServer::ServerImpl();
         std::cout << server << std::endl;
