@@ -55,8 +55,8 @@ int main(int argc, char *argv[]) {
     std::cout << buffer << "End" << std::endl;
 //    GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1
 //    Accept: */*
-//Host: parallels.nsu.ru
-//Connection: close
+//    Host: parallels.nsu.ru
+//    Connection: close
 
 
 

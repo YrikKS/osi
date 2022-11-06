@@ -66,6 +66,8 @@ void ServerImpl::handlingEvent() {
             int countByteRead = (*it)->readBuf(buf);
             if (countByteRead == 0) {
                 isNeedUpdatePollSet = deleteClient(*it, &it);
+                break;
+
             } else {
                 (*it)->getBuffer()->readRequest(buf);
                 if ((*it)->getBuffer()->isReadyConnectHttpServer()) {
@@ -82,7 +84,7 @@ void ServerImpl::handlingEvent() {
                         LOG_ERROR("can't connect to http server");
                         _pollSet[i].revents = 0;
                         isNeedUpdatePollSet = deleteClient(*it, &it);
-                        continue;
+                        break;
                     }
                 }
             }
@@ -103,16 +105,18 @@ void ServerImpl::handlingEvent() {
         if ((*it)->getTypeClient() == TypeClient::USER &&
             (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
             isNeedUpdatePollSet = deleteClient(*it, &it);
+            break;
         } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                    (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
             isNeedUpdatePollSet = deleteClient(*it, &it);
+            break;
         }
         _pollSet[i].revents = 0;
     }
 
-    if (isNeedUpdatePollSet) {
-        setPollArr();
-    }
+//    if (isNeedUpdatePollSet) {
+    setPollArr();
+//    }
 }
 
 ServerImpl::~ServerImpl() {
