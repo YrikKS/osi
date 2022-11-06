@@ -10,6 +10,11 @@ using namespace ProxyServer;
 ResultPars ParserImpl::findEndHeading(std::string buf, int *posEnd) {
     int resultFinding = buf.find("\r\n\r\n");
     if (resultFinding == std::string::npos) {
+        resultFinding = buf.find("\n\n");
+        if (resultFinding != std::string::npos) {
+            *posEnd = resultFinding + 2;
+            return ResultPars::END_HEADING;
+        }
         *posEnd = -1;
         return ResultPars::NOTHING;
     } else {
@@ -40,6 +45,9 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
     int contentLength = heading.find("Content-Length: ");
     if (contentLength != std::string::npos) {
         int endContentLength = heading.find("\r\n", contentLength);
+        if (endContentLength == std::string::npos) {
+            endContentLength = heading.find("\n", contentLength);
+        }
         if (endContentLength != std::string::npos) {
             contentLength += std::string("Content-Length: ").size();
             result->setContentLength(atoi(
@@ -55,6 +63,9 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
     int host = heading.find("Host: ");
     if (host != std::string::npos) {
         int endContentLength = heading.find("\r\n", host);
+        if (endContentLength == std::string::npos) {
+            endContentLength = heading.find("\n", contentLength);
+        }
         if (endContentLength != std::string::npos) {
             host += std::string("Host: ").size();
             result->setHostName(heading.substr(host, endContentLength - host));
@@ -74,6 +85,11 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
 ResultPars ParserImpl::findEndBody(std::string buffer, int *posEnd) {
     int resultFinding = buffer.find("0\r\n\r\n");
     if (resultFinding == std::string::npos) {
+        resultFinding = buffer.find("0\n\n");
+        if (resultFinding != std::string::npos) {
+            *posEnd = resultFinding + 3;
+            return ResultPars::END_HEADING;
+        }
         *posEnd = -1;
         return ResultPars::NOTHING;
     } else {
