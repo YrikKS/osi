@@ -2,6 +2,7 @@
 // Created by kurya on 06.11.2022.
 //
 
+#include <cstring>
 #include "BufferImpl.h"
 
 using namespace ProxyServer;
@@ -34,7 +35,7 @@ void BufferImpl::readRequest(char *buf) {
         }
     } else if (_statusClient == StatusHttp::WRITE_REQUEST_BODY) {
         _isReadyToSend = true;
-        _lengthBody -= std::string(buf).size();
+        _lengthBody -= std::strlen(buf);
         if (_lengthBody <= 0) {
 //            _statusClient = StatusHttp::READ_RESPONSE;
             _isEndSend = true;
@@ -54,8 +55,8 @@ void BufferImpl::readResponse(char *buf) {
 }
 
 const char *BufferImpl::sendBuf() {
-    if (_buf.size() > BUF_SIZE) {
-        _sendingString = _buf.substr(0, BUF_SIZE);
+    if (_buf.size() >= BUF_SIZE - 1) {
+        _sendingString = _buf.substr(0, BUF_SIZE - 1);
     } else {
         _sendingString = _buf;
     }
@@ -63,7 +64,7 @@ const char *BufferImpl::sendBuf() {
 }
 
 void BufferImpl::proofSend(const char *buf) {
-    _buf.erase(0, std::string(buf).size());
+    _buf = _buf.erase(0, std::strlen(buf));
 
     if (_buf.empty() && _isEndSend) {
         if (_statusHttpServer == StatusHttp::READ_REQUEST) {

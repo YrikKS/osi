@@ -10,6 +10,7 @@
 #include "../parser/ParserTypeRequest.h"
 #include "../parser/ParserImpl.h"
 #include "../Constants.h"
+#include <string.h>
 
 namespace ProxyServer {
     class BufferImpl : public Buffer {

@@ -10,11 +10,11 @@ int ProxyServer::ClientImpl::getFdClient() {
 
 void ProxyServer::ClientImpl::sendBuf(const char *buf) {
     std::cout << "send : " << buf << std::endl;
-    write(_fd, buf, BUF_SIZE);
+    write(_fd, buf, std::strlen(buf));
 }
 
 int ProxyServer::ClientImpl::readBuf(char *buf) {
-    int byte = read(_fd, buf, BUF_SIZE);
+    int byte = read(_fd, buf, BUF_SIZE - 1);
     std::cout << buf << std::endl << std::endl;
 //    std::string str = buf;
 //    for(int i = 0; i < str.size(); i++) {
