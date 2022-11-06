@@ -81,8 +81,8 @@ void ServerImpl::handlingEvent() {
                    && ((*it)->getClientData()->getStatusRequest() == StatusHttp::READ_REQUEST
                        || (*it)->getClientData()->getStatusRequest() == StatusHttp::READ_RESPONSE)) {
 //            if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER) {
+//            std::cout << "wright" << std::endl;
             if ((*it)->getPair()->getClientData()->getIsReadyToSend()) {
-                std::cout << "wright" << std::endl;
                 if (!((*it)->getPair()->getClientData()->getRequestHeading().empty())) {
                     std::string strSending = (*it)->getPair()->getClientData()->getRequestHeading()
                             .substr(0, BUF_SIZE);
@@ -193,7 +193,7 @@ void ServerImpl::readRequestHeading(char *buf, Client *client) {
         _clientList.push_back(httpServer);
 
         client->setPair(httpServer);
-        httpServer->setPair(httpServer);
+        httpServer->setPair(client);
         updatePollFd();
 //            char newBuf[1024] = {0};
 //            httpServer->sendBuf((client->getClientData()->getRequestHeading()).data());
