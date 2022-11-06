@@ -114,9 +114,9 @@ void ServerImpl::handlingEvent() {
         _pollSet[i].revents = 0;
     }
 
-//    if (isNeedUpdatePollSet) {
+    if (isNeedUpdatePollSet) {
     setPollArr();
-//    }
+    }
 }
 
 ServerImpl::~ServerImpl() {
