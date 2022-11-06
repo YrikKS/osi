@@ -16,8 +16,9 @@ void ProxyServer::ClientImpl::sendBuf(const char *buf) {
 int ProxyServer::ClientImpl::readBuf(char *buf) {
     int byte = read(_fd, buf, BUF_SIZE);
 //    std::cout << buf << std::endl;
-    for(int i = 0; i < std::string(buf).size(); i++) {
-        std::cout << buf[i] << " ";
+    std::string str = buf;
+    for(int i = 0; i < str.size(); i++) {
+        std::cout << (int)str[i] << " ";
     }
     return byte;
 }
