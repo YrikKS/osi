@@ -81,26 +81,24 @@ void ServerImpl::handlingEvent() {
                     } catch (ConnectException ex) {
                         std::cerr << ex.what() << std::endl;
                         LOG_ERROR("can't connect to http server");
-                        isNeedUpdatePollSet = deleteClient(*it, &it);
+//                        isNeedUpdatePollSet = deleteClient(*it, &it);
                     }
                 }
             }
         } else if (_pollSet[i].revents & POLLOUT) {
             if ((*it)->getBuffer()->isReadyToSend()) {
-                if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER
-                    && (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::READ_REQUEST) {
-//                std::cout << "send" << std::endl;
+                if (((*it)->getTypeClient() == TypeClient::HTTP_SERVER
+                     && (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::READ_REQUEST) ||
+                    ((*it)->getTypeClient() == TypeClient::USER
+                     && (*it)->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE)) {
+
                     const char *bufferSend = (*it)->getBuffer()->sendBuf();
-                    (*it)->sendBuf(bufferSend); // send other!
-                    (*it)->getBuffer()->proofSend(bufferSend);
-                } else if ((*it)->getTypeClient() == TypeClient::USER
-                           && (*it)->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE) {
-                    const char *bufferSend = (*it)->getBuffer()->sendBuf();
-                    (*it)->sendBuf(bufferSend); // send other!
+                    (*it)->sendBuf(bufferSend);
                     (*it)->getBuffer()->proofSend(bufferSend);
                 }
             }
         }
+
         if ((*it)->getTypeClient() == TypeClient::USER &&
             (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
             isNeedUpdatePollSet = deleteClient(*it, &it);
