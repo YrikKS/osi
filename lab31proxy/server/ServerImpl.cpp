@@ -71,8 +71,13 @@ void ServerImpl::handlingEvent() {
                 (*it)->getBuffer()->readRequest(buf);
                 if ((*it)->getBuffer()->isReadyConnectHttpServer()) {
                     try {
-                        _clientList.push_back(_serverSocket->connectToClient
-                                ((*it)->getBuffer()->getParseResult().getHostName(), DEFAULT_PORT));
+                        Client *client = _serverSocket->connectToClient
+                                ((*it)->getBuffer()->getParseResult().getHostName(), DEFAULT_PORT);
+                        client->setBuffer((*it)->getBuffer());
+                        client->setPair((*it));
+                        (*it)->setPair(client);
+                        _clientList.push_back(client);
+
                     } catch (ConnectException ex) {
                         std::cerr << ex.what() << std::endl;
                         LOG_ERROR("can't connect to http server");
