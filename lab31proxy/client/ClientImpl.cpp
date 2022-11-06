@@ -20,6 +20,7 @@ int ProxyServer::ClientImpl::readBuf(char *buf) {
     for(int i = 0; i < str.size(); i++) {
         int a = static_cast<int>(str[i]);
         std::cout << str[i] << " = " << a << " ";
+        std::cout.flush();
     }
     return byte;
 }
