@@ -51,6 +51,8 @@ int main(int argc, char *argv[]) {
     std::string path("/WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks");
     sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\nConnection: close\r\n\r\n", path.data(),
             domain.data());
+
+    std::cout << buffer << std::endl;
 //    GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1
 //    Accept: */*
 //Host: parallels.nsu.ru
