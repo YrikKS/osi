@@ -24,7 +24,7 @@ namespace ProxyServer {
 
         virtual void readResponse(char *buf) = 0;
 
-        virtual char *sendBuf() = 0;
+        virtual const char *sendBuf() = 0;
 
         virtual void proofSend(char *buf) = 0;
 

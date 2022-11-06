@@ -87,7 +87,7 @@ void ServerImpl::handlingEvent() {
             }
         } else if (_pollSet[i].revents & POLLOUT) {
             if ((*it)->getBuffer()->isReadyToSend()) {
-                char* bufferSend = (*it)->getBuffer()->sendBuf();
+                const char* bufferSend = (*it)->getBuffer()->sendBuf();
                 (*it)->sendBuf(bufferSend);
                 (*it)->getBuffer()->proofSend(bufferSend);
             }

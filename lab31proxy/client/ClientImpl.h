@@ -21,7 +21,7 @@ namespace ProxyServer {
 
         int getFdClient() override;
 
-        void sendBuf(char *buf) override;
+        void sendBuf(const char *buf) override;
 
         int readBuf(char *buf) override;
 

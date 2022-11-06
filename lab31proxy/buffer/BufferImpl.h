@@ -18,7 +18,7 @@ namespace ProxyServer {
 
         void readResponse(char *buf) override;
 
-        char *sendBuf() override;
+        const char *sendBuf() override;
 
         void proofSend(char *buf) override;
 

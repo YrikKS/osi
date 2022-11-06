@@ -52,13 +52,13 @@ void BufferImpl::readResponse(char *buf) {
     _buf += std::string(buf);
 }
 
-char *BufferImpl::sendBuf() {
+const char *BufferImpl::sendBuf() {
     if (_buf.size() > BUF_SIZE) {
         _sendingString = _buf.substr(0, BUF_SIZE);
     } else {
         _sendingString = _buf;
     }
-    return _sendingString.data();
+    return _sendingString.c_str();
 }
 
 void BufferImpl::proofSend(char *buf) {
