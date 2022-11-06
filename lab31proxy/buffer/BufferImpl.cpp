@@ -97,7 +97,7 @@ bool BufferImpl::isReadyToSend() {
 }
 
 BufferImpl::~BufferImpl() {
-
+    LOG_EVENT("delete buffer");
 }
 
 bool BufferImpl::isSendEnd() {

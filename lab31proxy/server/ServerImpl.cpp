@@ -87,6 +87,7 @@ void ServerImpl::handlingEvent() {
             }
         } else if (_pollSet[i].revents & POLLOUT) {
             if ((*it)->getBuffer()->isReadyToSend()) {
+                std::cout << "send" << std::endl;
                 const char* bufferSend = (*it)->getBuffer()->sendBuf();
                 (*it)->sendBuf(bufferSend);
                 (*it)->getBuffer()->proofSend(bufferSend);
@@ -119,20 +120,20 @@ ServerImpl::~ServerImpl() {
 bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *iterator) { // TODO norm del!
     if (client->getTypeClient() == TypeClient::USER) {
         LOG_EVENT("user logout");
-        (*iterator) = _clientList.erase((*iterator));
         if (client->getPair() != NULL) {
             for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
                 if ((*it) == client->getPair()) {
+                    LOG_EVENT("http server logout with user");
                     _clientList.erase(it);
                     break;
                 }
             }
             delete client->getPair();
         }
+        (*iterator) = _clientList.erase((*iterator));
         delete client->getBuffer();
         delete client;
         updatePollArr(); // не уверен
-
         return false;
     } else if (client->getTypeClient() == TypeClient::HTTP_SERVER) {
         LOG_EVENT("http server logout");
