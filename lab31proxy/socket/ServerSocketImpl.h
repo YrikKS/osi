@@ -20,6 +20,8 @@
 #include "../Constants.h"
 #include "../client/Client.h"
 #include "../client/ClientImpl.h"
+#include "../buffer/Buffer.h"
+#include "../buffer/BufferImpl.h"
 
 namespace ProxyServer {
     class ServerSocketImpl : public ServerSocket{

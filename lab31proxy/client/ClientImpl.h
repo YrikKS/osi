@@ -17,7 +17,7 @@
 namespace ProxyServer {
     class ClientImpl : public Client {
     public:
-        explicit ClientImpl(int sock, StatusHttp statusRequest, TypeClient typeClient);
+        explicit ClientImpl(int sock, StatusHttp statusRequest, TypeClient typeClient, Buffer* buf);
 
         int getFdClient() override;
 
@@ -25,21 +25,24 @@ namespace ProxyServer {
 
         int readBuf(char *buf) override;
 
-        ClientData* getClientData() override;
+        Buffer *getBuffer() override;
+
+        void setBuffer(Buffer *buffer) override;
 
         ~ClientImpl() override;
 
-        Client *getPair() override;
+        TypeClient getTypeClient() override;
 
         void setPair(Client *pair) override;
 
-        TypeClient getTypeClient() override;
+        Client *getPair() override;
 
     private:
         int _fd;
         TypeClient _typeClient;
+        ProxyServer::Buffer* _buffer;
         Client* _pair = NULL;
-        ClientData* _clientData;
+//        ClientData* _clientData;
     };
 }
 

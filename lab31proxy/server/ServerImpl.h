@@ -25,12 +25,11 @@ namespace ProxyServer {
         ~ServerImpl();
 
     private:
-        void updatePollFd();
+        void setPollArr();
+        void updatePollArr();
         void handlingEvent();
-        void handlingReadBuf(char* buf, Client* client);
-        bool deleteClient(Client* client);
+        bool deleteClient(Client* client, std::list<Client*>::iterator* iterator);
 
-        void readRequestHeading(char *buf, Client *client);
         bool _isWork = true;
         ServerSocket* _serverSocket;
         struct pollfd _pollSet[MAX_COUNT_CONNECTIONS];

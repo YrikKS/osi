@@ -19,20 +19,27 @@ int ProxyServer::ClientImpl::readBuf(char *buf) {
     return byte;
 }
 
-ProxyServer::ClientImpl::ClientImpl(int sock, StatusHttp statusRequest, TypeClient typeClient) {
+ProxyServer::ClientImpl::ClientImpl(int sock, StatusHttp statusRequest, TypeClient typeClient, Buffer* buf) {
     _fd = sock;
     _typeClient = typeClient;
-    _clientData = new ClientDataImpl(statusRequest);
+    _buffer = buf;
 }
 
 ProxyServer::ClientImpl::~ClientImpl() {
     LOG_EVENT("destructor client");
     close(_fd);
-    delete _clientData;
 }
 
-ProxyServer::ClientData* ProxyServer::ClientImpl::getClientData() {
-    return _clientData;
+ProxyServer::TypeClient ProxyServer::ClientImpl::getTypeClient() {
+    return _typeClient;
+}
+
+ProxyServer::Buffer *ProxyServer::ClientImpl::getBuffer() {
+    return _buffer;
+}
+
+void ProxyServer::ClientImpl::setBuffer(ProxyServer::Buffer *buffer) {
+    _buffer = buffer;
 }
 
 ProxyServer::Client *ProxyServer::ClientImpl::getPair() {
@@ -40,9 +47,5 @@ ProxyServer::Client *ProxyServer::ClientImpl::getPair() {
 }
 
 void ProxyServer::ClientImpl::setPair(ProxyServer::Client *pair) {
-    ClientImpl::_pair = pair;
-}
-
-ProxyServer::TypeClient ProxyServer::ClientImpl::getTypeClient() {
-    return _typeClient;
+    _pair = pair;
 }

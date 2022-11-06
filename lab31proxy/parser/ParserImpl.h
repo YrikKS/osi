@@ -14,8 +14,8 @@ namespace ProxyServer {
     class ParserImpl {
     public:
         static TypeRequest parsingRequest(char *buf, char* host);
-        static ResultPars findEndHeading(char* buf, int* posEnd);
-        static ResultPars findEndBody(char* buf, int* posEnd);
+        static ResultPars findEndHeading(std::string buf, int* posEnd);
+        static ResultPars findEndBody(std::string buffer, int* posEnd);
         static ResultParseHeading* parsingHeading(std::string heading);
     };
 }

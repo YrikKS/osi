@@ -5,9 +5,10 @@
 #include <iostream>
 #include "ParserImpl.h"
 
-ProxyServer::ResultPars ProxyServer::ParserImpl::findEndHeading(char *buf, int *posEnd) {
-    std::string buffer(buf);
-    int resultFinding = buffer.find("\r\n\r\n");
+using namespace ProxyServer;
+
+ResultPars ParserImpl::findEndHeading(std::string buf, int *posEnd) {
+    int resultFinding = buf.find("\r\n\r\n");
     if (resultFinding == std::string::npos) {
         *posEnd = -1;
         return ResultPars::NOTHING;
@@ -17,12 +18,11 @@ ProxyServer::ResultPars ProxyServer::ParserImpl::findEndHeading(char *buf, int *
     }
 }
 
-ProxyServer::TypeRequest ProxyServer::ParserImpl::parsingRequest(char *buf, char *host) {
-
-    return ProxyServer::NOT_GET_REQUEST;
+TypeRequest ParserImpl::parsingRequest(char *buf, char *host) {
+    return NOT_GET_REQUEST;
 }
 
-ProxyServer::ResultParseHeading *ProxyServer::ParserImpl::parsingHeading(std::string heading) {
+ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
     ResultParseHeading *result = new ResultParseHeading;
     if (heading.size() > 3) {
         if (heading.substr(0, 3) == "GET") {
@@ -34,6 +34,7 @@ ProxyServer::ResultParseHeading *ProxyServer::ParserImpl::parsingHeading(std::st
         result->setType(TypeRequest::INVALID_REQUEST);
         LOG_ERROR("incorrect heading");
         throw ParseException("incorrect heading");
+        // TODO обработать ?
     }
 
     int contentLength = heading.find("Content-Length: ");
@@ -45,7 +46,7 @@ ProxyServer::ResultParseHeading *ProxyServer::ParserImpl::parsingHeading(std::st
                     heading.substr(contentLength, endContentLength - contentLength).c_str()));
         }
     } else {
-        if(result->getType() == TypeRequest::GET_REQUEST) {
+        if (result->getType() == TypeRequest::GET_REQUEST) {
             result->setType(TypeRequest::GET_REQUEST_NOT_CASH);
         }
         result->setContentLength(-1);
@@ -70,14 +71,13 @@ ProxyServer::ResultParseHeading *ProxyServer::ParserImpl::parsingHeading(std::st
     return result;
 }
 
-ProxyServer::ResultPars ProxyServer::ParserImpl::findEndBody(char *buf, int *posEnd) {
-    std::string buffer(buf);
+ResultPars ParserImpl::findEndBody(std::string buffer, int *posEnd) {
     int resultFinding = buffer.find("0\r\n\r\n");
     if (resultFinding == std::string::npos) {
         *posEnd = -1;
         return ResultPars::NOTHING;
     } else {
-        *posEnd = resultFinding + 4;
+        *posEnd = resultFinding + 5;
         return ResultPars::END_BODY;
     }
 }

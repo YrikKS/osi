@@ -32,7 +32,7 @@ add_executable(lab31proxy
         parser/ParseException.h
         client/ClientData.h
         client/ClientDataImpl.cpp
-        client/ClientDataImpl.h)
+        client/ClientDataImpl.h buffer/Buffer.h buffer/BufferImpl.cpp buffer/BufferImpl.h)
 #include_directories(${Boost_INCLUDE_DIRS})
 
 #target_link_libraries(lab31proxy

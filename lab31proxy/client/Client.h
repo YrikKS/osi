@@ -5,6 +5,7 @@
 #ifndef LAB31PROXY_CLIENTINTERFACE_H
 #define LAB31PROXY_CLIENTINTERFACE_H
 #include "ClientData.h"
+#include "../buffer/Buffer.h"
 
 namespace ProxyServer {
     typedef enum {
@@ -22,7 +23,7 @@ namespace ProxyServer {
 
         virtual int readBuf(char *buf) = 0;
 
-        virtual ClientData* getClientData() = 0;
+        virtual Buffer* getBuffer() = 0;
 
         virtual Client* getPair() = 0;
 

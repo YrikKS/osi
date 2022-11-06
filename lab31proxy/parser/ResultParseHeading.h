@@ -4,6 +4,7 @@
 
 #ifndef LAB31PROXY_RESULTPARSEHEADING_H
 #define LAB31PROXY_RESULTPARSEHEADING_H
+
 #include <string>
 #include "ParserTypeRequest.h"
 
@@ -34,7 +35,6 @@ namespace ProxyServer {
             ResultParseHeading::type = type;
         }
 
-    public:
     private:
         std::string hostName;
         int contentLength;
