@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
     bzero(buffer, BUFFER_SIZE);
 
     while(read(sock, buffer, BUFFER_SIZE - 1) != 0){
-        fprintf(stderr, "%s", buffer);
+        fprintf(stderr, "%s - end - ", buffer);
         bzero(buffer, BUFFER_SIZE);
     }
     return 0;
