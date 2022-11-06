@@ -25,13 +25,12 @@ void ServerImpl::startServer() {
                 try {
                     _clientList.push_back(_serverSocket->acceptNewClient());
                     updatePollFd();
+                    LOG_EVENT("add new client");
                     //TODO client connect: create client + add to _pollSet
                 } catch (ConnectException *exception) {
                     std::cerr << exception->what() << std::endl;
                     LOG_ERROR("exception in connect");
                 }
-
-                LOG_EVENT("add new client");
             }
         }
     }
@@ -83,8 +82,8 @@ void ServerImpl::handlingEvent() {
                        || (*it)->getClientData()->getStatusRequest() == StatusHttp::READ_RESPONSE)) {
 //            if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER) {
             if ((*it)->getPair()->getClientData()->getIsReadyToSend()) {
+                std::cout << "wright" << std::endl;
                 if (!((*it)->getPair()->getClientData()->getRequestHeading().empty())) {
-                    std::cout << "wright" << std::endl;
                     std::string strSending = (*it)->getPair()->getClientData()->getRequestHeading()
                             .substr(0, BUF_SIZE);
 
