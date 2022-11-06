@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
     sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\nConnection: close\r\n\r\n", path.data(),
             domain.data());
 
-    std::cout << buffer << std::endl;
+    std::cout << buffer << "End" << std::endl;
 //    GET /WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks HTTP/1.1
 //    Accept: */*
 //Host: parallels.nsu.ru
@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
     bzero(buffer, BUFFER_SIZE);
 
     while(read(sock, buffer, BUFFER_SIZE - 1) != 0){
-        fprintf(stderr, "%s", buffer);
+        fprintf(stderr, "%sEnd", buffer);
         bzero(buffer, BUFFER_SIZE);
     }
     return 0;
