@@ -15,7 +15,7 @@ void ProxyServer::ClientImpl::sendBuf(const char *buf) {
 
 int ProxyServer::ClientImpl::readBuf(char *buf) {
     int byte = read(_fd, buf, BUF_SIZE);
-//    std::cout << buf << std::endl;
+    std::cout << buf << std::endl;
     return byte;
 }
 
