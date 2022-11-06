@@ -9,6 +9,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     ProxyServer::DEFAULT_PORT = atoi(argv[1]);
+    std::cout << ProxyServer::DEFAULT_PORT << std::endl;
     try {
         ProxyServer::ServerImpl *server = new ProxyServer::ServerImpl();
         server->startServer();
