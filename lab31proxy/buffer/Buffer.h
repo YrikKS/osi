@@ -26,7 +26,7 @@ namespace ProxyServer {
 
         virtual const char *sendBuf() = 0;
 
-        virtual void proofSend(char *buf) = 0;
+        virtual void proofSend(const char *buf) = 0;
 
         virtual bool isReadyConnectHttpServer() = 0;
 

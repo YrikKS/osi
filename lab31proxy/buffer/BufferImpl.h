@@ -20,7 +20,7 @@ namespace ProxyServer {
 
         const char *sendBuf() override;
 
-        void proofSend(char *buf) override;
+        void proofSend(const char *buf) override;
 
         bool isReadyConnectHttpServer() override;
 
