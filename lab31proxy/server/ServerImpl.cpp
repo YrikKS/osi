@@ -94,7 +94,7 @@ void ServerImpl::handlingEvent() {
                     (*it)->sendBuf(bufferSend); // send other!
                     (*it)->getBuffer()->proofSend(bufferSend);
                 } else if ((*it)->getTypeClient() == TypeClient::USER
-                           && (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::READ_RESPONSE) {
+                           && (*it)->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE) {
                     const char *bufferSend = (*it)->getBuffer()->sendBuf();
                     (*it)->sendBuf(bufferSend); // send other!
                     (*it)->getBuffer()->proofSend(bufferSend);
