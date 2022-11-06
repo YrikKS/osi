@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
     int clientSock = 0;
     struct sockaddr clientAddr;
     socklen_t len = 0;
-    if ((clientSock = accept(serverSocket_, (struct sockaddr *) &clientAddr, &len)) < 0) {
+    if ((clientSock = accept(sockFd, (struct sockaddr *) &clientAddr, &len)) < 0) {
         perror("accept error");
     }
 
