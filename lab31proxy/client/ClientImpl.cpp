@@ -8,7 +8,7 @@ int ProxyServer::ClientImpl::getFdClient() {
     return _fd;
 }
 
-void ProxyServer::ClientImpl::sendBuf(const char *buf) {
+void ProxyServer::ClientImpl::sendBuf(char *buf) {
     std::cout << "send : " << buf << std::endl;
     write(_fd, buf, BUF_SIZE);
 }
