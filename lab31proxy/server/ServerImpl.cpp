@@ -101,6 +101,13 @@ void ServerImpl::handlingEvent() {
                 }
             }
         }
+        if ((*it)->getTypeClient() == TypeClient::USER &&
+            (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
+            isNeedUpdatePollSet = deleteClient(*it, &it);
+        } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
+                   (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
+            isNeedUpdatePollSet = deleteClient(*it, &it);
+        }
         _pollSet[i].revents = 0;
     }
 
