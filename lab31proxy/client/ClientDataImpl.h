@@ -36,11 +36,19 @@ namespace ProxyServer {
         void setIsReadyToSend(bool isReadyToSend) override;
 
         void addToRequestBody(std::string string) override;
+
+        void addToRequestHeading(std::string str) override;
+
+        bool isEndRequestOrResponse() override;
+
+        void setEndRequestOrResponse(bool endRequestOrResponse) override;
+
     private:
         StatusHttp _statusRequest;
         std::string _requestHeading;
         std::string _requestBody;
         bool _isReadyToSend = false;
+        bool _endRequestOrResponse = false;
         ResultParseHeading *_resultParseHeading;
     };
 

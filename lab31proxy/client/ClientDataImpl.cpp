@@ -59,4 +59,16 @@ void ProxyServer::ClientDataImpl::addToRequestBody(std::string string) {
     _requestBody += string;
 }
 
+void ProxyServer::ClientDataImpl::addToRequestHeading(std::string str) {
+    _requestHeading += str;
+}
+
+bool ProxyServer::ClientDataImpl::isEndRequestOrResponse() {
+    return _endRequestOrResponse;
+}
+
+void ProxyServer::ClientDataImpl::setEndRequestOrResponse(bool endRequestOrResponse) {
+    _endRequestOrResponse = endRequestOrResponse;
+}
+
 

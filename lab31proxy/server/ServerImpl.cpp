@@ -83,7 +83,8 @@ void ServerImpl::handlingEvent() {
                        || (*it)->getClientData()->getStatusRequest() == StatusHttp::READ_RESPONSE)) {
 //            if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER) {
             if ((*it)->getPair()->getClientData()->getIsReadyToSend()) {
-                if (!(*it)->getPair()->getClientData()->getRequestHeading().empty()) {
+                if (!((*it)->getPair()->getClientData()->getRequestHeading().empty())) {
+                    std::cout << "wright" << std::endl;
                     std::string strSending = (*it)->getPair()->getClientData()->getRequestHeading()
                             .substr(0, BUF_SIZE);
 
@@ -93,10 +94,8 @@ void ServerImpl::handlingEvent() {
                     } else {
                         (*it)->getPair()->getClientData()->setRequestHeading(std::string(""));
                     }
-
-                    std::cout << "wright" << std::endl;
                     (*it)->sendBuf(strSending.c_str());
-                } else if (!(*it)->getPair()->getClientData()->getRequestBody().empty()) {
+                } else if (!((*it)->getPair()->getClientData()->getRequestBody().empty())) {
                     std::string strSending = (*it)->getPair()->getClientData()->getRequestBody()
                             .substr(0, BUF_SIZE);
 
@@ -110,6 +109,9 @@ void ServerImpl::handlingEvent() {
 
                 } else {
                     (*it)->getPair()->getClientData()->setIsReadyToSend(false);
+                    if ((*it)->getPair()->getClientData()->isEndRequestOrResponse()) {
+                        (*it)->getClientData()->setStatusRequest(StatusHttp::WRITE_RESPONSE);
+                    }
                 }
             }
 //            std::cout << "wright0" << std::endl;
@@ -177,10 +179,11 @@ void ServerImpl::readRequestHeading(char *buf, Client *client) {
 
 //        if (client->getClientData()->getResultParseHeading()->getType() == TypeRequest::GET_REQUEST) {
         client->getClientData()->setStatusRequest(StatusHttp::READ_RESPONSE);
+        client->getClientData()->setEndRequestOrResponse(true);
 //        } else {
 //            client->getClientData()->setStatusRequest(StatusHttp::WRITE_REQUEST_BODY);
-            std::cout << "size body == " << std::string(buf).substr(posEndHeading).size() << std::endl;
-            client->getClientData()->setRequestBody(std::string(buf).substr(posEndHeading));
+//            std::cout << "size body == " << std::string(buf).substr(posEndHeading).size() << std::endl;
+        client->getClientData()->setRequestBody(std::string(buf).substr(posEndHeading));
 //        }
         //TODO может быть подругому ???
 
@@ -196,7 +199,7 @@ void ServerImpl::readRequestHeading(char *buf, Client *client) {
 //            char newBuf[1024] = {0};
 //            httpServer->sendBuf((client->getClientData()->getRequestHeading()).data());
     } else {
-        client->getClientData()->setRequestHeading(client->getClientData()->getRequestHeading() + std::string(buf));
+        client->getClientData()->addToRequestBody(std::string(buf));
     }
 }
 

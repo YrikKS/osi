@@ -45,6 +45,12 @@ namespace ProxyServer {
         virtual void setIsReadyToSend(bool isReadyToSend) = 0;
 
         virtual void addToRequestBody(std::string string) = 0;
+
+        virtual void addToRequestHeading(std::string str) = 0;
+
+        virtual bool isEndRequestOrResponse() = 0;
+
+        virtual void setEndRequestOrResponse(bool endRequestOrResponse) = 0;
     };
 }
 
