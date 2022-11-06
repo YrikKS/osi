@@ -32,7 +32,9 @@ namespace ProxyServer {
 
         virtual ResultParseHeading getParseResult() = 0;
 
-        virtual StatusHttp getStatusBuf() = 0;
+        virtual StatusHttp getStatusClient() = 0;
+
+        virtual StatusHttp getStatusHttpServer() = 0;
 
         virtual void setStatusBuf(StatusHttp statusHttp) = 0;
 

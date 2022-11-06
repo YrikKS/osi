@@ -84,7 +84,7 @@ bool BufferImpl::isReadyConnectHttpServer() {
     return false;
 }
 
-StatusHttp BufferImpl::getStatusBuf() {
+StatusHttp BufferImpl::getStatusClient() {
     return _statusClient;
 }
 
@@ -106,4 +106,8 @@ bool BufferImpl::isSendEnd() {
 
 ResultParseHeading BufferImpl::getParseResult() {
     return *_resultParseHeading;
+}
+
+StatusHttp BufferImpl::getStatusHttpServer() {
+    return _statusHttpServer;
 }

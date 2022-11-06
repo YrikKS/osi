@@ -87,10 +87,18 @@ void ServerImpl::handlingEvent() {
             }
         } else if (_pollSet[i].revents & POLLOUT) {
             if ((*it)->getBuffer()->isReadyToSend()) {
-                std::cout << "send" << std::endl;
-                const char* bufferSend = (*it)->getBuffer()->sendBuf();
-                (*it)->sendBuf(bufferSend);
-                (*it)->getBuffer()->proofSend(bufferSend);
+                if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER
+                    && (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::READ_REQUEST) {
+//                std::cout << "send" << std::endl;
+                    const char *bufferSend = (*it)->getBuffer()->sendBuf();
+                    (*it)->sendBuf(bufferSend); // send other!
+                    (*it)->getBuffer()->proofSend(bufferSend);
+                } else if ((*it)->getTypeClient() == TypeClient::USER
+                           && (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::READ_RESPONSE) {
+                    const char *bufferSend = (*it)->getBuffer()->sendBuf();
+                    (*it)->sendBuf(bufferSend); // send other!
+                    (*it)->getBuffer()->proofSend(bufferSend);
+                }
             }
         }
         _pollSet[i].revents = 0;

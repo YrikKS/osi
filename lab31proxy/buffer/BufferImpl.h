@@ -24,7 +24,10 @@ namespace ProxyServer {
 
         bool isReadyConnectHttpServer() override;
 
-        StatusHttp getStatusBuf() override;
+        StatusHttp getStatusClient() override;
+
+        StatusHttp getStatusHttpServer() override;
+
 
         bool isReadyToSend() override;
 
