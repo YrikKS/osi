@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 
     struct sockaddr_in sockAddr;
     bcopy(hostent->h_addr, &sockAddr.sin_addr, hostent->h_length);
-    int port = atoi(argv[1]);
+    int port = atoi(argv[3]);
     sockAddr.sin_port = htons(port);
     sockAddr.sin_family = AF_INET;
 
@@ -47,8 +47,8 @@ int main(int argc, char *argv[]) {
 
     char buffer[BUFFER_SIZE] = {0};
 
-    std::string domain("parallels.nsu.ru");
-    std::string path("/WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks");
+    std::string domain(argv[1]);
+    std::string path(argv[2]);
     sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\nConnection: close\r\n\r\n", path.data(),
             domain.data());
 
