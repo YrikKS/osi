@@ -11,7 +11,6 @@ void ServerImpl::startServer() {
     std::cout << "start server" << std::endl;
     while (_isWork) {
         int code = poll(_pollSet, _clientList.size() + 1, TIME_OUT_POLL);
-
         if (code == -1) {
             LOG_ERROR_WITH_ERRNO("poll error");
             perror("poll error");
