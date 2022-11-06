@@ -77,7 +77,7 @@ void ServerImpl::handlingEvent() {
                         client->setPair((*it));
                         (*it)->setPair(client);
                         _clientList.push_back(client);
-
+                        isNeedUpdatePollSet = true;
                     } catch (ConnectException ex) {
                         std::cerr << ex.what() << std::endl;
                         LOG_ERROR("can't connect to http server");
