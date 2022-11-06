@@ -4,17 +4,15 @@
 
 int main(int argc, char *argv[]) {
     LOG_EVENT("start program");
-    if(argc != 2) {
+    if (argc != 2) {
         LOG_ERROR("error count arg");
         return 1;
     }
     ProxyServer::DEFAULT_PORT = atoi(argv[1]);
     try {
-        ProxyServer::ServerImpl* server = new ProxyServer::ServerImpl();
-        std::cout << server << std::endl;
-//        delete server;
+        ProxyServer::ServerImpl *server = new ProxyServer::ServerImpl();
         server->startServer();
-    } catch (std::exception& ex) {
+    } catch (std::exception &ex) {
         std::cout << ex.what() << std::endl;
         LOG_ERROR("close app by exception");
         std::cout << "clea4" << std::endl;

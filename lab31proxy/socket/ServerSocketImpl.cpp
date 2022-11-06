@@ -84,6 +84,5 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
 
     LOG_EVENT("http server connect");
     Client *client = new ClientImpl(sock, TypeClient::HTTP_SERVER, NULL);
-    std::cout << "client connect!" << std::endl;
     return client;
 }

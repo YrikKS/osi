@@ -37,7 +37,7 @@ namespace ProxyServer {
 
     private:
         std::string hostName;
-        int contentLength;
+        int contentLength = 0;
         TypeRequest type;
     };
 }
