@@ -5,7 +5,9 @@
 #include <iostream>
 #include "ServerSocketImpl.h"
 
-int ProxyServer::ServerSocketImpl::connectSocket() {
+using namespace ProxyServer;
+
+int ServerSocketImpl::connectSocket() {
     int sockFd = 0;
     if ((sockFd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         LOG_ERROR_WITH_ERRNO("create socket");
@@ -30,11 +32,11 @@ int ProxyServer::ServerSocketImpl::connectSocket() {
     return 0;
 }
 
-int ProxyServer::ServerSocketImpl::getFdSocket() {
+int ServerSocketImpl::getFdSocket() {
     return serverSocket_;
 }
 
-ProxyServer::Client *ProxyServer::ServerSocketImpl::acceptNewClient() {
+Client *ServerSocketImpl::acceptNewClient() {
     int clientSock = 0;
     struct sockaddr clientAddr;
     socklen_t len = 0;
@@ -43,22 +45,21 @@ ProxyServer::Client *ProxyServer::ServerSocketImpl::acceptNewClient() {
         throw ConnectException("accept new client");
     }
 
-    Client *client = new ClientImpl(clientSock, StatusHttp::WRITE_REQUEST_HEADING,
-                                    TypeClient::USER, new BufferImpl());
+    Client *client = new ClientImpl(clientSock, TypeClient::USER, new BufferImpl());
     LOG_EVENT("accept new client");
     return client;
 }
 
-void ProxyServer::ServerSocketImpl::closeSocket() {
+void ServerSocketImpl::closeSocket() {
     LOG_EVENT("close server socket");
     close(serverSocket_);
 }
 
-ProxyServer::ServerSocketImpl::~ServerSocketImpl() {
+ServerSocketImpl::~ServerSocketImpl() {
     close(serverSocket_);
 }
 
-ProxyServer::Client *ProxyServer::ServerSocketImpl::connectToClient(std::string url, int port) {
+Client *ServerSocketImpl::connectToClient(std::string url, int port) {
 //    for(int i =0; i < url.size(); i++) {
 //        std::cout << "i = " << (int) url.c_str()[i] << std::endl;
 //    }
@@ -86,7 +87,7 @@ ProxyServer::Client *ProxyServer::ServerSocketImpl::connectToClient(std::string 
     }
 
     LOG_EVENT("http server connect");
-    Client *client = new ClientImpl(sock, StatusHttp::READ_REQUEST, TypeClient::HTTP_SERVER, NULL);
+    Client *client = new ClientImpl(sock, TypeClient::HTTP_SERVER, NULL);
     std::cout << "client connect!" << std::endl;
     return client;
 }

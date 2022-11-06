@@ -17,7 +17,7 @@
 namespace ProxyServer {
     class ClientImpl : public Client {
     public:
-        explicit ClientImpl(int sock, StatusHttp statusRequest, TypeClient typeClient, Buffer* buf);
+        explicit ClientImpl(int sock, TypeClient typeClient, Buffer* buf);
 
         int getFdClient() override;
 

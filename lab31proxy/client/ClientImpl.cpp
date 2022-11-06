@@ -19,7 +19,7 @@ int ProxyServer::ClientImpl::readBuf(char *buf) {
     return byte;
 }
 
-ProxyServer::ClientImpl::ClientImpl(int sock, StatusHttp statusRequest, TypeClient typeClient, Buffer* buf) {
+ProxyServer::ClientImpl::ClientImpl(int sock, TypeClient typeClient, Buffer* buf) {
     _fd = sock;
     _typeClient = typeClient;
     _buffer = buf;

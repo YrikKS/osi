@@ -14,6 +14,8 @@
 namespace ProxyServer {
     class BufferImpl : public Buffer {
     public:
+        BufferImpl();
+
         void readRequest(char *buf) override;
 
         void readResponse(char *buf) override;
@@ -28,7 +30,6 @@ namespace ProxyServer {
 
         StatusHttp getStatusHttpServer() override;
 
-
         bool isReadyToSend() override;
 
         void setStatusBuf(StatusHttp statusHttp) override;
@@ -40,8 +41,8 @@ namespace ProxyServer {
         bool isSendEnd() override;
 
     private:
-        StatusHttp _statusClient;
-        StatusHttp _statusHttpServer;
+        StatusHttp _statusClient = StatusHttp::WRITE_REQUEST_HEADING;
+        StatusHttp _statusHttpServer = StatusHttp::READ_REQUEST;
         std::string _requestHeading;
         std::string _buf;
         std::string _sendingString;

@@ -11,9 +11,11 @@ void BufferImpl::readRequest(char *buf) {
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
         int posEndHeading = 0;
         if (ParserImpl::findEndHeading(_buf, &posEndHeading) == ResultPars::END_HEADING) {
+
             _requestHeading = _buf.substr(0, posEndHeading);
             _resultParseHeading = ParserImpl::parsingHeading(_requestHeading);
 
+            _isReadyConnectHttpServer = true;
             if (_resultParseHeading->getType() == GET_REQUEST) {
 //                _statusClient = StatusHttp::READ_RESPONSE;
                 _isReadyToSend = true;
@@ -29,7 +31,6 @@ void BufferImpl::readRequest(char *buf) {
                     _isEndSend = true;
                 }
             }
-            _isReadyConnectHttpServer = true;
         }
     } else if (_statusClient == StatusHttp::WRITE_REQUEST_BODY) {
         _isReadyToSend = true;
@@ -110,4 +111,8 @@ ResultParseHeading BufferImpl::getParseResult() {
 
 StatusHttp BufferImpl::getStatusHttpServer() {
     return _statusHttpServer;
+}
+
+BufferImpl::BufferImpl() {
+
 }
