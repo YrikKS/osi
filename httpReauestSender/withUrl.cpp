@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
     write(sock, buffer, strlen(buffer)); // write(fd, char[]*, len);
     bzero(buffer, BUFFER_SIZE);
 
-    while(read(sock, buffer, BUFFER_SIZE - 1) != 0){
+    while (read(sock, buffer, BUFFER_SIZE - 1) != 0) {
         fprintf(stderr, "%s", buffer);
         bzero(buffer, BUFFER_SIZE);
     }
