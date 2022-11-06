@@ -103,3 +103,7 @@ BufferImpl::~BufferImpl() {
 bool BufferImpl::isSendEnd() {
     return _isEndSend;
 }
+
+ResultParseHeading BufferImpl::getParseResult() {
+    return *_resultParseHeading;
+}
