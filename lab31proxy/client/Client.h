@@ -36,7 +36,7 @@ namespace ProxyServer {
 
         virtual struct pollfd *getPollFd() = 0;
 
-        virtual void setPollfd(pollfd *pollFd) = 0;
+        virtual void setPollfd(struct pollfd *pollFd) = 0;
 
     };
 }
