@@ -47,6 +47,7 @@ void ServerImpl::setPollArr() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         _pollSet[i].fd = (*it)->getFdClient();
         _pollSet[i].events = POLLIN | POLLOUT;
+        (*it)->setPollfd(&_pollSet[i]);
     }
 }
 
@@ -61,7 +62,7 @@ void ServerImpl::handlingEvent() {
     char buf[1024] = {0};
     bool isNeedUpdatePollSet = false;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-        if (_pollSet[i].revents & POLLIN) {
+        if ((*it)->getPollFd()->revents & POLLIN) {
             memset(buf, 0, BUF_SIZE);
             int countByteRead = (*it)->readBuf(buf);
             if (countByteRead == 0) {
@@ -88,7 +89,7 @@ void ServerImpl::handlingEvent() {
                     }
                 }
             }
-        } else if (_pollSet[i].revents & POLLOUT) {
+        } else if ((*it)->getPollFd()->revents & POLLOUT) {
             if ((*it)->getBuffer()->isReadyToSend()) {
                 if (((*it)->getTypeClient() == TypeClient::HTTP_SERVER
                      && (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::READ_REQUEST) ||
@@ -111,7 +112,7 @@ void ServerImpl::handlingEvent() {
             isNeedUpdatePollSet = deleteClient(*it, &it);
             break;
         }
-        _pollSet[i].revents = 0;
+        (*it)->getPollFd()->revents = 0;
     }
 
     if (isNeedUpdatePollSet) {
@@ -156,7 +157,10 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
     } else if (client->getTypeClient() == TypeClient::HTTP_SERVER) {
         LOG_EVENT("http server logout");
         (*iterator) = _clientList.erase((*iterator));
-        client->getPair()->setPair(NULL);
+        if(client->getPair() != NULL) {
+            client->getPair()->setPair(NULL);
+        }
+        client->getBuffer()->setStatusBuf(StatusHttp::END_WORK);
         delete client;
         return true;
     }
@@ -168,5 +172,6 @@ void ServerImpl::updatePollArr() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         _pollSet[i].fd = (*it)->getFdClient();
         _pollSet[i].events = POLLIN | POLLOUT;
+        (*it)->setPollfd(&_pollSet[i]);
     }
 }

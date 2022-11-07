@@ -17,7 +17,7 @@
 namespace ProxyServer {
     class ClientImpl : public Client {
     public:
-        explicit ClientImpl(int sock, TypeClient typeClient, Buffer* buf);
+        explicit ClientImpl(int sock, TypeClient typeClient, Buffer *buf);
 
         int getFdClient() override;
 
@@ -37,12 +37,16 @@ namespace ProxyServer {
 
         Client *getPair() override;
 
+        pollfd *getPollfd() override;
+
+        void setPollfd(pollfd *pollFd) override;
+
     private:
         int _fd;
         TypeClient _typeClient;
-        ProxyServer::Buffer* _buffer;
-        Client* _pair = NULL;
-//        ClientData* _clientData;
+        ProxyServer::Buffer *_buffer;
+        Client *_pair = NULL;
+        struct pollfd *_structPollFd;
     };
 }
 

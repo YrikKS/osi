@@ -94,7 +94,7 @@ StatusHttp BufferImpl::getStatusClient() {
 }
 
 void BufferImpl::setStatusBuf(StatusHttp statusHttp) {
-    _statusClient = statusHttp;
+    _statusHttpServer = statusHttp;
 }
 
 bool BufferImpl::isReadyToSend() {

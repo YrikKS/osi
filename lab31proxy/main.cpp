@@ -4,12 +4,6 @@
 
 int main(int argc, char *argv[]) {
     LOG_EVENT("start program");
-    if (argc != 2) {
-        LOG_ERROR("error count arg");
-        return 1;
-    }
-    ProxyServer::DEFAULT_PORT = atoi(argv[1]);
-    std::cout << ProxyServer::DEFAULT_PORT << std::endl;
     try {
         ProxyServer::ServerImpl *server = new ProxyServer::ServerImpl();
         server->startServer();
