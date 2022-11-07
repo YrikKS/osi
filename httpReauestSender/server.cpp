@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     }
 
     struct sockaddr_in sockAddr;
-    sockAddr.sin_port = htons(8081);
+    sockAddr.sin_port = htons(atoi(argv[1]));
     sockAddr.sin_addr.s_addr = INADDR_ANY;
     sockAddr.sin_family = AF_INET;
 
