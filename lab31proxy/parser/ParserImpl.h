@@ -17,6 +17,7 @@ namespace ProxyServer {
         static ResultPars findEndHeading(std::string buf, int* posEnd);
         static ResultPars findEndBody(std::string buffer, int* posEnd);
         static ResultParseHeading* parsingHeading(std::string heading);
+        static ResultParseHeading parsingResponseHeading(std::string heading);
     };
 }
 

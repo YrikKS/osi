@@ -11,6 +11,9 @@ namespace ProxyServer {
     static const int MAX_COUNT_CONNECTIONS = 1024;
     static const int BUF_SIZE = 1024;
     static int DEFAULT_PORT = 7777;
+    static int COUNT_CASH_ELEMENT = 100;
+    static int SIZE_EACH_CASH_ELEMENT = 1024 * 1024;
+    static int MAX_CASH_SIZE = 1024 * 1024; // 1 кб
 }
 
 #endif //LAB31PROXY_CONSTANTS_H

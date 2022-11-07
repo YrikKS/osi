@@ -32,7 +32,7 @@ namespace ProxyServer {
 
         int getFdSocket() override;
 
-        Client* acceptNewClient() override;
+        Client* acceptNewClient(Cash* cash) override;
 
         void closeSocket() override;
 

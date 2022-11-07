@@ -36,7 +36,7 @@ int ServerSocketImpl::getFdSocket() {
     return serverSocket_;
 }
 
-Client *ServerSocketImpl::acceptNewClient() {
+Client *ServerSocketImpl::acceptNewClient(Cash* cash) {
     int clientSock = 0;
     struct sockaddr clientAddr;
     socklen_t len = 0;
@@ -45,7 +45,7 @@ Client *ServerSocketImpl::acceptNewClient() {
         throw ConnectException("accept new client");
     }
 
-    Client *client = new ClientImpl(clientSock, TypeClient::USER, new BufferImpl());
+    Client *client = new ClientImpl(clientSock, TypeClient::USER, new BufferImpl(cash));
     LOG_EVENT("accept new client");
     return client;
 }

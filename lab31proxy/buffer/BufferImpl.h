@@ -10,12 +10,13 @@
 #include "../parser/ParserTypeRequest.h"
 #include "../parser/ParserImpl.h"
 #include "../Constants.h"
+#include "../cash/Cash.h"
 #include <string.h>
 
 namespace ProxyServer {
     class BufferImpl : public Buffer {
     public:
-        BufferImpl();
+        BufferImpl(Cash *cash);
 
         void readRequest(char *buf) override;
 
@@ -52,6 +53,15 @@ namespace ProxyServer {
         bool _isReadyConnectHttpServer = false;
         int _lengthBody = 0;
         ResultParseHeading *_resultParseHeading;
+        void parsHead();
+        bool checkCash();
+
+        CashElement *_cashElement = NULL;
+        bool _isGetDataFromCash = false;
+        bool _isWrightDataToCash = false;
+        bool error = false;
+        int bytesReadFromCash = 0;
+        Cash *_cash;
     };
 }
 

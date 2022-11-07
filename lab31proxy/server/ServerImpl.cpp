@@ -3,6 +3,7 @@
 //
 
 #include "ServerImpl.h"
+#include "../cash/CashImpl.h"
 
 using namespace ProxyServer;
 
@@ -23,7 +24,7 @@ void ServerImpl::startServer() {
             if (_pollSet[0].revents & POLLIN) { // poll sock
                 _pollSet[0].revents = 0;
                 try {
-                    _clientList.push_back(_serverSocket->acceptNewClient());
+                    _clientList.push_back(_serverSocket->acceptNewClient(_cash));
                     configuratePollArr();
                     LOG_EVENT("add new client");
                     //TODO client connect: create client + add to _pollSet
@@ -70,6 +71,7 @@ ServerImpl::ServerImpl() {
     memset(_pollSet, 0, MAX_COUNT_CONNECTIONS * sizeof(struct pollfd));
     _serverSocket = new ServerSocketImpl();
     _serverSocket->connectSocket();
+    _cash = new CashImpl();
 }
 
 void ServerImpl::handlingEvent() {
@@ -144,19 +146,12 @@ void ServerImpl::handlingEvent() {
 }
 
 ServerImpl::~ServerImpl() {
-    std::cout << "clea" << std::endl;
-    std::cout.flush();
     _serverSocket->closeSocket();
-    std::cout << "clea1" << std::endl;
-    std::cout.flush();
     delete (ServerSocketImpl *) _serverSocket;
-    std::cout << "clea2" << std::endl;
-    std::cout.flush();
     for (auto &it: _clientList) {
         delete it;
     }
-    std::cout << "clea3" << std::endl;
-    std::cout.flush();
+    delete _cash;
 }
 
 bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *iterator) { // TODO norm del!

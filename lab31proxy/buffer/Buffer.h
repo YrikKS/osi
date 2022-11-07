@@ -13,7 +13,8 @@ namespace ProxyServer {
         WRITE_REQUEST_BODY,
         READ_RESPONSE,
         READ_REQUEST,
-        WRITE_RESPONSE,
+        WRITE_RESPONSE_HEADING,
+        WRITE_RESPONSE_BODY,
         END_WORK
         //WRITE_REQUEST
     } StatusHttp;

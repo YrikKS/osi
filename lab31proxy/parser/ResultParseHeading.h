@@ -35,10 +35,25 @@ namespace ProxyServer {
             ResultParseHeading::type = type;
         }
 
+        ~ResultParseHeading() {
+
+        }
+
+        bool isResponseWithError() {
+            return responseWithError;
+        }
+
+        void setResponseWithError(bool responseWithError) {
+            ResultParseHeading::responseWithError = responseWithError;
+        }
+
     private:
         std::string hostName;
         int contentLength = 0;
         TypeRequest type;
+        bool responseWithError = false;
+
     };
+
 }
 #endif //LAB31PROXY_RESULTPARSEHEADING_H

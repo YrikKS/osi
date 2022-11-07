@@ -35,6 +35,7 @@ namespace ProxyServer {
         ServerSocket* _serverSocket;
         struct pollfd _pollSet[MAX_COUNT_CONNECTIONS];
         std::list<Client*> _clientList;
+        Cash *_cash;
     };
 }
 

@@ -45,9 +45,6 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
     int contentLength = heading.find("Content-Length: ");
     if (contentLength != std::string::npos) {
         int endContentLength = heading.find("\r\n", contentLength);
-//        if (endContentLength == std::string::npos) {
-//            endContentLength = heading.find("\n", contentLength);
-//        }
         if (endContentLength != std::string::npos) {
             contentLength += std::string("Content-Length: ").size();
             result->setContentLength(atoi(
@@ -63,9 +60,6 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
     int host = heading.find("Host: ");
     if (host != std::string::npos) {
         int endContentLength = heading.find("\r\n", host);
-//        if (endContentLength == std::string::npos) {
-//            endContentLength = heading.find("\n", contentLength);
-//        }
         if (endContentLength != std::string::npos) {
             host += std::string("Host: ").size();
             result->setHostName(heading.substr(host, endContentLength - host));
@@ -77,6 +71,32 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
         result->setType(TypeRequest::INVALID_REQUEST);
         LOG_ERROR("incorrect heading");
         throw ParseException("incorrect heading");
+    }
+    return result;
+}
+
+ResultParseHeading ParserImpl::parsingResponseHeading(std::string heading) {
+    ResultParseHeading result; //HTTP/1.1 200 OK
+    int statusResponse = heading.find("HTTP/1.1 200 OK");
+    if (statusResponse == std::string::npos) {
+        result.setResponseWithError(true);
+    } else {
+        result.setResponseWithError(false);
+    }
+
+    int contentLength = heading.find("Content-Length: ");
+    if (contentLength != std::string::npos) {
+        int endContentLength = heading.find("\r\n", contentLength);
+        if (endContentLength != std::string::npos) {
+            contentLength += std::string("Content-Length: ").size();
+            result.setContentLength(atoi(
+                    heading.substr(contentLength, endContentLength - contentLength).c_str()));
+        }
+    } else {
+        if (result.getType() == TypeRequest::GET_REQUEST) {
+            result.setType(TypeRequest::GET_REQUEST_NOT_CASH);
+        }
+        result.setContentLength(-1);
     }
 
     return result;

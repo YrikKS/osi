@@ -8,6 +8,7 @@
 #include "../client/Client.h"
 #include "ConnectException.h"
 #include "../parser/ParserImpl.h"
+#include "../cash/Cash.h"
 
 namespace ProxyServer {
     class ServerSocket {
@@ -16,7 +17,7 @@ namespace ProxyServer {
 
         virtual int getFdSocket() = 0;
 
-        virtual Client* acceptNewClient() = 0;
+        virtual Client* acceptNewClient(Cash* cash) = 0;
 
         virtual Client* connectToClient(std::string url, int port) = 0;
 

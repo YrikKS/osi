@@ -14,21 +14,13 @@ void BufferImpl::readRequest(char *buf) {
         if (ParserImpl::findEndHeading(_buf, &posEndHeading) == ResultPars::END_HEADING) {
 
             _requestHeading = _buf.substr(0, posEndHeading);
-            try {
-                _resultParseHeading = ParserImpl::parsingHeading(_requestHeading);
-            } catch (ParseException ex) {
-                std::cerr << ex.what() << std::endl;
-                _buf.clear();
-                _buf += "incorrect heading\r\n";
-                _statusClient = StatusHttp::READ_RESPONSE;
-                _isReadyToSend = true;
-                _isEndSend = true;
-                throw ParseException("incorrect heading");
+            if (checkCash()) {
+                return;
             }
 
+            parsHead();
             _isReadyConnectHttpServer = true;
             if (_resultParseHeading->getType() == GET_REQUEST) {
-//                _statusClient = StatusHttp::READ_RESPONSE;
                 _isReadyToSend = true;
                 _isEndSend = true;
             } else {
@@ -38,7 +30,6 @@ void BufferImpl::readRequest(char *buf) {
                 _lengthBody -= _buf.size() - _requestHeading.size();
 
                 if (_lengthBody <= 0) {
-//                    _statusClient = StatusHttp::READ_RESPONSE;
                     _isEndSend = true;
                 }
             }
@@ -47,14 +38,44 @@ void BufferImpl::readRequest(char *buf) {
         _isReadyToSend = true;
         _lengthBody -= std::strlen(buf);
         if (_lengthBody <= 0) {
-//            _statusClient = StatusHttp::READ_RESPONSE;
             _isEndSend = true;
         }
-    } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE) {
+    } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_HEADING) {
+        if (_resultParseHeading->getType() != TypeRequest::GET_REQUEST) {
+            _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
+            int posEnd = 0;
+            _isReadyToSend = true;
+            if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY) {
+                _isEndSend = true;
+            }
+        } else {
+            int posEndHeading = 0;
+            if (ParserImpl::findEndHeading(_buf, &posEndHeading) == ResultPars::END_BODY) {
+                std::string responseHead = _buf.substr(0, posEndHeading);
+                ResultParseHeading resultParseHeading = ParserImpl::parsingResponseHeading(responseHead);
+                if (!resultParseHeading.isResponseWithError() && (
+                    _buf.size() + resultParseHeading.getContentLength() < SIZE_EACH_CASH_ELEMENT)) {
+                    _isWrightDataToCash = true;
+                    _cashElement = _cash->addStringToCash(_buf);
+                }
+
+                _isReadyToSend = true;
+                _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
+
+                int posEnd = 0;
+                if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY) {
+                    _isEndSend = true;
+                }
+            }
+        }
+    } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_BODY) {
         int posEnd = 0;
         _isReadyToSend = true;
         if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY) {
             _isEndSend = true;
+        }
+        if (_isWrightDataToCash) {
+            *(_cashElement->getCash()) += buf;
         }
     }
     // TODO parse RESPONSE RESULT heading
@@ -78,14 +99,15 @@ void BufferImpl::proofSend(const char *buf) {
     if (_buf.empty() && !_isEndSend) {
         _isReadyToSend = false;
     }
+
     if (_buf.empty() && _isEndSend) {
+        if (_statusClient == READ_RESPONSE && error) { // TODO подумать как иначе
+            _statusClient = StatusHttp::END_WORK;
+            return;
+        }
         if (_statusHttpServer == StatusHttp::READ_REQUEST) {
-            if (_statusClient == READ_RESPONSE) { // TODO подумать как иначе
-                _statusClient = StatusHttp::END_WORK;
-                return;
-            }
             _statusClient = StatusHttp::READ_RESPONSE;
-            _statusHttpServer = StatusHttp::WRITE_RESPONSE;
+            _statusHttpServer = StatusHttp::WRITE_RESPONSE_HEADING;
         } else if (_statusClient == StatusHttp::READ_RESPONSE) {
             _statusClient = StatusHttp::END_WORK;
             _statusHttpServer = StatusHttp::END_WORK;
@@ -112,11 +134,21 @@ void BufferImpl::setStatusBuf(StatusHttp statusHttp) {
 }
 
 bool BufferImpl::isReadyToSend() {
+    if (_isGetDataFromCash && !_isEndSend) {
+        std::string str = _cashElement->getCash()->substr(bytesReadFromCash);
+        bytesReadFromCash += str.size();
+        _buf += str;
+        _isReadyToSend = true;
+        if (_cashElement->isCashEnd()) {
+            _isEndSend = true;
+        }
+    }
     return _isReadyToSend;
 }
 
 BufferImpl::~BufferImpl() {
     LOG_EVENT("delete buffer");
+    delete _resultParseHeading;
 }
 
 bool BufferImpl::isSendEnd() {
@@ -131,6 +163,40 @@ StatusHttp BufferImpl::getStatusHttpServer() {
     return _statusHttpServer;
 }
 
-BufferImpl::BufferImpl() {
+BufferImpl::BufferImpl(Cash *cash) {
+    _cash = cash;
+}
 
+void BufferImpl::parsHead() {
+    try {
+        _resultParseHeading = ParserImpl::parsingHeading(_requestHeading);
+    } catch (ParseException ex) {
+        std::cerr << ex.what() << std::endl;
+        _buf.clear();
+        _buf += "incorrect heading\r\n";
+        _statusClient = StatusHttp::READ_RESPONSE;
+        _isReadyToSend = true;
+        _isEndSend = true;
+        error = true;
+        throw ParseException("incorrect heading");
+    }
+}
+
+bool BufferImpl::checkCash() {
+    _cashElement = _cash->findResponseInCash(_requestHeading);
+    if (_cashElement != NULL) {
+        _isGetDataFromCash = true;
+        _buf.clear();
+        _buf = *_cashElement->getCash();
+        _statusClient = StatusHttp::READ_RESPONSE;
+        if (_cashElement->isCashEnd()) {
+            _isEndSend = true;
+        } else {
+            _isEndSend = false;
+            bytesReadFromCash = _cashElement->getCash()->size();
+        }
+        _isReadyToSend = true;
+        return true;
+    }
+    return false;
 }
