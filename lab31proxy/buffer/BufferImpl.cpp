@@ -56,6 +56,7 @@ void BufferImpl::readRequest(char *buf) {
                 if (!resultParseHeading.isResponseWithError() && (
                         _buf.size() + resultParseHeading.getContentLength() < SIZE_EACH_CASH_ELEMENT)) {
                     _isWrightDataToCash = true;
+                    LOG_EVENT("Add response to cash");
                     _cashElement = _cash->addStringToCash(responseHead);
                     *_cashElement->getCash() += _buf.substr(posEndHeading);
                 }
