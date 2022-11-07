@@ -99,9 +99,7 @@ void ServerImpl::handlingEvent() {
                     } catch (ConnectException ex) {
                         std::cerr << ex.what() << std::endl;
                         LOG_ERROR("can't connect to http server");
-//                        _pollSet[i].revents = 0;
                         isNeedUpdatePollSet = deleteClient(*it, &it);
-//                        break;
                     }
                 }
             }
