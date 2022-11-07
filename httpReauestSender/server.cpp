@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
     if ((clientSock = accept(sockFd, (struct sockaddr *) &clientAddr, &len)) < 0) {
         perror("accept error");
     }
-
+    std::cout << "connect" << std::endl;
 //    write(sock, buffer, strlen(buffer)); // write(fd, char[]*, len);
 //    bzero(buffer, BUFFER_SIZE);
     char buf[1024] = {0};
