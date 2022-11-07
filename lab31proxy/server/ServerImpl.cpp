@@ -124,9 +124,13 @@ void ServerImpl::handlingEvent() {
             isNeedUpdatePollSet = deleteClient(*it, &it);
 //            break;
         } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
-                   (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
+                   (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
             isNeedUpdatePollSet = deleteClient(*it, &it);
 //            break;
+        } else if((*it)->getTypeClient() == TypeClient::USER &&
+                  (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
+                    !(*it)->getBuffer()->isReadyToSend()) {
+            isNeedUpdatePollSet = deleteClient(*it, &it);
         }
     }
 
