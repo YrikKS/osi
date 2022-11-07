@@ -26,7 +26,7 @@ namespace ProxyServer {
 
     private:
         void configuratePollArr();
-        void updatePollArr();
+//        void updatePollArr();
         void handlingEvent();
         bool deleteClient(Client* client, std::list<Client*>::iterator* iterator);
         void setPollElements();

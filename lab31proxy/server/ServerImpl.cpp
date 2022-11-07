@@ -184,11 +184,11 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
     return false;
 }
 
-void ServerImpl::updatePollArr() {
-    int i = 1;
-    for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-        _pollSet[i].fd = (*it)->getFdClient();
-        _pollSet[i].events = POLLIN | POLLOUT;
-        (*it)->setPollElement(&(_pollSet[i]));
-    }
-}
+//void ServerImpl::updatePollArr() {
+//    int i = 1;
+//    for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
+//        _pollSet[i].fd = (*it)->getFdClient();
+//        _pollSet[i].events = POLLIN | POLLOUT;
+//        (*it)->setPollElement(&(_pollSet[i]));
+//    }
+//}
