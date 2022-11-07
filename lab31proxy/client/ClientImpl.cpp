@@ -30,6 +30,9 @@ ClientImpl::ClientImpl(int sock, TypeClient typeClient, Buffer* buf) {
     _fd = sock;
     _typeClient = typeClient;
     _buffer = buf;
+    _structPollFd.fd = _fd;
+    _structPollFd.events = POLLIN | POLLOUT;
+    _structPollFd.revents = 0;
 }
 
 ClientImpl::~ClientImpl() {
@@ -57,10 +60,16 @@ void ClientImpl::setPair(Client *pair) {
     _pair = pair;
 }
 
-struct pollfd *ClientImpl::getPollFd() {
+struct pollfd ClientImpl::getPollFd() {
     return _structPollFd;
 }
 
-void ClientImpl::setPollElement(struct pollfd *pollfd) {
-    _structPollFd = pollfd;
+void ClientImpl::setPollElement(struct pollfd pollfd) {
+    _structPollFd.fd = pollfd.fd;
+    _structPollFd.events = pollfd.events;
+    _structPollFd.revents = pollfd.revents;
+}
+
+void ClientImpl::setReventsZero() {
+    _structPollFd.revents = 0;
 }

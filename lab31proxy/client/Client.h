@@ -34,10 +34,11 @@ namespace ProxyServer {
 
         virtual TypeClient getTypeClient() = 0;
 
-        virtual struct pollfd *getPollFd() = 0;
+        virtual struct pollfd getPollFd() = 0;
 
-        virtual void setPollElement(struct pollfd *pollfd) = 0;
+        virtual void setPollElement(struct pollfd pollfd) = 0;
 
+        virtual void setReventsZero() = 0;
     };
 }
 #endif //LAB31PROXY_CLIENTINTERFACE_H

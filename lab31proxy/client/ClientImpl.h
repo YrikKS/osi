@@ -37,16 +37,18 @@ namespace ProxyServer {
 
         Client *getPair() override;
 
-        struct pollfd *getPollFd() override;
+        struct pollfd getPollFd() override;
 
-        void setPollElement(struct pollfd *pollfd) override;
+        void setPollElement(struct pollfd pollfd) override;
+
+        void setReventsZero() override;
 
     private:
         int _fd;
         TypeClient _typeClient;
         ProxyServer::Buffer *_buffer;
         Client *_pair = NULL;
-        struct pollfd *_structPollFd;
+        struct pollfd _structPollFd;
     };
 }
 

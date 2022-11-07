@@ -7,10 +7,11 @@
 using namespace ProxyServer;
 
 void ServerImpl::startServer() {
-    setPollArr();
+    configuratePollArr();
     std::cout << "start server" << std::endl;
     while (_isWork) {
         int code = poll(_pollSet, _clientList.size() + 1, TIME_OUT_POLL);
+        setPollElements();
         if (code == -1) {
             LOG_ERROR_WITH_ERRNO("poll error");
             perror("poll error");
@@ -23,7 +24,7 @@ void ServerImpl::startServer() {
                 _pollSet[0].revents = 0;
                 try {
                     _clientList.push_back(_serverSocket->acceptNewClient());
-                    setPollArr();
+                    configuratePollArr();
                     LOG_EVENT("add new client");
                     //TODO client connect: create client + add to _pollSet
                 } catch (ConnectException *exception) {
@@ -36,8 +37,19 @@ void ServerImpl::startServer() {
 
 }
 
+void ServerImpl::setPollElements() {
+    int i = 1;
+    for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
+        struct pollfd pollElement;
+        pollElement.fd = _pollSet[i].fd;
+        pollElement.events = _pollSet[i].events;
+        pollElement.revents = _pollSet[i].revents;
+        (*it)->setPollElement(pollElement);
+    }
+}
 
-void ServerImpl::setPollArr() {
+
+void ServerImpl::configuratePollArr() {
     LOG_EVENT("update pollSet");
     memset(_pollSet, 0, MAX_COUNT_CONNECTIONS * sizeof(struct pollfd));
     _pollSet[0].fd = _serverSocket->getFdSocket();
@@ -45,12 +57,14 @@ void ServerImpl::setPollArr() {
 
     int i = 1;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-        _pollSet[i].fd = (*it)->getFdClient();
-        _pollSet[i].events = POLLIN | POLLOUT;
-        _pollSet[i].revents = 0;
-        (*it)->setPollElement(&(_pollSet[i]));
+        struct pollfd pollElement = (*it)->getPollFd();
+        _pollSet[i].fd = pollElement.fd;
+        _pollSet[i].events = pollElement.events;
+        _pollSet[i].revents = pollElement.revents;
+//        (*it)->setPollElement(&(_pollSet[i]));
     }
 }
+
 
 ServerImpl::ServerImpl() {
     memset(_pollSet, 0, MAX_COUNT_CONNECTIONS * sizeof(struct pollfd));
@@ -63,7 +77,8 @@ void ServerImpl::handlingEvent() {
     char buf[1024] = {0};
     bool isNeedUpdatePollSet = false;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-        if ((*it)->getPollFd()->revents & POLLIN) {
+        if ((*it)->getPollFd().revents & POLLIN) {
+            (*it)->setReventsZero();
             memset(buf, 0, BUF_SIZE);
             int countByteRead = (*it)->readBuf(buf);
             if (countByteRead == 0) {
@@ -84,14 +99,15 @@ void ServerImpl::handlingEvent() {
                     } catch (ConnectException ex) {
                         std::cerr << ex.what() << std::endl;
                         LOG_ERROR("can't connect to http server");
-                        _pollSet[i].revents = 0;
+//                        _pollSet[i].revents = 0;
                         isNeedUpdatePollSet = deleteClient(*it, &it);
-                        break;
+//                        break;
                     }
                 }
             }
-        } else if ((*it)->getPollFd()->revents & POLLOUT) {
-            std::cout << (*it)->getTypeClient() << std::endl;
+        } else if ((*it)->getPollFd().revents & POLLOUT) {
+            (*it)->setReventsZero();
+//            std::cout << (*it)->getTypeClient() << std::endl;
             if ((*it)->getBuffer()->isReadyToSend()) {
                 if (((*it)->getTypeClient() == TypeClient::HTTP_SERVER
                      && (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::READ_REQUEST) ||
@@ -108,17 +124,16 @@ void ServerImpl::handlingEvent() {
         if ((*it)->getTypeClient() == TypeClient::USER &&
             (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
             isNeedUpdatePollSet = deleteClient(*it, &it);
-            break;
+//            break;
         } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                    (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
             isNeedUpdatePollSet = deleteClient(*it, &it);
-            break;
+//            break;
         }
-        (*it)->getPollFd()->revents = 0;
     }
 
     if (isNeedUpdatePollSet) {
-        setPollArr();
+        configuratePollArr();
     }
 }
 
@@ -154,12 +169,12 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
         (*iterator) = _clientList.erase((*iterator));
         delete client->getBuffer();
         delete client;
-        updatePollArr(); // не уверен
-        return false;
+//        updatePollArr(); // не уверен
+        return true;
     } else if (client->getTypeClient() == TypeClient::HTTP_SERVER) {
         LOG_EVENT("http server logout");
         (*iterator) = _clientList.erase((*iterator));
-        if(client->getPair() != NULL) {
+        if (client->getPair() != NULL) {
             client->getPair()->setPair(NULL);
         }
         client->getBuffer()->setStatusBuf(StatusHttp::END_WORK);

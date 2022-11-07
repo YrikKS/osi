@@ -25,10 +25,11 @@ namespace ProxyServer {
         ~ServerImpl();
 
     private:
-        void setPollArr();
+        void configuratePollArr();
         void updatePollArr();
         void handlingEvent();
         bool deleteClient(Client* client, std::list<Client*>::iterator* iterator);
+        void setPollElements();
 
         bool _isWork = true;
         ServerSocket* _serverSocket;
