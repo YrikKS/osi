@@ -115,7 +115,7 @@ void ServerImpl::handlingEvent() {
     }
 
     if (isNeedUpdatePollSet) {
-    setPollArr();
+        setPollArr();
     }
 }
 
