@@ -47,7 +47,7 @@ void ServerImpl::setPollArr() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         _pollSet[i].fd = (*it)->getFdClient();
         _pollSet[i].events = POLLIN | POLLOUT;
-        (*it)->setPollElement(&_pollSet[i]);
+        (*it)->setPollElement(&(_pollSet[i]));
     }
 }
 
@@ -172,6 +172,6 @@ void ServerImpl::updatePollArr() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         _pollSet[i].fd = (*it)->getFdClient();
         _pollSet[i].events = POLLIN | POLLOUT;
-        (*it)->setPollElement(&_pollSet[i]);
+        (*it)->setPollElement(&(_pollSet[i]));
     }
 }
