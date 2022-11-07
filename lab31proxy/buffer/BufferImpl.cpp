@@ -20,7 +20,6 @@ void BufferImpl::readRequest(char *buf) {
                 std::cerr << ex.what() << std::endl;
                 _buf.clear();
                 _buf += "incorrect heading\r\n";
-                _statusHttpServer = StatusHttp::END_WORK
                 _statusClient = StatusHttp::READ_RESPONSE;
                 _isReadyToSend = true;
                 _isEndSend = true;
