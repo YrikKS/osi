@@ -14,7 +14,17 @@ void BufferImpl::readRequest(char *buf) {
         if (ParserImpl::findEndHeading(_buf, &posEndHeading) == ResultPars::END_HEADING) {
 
             _requestHeading = _buf.substr(0, posEndHeading);
-            _resultParseHeading = ParserImpl::parsingHeading(_requestHeading);
+            try {
+                _resultParseHeading = ParserImpl::parsingHeading(_requestHeading);
+            } catch (ParseException ex) {
+                std::cerr << ex.what() << std::endl;
+                _buf.clear();
+                _buf += "incorrect heading";
+                _statusClient = StatusHttp::READ_RESPONSE;
+                _isReadyToSend = true;
+                _isEndSend = true;
+                throw ParseException("incorrect heading");
+            }
 
             _isReadyConnectHttpServer = true;
             if (_resultParseHeading->getType() == GET_REQUEST) {

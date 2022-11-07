@@ -86,7 +86,11 @@ void ServerImpl::handlingEvent() {
                 break;
 
             } else {
-                (*it)->getBuffer()->readRequest(buf);
+                try {
+                    (*it)->getBuffer()->readRequest(buf);
+                } catch (ParseException ex) {
+                    LOG_ERROR("send error and disconnect");
+                }
                 if ((*it)->getBuffer()->isReadyConnectHttpServer()) {
                     try {
                         Client *client = _serverSocket->connectToClient
