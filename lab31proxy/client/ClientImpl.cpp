@@ -10,7 +10,7 @@ int ClientImpl::getFdClient() {
 }
 
 void ClientImpl::sendBuf(const char *buf) {
-    std::cout << "send : " << buf << std::endl;
+//    std::cout << "send : " << buf << std::endl;
     write(_fd, buf, std::strlen(buf));
 }
 

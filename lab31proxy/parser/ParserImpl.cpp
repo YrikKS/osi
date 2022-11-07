@@ -92,7 +92,7 @@ ResultParseHeading ParserImpl::parsingResponseHeading(std::string heading) {
             result.setContentLength(atoi(
                     heading.substr(contentLength, endContentLength - contentLength).c_str()));
         }
-    } else {
+    } else { // TODO rework
         if (result.getType() == TypeRequest::GET_REQUEST) {
             result.setType(TypeRequest::GET_REQUEST_NOT_CASH);
         }
