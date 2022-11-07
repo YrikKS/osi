@@ -37,7 +37,7 @@ namespace ProxyServer {
 
         Client *getPair() override;
 
-        pollfd *getPollfd() override;
+        pollfd *getPollFd() override;
 
         void setPollfd(pollfd *pollFd) override;
 

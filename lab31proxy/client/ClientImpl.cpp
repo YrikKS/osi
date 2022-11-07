@@ -56,7 +56,7 @@ void ProxyServer::ClientImpl::setPair(ProxyServer::Client *pair) {
     _pair = pair;
 }
 
-struct pollfd *ProxyServer::ClientImpl::getPollfd() {
+struct pollfd *ProxyServer::ClientImpl::getPollFd() {
     return _structPollFd;
 }
 
