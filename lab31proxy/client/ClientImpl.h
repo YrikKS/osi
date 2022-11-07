@@ -39,7 +39,7 @@ namespace ProxyServer {
 
         struct pollfd *getPollFd() override;
 
-        void setPollfd(struct pollFd *pollfd) override;
+        void setPollElement(struct pollFd *pollfd) override;
 
     private:
         int _fd;

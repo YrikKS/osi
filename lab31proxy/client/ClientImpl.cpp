@@ -61,6 +61,6 @@ struct pollfd *ClientImpl::getPollFd() {
     return _structPollFd;
 }
 
-void ClientImpl::setPollfd(struct pollFd *pollfd) {
+void ClientImpl::setPollElement(struct pollFd *pollfd) {
     _structPollFd = pollfd;
 }
