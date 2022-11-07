@@ -19,7 +19,7 @@ void BufferImpl::readRequest(char *buf) {
             } catch (ParseException ex) {
                 std::cerr << ex.what() << std::endl;
                 _buf.clear();
-                _buf += "incorrect heading";
+                _buf += "incorrect heading\r\n";
                 _statusClient = StatusHttp::READ_RESPONSE;
                 _isReadyToSend = true;
                 _isEndSend = true;
