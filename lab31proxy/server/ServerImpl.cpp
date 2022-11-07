@@ -90,6 +90,7 @@ void ServerImpl::handlingEvent() {
                     (*it)->getBuffer()->readRequest(buf);
                 } catch (ParseException ex) {
                     LOG_ERROR("send error and disconnect");
+
                 }
                 if ((*it)->getBuffer()->isReadyConnectHttpServer()) {
                     try {

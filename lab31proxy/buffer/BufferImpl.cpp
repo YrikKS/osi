@@ -20,6 +20,7 @@ void BufferImpl::readRequest(char *buf) {
                 std::cerr << ex.what() << std::endl;
                 _buf.clear();
                 _buf += "incorrect heading\r\n";
+                _statusHttpServer = StatusHttp::END_WORK
                 _statusClient = StatusHttp::READ_RESPONSE;
                 _isReadyToSend = true;
                 _isEndSend = true;
@@ -80,6 +81,10 @@ void BufferImpl::proofSend(const char *buf) {
     }
     if (_buf.empty() && _isEndSend) {
         if (_statusHttpServer == StatusHttp::READ_REQUEST) {
+            if (_statusClient == READ_RESPONSE) { // TODO подумать как иначе
+                _statusClient = StatusHttp::END_WORK;
+                return;
+            }
             _statusClient = StatusHttp::READ_RESPONSE;
             _statusHttpServer = StatusHttp::WRITE_RESPONSE;
         } else if (_statusClient == StatusHttp::READ_RESPONSE) {
