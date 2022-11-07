@@ -78,8 +78,8 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
         throw ConnectException("setsockport");
     }
     if (connect(sock, (struct sockaddr *) &sockAddr, sizeof(struct sockaddr_in)) == ERROR_CODE) {
-        LOG_ERROR_WITH_ERRNO("connect");
-        throw ConnectException("setsockport");
+        LOG_ERROR_WITH_ERRNO("connect: ");
+        throw ConnectException("connect");
     }
 
     LOG_EVENT("http server connect");
