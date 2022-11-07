@@ -43,6 +43,8 @@ namespace ProxyServer {
 
         void setReventsZero() override;
 
+
+
     private:
         int _fd;
         TypeClient _typeClient;
