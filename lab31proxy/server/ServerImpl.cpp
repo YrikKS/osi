@@ -47,6 +47,7 @@ void ServerImpl::setPollArr() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         _pollSet[i].fd = (*it)->getFdClient();
         _pollSet[i].events = POLLIN | POLLOUT;
+        _pollSet[i].revents = 0;
         (*it)->setPollElement(&(_pollSet[i]));
     }
 }
