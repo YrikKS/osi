@@ -50,7 +50,7 @@ void BufferImpl::readRequest(char *buf) {
             }
         } else {
             int posEndHeading = 0;
-            if (ParserImpl::findEndHeading(_buf, &posEndHeading) == ResultPars::END_BODY) {
+            if (ParserImpl::findEndHeading(_buf, &posEndHeading) == ResultPars::END_HEADING) {
                 std::string responseHead = _buf.substr(0, posEndHeading);
                 ResultParseHeading resultParseHeading = ParserImpl::parsingResponseHeading(responseHead);
                 std::cout << !resultParseHeading.isResponseWithError() << " " <<
