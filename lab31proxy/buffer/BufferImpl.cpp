@@ -15,11 +15,13 @@ void BufferImpl::readRequest(char *buf) {
         if (ParserImpl::findEndHeading(_buf, &posEndHeading) == ResultPars::END_HEADING) {
 
             _requestHeading = _buf.substr(0, posEndHeading);
-            if (checkCash()) {
-                return;
+            parsHead();
+            if (_resultParseHeading->getType() == TypeRequestAndResponse::GET_REQUEST) {
+                if (checkCash())
+                    return;
             }
 
-            parsHead();
+//            parsHead();
             _isReadyConnectHttpServer = true;
             if (_resultParseHeading->getType() == GET_REQUEST) {
                 _isReadyToSend = true;
@@ -59,6 +61,7 @@ void BufferImpl::readRequest(char *buf) {
 
             _lengthBody = resultParseHeading.getContentLength();
             _lengthBody -= _buf.size() - responseHead.size();
+            std::cout << "_lengthBody " << _lengthBody << std::endl;
             int posEnd = 0;
             if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY || _lengthBody <= 0) {
                 _isEndSend = true;
@@ -68,6 +71,7 @@ void BufferImpl::readRequest(char *buf) {
         int posEnd = 0;
         _isReadyToSend = true;
         _lengthBody -= std::strlen(buf);
+        std::cout << "_lengthBody " << _lengthBody << std::endl;
         if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY || _lengthBody <= 0) {
             _isEndSend = true;
             if (_cashElement != NULL) {
@@ -111,7 +115,7 @@ void BufferImpl::proofSend(const char *buf) {
     }
 
     if (_buf.empty() && _isEndSend) {
-        _lengthBody = 0;
+//        _lengthBody = 0;
         if (_statusClient == READ_RESPONSE && error) { // TODO подумать как иначе
             _statusClient = StatusHttp::END_WORK;
             return;
