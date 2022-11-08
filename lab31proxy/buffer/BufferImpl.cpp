@@ -8,6 +8,7 @@
 using namespace ProxyServer;
 
 void BufferImpl::readRequest(char *buf) {
+    std::cout << "buf = " << buf << std::endl;
     _buf += std::string(buf);
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
         int posEndHeading = 0;
