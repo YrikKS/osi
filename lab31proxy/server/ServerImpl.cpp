@@ -85,8 +85,6 @@ void ServerImpl::handlingEvent() {
             int countByteRead = (*it)->readBuf(buf);
             if (countByteRead == 0) {
                 isNeedUpdatePollSet = deleteClient(*it, &it);
-                break;
-
             } else {
                 try {
                     (*it)->getBuffer()->readRequest(buf);
@@ -97,7 +95,8 @@ void ServerImpl::handlingEvent() {
                 if ((*it)->getBuffer()->isReadyConnectHttpServer()) {
                     try {
                         Client *client = _serverSocket->connectToClient
-                                ((*it)->getBuffer()->getParseResult().getHostName(), DEFAULT_PORT);
+                                ((*it)->getBuffer()->getParseResult().getHostName(),
+                                 (*it)->getBuffer()->getParseResult().getPort());
                         client->setBuffer((*it)->getBuffer());
                         client->setPair((*it));
                         (*it)->setPair(client);

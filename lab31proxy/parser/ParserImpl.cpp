@@ -59,13 +59,21 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
 
     int host = heading.find("Host: ");
     if (host != std::string::npos) {
-        int endContentLength = heading.find("\r\n", host);
-        if (endContentLength != std::string::npos) {
-            host += std::string("Host: ").size();
-            result->setHostName(heading.substr(host, endContentLength - host));
+        int findPort = heading.find(":", host);
+        if (findPort != std::string::npos) {
+            int endContentLength = heading.find("\r\n", host);
+            if (endContentLength != std::string::npos) {
+                host += std::string("Host: ").size();
+                findPort += 1;
+                result->setHostName(heading.substr(host, findPort - host));
+                result->setPort(atoi(heading.substr(findPort, endContentLength - findPort).c_str()));
+            }
         } else {
-            host += std::string("Host: ").size();
-            result->setHostName(heading.substr(host));
+            int endContentLength = heading.find("\r\n", host);
+            if (endContentLength != std::string::npos) {
+                host += std::string("Host: ").size();
+                result->setHostName(heading.substr(host, endContentLength - host));
+            }
         }
     } else {
         result->setType(TypeRequest::INVALID_REQUEST);

@@ -47,11 +47,20 @@ namespace ProxyServer {
             ResultParseHeading::responseWithError = responseWithError;
         }
 
+        int getPort() {
+            return port;
+        }
+
+        void setPort(int port) {
+            ResultParseHeading::port = port;
+        }
+
     private:
         std::string hostName;
         int contentLength = 0;
         TypeRequest type;
         bool responseWithError = false;
+        int port = -1;
 
     };
 
