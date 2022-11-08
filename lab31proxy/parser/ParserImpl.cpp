@@ -43,20 +43,23 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
         // TODO обработать ?
     }
 
-    int contentLength = heading.find("Content-Length: ");
-    if (contentLength != std::string::npos) {
-        int endContentLength = heading.find("\r\n", contentLength);
-        if (endContentLength != std::string::npos) {
-            contentLength += std::string("Content-Length: ").size();
-            result->setContentLength(atoi(
-                    heading.substr(contentLength, endContentLength - contentLength).c_str()));
-        }
-    } else {
-//        if (result->getType() == TypeRequestAndResponse::GET_REQUEST) {
-//            result->setType(TypeRequestAndResponse::GET_REQUEST_NOT_CASH);
+    findContentLength(result, heading);
+//    int contentLength = heading.find("Content-Length: ");
+//    if (contentLength != std::string::npos) {
+//        int endContentLength = heading.find("\r\n", contentLength);
+//        if (endContentLength != std::string::npos) {
+//            contentLength += std::string("Content-Length: ").size();
+//            result->setContentLength(atoi(
+//                    heading.substr(contentLength, endContentLength - contentLength).c_str()));
+//            result->setHaveContentLength(true);
 //        }
-        result->setContentLength(0);
-    }
+//    } else {
+////        if (result->getType() == TypeRequestAndResponse::GET_REQUEST) {
+////            result->setType(TypeRequestAndResponse::GET_REQUEST_NOT_CASH);
+////        }
+//        result->setHaveContentLength(false);
+//        result->setContentLength(0);
+//    }
 
     findHostAndPort(result, heading);
     return result;
@@ -113,9 +116,11 @@ void ParserImpl::findContentLength(ResultParseHeading* result, std::string buf) 
     if (regex_search(buf, resRegex, regex)) {
         if (resRegex.size() == 2) {
             result->setContentLength(atoi(resRegex[1].str().c_str()));
-            result->setType(TypeRequestAndResponse::NORAL_RESPONSE);
+            result->setHaveContentLength(true);
+//            result->setType(TypeRequestAndResponse::NORAL_RESPONSE);
         }
     } else {
-        result->setType(TypeRequestAndResponse::NOT_CASH_RESPONSE);
+        result->setHaveContentLength(false);
+//        result->setType(TypeRequestAndResponse::NOT_CASH_RESPONSE);
     }
 }

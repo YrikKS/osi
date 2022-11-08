@@ -55,12 +55,21 @@ namespace ProxyServer {
             ResultParseHeading::port = port;
         }
 
+        bool isHaveContentLength() const {
+            return haveContentLength;
+        }
+
+        void setHaveContentLength(bool haveContentLength) {
+            ResultParseHeading::haveContentLength = haveContentLength;
+        }
+
     private:
         std::string hostName;
         int contentLength = 0;
         TypeRequestAndResponse type;
         bool responseWithError = false;
         int port = 80;
+        bool haveContentLength = false;
 
     };
 
