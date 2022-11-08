@@ -10,19 +10,11 @@ int ClientImpl::getFdClient() {
 }
 
 void ClientImpl::sendBuf(const char *buf) {
-//    std::cout << "send : " << buf << std::endl;
     write(_fd, buf, std::strlen(buf));
 }
 
 int ClientImpl::readBuf(char *buf) {
     int byte = read(_fd, buf, BUF_SIZE - 1);
-//    std::cout << buf << std::endl << std::endl;
-//    std::string str = buf;
-//    for(int i = 0; i < str.size(); i++) {
-//        int a = static_cast<int>(str[i]);
-//        std::cout << str[i] << " = " << a << " ";
-//        std::cout.flush();
-//    }
     return byte;
 }
 
