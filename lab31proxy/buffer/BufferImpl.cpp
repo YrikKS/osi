@@ -53,12 +53,14 @@ void BufferImpl::readRequest(char *buf) {
             if (ParserImpl::findEndHeading(_buf, &posEndHeading) == ResultPars::END_BODY) {
                 std::string responseHead = _buf.substr(0, posEndHeading);
                 ResultParseHeading resultParseHeading = ParserImpl::parsingResponseHeading(responseHead);
+                std::cout << !resultParseHeading.isResponseWithError() << " " <<
+                          (_buf.size() + resultParseHeading.getContentLength() < SIZE_EACH_CASH_ELEMENT) << std::endl;
                 if (!resultParseHeading.isResponseWithError() && (
                         _buf.size() + resultParseHeading.getContentLength() < SIZE_EACH_CASH_ELEMENT)) {
                     _isWrightDataToCash = true;
                     LOG_EVENT("Add response to cash");
-                    _cashElement = _cash->addStringToCash(responseHead);
-                    *_cashElement->getCash() += _buf.substr(posEndHeading);
+                    _cashElement = _cash->addStringToCash(_requestHeading);
+                    *_cashElement->getCash() += _buf;
                 }
 
                 _isReadyToSend = true;
