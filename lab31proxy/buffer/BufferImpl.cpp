@@ -86,7 +86,7 @@ void BufferImpl::readRequest(char *buf) {
                 LOG_EVENT("end body response read");
             }
         }
-        if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY)) {
+        if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY) {
             _isEndSend = true;
             if (_cashElement != NULL) {
                 _cashElement->setIsCashEnd();
