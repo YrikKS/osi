@@ -50,11 +50,11 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
             result->setContentLength(atoi(
                     heading.substr(contentLength, endContentLength - contentLength).c_str()));
         }
-    } else {
-        if (result->getType() == TypeRequest::GET_REQUEST) {
-            result->setType(TypeRequest::GET_REQUEST_NOT_CASH);
-        }
-        result->setContentLength(-1);
+//    } else {
+//        if (result->getType() == TypeRequest::GET_REQUEST) {
+//            result->setType(TypeRequest::GET_REQUEST_NOT_CASH);
+//        }
+        result->setContentLength(0);
     }
 
     int host = heading.find("Host: ");
