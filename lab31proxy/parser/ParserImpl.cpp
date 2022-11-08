@@ -80,6 +80,7 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
         LOG_ERROR("incorrect heading");
         throw ParseException("incorrect heading");
     }
+    std::cout << result->getHostName() << " " << result->getPort() << std::endl;
     return result;
 }
 

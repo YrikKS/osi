@@ -60,7 +60,7 @@ namespace ProxyServer {
         int contentLength = 0;
         TypeRequest type;
         bool responseWithError = false;
-        int port = -1;
+        int port = 80;
 
     };
 
