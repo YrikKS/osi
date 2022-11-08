@@ -59,7 +59,6 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
     }
 
     findHostAndPort(result, heading);
-    std::cout << result->getHostName() << " " << result->getPort() << std::endl;
     return result;
 }
 
