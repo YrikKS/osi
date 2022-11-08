@@ -52,7 +52,7 @@ namespace ProxyServer {
         bool _isEndSend = false;
         bool _isReadyConnectHttpServer = false;
         int _lengthBody = 0;
-        ResultParseHeading *_resultParseHeading;
+        ResultParseHeading *_resultParseHeading = NULL;
         void parsHead();
         bool checkCash();
 

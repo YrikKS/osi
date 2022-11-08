@@ -160,7 +160,9 @@ bool BufferImpl::isReadyToSend() {
 
 BufferImpl::~BufferImpl() {
     LOG_EVENT("delete buffer");
-    delete _resultParseHeading;
+    if (_resultParseHeading != NULL) {
+        delete _resultParseHeading;
+    }
 }
 
 bool BufferImpl::isSendEnd() {
