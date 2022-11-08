@@ -43,14 +43,6 @@ void BufferImpl::readRequest(char *buf) {
             _isEndSend = true;
         }
     } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_HEADING) {
-//        if (_resultParseHeading->getType() != TypeRequestAndResponse::GET_REQUEST) {
-//            _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
-//            int posEnd = 0;
-//            _isReadyToSend = true;
-//            if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY) {
-//                _isEndSend = true;
-//            }
-//        } else {
         int posEndHeading = 0;
         if (ParserImpl::findEndHeading(_buf, &posEndHeading) == ResultPars::END_HEADING) {
             std::string responseHead = _buf.substr(0, posEndHeading);
@@ -66,7 +58,7 @@ void BufferImpl::readRequest(char *buf) {
             _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
 
             _lengthBody = resultParseHeading.getContentLength();
-            _lengthBody -= _buf.size();
+            _lengthBody -= _buf.size() - responseHead.size();
             int posEnd = 0;
             if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY || _lengthBody <= 0) {
                 _isEndSend = true;
