@@ -50,7 +50,7 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
             result->setContentLength(atoi(
                     heading.substr(contentLength, endContentLength - contentLength).c_str()));
         }
-//    } else {
+    } else {
 //        if (result->getType() == TypeRequest::GET_REQUEST) {
 //            result->setType(TypeRequest::GET_REQUEST_NOT_CASH);
 //        }
