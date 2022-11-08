@@ -169,7 +169,11 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
         }
         (*iterator) = _clientList.erase((*iterator));
         delete client->getBuffer();
+        std::cout << "delete buffer" << std::endl;
+        std::cout.flush();
         delete client;
+        std::cout << "delete client" << std::endl;
+        std::cout.flush();
 //        updatePollArr(); // не уверен
         return true;
     } else if (client->getTypeClient() == TypeClient::HTTP_SERVER) {

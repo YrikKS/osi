@@ -113,6 +113,10 @@ void BufferImpl::proofSend(const char *buf) {
             _statusClient = StatusHttp::END_WORK;
             return;
         }
+        if (_statusClient == READ_RESPONSE && _isGetDataFromCash) { // TODO подумать как иначе
+            _statusClient = StatusHttp::END_WORK;
+            return;
+        }
         if (_statusHttpServer == StatusHttp::READ_REQUEST) {
             _statusClient = StatusHttp::READ_RESPONSE;
             _statusHttpServer = StatusHttp::WRITE_RESPONSE_HEADING;
