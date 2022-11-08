@@ -53,15 +53,15 @@ int main(int argc, char *argv[]) {
 //    write(sock, buffer, strlen(buffer)); // write(fd, char[]*, len);
 //    bzero(buffer, BUFFER_SIZE);
     char buf[1024] = {0};
-    int pos = 0;
-    while ((pos = read(clientSock, &buf[pos], BUFFER_SIZE - 1)) != 0) {
+//    int pos = 0;
+    while (read(clientSock, buf, BUFFER_SIZE - 1) != 0) {
         fprintf(stderr, "%s", buf);
         std::string buffer(buf);
-        if (buffer.find("0\r\n\r\n") != std::string::npos) {
+        if (buffer.find("0") != std::string::npos) {
+            bzero(buf, BUFFER_SIZE);
             break;
-//            bzero(buf, BUFFER_SIZE);
         }
-//        bzero(buf, BUFFER_SIZE);
+        bzero(buf, BUFFER_SIZE);
     }
 
 //    bool start = true;
