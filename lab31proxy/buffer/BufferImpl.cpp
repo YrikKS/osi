@@ -8,7 +8,7 @@
 using namespace ProxyServer;
 
 void BufferImpl::readRequest(char *buf) {
-    std::cout << "buf = " << buf << std::endl;
+//    std::cout << "buf = " << buf << std::endl;
     _buf += std::string(buf);
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
         int posEndHeading = 0;
@@ -58,21 +58,35 @@ void BufferImpl::readRequest(char *buf) {
 
             _isReadyToSend = true;
             _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
+            _isHaveContentLengthresponse = resultParseHeading.isHaveContentLength();
+            if (_isHaveContentLengthresponse) {
+                _lengthBody = resultParseHeading.getContentLength();
+                _lengthBody -= _buf.size() - responseHead.size();
+                std::cout << "_lengthBody " << _lengthBody << std::endl;
+                if (_lengthBody <= 0) {
+                    _isEndSend = true;
+                }
+            }
 
-            _lengthBody = resultParseHeading.getContentLength();
-            _lengthBody -= _buf.size() - responseHead.size();
-            std::cout << "_lengthBody " << _lengthBody << std::endl;
             int posEnd = 0;
-            if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY || _lengthBody <= 0) {
+            if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY) {
                 _isEndSend = true;
             }
         }
     } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_BODY) {
         int posEnd = 0;
         _isReadyToSend = true;
-        _lengthBody -= std::strlen(buf);
-        std::cout << "_lengthBody " << _lengthBody << std::endl;
-        if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY || _lengthBody <= 0) {
+        if (_isHaveContentLengthresponse) {
+            _lengthBody -= std::strlen(buf);
+            if (_lengthBody <= 0) {
+                _isEndSend = true;
+                if (_cashElement != NULL) {
+                    _cashElement->setIsCashEnd();
+                }
+                LOG_EVENT("end body response read");
+            }
+        }
+        if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY)) {
             _isEndSend = true;
             if (_cashElement != NULL) {
                 _cashElement->setIsCashEnd();
@@ -90,7 +104,7 @@ bool BufferImpl::isCashingData(ResultParseHeading resultParseHeading) {
     if (!resultParseHeading.isResponseWithError() && (
             (_buf.size() + resultParseHeading.getContentLength()) < SIZE_EACH_CASH_ELEMENT) &&
         _resultParseHeading->getType() == TypeRequestAndResponse::GET_REQUEST &&
-        resultParseHeading.getType() == TypeRequestAndResponse::NORAL_RESPONSE)
+        resultParseHeading.isHaveContentLength())
         return true;
     return false;
 }

@@ -53,9 +53,11 @@ namespace ProxyServer {
         bool _isReadyConnectHttpServer = false;
         int _lengthBody = 0;
         ResultParseHeading *_resultParseHeading = NULL;
+        bool _isHaveContentLengthresponse = false;
         void parsHead();
         bool checkCash();
         bool isCashingData(ResultParseHeading resultParseHeading);
+
 
         CashElement *_cashElement = NULL;
         bool _isGetDataFromCash = false;
