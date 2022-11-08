@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
 
     std::string domain("parallels.nsu.ru");
     std::string path("/WackoWiki/KursOperacionnyeSistemy/PraktikumPosixThreads/PthreadTasks");
-    sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s\r\nConnection: close\r\n\r\n", path.data(),
+    sprintf(buffer, "GET %s HTTP/1.1\r\nAccept: */*\r\nHost: %s:80\r\nConnection: close\r\n\r\n", path.data(),
             domain.data());
 
     std::cout << buffer << "End" << std::endl;
