@@ -7,10 +7,12 @@
 namespace ProxyServer {
     typedef enum {
         GET_REQUEST,
+        NORAL_RESPONSE,
+        NOT_CASH_RESPONSE,
         GET_REQUEST_NOT_CASH,
         NOT_GET_REQUEST,
-        INVALID_REQUEST
-    } TypeRequest;
+        INVALID
+    } TypeRequestAndResponse;
 
     typedef enum {
         END_HEADING,

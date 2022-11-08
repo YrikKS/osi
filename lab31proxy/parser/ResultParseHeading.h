@@ -27,11 +27,11 @@ namespace ProxyServer {
             ResultParseHeading::contentLength = contentLength;
         }
 
-        TypeRequest getType() const {
+        TypeRequestAndResponse getType() const {
             return type;
         }
 
-        void setType(TypeRequest type) {
+        void setType(TypeRequestAndResponse type) {
             ResultParseHeading::type = type;
         }
 
@@ -58,7 +58,7 @@ namespace ProxyServer {
     private:
         std::string hostName;
         int contentLength = 0;
-        TypeRequest type;
+        TypeRequestAndResponse type;
         bool responseWithError = false;
         int port = 80;
 

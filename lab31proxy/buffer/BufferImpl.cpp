@@ -41,41 +41,40 @@ void BufferImpl::readRequest(char *buf) {
             _isEndSend = true;
         }
     } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_HEADING) {
-        if (_resultParseHeading->getType() != TypeRequest::GET_REQUEST) {
-            _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
-            int posEnd = 0;
-            _isReadyToSend = true;
-            if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY) {
-                _isEndSend = true;
+//        if (_resultParseHeading->getType() != TypeRequestAndResponse::GET_REQUEST) {
+//            _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
+//            int posEnd = 0;
+//            _isReadyToSend = true;
+//            if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY) {
+//                _isEndSend = true;
+//            }
+//        } else {
+        int posEndHeading = 0;
+        if (ParserImpl::findEndHeading(_buf, &posEndHeading) == ResultPars::END_HEADING) {
+            std::string responseHead = _buf.substr(0, posEndHeading);
+            ResultParseHeading resultParseHeading = ParserImpl::parsingResponseHeading(responseHead);
+            if (isCashingData(resultParseHeading)) {
+                _isWrightDataToCash = true;
+                LOG_EVENT("Add response to cash");
+                _cashElement = _cash->addStringToCash(_requestHeading);
+                *_cashElement->getCash() += _buf;
             }
-        } else {
-            int posEndHeading = 0;
-            if (ParserImpl::findEndHeading(_buf, &posEndHeading) == ResultPars::END_HEADING) {
-                std::string responseHead = _buf.substr(0, posEndHeading);
-                ResultParseHeading resultParseHeading = ParserImpl::parsingResponseHeading(responseHead);
-                std::cout << !resultParseHeading.isResponseWithError() << " " <<
-                          (_buf.size() + resultParseHeading.getContentLength() < SIZE_EACH_CASH_ELEMENT) << std::endl;
-                if (!resultParseHeading.isResponseWithError() && (
-                        _buf.size() + resultParseHeading.getContentLength() < SIZE_EACH_CASH_ELEMENT)) {
-                    _isWrightDataToCash = true;
-                    LOG_EVENT("Add response to cash");
-                    _cashElement = _cash->addStringToCash(_requestHeading);
-                    *_cashElement->getCash() += _buf;
-                }
 
-                _isReadyToSend = true;
-                _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
+            _isReadyToSend = true;
+            _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
 
-                int posEnd = 0;
-                if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY) {
-                    _isEndSend = true;
-                }
+            _lengthBody = resultParseHeading.getContentLength();
+            _lengthBody -= _buf.size();
+            int posEnd = 0;
+            if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY || _lengthBody <= 0) {
+                _isEndSend = true;
             }
         }
     } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_BODY) {
         int posEnd = 0;
         _isReadyToSend = true;
-        if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY) {
+        _lengthBody -= std::strlen(buf);
+        if (ParserImpl::findEndBody(_buf, &posEnd) == ResultPars::END_BODY || _lengthBody <= 0) {
             _isEndSend = true;
             if (_cashElement != NULL) {
                 _cashElement->setIsCashEnd();
@@ -86,7 +85,16 @@ void BufferImpl::readRequest(char *buf) {
             *(_cashElement->getCash()) += buf;
         }
     }
-    // TODO parse RESPONSE RESULT heading
+// TODO parse RESPONSE RESULT heading
+}
+
+bool BufferImpl::isCashingData(ResultParseHeading resultParseHeading) {
+    if (!resultParseHeading.isResponseWithError() && (
+            (_buf.size() + resultParseHeading.getContentLength()) < SIZE_EACH_CASH_ELEMENT) &&
+        _resultParseHeading->getType() == TypeRequestAndResponse::GET_REQUEST &&
+        resultParseHeading.getType() == TypeRequestAndResponse::NORAL_RESPONSE)
+        return true;
+    return false;
 }
 
 void BufferImpl::readResponse(char *buf) {
@@ -109,6 +117,7 @@ void BufferImpl::proofSend(const char *buf) {
     }
 
     if (_buf.empty() && _isEndSend) {
+        _lengthBody = 0;
         if (_statusClient == READ_RESPONSE && error) { // TODO подумать как иначе
             _statusClient = StatusHttp::END_WORK;
             return;

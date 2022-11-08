@@ -55,6 +55,7 @@ namespace ProxyServer {
         ResultParseHeading *_resultParseHeading = NULL;
         void parsHead();
         bool checkCash();
+        bool isCashingData(ResultParseHeading resultParseHeading);
 
         CashElement *_cashElement = NULL;
         bool _isGetDataFromCash = false;
