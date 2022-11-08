@@ -59,30 +59,6 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
     }
 
     findHostAndPort(result, heading);
-
-    int host = heading.find("Host: ");
-    if (host != std::string::npos) {
-        int findPort = heading.find(":", host);
-        if (findPort != std::string::npos) {
-            int endContentLength = heading.find("\r\n", host);
-            if (endContentLength != std::string::npos) {
-                host += std::string("Host: ").size();
-                findPort += 1;
-                result->setHostName(heading.substr(host, findPort - host));
-                result->setPort(atoi(heading.substr(findPort, endContentLength - findPort).c_str()));
-            }
-        } else {
-            int endContentLength = heading.find("\r\n", host);
-            if (endContentLength != std::string::npos) {
-                host += std::string("Host: ").size();
-                result->setHostName(heading.substr(host, endContentLength - host));
-            }
-        }
-    } else {
-        result->setType(TypeRequest::INVALID_REQUEST);
-        LOG_ERROR("incorrect heading");
-        throw ParseException("incorrect heading");
-    }
     std::cout << result->getHostName() << " " << result->getPort() << std::endl;
     return result;
 }
@@ -135,8 +111,18 @@ void ParserImpl::findHostAndPort(ResultParseHeading *result, std::string buf) {
     std::smatch resRegex;
 
     if (regex_search(buf, resRegex, regex)) {
-        for(auto it = resRegex.begin(); it != resRegex.end(); it++) {
-            std::cout << (*it) << std::endl;
+        if (resRegex.size() == 2) {
+            result->setHostName(resRegex[1]);
+        } else {
+            result->setHostName(resRegex[1]);
+            result->setPort(atoi(resRegex[2].str().substr(1).c_str()));
         }
+//        for (auto it = resRegex.begin(); it != resRegex.end(); it++) {
+//            std::cout << (*it) << std::endl;
+//        }
+    } else {
+        result->setType(TypeRequest::INVALID_REQUEST);
+        LOG_ERROR("incorrect heading");
+        throw ParseException("incorrect heading");
     }
 }
