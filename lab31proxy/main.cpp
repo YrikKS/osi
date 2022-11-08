@@ -1,4 +1,5 @@
 #include <iostream>
+#include "server/Server.h"
 #include "server/ServerImpl.h"
 #include "logger/Logger.h"
 

@@ -62,7 +62,6 @@ void ServerImpl::configuratePollArr() {
         _pollSet[i].fd = pollElement.fd;
         _pollSet[i].events = pollElement.events;
         _pollSet[i].revents = pollElement.revents;
-//        (*it)->setPollElement(&(_pollSet[i]));
     }
 }
 
@@ -187,12 +186,3 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
     }
     return false;
 }
-
-//void ServerImpl::updatePollArr() {
-//    int i = 1;
-//    for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-//        _pollSet[i].fd = (*it)->getFdClient();
-//        _pollSet[i].events = POLLIN | POLLOUT;
-//        (*it)->setPollElement(&(_pollSet[i]));
-//    }
-//}

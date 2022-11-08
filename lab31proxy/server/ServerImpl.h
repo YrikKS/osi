@@ -21,20 +21,24 @@ namespace ProxyServer {
     class ServerImpl : public Server {
     public:
         ServerImpl();
+
         void startServer() override;
-        ~ServerImpl();
+
+        ~ServerImpl() override;
 
     private:
         void configuratePollArr();
-//        void updatePollArr();
+
         void handlingEvent();
-        bool deleteClient(Client* client, std::list<Client*>::iterator* iterator);
+
+        bool deleteClient(Client *client, std::list<Client *>::iterator *iterator);
+
         void setPollElements();
 
         bool _isWork = true;
-        ServerSocket* _serverSocket;
+        ServerSocket *_serverSocket;
         struct pollfd _pollSet[MAX_COUNT_CONNECTIONS];
-        std::list<Client*> _clientList;
+        std::list<Client *> _clientList;
         Cash *_cash;
     };
 }
