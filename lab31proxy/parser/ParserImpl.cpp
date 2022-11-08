@@ -31,7 +31,6 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
         result->setType(TypeRequestAndResponse::INVALID);
         LOG_ERROR("incorrect heading");
         throw ParseException("incorrect heading");
-        // TODO обработать ?
     }
 
     findContentLength(result, heading);
@@ -94,6 +93,6 @@ void ParserImpl::findContentLength(ResultParseHeading* result, std::string buf) 
             result->setHaveContentLength(true);
         }
     } else {
-        result->setHaveContentLength(false);
+        result->setHaveContentLength(false); // TODO во время сдачи мб поставить true?
     }
 }

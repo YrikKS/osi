@@ -39,7 +39,7 @@ void BufferImpl::wrightRequestHeading(char *buf) {
             _statusClient = StatusHttp::WRITE_REQUEST_BODY;
             _lengthBody = _resultParseHeading->getContentLength();
             _lengthBody -= _buf.size() - _requestHeading.size();
-            std::cout << "_lengthBody " << _lengthBody << std::endl;
+//            std::cout << "_lengthBody " << _lengthBody << std::endl;
             if (_lengthBody <= 0) {
                 _isEndSend = true;
             }
@@ -75,7 +75,7 @@ void BufferImpl::wrightResponseHeading(char *buf) {
         if (_isHaveContentLengthresponse) {
             _lengthBody = resultParseHeading.getContentLength();
             _lengthBody -= _buf.size() - responseHead.size();
-            std::cout << "_lengthBody " << _lengthBody << std::endl;
+//            std::cout << "_lengthBody " << _lengthBody << std::endl;
             if (_lengthBody <= 0) {
                 _isEndSend = true;
             }
