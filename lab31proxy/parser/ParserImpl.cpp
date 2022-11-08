@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <regex>
 #include "ParserImpl.h"
 
 using namespace ProxyServer;
@@ -56,6 +57,8 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
 //        }
         result->setContentLength(0);
     }
+
+    findHostAndPort(result, heading);
 
     int host = heading.find("Host: ");
     if (host != std::string::npos) {
@@ -124,5 +127,16 @@ ResultPars ParserImpl::findEndBody(std::string buffer, int *posEnd) {
     } else {
         *posEnd = resultFinding + 5;
         return ResultPars::END_BODY;
+    }
+}
+
+void ParserImpl::findHostAndPort(ResultParseHeading *result, std::string buf) {
+    std::regex regex(REGEX_FOR_HOST_AND_PORT);
+    std::smatch resRegex;
+
+    if (regex_search(buf, resRegex, regex)) {
+        for(auto it = resRegex.begin(); it != resRegex.end(); it++) {
+            std::cout << (*it) << std::endl;
+        }
     }
 }

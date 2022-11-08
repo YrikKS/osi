@@ -14,6 +14,7 @@ namespace ProxyServer {
     static int COUNT_CASH_ELEMENT = 100;
     static int SIZE_EACH_CASH_ELEMENT = 1024 * 1024;
     static int MAX_CASH_SIZE = 1024 * 1024; // 1 кб
+    static char* REGEX_FOR_HOST_AND_PORT = "Host: ([\\w.]*)(:(\\d)+)*";
 }
 
 #endif //LAB31PROXY_CONSTANTS_H

@@ -9,6 +9,7 @@
 #include "ResultParseHeading.h"
 #include "ParseException.h"
 #include "../logger/Logger.h"
+#include "../Constants.h"
 
 namespace ProxyServer {
     class ParserImpl {
@@ -18,6 +19,9 @@ namespace ProxyServer {
         static ResultPars findEndBody(std::string buffer, int* posEnd);
         static ResultParseHeading* parsingHeading(std::string heading);
         static ResultParseHeading parsingResponseHeading(std::string heading);
+
+    private:
+        static void findHostAndPort(ResultParseHeading* result, std::string buf);
     };
 }
 
