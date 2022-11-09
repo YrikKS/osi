@@ -62,7 +62,9 @@ int main(int argc, char *argv[]) {
         int i = read(sock, buffer, 10000 - 1);
         std::cout << i << std::endl;
         std::string buf = buffer;
-        for (int i = 0; i < strlen(buffer); i++) {
+        int pos = buf.find("\r\n\r\n");
+        std::cout << buf.substr(0, pos);
+        for (int i = 0; i < strlen(buffer) - pos; i++) {
             std::cout << std::bitset<8>(buf[i]) << "   ";
         }
 //        fprintf(stderr, "%s", buffer);
