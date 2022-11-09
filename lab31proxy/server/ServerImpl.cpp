@@ -81,7 +81,7 @@ void ServerImpl::handlingEvent() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         if ((*it)->getPollFd().revents & POLLIN) {
 //            std::cout << i << " ";
-//            (*it)->setReventsZero();
+            (*it)->setReventsZero();
             memset(buf, 0, BUF_SIZE);
             int countByteRead = (*it)->readBuf(buf);
             if (countByteRead == 0) {
