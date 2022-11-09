@@ -80,7 +80,7 @@ void ServerImpl::handlingEvent() {
     bool isNeedUpdatePollSet = false;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         if ((*it)->getPollFd().revents & POLLIN) {
-//            std::cout << i << " ";
+            std::cout << i << " ";
             (*it)->setReventsZero();
             memset(buf, 0, BUF_SIZE);
             int countByteRead = (*it)->readBuf(buf);
