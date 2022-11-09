@@ -123,7 +123,7 @@ void ServerImpl::handlingEvent() {
             isNeedUpdatePollSet = deleteClient(*it, &it);
 
         } else if ((*it)->getPollFd().revents & POLLOUT) {
-            (*it)->setReventsZero();
+//            (*it)->setReventsZero();
 //            std::cout << (*it)->getTypeClient() << std::endl;
             if ((*it)->getBuffer()->isReadyToSend()) {
                 if (((*it)->getTypeClient() == TypeClient::HTTP_SERVER
@@ -135,6 +135,8 @@ void ServerImpl::handlingEvent() {
                     (*it)->sendBuf(bufferSend);
                     (*it)->getBuffer()->proofSend(bufferSend);
                 }
+            } else {
+                (*it)->setReventsZero();
             }
         }
     }
