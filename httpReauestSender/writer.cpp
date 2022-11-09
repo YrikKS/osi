@@ -62,9 +62,9 @@ int main(int argc, char *argv[]) {
         int i = read(sock, buffer, 10000 - 1);
         std::cout << i << std::endl;
         std::string buf = buffer;
-//        for(int i = 0; i < strlen(buffer); i++) {
-        std::cout << std::bitset<8>(buf) << "   ";
-//        }
+        for (int i = 0; i < strlen(buffer); i++) {
+            std::cout << std::bitset<8>(buf[i]) << "   ";
+        }
 //        fprintf(stderr, "%s", buffer);
         bzero(buffer, BUFFER_SIZE);
     }
