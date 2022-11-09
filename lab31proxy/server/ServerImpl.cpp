@@ -110,9 +110,8 @@ void ServerImpl::handlingEvent() {
                     }
                 }
             }
-        }
-        if ((*it)->getPollFd().revents & POLLOUT) {
-//            (*it)->setReventsZero();
+        } else if ((*it)->getPollFd().revents & POLLOUT) {
+            (*it)->setReventsZero();
 //            std::cout << (*it)->getTypeClient() << std::endl;
             if ((*it)->getBuffer()->isReadyToSend()) {
                 if (((*it)->getTypeClient() == TypeClient::HTTP_SERVER
@@ -125,11 +124,9 @@ void ServerImpl::handlingEvent() {
                     (*it)->getBuffer()->proofSend(bufferSend);
                 }
             } else {
-                (*it)->setReventsZero();
+//                (*it)->setReventsZero();
             }
-        }
-
-        if ((*it)->getTypeClient() == TypeClient::USER &&
+        } else if ((*it)->getTypeClient() == TypeClient::USER &&
                    (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
             isNeedUpdatePollSet = deleteClient(*it, &it);
 //            break;
