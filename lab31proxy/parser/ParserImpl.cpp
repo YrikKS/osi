@@ -36,6 +36,8 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
         } else {
             result->setType(TypeRequestAndResponse::NOT_GET_REQUEST);
         }
+        findContentLength(result, heading);
+        findHostAndPort(result, heading);
     } else {
         result->setType(TypeRequestAndResponse::INVALID);
         LOG_ERROR("incorrect heading");
@@ -43,7 +45,7 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
         // TODO обработать ?
     }
 
-    findContentLength(result, heading);
+//    findContentLength(result, heading);
 //    int contentLength = heading.find("Content-Length: ");
 //    if (contentLength != std::string::npos) {
 //        int endContentLength = heading.find("\r\n", contentLength);
@@ -61,7 +63,6 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
 //        result->setContentLength(0);
 //    }
 
-    findHostAndPort(result, heading);
     return result;
 }
 
@@ -100,7 +101,11 @@ void ParserImpl::findHostAndPort(ResultParseHeading *result, std::string buf) {
             result->setHostName(resRegex[1]);
         } else {
             result->setHostName(resRegex[1]);
-            result->setPort(atoi(resRegex[2].str().substr(1).c_str()));
+            if(resRegex[2].str().size() > 1) {
+                result->setPort(atoi(resRegex[2].str().substr(1).c_str()));
+            } else {
+                result->setPort(80);
+            }
         }
     } else {
         result->setType(TypeRequestAndResponse::INVALID);
@@ -109,7 +114,7 @@ void ParserImpl::findHostAndPort(ResultParseHeading *result, std::string buf) {
     }
 }
 
-void ParserImpl::findContentLength(ResultParseHeading* result, std::string buf) {
+void ParserImpl::findContentLength(ResultParseHeading *result, std::string buf) {
     std::regex regex(REGEX_FOR_CONTENT_LENGTH);
     std::smatch resRegex;
 
