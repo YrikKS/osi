@@ -12,6 +12,7 @@
 #include "../Constants.h"
 #include "../cash/Cash.h"
 #include <string.h>
+#include <bitset>
 
 namespace ProxyServer {
     class BufferImpl : public Buffer {
@@ -47,6 +48,7 @@ namespace ProxyServer {
         StatusHttp _statusHttpServer = StatusHttp::READ_REQUEST;
         std::string _requestHeading;
         std::string _buf;
+        std::bitset<8> _bitBuffer;
         std::string _sendingString;
         bool _isReadyToSend = false;
         bool _isEndSend = false;
