@@ -23,7 +23,7 @@
 
 int main(int argc, char *argv[]) {
 
-    struct hostent *hostent = gethostbyname("localhost");
+    struct hostent *hostent = gethostbyname("parallels.nsu.ru");
     if (hostent == NULL) {
         herror("gethostbyname");
         exit(EXIT_WITH_ERROR);
