@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
         int i = read(sock, buffer, 10000 - 1);
         std::cout << i << std::endl;
         std::string buf = buffer;
-        int pos = buf.find("\r\n\r\n");
+        int pos = buf.find("\r\n\r\n") + 2;
         std::cout << buf.size() << std::endl;
         for (int j = pos; j < i; j++) {
 //            std::cout << j << std::endl;
