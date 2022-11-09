@@ -58,7 +58,8 @@ int main(int argc, char *argv[]) {
     }
 
     char buffer[10000] = {0};
-    while (read(sock, buffer, 10000 - 1) != 0) {
+    while (true) {
+        read(sock, buffer, 10000 - 1);
         for(int i = 0; i < strlen(buffer); i++) {
             std::cout << buffer[i] << " = " << (int)buffer[i] << "   ";
         }
