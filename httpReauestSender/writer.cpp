@@ -63,9 +63,9 @@ int main(int argc, char *argv[]) {
         std::cout << i << std::endl;
         std::string buf = buffer;
         int pos = buf.find("\r\n\r\n");
-//        std::cout << buf.substr(0, pos);
-        for (int i = pos; i < strlen(buffer); i++) {
-            std::cout << std::bitset<8>(buffer[i]) << "   ";
+        std::cout << buf.size() << std::endl;
+        for (int j = pos; j < i; j++) {
+            std::cout << std::bitset<8>(buffer[j]) << "   ";
         }
 //        fprintf(stderr, "%s", buffer);
         bzero(buffer, BUFFER_SIZE);
