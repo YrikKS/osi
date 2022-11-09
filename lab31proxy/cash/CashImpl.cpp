@@ -38,3 +38,14 @@ ProxyServer::CashImpl::~CashImpl() {
     }
 }
 
+void ProxyServer::CashImpl::deleteCashElement(ProxyServer::CashElement *cashElement) {
+    for (auto it = _listCash.begin(); it != _listCash.end(); it++) {
+        if ((*it) == cashElement) {
+            delete (*it);
+            _listCash.erase(it);
+            LOG_EVENT("delete element cash");
+            return;
+        }
+    }
+}
+

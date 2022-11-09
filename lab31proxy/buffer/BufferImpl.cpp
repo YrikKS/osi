@@ -142,7 +142,6 @@ void BufferImpl::proofSend(const char *buf) {
     }
 
     if (_buf.empty() && _isEndSend) {
-//        _lengthBody = 0;
         if (_statusClient == READ_RESPONSE && error) { // TODO подумать как иначе
             _statusClient = StatusHttp::END_WORK;
             return;
@@ -248,3 +247,10 @@ bool BufferImpl::checkCash() {
     }
     return false;
 }
+
+//void BufferImpl::checkErrorLogout() {
+//    if(_isWrightDataToCash && !_isEndSend && _statusHttpServer == StatusHttp::END_WORK) {
+//        _cash->deleteCashElement(_cashElement);
+//        _isGetDataFromCash = false;
+//    }
+//}
