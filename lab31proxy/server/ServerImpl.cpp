@@ -28,7 +28,7 @@ void ServerImpl::startServer() {
                     configuratePollArr();
                     LOG_EVENT("add new client");
                     //TODO client connect: create client + add to _pollSet
-                } catch (ConnectException *exception) {
+                } catch (std::exception *exception) {
                     std::cerr << exception->what() << std::endl;
                     LOG_ERROR("exception in connect");
                 }
