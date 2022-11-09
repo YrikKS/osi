@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <vector>
+#include <bitset>
 
 #include <netinet/tcp.h>
 #include <sys/socket.h>
@@ -56,13 +57,13 @@ int main(int argc, char *argv[]) {
             write(sock, str.data(), str.size());
         }
     }
-
     char buffer[10000] = {0};
     while (true) {
         int i = read(sock, buffer, 10000 - 1);
         std::cout << i << std::endl;
+        std::string buf = buffer;
 //        for(int i = 0; i < strlen(buffer); i++) {
-//            std::cout << buffer[i] << " = " << (int)buffer[i] << "   ";
+        std::cout << std::bitset<8>(buf) << "   ";
 //        }
 //        fprintf(stderr, "%s", buffer);
         bzero(buffer, BUFFER_SIZE);
