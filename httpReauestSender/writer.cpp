@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
     }
 
     char buffer[10000] = {0};
-    while (recv(sock, buffer, BUFFER_SIZE - 1, 0) != 0) {
+    while (recvmsg(sock, buffer, BUFFER_SIZE - 1, 0) != 0) {
         for(int i = 0; i < strlen(buffer); i++) {
             std::cout << buffer[i] << " = " << (int)buffer[i] << "   ";
         }
