@@ -89,7 +89,7 @@ void BufferImpl::wrightResponseHeading(char *buf) {
 }
 
 void BufferImpl::wrightResponseBody(char *buf) {
-    std::cout << "wrigth response bode start" << std::endl;
+//    std::cout << "wrigth response bode start" << std::endl;
     int posEnd = 0;
     _isReadyToSend = true;
     if (_isHaveContentLengthresponse) {
@@ -114,7 +114,7 @@ void BufferImpl::wrightResponseBody(char *buf) {
             *(_cashElement->getCash()) += buf;
         }
     }
-    std::cout << "wrigth response bode end" << std::endl;
+//    std::cout << "wrigth response bode end" << std::endl;
 }
 
 bool BufferImpl::isCashingData(ResultParseHeading resultParseHeading) {
@@ -260,10 +260,10 @@ bool BufferImpl::checkCash() {
     return false;
 }
 
-void BufferImpl::checkErrorLogout() {
-    if (_isWrightDataToCash && !_isEndSend && _statusHttpServer == StatusHttp::END_WORK) {
-        _cash->deleteCashElement(_cashElement);
-        _isWrightDataToCash = false;
-
-    }
-}
+//void BufferImpl::checkErrorLogout() {
+//    if (_isWrightDataToCash && !_isEndSend && _statusHttpServer == StatusHttp::END_WORK) {
+//        _cash->deleteCashElement(_cashElement);
+//        _isWrightDataToCash = false;
+//
+//    }
+//}

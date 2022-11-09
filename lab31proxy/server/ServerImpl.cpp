@@ -161,7 +161,7 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
                     LOG_EVENT("http server logout with user");
                     _clientList.erase(it);
                     client->getBuffer()->setStatusBuf(StatusHttp::END_WORK);
-                    client->getBuffer()->checkErrorLogout();
+//                    client->getBuffer()->checkErrorLogout();
                     break;
                 }
             }
@@ -179,7 +179,7 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
             client->getPair()->setPair(NULL);
         }
         client->getBuffer()->setStatusBuf(StatusHttp::END_WORK);
-        client->getBuffer()->checkErrorLogout();
+//        client->getBuffer()->checkErrorLogout();
         delete client;
         return true;
     }
