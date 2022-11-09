@@ -80,7 +80,8 @@ void ServerImpl::handlingEvent() {
     bool isNeedUpdatePollSet = false;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         if ((*it)->getPollFd().revents & POLLIN) {
-            (*it)->setReventsZero();
+//            std::cout << i << " ";
+//            (*it)->setReventsZero();
             memset(buf, 0, BUF_SIZE);
             int countByteRead = (*it)->readBuf(buf);
             if (countByteRead == 0) {
@@ -109,20 +110,8 @@ void ServerImpl::handlingEvent() {
                     }
                 }
             }
-        } else if ((*it)->getTypeClient() == TypeClient::USER &&
-                   (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
-            isNeedUpdatePollSet = deleteClient(*it, &it);
-//            break;
-        } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
-                   (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
-            isNeedUpdatePollSet = deleteClient(*it, &it);
-//            break;
-        } else if ((*it)->getTypeClient() == TypeClient::USER &&
-                   (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
-                   !(*it)->getBuffer()->isReadyToSend()) {
-            isNeedUpdatePollSet = deleteClient(*it, &it);
-
-        } else if ((*it)->getPollFd().revents & POLLOUT) {
+        }
+        if ((*it)->getPollFd().revents & POLLOUT) {
 //            (*it)->setReventsZero();
 //            std::cout << (*it)->getTypeClient() << std::endl;
             if ((*it)->getBuffer()->isReadyToSend()) {
@@ -138,6 +127,21 @@ void ServerImpl::handlingEvent() {
             } else {
                 (*it)->setReventsZero();
             }
+        }
+
+        if ((*it)->getTypeClient() == TypeClient::USER &&
+                   (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
+            isNeedUpdatePollSet = deleteClient(*it, &it);
+//            break;
+        } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
+                   (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
+            isNeedUpdatePollSet = deleteClient(*it, &it);
+//            break;
+        } else if ((*it)->getTypeClient() == TypeClient::USER &&
+                   (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
+                   !(*it)->getBuffer()->isReadyToSend()) {
+            isNeedUpdatePollSet = deleteClient(*it, &it);
+
         }
     }
 
