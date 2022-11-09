@@ -89,6 +89,7 @@ void BufferImpl::wrightResponseHeading(char *buf) {
 }
 
 void BufferImpl::wrightResponseBody(char *buf) {
+    std::cout << "wrigth response bode start" << std::endl;
     int posEnd = 0;
     _isReadyToSend = true;
     if (_isHaveContentLengthresponse) {
@@ -108,9 +109,12 @@ void BufferImpl::wrightResponseBody(char *buf) {
         }
         LOG_EVENT("end body response read");
     }
-    if (_isWrightDataToCash) {
-        *(_cashElement->getCash()) += buf;
+    if (_cashElement != NULL) {
+        if (_isWrightDataToCash) {
+            *(_cashElement->getCash()) += buf;
+        }
     }
+    std::cout << "wrigth response bode end" << std::endl;
 }
 
 bool BufferImpl::isCashingData(ResultParseHeading resultParseHeading) {
