@@ -58,7 +58,8 @@ int main(int argc, char *argv[]) {
     }
 
     char buffer[BUFFER_SIZE] = {0};
-    while (read(sock, buffer, BUFFER_SIZE - 1) != 0) {
+    while (true) {
+        read(sock, buffer, BUFFER_SIZE - 1);
         fprintf(stderr, "%s", buffer);
         bzero(buffer, BUFFER_SIZE);
     }
