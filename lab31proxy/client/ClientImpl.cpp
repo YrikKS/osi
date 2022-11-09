@@ -16,6 +16,7 @@ void ClientImpl::sendBuf(const char *buf) {
 int ClientImpl::readBuf(char *buf) {
     int byte = read(_fd, buf, BUF_SIZE - 1);
     std::cout << strlen(buf) << " ws " << byte;
+    std::cout.flush();
     return byte;
 }
 
