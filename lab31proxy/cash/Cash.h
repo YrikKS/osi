@@ -16,6 +16,8 @@ namespace ProxyServer {
         virtual CashElement *findResponseInCash(std::string heading) = 0;
 
         virtual CashElement *addStringToCash(std::string request) = 0;
+
+        virtual void deleteCashElement(CashElement* cashElement) = 0;
     };
 }
 #endif //LAB31PROXY_CASH_H
