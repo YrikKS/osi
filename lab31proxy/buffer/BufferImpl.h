@@ -20,6 +20,8 @@ namespace ProxyServer {
 
         void readRequest(char *buf) override;
 
+        void readResponse(char *buf) override;
+
         const char *sendBuf() override;
 
         void proofSend(const char *buf) override;
@@ -38,11 +40,7 @@ namespace ProxyServer {
 
         ~BufferImpl() override;
 
-        CashElement* getCashElement() override;
-
-        bool isWrightInCash() override;
-
-        void cancelWrightInCash() override;
+        bool isSendEnd() override;
 
     private:
         StatusHttp _statusClient = StatusHttp::WRITE_REQUEST_HEADING;
@@ -56,17 +54,10 @@ namespace ProxyServer {
         int _lengthBody = 0;
         ResultParseHeading *_resultParseHeading = NULL;
         bool _isHaveContentLengthresponse = false;
-
         void parsHead();
-
         bool checkCash();
-
         bool isCashingData(ResultParseHeading resultParseHeading);
 
-        void wrightRequestHeading(char* buf);
-        void wrightRequestBody(char* buf);
-        void wrightResponseHeading(char* buf);
-        void wrightResponseBody(char* buf);
 
         CashElement *_cashElement = NULL;
         bool _isGetDataFromCash = false;
@@ -74,14 +65,6 @@ namespace ProxyServer {
         bool error = false;
         int bytesReadFromCash = 0;
         Cash *_cash;
-
-//        void wrightResponseHeading(char *buf);
-//
-//        void wrightResponseBody(char *buf);
-//
-//        void wrightRequestBody(char *buf);
-//
-//        void wrightRequestHeading(char *buf);
     };
 }
 

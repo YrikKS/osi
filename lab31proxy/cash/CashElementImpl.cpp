@@ -29,6 +29,5 @@ size_t CashElementImpl::getHash() {
 }
 
 CashElementImpl::~CashElementImpl() {
-    LOG_EVENT("Delete cash");
     _cash.clear();
 }
