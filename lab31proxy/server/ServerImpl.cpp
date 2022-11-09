@@ -76,7 +76,7 @@ ServerImpl::ServerImpl() {
 
 void ServerImpl::handlingEvent() {
     int i = 1;
-    char buf[1024] = {0};
+    char buf[BUF_SIZE] = {0};
     bool isNeedUpdatePollSet = false;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         if ((*it)->getPollFd().revents & POLLIN) {
