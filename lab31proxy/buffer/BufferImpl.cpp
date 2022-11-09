@@ -153,12 +153,12 @@ void BufferImpl::proofSend(const char *buf) {
         if (_statusHttpServer == StatusHttp::READ_REQUEST) {
             _statusClient = StatusHttp::READ_RESPONSE;
             _statusHttpServer = StatusHttp::WRITE_RESPONSE_HEADING;
+            _isReadyToSend = false;
+            _isEndSend = false;
         } else if (_statusClient == StatusHttp::READ_RESPONSE) {
             _statusClient = StatusHttp::END_WORK;
             _statusHttpServer = StatusHttp::END_WORK;
         }
-        _isReadyToSend = false;
-        _isEndSend = false;
     }
 }
 
@@ -180,6 +180,14 @@ void BufferImpl::setStatusBuf(StatusHttp statusHttp) {
 
 bool BufferImpl::isReadyToSend() {
     if (_isGetDataFromCash && !_isEndSend) {
+        CashElement *cashElement = _cash->findResponseInCash(_requestHeading);
+        if (cashElement == NULL) {
+            _isEndSend = true;
+            _buf.clear();
+            _buf += "cash error, try again";
+            _isReadyToSend = true;
+            return _isReadyToSend;
+        }
         std::string str = _cashElement->getCash()->substr(bytesReadFromCash);
         bytesReadFromCash += str.size();
         _buf += str;
@@ -248,9 +256,10 @@ bool BufferImpl::checkCash() {
     return false;
 }
 
-//void BufferImpl::checkErrorLogout() {
-//    if(_isWrightDataToCash && !_isEndSend && _statusHttpServer == StatusHttp::END_WORK) {
-//        _cash->deleteCashElement(_cashElement);
-//        _isGetDataFromCash = false;
-//    }
-//}
+void BufferImpl::checkErrorLogout() {
+    if (_isWrightDataToCash && !_isEndSend && _statusHttpServer == StatusHttp::END_WORK) {
+        _cash->deleteCashElement(_cashElement);
+        _isWrightDataToCash = false;
+
+    }
+}

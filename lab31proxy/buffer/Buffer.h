@@ -45,7 +45,7 @@ namespace ProxyServer {
 
         virtual bool isSendEnd() = 0;
 
-//        virtual void checkErrorLogout() = 0;
+        virtual void checkErrorLogout() = 0;
     };
 
 }
