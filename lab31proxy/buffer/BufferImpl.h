@@ -75,13 +75,13 @@ namespace ProxyServer {
         int bytesReadFromCash = 0;
         Cash *_cash;
 
-        void wrightResponseHeading(char *buf);
-
-        void wrightResponseBody(char *buf);
-
-        void wrightRequestBody(char *buf);
-
-        void wrightRequestHeading(char *buf);
+//        void wrightResponseHeading(char *buf);
+//
+//        void wrightResponseBody(char *buf);
+//
+//        void wrightRequestBody(char *buf);
+//
+//        void wrightRequestHeading(char *buf);
     };
 }
 
