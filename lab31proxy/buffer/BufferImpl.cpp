@@ -235,3 +235,5 @@ bool BufferImpl::checkCash() {
     }
     return false;
 }
+
+// socket reuse_add
