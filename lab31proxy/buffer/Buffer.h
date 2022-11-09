@@ -6,6 +6,7 @@
 #define LAB31PROXY_BUFFER_H
 
 #include "../parser/ResultParseHeading.h"
+#include "../cash/CashElement.h"
 
 namespace ProxyServer {
     typedef enum {
@@ -22,8 +23,6 @@ namespace ProxyServer {
     class Buffer {
     public:
         virtual void readRequest(char *buf) = 0;
-
-        virtual void readResponse(char *buf) = 0;
 
         virtual const char *sendBuf() = 0;
 
@@ -43,7 +42,11 @@ namespace ProxyServer {
 
         virtual ~Buffer() = default;
 
-        virtual bool isSendEnd() = 0;
+        virtual CashElement* getCashElement() = 0;
+
+        virtual bool isWrightInCash() = 0;
+
+        virtual void cancelWrightInCash() = 0;
     };
 
 }

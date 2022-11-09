@@ -39,7 +39,7 @@ void BufferImpl::wrightRequestHeading(char *buf) {
             _statusClient = StatusHttp::WRITE_REQUEST_BODY;
             _lengthBody = _resultParseHeading->getContentLength();
             _lengthBody -= _buf.size() - _requestHeading.size();
-            std::cout << "_lengthBody " << _lengthBody << std::endl;
+//            std::cout << "_lengthBody " << _lengthBody << std::endl;
             if (_lengthBody <= 0) {
                 _isEndSend = true;
             }
@@ -75,7 +75,7 @@ void BufferImpl::wrightResponseHeading(char *buf) {
         if (_isHaveContentLengthresponse) {
             _lengthBody = resultParseHeading.getContentLength();
             _lengthBody -= _buf.size() - responseHead.size();
-            std::cout << "_lengthBody " << _lengthBody << std::endl;
+//            std::cout << "_lengthBody " << _lengthBody << std::endl;
             if (_lengthBody <= 0) {
                 _isEndSend = true;
             }
@@ -122,9 +122,6 @@ bool BufferImpl::isCashingData(ResultParseHeading resultParseHeading) {
     return false;
 }
 
-void BufferImpl::readResponse(char *buf) {
-    _buf += std::string(buf);
-}
 
 const char *BufferImpl::sendBuf() {
     if (_buf.size() >= BUF_SIZE - 1) {
@@ -142,7 +139,6 @@ void BufferImpl::proofSend(const char *buf) {
     }
 
     if (_buf.empty() && _isEndSend) {
-//        _lengthBody = 0;
         if (_statusClient == READ_RESPONSE && error) { // TODO подумать как иначе
             _statusClient = StatusHttp::END_WORK;
             return;
@@ -199,10 +195,6 @@ BufferImpl::~BufferImpl() {
     }
 }
 
-bool BufferImpl::isSendEnd() {
-    return _isEndSend;
-}
-
 ResultParseHeading BufferImpl::getParseResult() {
     return *_resultParseHeading;
 }
@@ -247,4 +239,17 @@ bool BufferImpl::checkCash() {
         return true;
     }
     return false;
+}
+
+CashElement *BufferImpl::getCashElement() {
+    return _cashElement;
+}
+
+bool BufferImpl::isWrightInCash() {
+    return _isWrightDataToCash;
+}
+
+void BufferImpl::cancelWrightInCash() {
+    _isWrightDataToCash = false;
+    _cashElement = NULL;
 }

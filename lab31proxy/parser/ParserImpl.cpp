@@ -11,21 +11,12 @@ using namespace ProxyServer;
 ResultPars ParserImpl::findEndHeading(std::string buf, int *posEnd) {
     int resultFinding = buf.find("\r\n\r\n");
     if (resultFinding == std::string::npos) {
-//        resultFinding = buf.find("\n\n");
-//        if (resultFinding != std::string::npos) {
-//            *posEnd = resultFinding + 2;
-//            return ResultPars::END_HEADING;
-//        }
         *posEnd = -1;
         return ResultPars::NOTHING;
     } else {
         *posEnd = resultFinding + 4;
         return ResultPars::END_HEADING;
     }
-}
-
-TypeRequestAndResponse ParserImpl::parsingRequest(char *buf, char *host) {
-    return NOT_GET_REQUEST;
 }
 
 ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
@@ -40,26 +31,9 @@ ResultParseHeading *ParserImpl::parsingHeading(std::string heading) {
         result->setType(TypeRequestAndResponse::INVALID);
         LOG_ERROR("incorrect heading");
         throw ParseException("incorrect heading");
-        // TODO обработать ?
     }
 
     findContentLength(result, heading);
-//    int contentLength = heading.find("Content-Length: ");
-//    if (contentLength != std::string::npos) {
-//        int endContentLength = heading.find("\r\n", contentLength);
-//        if (endContentLength != std::string::npos) {
-//            contentLength += std::string("Content-Length: ").size();
-//            result->setContentLength(atoi(
-//                    heading.substr(contentLength, endContentLength - contentLength).c_str()));
-//            result->setHaveContentLength(true);
-//        }
-//    } else {
-////        if (result->getType() == TypeRequestAndResponse::GET_REQUEST) {
-////            result->setType(TypeRequestAndResponse::GET_REQUEST_NOT_CASH);
-////        }
-//        result->setHaveContentLength(false);
-//        result->setContentLength(0);
-//    }
 
     findHostAndPort(result, heading);
     return result;
@@ -72,7 +46,7 @@ ResultParseHeading ParserImpl::parsingResponseHeading(std::string heading) {
         result.setType(TypeRequestAndResponse::INVALID);
         result.setResponseWithError(true);
     } else {
-        result.setType(TypeRequestAndResponse::NORAL_RESPONSE);
+        result.setType(TypeRequestAndResponse::NORMAL_RESPONSE);
         result.setResponseWithError(false);
     }
     findContentLength(&result, heading);
@@ -117,10 +91,8 @@ void ParserImpl::findContentLength(ResultParseHeading* result, std::string buf) 
         if (resRegex.size() == 2) {
             result->setContentLength(atoi(resRegex[1].str().c_str()));
             result->setHaveContentLength(true);
-//            result->setType(TypeRequestAndResponse::NORAL_RESPONSE);
         }
     } else {
-        result->setHaveContentLength(false);
-//        result->setType(TypeRequestAndResponse::NOT_CASH_RESPONSE);
+        result->setHaveContentLength(false); // TODO во время сдачи мб поставить true?
     }
 }

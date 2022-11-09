@@ -6,7 +6,7 @@
 #define LAB31PROXY_CASHELEMENTIMPL_H
 
 #include "CashElement.h"
-
+#include "../logger/Logger.h"
 
 namespace ProxyServer {
     class CashElementImpl : public CashElement {

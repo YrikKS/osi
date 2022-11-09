@@ -16,7 +16,7 @@ void ServerImpl::startServer() {
         if (code == -1) {
             LOG_ERROR_WITH_ERRNO("poll error");
             perror("poll error");
-            //TODO exit
+            return;
         } else if (code == 0) {
             //??
         } else {
@@ -27,7 +27,6 @@ void ServerImpl::startServer() {
                     _clientList.push_back(_serverSocket->acceptNewClient(_cash));
                     configuratePollArr();
                     LOG_EVENT("add new client");
-                    //TODO client connect: create client + add to _pollSet
                 } catch (ConnectException *exception) {
                     std::cerr << exception->what() << std::endl;
                     LOG_ERROR("exception in connect");
@@ -62,7 +61,6 @@ void ServerImpl::configuratePollArr() {
         _pollSet[i].fd = pollElement.fd;
         _pollSet[i].events = pollElement.events;
         _pollSet[i].revents = pollElement.revents;
-//        (*it)->setPollElement(&(_pollSet[i]));
     }
 }
 
@@ -90,7 +88,6 @@ void ServerImpl::handlingEvent() {
                     (*it)->getBuffer()->readRequest(buf);
                 } catch (ParseException ex) {
                     LOG_ERROR("send error and disconnect");
-
                 }
                 if ((*it)->getBuffer()->isReadyConnectHttpServer()) {
                     try {
@@ -112,11 +109,11 @@ void ServerImpl::handlingEvent() {
         } else if ((*it)->getTypeClient() == TypeClient::USER &&
                    (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
             isNeedUpdatePollSet = deleteClient(*it, &it);
-//            break;
+
         } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                    (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
             isNeedUpdatePollSet = deleteClient(*it, &it);
-//            break;
+
         } else if ((*it)->getTypeClient() == TypeClient::USER &&
                    (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
                    !(*it)->getBuffer()->isReadyToSend()) {
@@ -124,7 +121,7 @@ void ServerImpl::handlingEvent() {
 
         } else if ((*it)->getPollFd().revents & POLLOUT) {
             (*it)->setReventsZero();
-//            std::cout << (*it)->getTypeClient() << std::endl;
+
             if ((*it)->getBuffer()->isReadyToSend()) {
                 if (((*it)->getTypeClient() == TypeClient::HTTP_SERVER
                      && (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::READ_REQUEST) ||
@@ -167,9 +164,9 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
             delete client->getPair();
         }
         (*iterator) = _clientList.erase((*iterator));
+
         delete client->getBuffer();
         delete client;
-//        updatePollArr(); // не уверен
         return true;
     } else if (client->getTypeClient() == TypeClient::HTTP_SERVER) {
         LOG_EVENT("http server logout");
@@ -183,12 +180,3 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
     }
     return false;
 }
-
-//void ServerImpl::updatePollArr() {
-//    int i = 1;
-//    for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-//        _pollSet[i].fd = (*it)->getFdClient();
-//        _pollSet[i].events = POLLIN | POLLOUT;
-//        (*it)->setPollElement(&(_pollSet[i]));
-//    }
-//}
