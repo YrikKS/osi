@@ -58,9 +58,11 @@ int main(int argc, char *argv[]) {
     }
 
     char buffer[BUFFER_SIZE] = {0};
-    while (true) {
-        read(sock, buffer, BUFFER_SIZE - 1);
-        fprintf(stderr, "%s", buffer);
+    while ( read(sock, buffer, BUFFER_SIZE - 1) != 0) {
+        for(int i = 0; i < strlen(buffer); i++) {
+            std::cout << buffer[i] << " = " << (int)buffer[i] << "   ";
+        }
+//        fprintf(stderr, "%s", buffer);
         bzero(buffer, BUFFER_SIZE);
     }
     return 0;
