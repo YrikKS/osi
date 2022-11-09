@@ -65,7 +65,8 @@ int main(int argc, char *argv[]) {
         int pos = buf.find("\r\n\r\n");
         std::cout << buf.size() << std::endl;
         for (int j = pos; j < i; j++) {
-            std::cout << std::bitset<8>(buffer[j]).to_string() << "   ";
+            std::cout << j << std::endl;
+            std::cout << std::bitset<8>(buffer[j])<< std::endl;
         }
 //        fprintf(stderr, "%s", buffer);
         bzero(buffer, BUFFER_SIZE);
