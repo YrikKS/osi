@@ -9,4 +9,4 @@ add_executable(withUrl withUrl.cpp)
 
 add_executable(server server.cpp)
 
-add_executable(writer writer.cpp)
+add_executable(writer writer.cpp BinaryString.cpp)

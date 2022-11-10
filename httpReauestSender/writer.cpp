@@ -16,6 +16,8 @@
 #include <termios.h>
 #include <sys/stat.h>
 
+#include "BinaryString.h"
+
 #define BUFFER_SIZE 1024
 #define COUNT_BUFFER 330
 #define HTTP_PORT 80
@@ -59,20 +61,25 @@ int main(int argc, char *argv[]) {
             write(sock, str.data(), str.size());
         }
     }
-    char buffer[10000] = {0};
-    while (true) {
-        int i = read(sock, buffer, 10000 - 1);
-        std::cout << i << std::endl;
-        std::string buf = buffer;
-        int pos = buf.find("\r\n\r\n") + 2;
-        std::cout << buf.size() << std::endl;
-        for (int j = pos; j < i; j++) {
+    char buffer[1000] = {0};
+//    BinaryString binaryString(buffer, 1000);
+    int i = 1;
+    while (i > 0) {
+        int i = read(sock, buffer, 1000);
+        BinaryString binaryString(buffer, i);
+//        std::cout << i << std::endl;
+//        std::string buf = buffer;
+//        int pos = buf.find("\r\n\r\n") + 2;
+//        std::cout << buf.size() << std::endl;
+//        for (int j = pos; j < i; j++) {
 //            std::cout << j << std::endl;
-            std::cout << std::bitset<8>(buffer[j])<< std::endl;
-            std::cout.flush();
-        }
+//            std::cout << std::bitset<8>(buffer[j])<< std::endl;
+//            std::cout.flush();
+        binaryString.printer();
 //        fprintf(stderr, "%s", buffer);
-        bzero(buffer, BUFFER_SIZE);
+        binaryString.clearData();
+//        bzero(buffer, BUFFER_SIZE);
     }
+
     return 0;
 }
