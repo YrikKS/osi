@@ -9,7 +9,7 @@ namespace ProxyServer {
     static const int TIME_OUT_POLL = 10000;
     static const int PORT_SERVER_SOCKET = 8099; //???
     static const int MAX_COUNT_CONNECTIONS = 1024;
-    static const int BUF_SIZE = 10000;
+    static const int BUF_SIZE = 1024;
     static int DEFAULT_PORT = 80;
     static int COUNT_CASH_ELEMENT = 10000;
     static int SIZE_EACH_CASH_ELEMENT = 1024 * 1024;

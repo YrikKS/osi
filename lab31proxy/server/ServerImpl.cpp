@@ -73,7 +73,7 @@ ServerImpl::ServerImpl() {
     _serverSocket->connectSocket();
     _cash = new CashImpl();
     char data[BUF_SIZE] = {0};
-    _binaryString = new BinaryString(data, 1024);
+    _binaryString = new BinaryString(data, BUF_SIZE);
 }
 
 void ServerImpl::handlingEvent() {
