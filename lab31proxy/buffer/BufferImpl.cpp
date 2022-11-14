@@ -8,20 +8,13 @@
 using namespace ProxyServer;
 
 void BufferImpl::readFromSocket(BinaryString *binaryString) {
-//    std::cout << "buf = " << buf << std::endl;
     _buf.add(*binaryString);
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
         int posEndHeading = 0;
         if (ParserImpl::findEndHeading(_buf.toSting(), &posEndHeading) == ResultPars::END_HEADING) {
             _requestHeading = _buf.subBinaryString(0, posEndHeading).toSting(); // так как не бинарные ресурсы
-//            std::cout << _requestHeading << std::endl;
             parsHead();
-            if (_resultParseHeading->getType() == TypeRequestAndResponse::GET_REQUEST) {
-                if (checkCash())
-                    return;
-            }
 
-//            parsHead();
             _isReadyConnectHttpServer = true;
             if (_resultParseHeading->getType() == GET_REQUEST) {
                 _isReadyToSend = true;
@@ -31,7 +24,6 @@ void BufferImpl::readFromSocket(BinaryString *binaryString) {
                 _statusClient = StatusHttp::WRITE_REQUEST_BODY;
                 _lengthBody = _resultParseHeading->getContentLength();
                 _lengthBody -= _buf.getLength() - _requestHeading.size();
-//                std::cout << "_lengthBody " << _lengthBody << std::endl;
                 if (_lengthBody <= 0) {
                     _isEndSend = true;
                 }
@@ -40,30 +32,15 @@ void BufferImpl::readFromSocket(BinaryString *binaryString) {
     } else if (_statusClient == StatusHttp::WRITE_REQUEST_BODY) {
         _isReadyToSend = true;
         _lengthBody -= binaryString->getLength();
-//        std::cout << "_lengthBody " << _lengthBody << std::endl;
         if (_lengthBody <= 0) {
             _isEndSend = true;
         }
     } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_HEADING) {
-//        std::cout << "try read body response" << std::endl;
-        std::cout.flush();
         int posEndHeading = 0;
         if (ParserImpl::findEndHeading(_buf.toSting(), &posEndHeading) == ResultPars::END_HEADING) {
             std::string responseHead = _buf.subBinaryString(0, posEndHeading).toSting();
-//            std::cout << "parsing heading!" << std::endl;
             ResultParseHeading resultParseHeading = ParserImpl::parsingResponseHeading(responseHead);
-//            std::cout << "parsing heading!" << std::endl;
-            if (isCashingData(resultParseHeading)) {
-                _cashElement = _cash->addStringToCash(_requestHeading);
-                if (_cashElement == NULL) {
-                    _isWrightDataToCash = false;
-                } else {
-                    LOG_EVENT("Add response to cash");
-                    _isWrightDataToCash = true;
-                    _cashElement->getCash()->add(_buf); // TODO заменить
-                    _cashElement->addCountUsers();
-                }
-            }
+
 
             _isReadyToSend = true;
             _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
@@ -90,34 +67,16 @@ void BufferImpl::readFromSocket(BinaryString *binaryString) {
             _lengthBody -= binaryString->getLength();
             if (_lengthBody <= 0) {
                 _isEndSend = true;
-                if (_cashElement != NULL) {
-                    _cashElement->setIsCashEnd();
-                }
                 LOG_EVENT("end body response read");
             }
         } else {
             if (ParserImpl::findEndBody(_buf.toSting(), &posEnd) == ResultPars::END_BODY) {
                 _isEndSend = true;
-                if (_cashElement != NULL) {
-                    _cashElement->setIsCashEnd();
-                }
                 LOG_EVENT("end body response read");
             }
         }
-        if (_isWrightDataToCash) {
-            (_cashElement->getCash())->add(*binaryString);
-        }
     }
 // TODO parse RESPONSE RESULT heading
-}
-
-bool BufferImpl::isCashingData(ResultParseHeading resultParseHeading) {
-    if (!resultParseHeading.isResponseWithError() && (
-            (_buf.getLength() + resultParseHeading.getContentLength()) < SIZE_EACH_CASH_ELEMENT) &&
-        _resultParseHeading->getType() == TypeRequestAndResponse::GET_REQUEST &&
-        resultParseHeading.isHaveContentLength())
-        return true;
-    return false;
 }
 
 //void BufferImpl::readResponse(char *buf) {
@@ -147,10 +106,10 @@ void BufferImpl::proofSend(BinaryString *binaryString) {
             _statusClient = StatusHttp::END_WORK;
             return;
         }
-        if (_statusClient == READ_RESPONSE && _isGetDataFromCash) { // TODO подумать как иначе
-            _statusClient = StatusHttp::END_WORK;
-            return;
-        }
+//        if (_statusClient == READ_RESPONSE && _isGetDataFromCash) { // TODO подумать как иначе
+//            _statusClient = StatusHttp::END_WORK;
+//            return;
+//        }
 
         if (_statusHttpServer == StatusHttp::READ_REQUEST) {
             _statusClient = StatusHttp::READ_RESPONSE;
@@ -181,19 +140,6 @@ void BufferImpl::setStatusBuf(StatusHttp statusHttp) {
 }
 
 bool BufferImpl::isReadyToSend() {
-    if (_isGetDataFromCash && !_isEndSend) {
-        BinaryString str = _cashElement->getCash()->subBinaryString(bytesReadFromCash,
-                                                                    _cashElement->getCash()->getLength());
-        if (str.getLength() > 0) {
-//            std::cout <<
-            bytesReadFromCash += str.getLength();
-            _buf.add(str);
-            _isReadyToSend = true;
-        }
-        if (_cashElement->isCashEnd()) {
-            _isEndSend = true;
-        }
-    }
     return _isReadyToSend;
 }
 
@@ -239,30 +185,5 @@ void BufferImpl::parsHead() {
     }
 }
 
-bool BufferImpl::checkCash() {
-    _cashElement = _cash->findResponseInCash(_requestHeading);
-    if (_cashElement != NULL) {
-        std::cout << "find in cash " << std::endl;
-        _isGetDataFromCash = true;
-        _buf.deleteData();
-//        _buf.clearData();
-        _buf.copyAndCreateData(*_cashElement->getCash());
-        _statusClient = StatusHttp::READ_RESPONSE;
-        _cashElement->addCountUsers();
-        if (_cashElement->isCashEnd()) {
-            _isEndSend = true;
-        } else {
-            _isEndSend = false;
-            bytesReadFromCash = _cashElement->getCash()->getLength();
-        }
-        _isReadyToSend = true;
-        return true;
-    }
-    return false;
-}
-
-CashElement *BufferImpl::getCashElement() {
-    return _cashElement;
-}
 
 // socket reuse_add

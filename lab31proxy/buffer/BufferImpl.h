@@ -10,7 +10,6 @@
 #include "../parser/ParserTypeRequest.h"
 #include "../parser/ParserImpl.h"
 #include "../Constants.h"
-#include "../cash/Cash.h"
 #include <string.h>
 #include <bitset>
 
@@ -19,13 +18,13 @@ namespace ProxyServer {
     public:
         BufferImpl(Cash *cash);
 
-        void readFromSocket(BinaryString* binaryString) override;
+        void readFromSocket(BinaryString *binaryString) override;
 
 //        void readResponse(char *buf) override;
 
-        void sendBuf(BinaryString* binaryString) override;
+        void sendBuf(BinaryString *binaryString) override;
 
-        void proofSend(BinaryString* binaryString) override;
+        void proofSend(BinaryString *binaryString) override;
 
         bool isReadyConnectHttpServer() override;
 
@@ -43,8 +42,6 @@ namespace ProxyServer {
 
         bool isSendEnd() override;
 
-        CashElement *getCashElement() override;
-
     private:
         StatusHttp _statusClient = StatusHttp::WRITE_REQUEST_HEADING;
         StatusHttp _statusHttpServer = StatusHttp::READ_REQUEST;
@@ -58,16 +55,10 @@ namespace ProxyServer {
         int _lengthBody = 0;
         ResultParseHeading *_resultParseHeading = NULL;
         bool _isHaveContentLengthresponse = false;
+
         void parsHead();
-        bool checkCash();
-        bool isCashingData(ResultParseHeading resultParseHeading);
 
-
-        CashElement *_cashElement = NULL;
-        bool _isGetDataFromCash = false;
-        bool _isWrightDataToCash = false;
         bool error = false;
-        int bytesReadFromCash = 0;
         Cash *_cash;
     };
 }

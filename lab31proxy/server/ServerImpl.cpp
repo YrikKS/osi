@@ -174,15 +174,9 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
                     break;
                 }
             }
-            if(client->getBuffer()->getCashElement() != NULL) {
-                client->getBuffer()->getCashElement()->minusCountUsers();
-            }
             delete client->getPair();
         }
         (*iterator) = _clientList.erase((*iterator));
-        if(client->getBuffer()->getCashElement() != NULL) {
-            client->getBuffer()->getCashElement()->minusCountUsers();
-        }
         delete client->getBuffer();
         delete client;
 //        updatePollArr(); // не уверен
@@ -190,9 +184,6 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
     } else if (client->getTypeClient() == TypeClient::HTTP_SERVER) {
         LOG_EVENT("http server logout");
         (*iterator) = _clientList.erase((*iterator));
-        if(client->getBuffer()->getCashElement() != NULL) {
-            client->getBuffer()->getCashElement()->minusCountUsers();
-        }
         if (client->getPair() != NULL) {
             client->getPair()->setPair(NULL);
         }
