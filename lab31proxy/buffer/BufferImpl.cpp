@@ -45,6 +45,7 @@ void BufferImpl::readFromSocket(BinaryString *binaryString) {
             _isEndSend = true;
         }
     } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_HEADING) {
+        std::cout << "try read body response" << std::endl;
         int posEndHeading = 0;
         if (ParserImpl::findEndHeading(_buf.toSting(), &posEndHeading) == ResultPars::END_HEADING) {
             std::string responseHead = _buf.subBinaryString(0, posEndHeading).toSting();
