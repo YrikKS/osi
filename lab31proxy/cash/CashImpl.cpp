@@ -24,6 +24,7 @@ ProxyServer::CashElement *ProxyServer::CashImpl::addStringToCash(std::string req
         if (_listCash.size() > 1) {
 //            delete *_listCash.begin();
 //            _listCash.pop_front();
+            std::cout << "need del" << std::endl;
             bool isDel = false;
             for (auto it = _listCash.begin(); it != _listCash.end(); it++) {
                 if ((*it)->getCountUsers() <= 0) {
