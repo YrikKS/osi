@@ -87,7 +87,7 @@ void ServerImpl::handlingEvent() {
                 isNeedUpdatePollSet = deleteClient(*it, &it);
             } else {
                 try {
-                    (*it)->getBuffer()->readRequest(_binaryString);
+                    (*it)->getBuffer()->readFromSocket(_binaryString);
                 } catch (ParseException ex) {
                     LOG_ERROR("send error and disconnect");
 
