@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
 //    BinaryString binaryString(buffer, 1000);
     int i = 1;
     while (i > 0) {
-        int i = read(sock, buffer, 1000);
+        int i = read(sock, buffer, 999);
         BinaryString binaryString(buffer, i);
 //        std::cout << i << std::endl;
 //        std::string buf = buffer;
