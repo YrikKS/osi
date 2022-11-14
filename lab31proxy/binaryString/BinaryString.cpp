@@ -70,17 +70,32 @@ BinaryString BinaryString::subBinaryString(int positionStart, int positionEnd) {
 
 BinaryString operator+(BinaryString &other1, BinaryString &other2) {
     int size = other1.getLength() + other2.getLength();
-    char* buf = new char[size];
+    char *buf = new char[size];
 //    _binaryString.data = new char[dataSize];
     for (int i = 0; i < other1.getLength(); i++) {
         buf[i] = other1.getData()[i];
     }
     for (int i = 0; i < other2.getLength(); i++) {
-       buf[i + other1.getLength()] = other2.getData()[i];
+        buf[i + other1.getLength()] = other2.getData()[i];
     }
     BinaryString binaryString(buf, size);
     delete[] buf;
     return binaryString;
+}
+
+
+void BinaryString::add(BinaryString binaryString) {
+    int newSize = dataSize + binaryString.dataSize;
+    char *newData = new char[newSize];
+    for (int i = 0; i < dataSize; i++) {
+        newData[i] = data[i];
+    }
+    for (int i = 0; i < binaryString.getLength(); i++) {
+        newData[i + dataSize] = binaryString.getData()[i];
+    }
+    delete[] data;
+    data = newData;
+    dataSize = newSize;
 }
 
 BinaryString &BinaryString::operator=(const BinaryString &other) {
@@ -124,3 +139,4 @@ void BinaryString::deleteData() {
         dataSize = -1;
     }
 }
+

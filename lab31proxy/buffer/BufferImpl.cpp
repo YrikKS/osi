@@ -9,7 +9,7 @@ using namespace ProxyServer;
 
 void BufferImpl::readFromSocket(BinaryString *binaryString) {
 //    std::cout << "buf = " << buf << std::endl;
-    _buf = _buf + (*binaryString);
+    _buf.add(*binaryString);
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
         int posEndHeading = 0;
         if (ParserImpl::findEndHeading(_buf.toSting(), &posEndHeading) == ResultPars::END_HEADING) {
@@ -210,8 +210,7 @@ void BufferImpl::parsHead() {
         std::cerr << ex.what() << std::endl;
         _buf.deleteData();
         char data[] = "incorrect heading\r\n";
-        BinaryString binaryStringError(data, std::strlen(data));
-        _buf = _buf + binaryStringError;
+        _buf.add(BinaryString(data, std::strlen(data)));
         _statusClient = StatusHttp::READ_RESPONSE;
         _isReadyToSend = true;
         _isEndSend = true;
