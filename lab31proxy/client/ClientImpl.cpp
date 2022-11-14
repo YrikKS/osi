@@ -11,8 +11,8 @@ int ClientImpl::getFdClient() {
 
 void ClientImpl::sendBuf(BinaryString* buf) {
     write(_fd, buf->getData(), buf->getLength());
-    std::cout << "buf prinf:" << std::endl;
-    buf->printer();
+//    std::cout << "buf prinf:" << std::endl;
+//    buf->printer();
 }
 
 void ClientImpl::readBuf(BinaryString* buf) { // передать пустой буффер размером BUF_SIZE!
