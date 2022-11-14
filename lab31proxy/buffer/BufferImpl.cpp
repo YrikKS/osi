@@ -213,7 +213,8 @@ void BufferImpl::parsHead() {
         std::cout << "normal parse" << std::endl;
     } catch (ParseException ex) {
         std::cerr << ex.what() << std::endl;
-        _buf.deleteData();
+//        _buf.deleteData();
+        _buf.clearData();
         char data[] = "incorrect heading\r\n";
         _buf.add(BinaryString(data, std::strlen(data)));
         _statusClient = StatusHttp::READ_RESPONSE;
