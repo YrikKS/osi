@@ -122,6 +122,7 @@ void BinaryString::printer() {
 void BinaryString::clearData() {
     for (int i = 0; i < dataSize; i++)
         data[i] = 0;
+    dataSize = 0;
 }
 
 void BinaryString::copyData(BinaryString other) {
