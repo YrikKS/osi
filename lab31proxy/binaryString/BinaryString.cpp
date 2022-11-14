@@ -68,18 +68,18 @@ BinaryString BinaryString::subBinaryString(int positionStart, int positionEnd) {
     return binaryString;
 }
 
-BinaryString operator+(const BinaryString &other1, const BinaryString &other2) {
-    BinaryString binaryString;
-    binaryString.dataSize = other1.dataSize + other2.dataSize;
-    binaryString.data = new char[binaryString.dataSize];
+BinaryString operator+(BinaryString other1, BinaryString other2) {
+    int size = other1.getLength() + other2.getLength();
+    char* buf = new char[size];
 //    _binaryString.data = new char[dataSize];
-    for (int i = 0; i < other1.dataSize; i++) {
-        binaryString.data[i] = other1.data[i];
+    for (int i = 0; i < other1.getLength(); i++) {
+        buf[i] = other1.getData()[i];
     }
-    for (int i = 0; i < other2.dataSize; i++) {
-        binaryString.data[i + other1.dataSize] = other2.data[i];
+    for (int i = 0; i < other2.getLength(); i++) {
+       buf[i + other1.getLength()] = other2.getData()[i];
     }
-
+    BinaryString binaryString(buf, size);
+    delete[] buf;
     return binaryString;
 }
 
