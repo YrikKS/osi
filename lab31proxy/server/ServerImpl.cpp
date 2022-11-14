@@ -84,6 +84,7 @@ void ServerImpl::handlingEvent() {
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
             std::cout << "read " << (*it)->getTypeClient() << std::endl;
+            std::cout.flush();
             (*it)->readBuf(_binaryString);
             std::cout << "read " << (*it)->getTypeClient() << std::endl;
             std::cout.flush();
