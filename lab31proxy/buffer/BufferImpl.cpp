@@ -230,7 +230,8 @@ bool BufferImpl::checkCash() {
     _cashElement = _cash->findResponseInCash(_requestHeading);
     if (_cashElement != NULL) {
         _isGetDataFromCash = true;
-        _buf.deleteData();
+//        _buf.deleteData();
+//        _buf.clearData();
 //        _buf = *_cashElement->getCash();
         _statusClient = StatusHttp::READ_RESPONSE;
         if (_cashElement->isCashEnd()) {

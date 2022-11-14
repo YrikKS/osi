@@ -11,12 +11,15 @@ int ClientImpl::getFdClient() {
 
 void ClientImpl::sendBuf(BinaryString* buf) {
     write(_fd, buf->getData(), buf->getLength());
+    std::cout << "buf prinf:" << std::endl;
+    buf->printer();
 }
 
 void ClientImpl::readBuf(BinaryString* buf) { // передать пустой буффер размером BUF_SIZE!
     char readBuf[BUF_SIZE] = {0};
     int byte = read(_fd, readBuf, BUF_SIZE - 1);
     buf->setBinaryString(readBuf, byte);
+    std::cout << "buf read:" << std::endl;
 //    buf->printer();
 //    std::cout << strlen(buf) << " ws " << byte << std::endl;
 //    std::cout.flush();
