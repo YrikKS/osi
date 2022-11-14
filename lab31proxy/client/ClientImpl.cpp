@@ -11,7 +11,7 @@ int ClientImpl::getFdClient() {
 
 void ClientImpl::sendBuf(BinaryString* buf) {
     write(_fd, buf->getData(), buf->getLength()); // Chek!?
-    std::cout << "buf prinf:" << std::endl;
+//    std::cout << "buf prinf:" << std::endl;
 //    buf->printer();
 }
 

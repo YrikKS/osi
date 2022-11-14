@@ -56,6 +56,14 @@ namespace ProxyServer {
         ResultParseHeading *_resultParseHeading = NULL;
         bool _isHaveContentLengthresponse = false;
 
+        void wrightRequestHeading(BinaryString *binaryString);
+
+        void wrightRequestBody(BinaryString *binaryString);
+
+        void wrightResponseHeading(BinaryString *binaryString);
+
+        void wrightResponseBody(BinaryString *binaryString);
+
         void parsHead();
 
         bool error = false;

@@ -10,78 +10,91 @@ using namespace ProxyServer;
 void BufferImpl::readFromSocket(BinaryString *binaryString) {
     _buf.add(*binaryString);
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
-        int posEndHeading = 0;
-        if (ParserImpl::findEndHeading(_buf.toSting(), &posEndHeading) == ResultPars::END_HEADING) {
-            _requestHeading = _buf.subBinaryString(0, posEndHeading).toSting(); // так как не бинарные ресурсы
-            parsHead();
-
-            _isReadyConnectHttpServer = true;
-            if (_resultParseHeading->getType() == GET_REQUEST) {
-                _isReadyToSend = true;
-                _isEndSend = true;
-            } else {
-                _isReadyToSend = true;
-                _statusClient = StatusHttp::WRITE_REQUEST_BODY;
-                _lengthBody = _resultParseHeading->getContentLength();
-                _lengthBody -= _buf.getLength() - _requestHeading.size();
-                if (_lengthBody <= 0) {
-                    _isEndSend = true;
-                }
-            }
-        }
+        wrightRequestHeading(binaryString);
     } else if (_statusClient == StatusHttp::WRITE_REQUEST_BODY) {
-        _isReadyToSend = true;
-        _lengthBody -= binaryString->getLength();
-        if (_lengthBody <= 0) {
-            _isEndSend = true;
-        }
+        wrightRequestBody(binaryString);
     } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_HEADING) {
-        int posEndHeading = 0;
-        if (ParserImpl::findEndHeading(_buf.toSting(), &posEndHeading) == ResultPars::END_HEADING) {
-            std::string responseHead = _buf.subBinaryString(0, posEndHeading).toSting();
-            ResultParseHeading resultParseHeading = ParserImpl::parsingResponseHeading(responseHead);
-
-
-            _isReadyToSend = true;
-            _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
-            _isHaveContentLengthresponse = resultParseHeading.isHaveContentLength();
-            if (_isHaveContentLengthresponse) {
-                _lengthBody = resultParseHeading.getContentLength();
-                _lengthBody -= _buf.getLength() - responseHead.size();
-
-//                std::cout << "_lengthBody " << _lengthBody << std::endl;
-                if (_lengthBody <= 0) {
-                    _isEndSend = true;
-                }
-            } else {
-                int posEnd = 0;
-                if (ParserImpl::findEndBody(_buf.toSting(), &posEnd) == ResultPars::END_BODY) {
-                    _isEndSend = true;
-                }
-            }
-        }
+        wrightResponseHeading(binaryString);
     } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_BODY) {
-        int posEnd = 0;
-        _isReadyToSend = true;
-        if (_isHaveContentLengthresponse) {
-            _lengthBody -= binaryString->getLength();
-            if (_lengthBody <= 0) {
-                _isEndSend = true;
-                LOG_EVENT("end body response read");
-            }
-        } else {
-            if (ParserImpl::findEndBody(_buf.toSting(), &posEnd) == ResultPars::END_BODY) {
-                _isEndSend = true;
-                LOG_EVENT("end body response read");
-            }
-        }
+        wrightResponseBody(binaryString);
     }
 // TODO parse RESPONSE RESULT heading
 }
 
-//void BufferImpl::readResponse(char *buf) {
-//    _buf += std::string(buf);
-//}
+void BufferImpl::wrightRequestHeading(BinaryString *binaryString) {
+    int posEndHeading = 0;
+    if (ParserImpl::findEndHeading(_buf.toSting(), &posEndHeading) == ResultPars::END_HEADING) {
+        _requestHeading = _buf.subBinaryString(0, posEndHeading).toSting(); // так как не бинарные ресурсы
+        parsHead();
+
+        _isReadyConnectHttpServer = true;
+        if (_resultParseHeading->getType() == GET_REQUEST) {
+            _isReadyToSend = true;
+            _isEndSend = true;
+        } else {
+            _isReadyToSend = true;
+            _statusClient = StatusHttp::WRITE_REQUEST_BODY;
+            _lengthBody = _resultParseHeading->getContentLength();
+            _lengthBody -= _buf.getLength() - _requestHeading.size();
+            if (_lengthBody <= 0) {
+                _isEndSend = true;
+            }
+        }
+    }
+}
+
+void BufferImpl::wrightRequestBody(BinaryString *binaryString) {
+    _isReadyToSend = true;
+    _lengthBody -= binaryString->getLength();
+    if (_lengthBody <= 0) {
+        _isEndSend = true;
+    }
+}
+
+void BufferImpl::wrightResponseHeading(BinaryString *binaryString) {
+    int posEndHeading = 0;
+    if (ParserImpl::findEndHeading(_buf.toSting(), &posEndHeading) == ResultPars::END_HEADING) {
+        std::string responseHead = _buf.subBinaryString(0, posEndHeading).toSting();
+        ResultParseHeading resultParseHeading = ParserImpl::parsingResponseHeading(responseHead);
+
+
+        _isReadyToSend = true;
+        _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
+        _isHaveContentLengthresponse = resultParseHeading.isHaveContentLength();
+        if (_isHaveContentLengthresponse) {
+            _lengthBody = resultParseHeading.getContentLength();
+            _lengthBody -= _buf.getLength() - responseHead.size();
+
+//                std::cout << "_lengthBody " << _lengthBody << std::endl;
+            if (_lengthBody <= 0) {
+                _isEndSend = true;
+            }
+        } else {
+            int posEnd = 0;
+            if (ParserImpl::findEndBody(_buf.toSting(), &posEnd) == ResultPars::END_BODY) {
+                _isEndSend = true;
+            }
+        }
+    }
+}
+
+void BufferImpl::wrightResponseBody(BinaryString *binaryString) {
+    int posEnd = 0;
+    _isReadyToSend = true;
+    if (_isHaveContentLengthresponse) {
+        _lengthBody -= binaryString->getLength();
+        if (_lengthBody <= 0) {
+            _isEndSend = true;
+            LOG_EVENT("end body response read");
+        }
+    } else {
+        if (ParserImpl::findEndBody(_buf.toSting(), &posEnd) == ResultPars::END_BODY) {
+            _isEndSend = true;
+            LOG_EVENT("end body response read");
+        }
+    }
+}
+
 
 void BufferImpl::sendBuf(BinaryString *binaryString) {
     if (_buf.getLength() >= BUF_SIZE - 1) {
@@ -89,19 +102,15 @@ void BufferImpl::sendBuf(BinaryString *binaryString) {
     } else {
         binaryString->copyData(_buf);
     }
-//    return _sendingString.c_str();
 }
 
 void BufferImpl::proofSend(BinaryString *binaryString) {
     _buf = _buf.subBinaryString(binaryString->getLength(), _buf.getLength());
-//    std::cout << _buf.getLength() << std::endl;
     if (_buf.getLength() <= 0 && !_isEndSend) {
         _isReadyToSend = false;
     }
 
     if (_buf.getLength() <= 0 && _isEndSend) {
-//        _lengthBody = 0;
-//        std::cout << "!! end BODY" << std::endl;
         if (_statusClient == READ_RESPONSE && error) { // TODO подумать как иначе
             _statusClient = StatusHttp::END_WORK;
             return;
@@ -184,6 +193,7 @@ void BufferImpl::parsHead() {
         throw ParseException("incorrect heading");
     }
 }
+
 
 
 // socket reuse_add
