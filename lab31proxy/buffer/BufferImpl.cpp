@@ -130,6 +130,7 @@ void BufferImpl::sendBuf(BinaryString *binaryString) {
 
 void BufferImpl::proofSend(BinaryString *binaryString) {
     _buf = _buf.subBinaryString(binaryString->getLength(), _buf.getLength());
+    std::cout << _buf.getLength() << std::endl;
     if (_buf.getLength() <= 0 && !_isEndSend) {
         _isReadyToSend = false;
     }
@@ -179,6 +180,7 @@ bool BufferImpl::isReadyToSend() {
         BinaryString str = _cashElement->getCash()->subBinaryString(bytesReadFromCash,
                                                                     _cashElement->getCash()->getLength());
         if (str.getLength() > 0) {
+//            std::cout <<
             bytesReadFromCash += str.getLength();
             _buf.add(str);
             _isReadyToSend = true;
