@@ -5,6 +5,8 @@
 #include <iostream>
 #include "BinaryString.h"
 
+using namespace ProxyServer;
+
 BinaryString::BinaryString() {
     data = NULL;
     dataSize = 0;

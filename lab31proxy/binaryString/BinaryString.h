@@ -9,40 +9,41 @@
 #include <cstring>
 #include <cctype>
 
-class BinaryString {
-public:
-    BinaryString();
+namespace ProxyServer {
+    class BinaryString {
+    public:
+        BinaryString();
 
-    BinaryString(char *otherData, int otherLength);
+        BinaryString(char *otherData, int otherLength);
 
-    void setBinaryString(char *otherData, int otherLength);
+        void setBinaryString(char *otherData, int otherLength);
 
-    void deleteData();
+        void deleteData();
 
-    BinaryString(BinaryString const &other);
+        BinaryString(BinaryString const &other);
 
-    BinaryString subBinaryString(int positionStart, int positionEnd);
+        BinaryString subBinaryString(int positionStart, int positionEnd);
 
-    friend BinaryString operator+(const BinaryString &other1, const BinaryString &other2);
+        friend BinaryString operator+(const BinaryString &other1, const BinaryString &other2);
 
-    BinaryString & operator=(const BinaryString &other);
+        BinaryString &operator=(const BinaryString &other);
 
-    void clearData();
+        void clearData();
 
-    void printer();
+        void printer();
 
-    ~BinaryString();
+        ~BinaryString();
 
-    int getLength();
+        int getLength();
 
-    std::string toSting();
+        std::string toSting();
 
-    char *getData();
+        char *getData();
 
-private:
-    char *data;
-    int dataSize;
-};
-
+    private:
+        char *data;
+        int dataSize;
+    };
+}
 
 #endif //STRINGTEST_BINARYSTRING_H
