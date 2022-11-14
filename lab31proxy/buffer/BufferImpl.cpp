@@ -48,7 +48,9 @@ void BufferImpl::readFromSocket(BinaryString *binaryString) {
         int posEndHeading = 0;
         if (ParserImpl::findEndHeading(_buf.toSting(), &posEndHeading) == ResultPars::END_HEADING) {
             std::string responseHead = _buf.subBinaryString(0, posEndHeading).toSting();
+            std::cout << "parsing heading!" << std::endl;
             ResultParseHeading resultParseHeading = ParserImpl::parsingResponseHeading(responseHead);
+            std::cout << "parsing heading!" << std::endl;
 //            if (isCashingData(resultParseHeading)) {
 //                _isWrightDataToCash = true;
 //                LOG_EVENT("Add response to cash");
