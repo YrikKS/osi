@@ -135,6 +135,7 @@ void BufferImpl::proofSend(BinaryString *binaryString) {
 
     if (_buf.getLength() && _isEndSend) {
 //        _lengthBody = 0;
+        std::cout << "!! end BODY" << std::endl;
         if (_statusClient == READ_RESPONSE && error) { // TODO подумать как иначе
             _statusClient = StatusHttp::END_WORK;
             return;
