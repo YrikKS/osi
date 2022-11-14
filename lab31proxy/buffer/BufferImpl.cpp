@@ -9,7 +9,7 @@ using namespace ProxyServer;
 
 void BufferImpl::readFromSocket(BinaryString *binaryString) {
 //    std::cout << "buf = " << buf << std::endl;
-    _buf = _buf + *binaryString;
+    _buf = _buf + (*binaryString);
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
         int posEndHeading = 0;
         if (ParserImpl::findEndHeading(_buf.toSting(), &posEndHeading) == ResultPars::END_HEADING) {

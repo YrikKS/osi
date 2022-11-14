@@ -24,7 +24,7 @@ namespace ProxyServer {
 
         BinaryString subBinaryString(int positionStart, int positionEnd);
 
-        friend BinaryString operator+(BinaryString other1, BinaryString other2);
+        friend BinaryString operator+(BinaryString &other1, BinaryString &other2);
 
         BinaryString &operator=(const BinaryString &other);
 

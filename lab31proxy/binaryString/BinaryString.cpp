@@ -68,7 +68,7 @@ BinaryString BinaryString::subBinaryString(int positionStart, int positionEnd) {
     return binaryString;
 }
 
-BinaryString operator+(BinaryString other1, BinaryString other2) {
+BinaryString operator+(BinaryString &other1, BinaryString &other2) {
     int size = other1.getLength() + other2.getLength();
     char* buf = new char[size];
 //    _binaryString.data = new char[dataSize];
