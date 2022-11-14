@@ -4,15 +4,29 @@ project(lab31proxy)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_FLAGS -pthread)
 set(CMAKE_CXX_FLAGS -std=c++11)
-#set(CMAKE_CXX_FLAGS -O0)
-#set(Boost_USE_STATIC_LIBS OFF)
-#set(Boost_USE_MULTITHREADED ON)
-#set(Boost_USE_STATIC_RUNTIME OFF)
-#FIND_PACKAGE(Boost)
-#add_executable(testlog
+#add_executable(test
 #        main.cpp
+#        Constants.h
+#        parser/ParserTypeRequest.h
+#        parser/ParserImpl.cpp
+#        parser/ParserImpl.h
 #        logger/Logger.h
+#        socket/ConnectException.h
+#        parser/ResultParseHeading.h
+#        parser/ParseException.h
+#        buffer/Buffer.h
+#        buffer/BufferImpl.cpp
+#        buffer/BufferImpl.h
+#        cash/Cash.h
+#        cash/CashElement.h
+#        cash/CashElementImpl.cpp
+#        cash/CashElementImpl.h
+#        cash/CashImpl.cpp
+#        cash/CashImpl.h
+#        binaryString/BinaryString.cpp
+#        binaryString/BinaryString.h
 #        )
+
 add_executable(lab31proxy
         main.cpp
         server/Server.h
