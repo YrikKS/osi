@@ -25,7 +25,7 @@ int BinaryString::getLength() {
 }
 
 std::string BinaryString::toSting() {
-    if (dataSize == 0) {
+    if (dataSize == 0 || dataSize == -1) {
         return std::string("");
     } else {
         std::string newString;

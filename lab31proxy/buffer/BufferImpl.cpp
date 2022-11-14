@@ -13,8 +13,8 @@ void BufferImpl::readFromSocket(BinaryString *binaryString) {
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
         int posEndHeading = 0;
         if (ParserImpl::findEndHeading(_buf.toSting(), &posEndHeading) == ResultPars::END_HEADING) {
-
             _requestHeading = _buf.subBinaryString(0, posEndHeading).toSting(); // так как не бинарные ресурсы
+            std::cout << _requestHeading << std::endl;
             parsHead();
             if (_resultParseHeading->getType() == TypeRequestAndResponse::GET_REQUEST) {
                 if (checkCash())

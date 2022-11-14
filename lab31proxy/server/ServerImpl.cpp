@@ -90,7 +90,7 @@ void ServerImpl::handlingEvent() {
                     (*it)->getBuffer()->readFromSocket(_binaryString);
                 } catch (ParseException ex) {
                     LOG_ERROR("send error and disconnect");
-
+                    //TODO disconnect
                 }
                 if ((*it)->getBuffer()->isReadyConnectHttpServer()) {
                     try {
