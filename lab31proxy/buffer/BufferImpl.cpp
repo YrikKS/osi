@@ -130,7 +130,7 @@ void BufferImpl::sendBuf(BinaryString *binaryString) {
 
 void BufferImpl::proofSend(BinaryString *binaryString) {
     _buf = _buf.subBinaryString(binaryString->getLength(), _buf.getLength());
-    std::cout << _buf.getLength() << std::endl;
+//    std::cout << _buf.getLength() << std::endl;
     if (_buf.getLength() <= 0 && !_isEndSend) {
         _isReadyToSend = false;
     }
