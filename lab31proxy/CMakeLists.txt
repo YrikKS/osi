@@ -11,12 +11,12 @@ set(CMAKE_CXX_FLAGS -std=c++11)
 #        parser/ParserImpl.cpp
 #        parser/ParserImpl.h
 #        logger/Logger.h
-#        socket/ConnectException.h
+##        socket/ConnectException.h
 #        parser/ResultParseHeading.h
 #        parser/ParseException.h
-#        buffer/Buffer.h
-#        buffer/BufferImpl.cpp
-#        buffer/BufferImpl.h
+##        buffer/Buffer.h
+##        buffer/BufferImpl.cpp
+##        buffer/BufferImpl.h
 #        cash/Cash.h
 #        cash/CashElement.h
 #        cash/CashElementImpl.cpp

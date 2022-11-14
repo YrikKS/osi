@@ -18,6 +18,25 @@ int main(int argc, char *argv[]) {
     LOG_EVENT("close app");
     LOGGER_CLOSE;
 
+
+//    ProxyServer::Cash* cash = new ProxyServer::CashImpl();
+//    ProxyServer::CashElement* cashElement = cash->addStringToCash("1");
+//    cashElement->getCash()->add(ProxyServer::BinaryString("qweAsd", 6));
+//    cashElement->getCash()->add(ProxyServer::BinaryString("123\0 456", 8));
+//
+//
+//    ProxyServer::CashElement* cashElement2 = cash->addStringToCash("2");
+//    cashElement2->getCash()->add(ProxyServer::BinaryString("qwerty", 6));
+//    cashElement2->getCash()->add(ProxyServer::BinaryString("qwertyyu", 8));
+//
+//    ProxyServer::CashElement* cashElement3 = cash->addStringToCash("3");
+//    cashElement3->getCash()->add(ProxyServer::BinaryString("asdfgh", 6));
+//    cashElement3->getCash()->add(ProxyServer::BinaryString("zxcvbnm,", 8));
+//
+//    cash->findResponseInCash("1")->getCash()->printer();
+//    cash->findResponseInCash("2")->getCash()->printer();
+//    cash->findResponseInCash("3")->getCash()->printer();
+
 //    ProxyServer::BufferImpl buffer = ProxyServer::BufferImpl(new ProxyServer::CashImpl());
 //    char string[1024] = "GET http://detectportal.firefox.com/canonical.html HTTP/1.1\n"
 //                        "Host: detectportal.firefox.com\n"
