@@ -22,7 +22,7 @@ namespace ProxyServer {
 
     class Buffer {
     public:
-        virtual void readRequest(BinaryString* binaryString) = 0;
+        virtual void readFromSocket(BinaryString* binaryString) = 0;
 
 //        virtual void readResponse(char *buf) = 0;
 
