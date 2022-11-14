@@ -125,6 +125,14 @@ void BinaryString::clearData() {
     dataSize = 0;
 }
 
+void BinaryString::setBinaryString(char *otherData, int otherLength) {
+    dataSize = otherLength;
+//    data = new char[otherLength];
+    for (int i = 0; i < otherLength; i++) {
+        data[i] = otherData[i];
+    }
+}
+
 void BinaryString::copyData(BinaryString other) {
     dataSize = other.dataSize;
     for (int i = 0; i < other.dataSize; i++) {
@@ -136,13 +144,7 @@ void BinaryString::copyData(BinaryString other) {
 /*
  * set new, need delete data before
  */
-void BinaryString::setBinaryString(char *otherData, int otherLength) {
-    dataSize = otherLength;
-//    data = new char[otherLength];
-    for (int i = 0; i < otherLength; i++) {
-        data[i] = otherData[i];
-    }
-}
+
 
 void BinaryString::deleteData() {
     if (data != NULL) {
