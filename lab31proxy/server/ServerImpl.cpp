@@ -85,6 +85,7 @@ void ServerImpl::handlingEvent() {
             (*it)->setReventsZero();
             (*it)->readBuf(_binaryString);
             if (_binaryString->getLength() == 0) {
+                std::cout << "del Client" << std::endl;
                 isNeedUpdatePollSet = deleteClient(*it, &it);
             } else {
                 try {
