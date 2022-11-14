@@ -208,7 +208,9 @@ BufferImpl::BufferImpl(Cash *cash) {
 
 void BufferImpl::parsHead() {
     try {
+        std::cout << "START normal parse" << std::endl;
         _resultParseHeading = ParserImpl::parsingHeading(_requestHeading);
+        std::cout << "normal parse" << std::endl;
     } catch (ParseException ex) {
         std::cerr << ex.what() << std::endl;
         _buf.deleteData();
