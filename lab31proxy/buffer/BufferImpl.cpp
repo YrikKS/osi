@@ -177,10 +177,12 @@ void BufferImpl::setStatusBuf(StatusHttp statusHttp) {
 bool BufferImpl::isReadyToSend() {
     if (_isGetDataFromCash && !_isEndSend) {
         BinaryString str = _cashElement->getCash()->subBinaryString(bytesReadFromCash,
-                                                                   _cashElement->getCash()->getLength());
-        bytesReadFromCash += str.getLength();
-        _buf.add(str);
-        _isReadyToSend = true;
+                                                                    _cashElement->getCash()->getLength());
+        if (str.getLength() > 0) {
+            bytesReadFromCash += str.getLength();
+            _buf.add(str);
+            _isReadyToSend = true;
+        }
         if (_cashElement->isCashEnd()) {
             _isEndSend = true;
         }
