@@ -1,9 +1,9 @@
 #include <iostream>
-//#include "server/ServerImpl.h"
-//#include "logger/Logger.h"
+#include "server/ServerImpl.h"
+#include "logger/Logger.h"
 
-#include "cash/CashImpl.h"
-#include "buffer/BufferImpl.h"
+//#include "cash/CashImpl.h"
+//#include "buffer/BufferImpl.h"
 
 int main(int argc, char *argv[]) {
     LOG_EVENT("start program");
