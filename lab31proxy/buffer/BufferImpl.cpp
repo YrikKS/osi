@@ -210,7 +210,8 @@ void BufferImpl::parsHead() {
         std::cerr << ex.what() << std::endl;
         _buf.deleteData();
         char data[] = "incorrect heading\r\n";
-        _buf = _buf + BinaryString(data, std::strlen(data));
+        BinaryString binaryStringError(data, std::strlen(data));
+        _buf = _buf + binaryStringError;
         _statusClient = StatusHttp::READ_RESPONSE;
         _isReadyToSend = true;
         _isEndSend = true;
