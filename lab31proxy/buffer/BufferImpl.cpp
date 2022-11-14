@@ -145,6 +145,7 @@ void BufferImpl::proofSend(BinaryString *binaryString) {
             _statusClient = StatusHttp::END_WORK;
             return;
         }
+
         if (_statusHttpServer == StatusHttp::READ_REQUEST) {
             _statusClient = StatusHttp::READ_RESPONSE;
             _statusHttpServer = StatusHttp::WRITE_RESPONSE_HEADING;
