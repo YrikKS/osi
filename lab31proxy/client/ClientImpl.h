@@ -20,9 +20,9 @@ namespace ProxyServer {
 
         int getFdClient() override;
 
-        void sendBuf(const char *buf) override;
+        void sendBuf(BinaryString *buf) override;
 
-        int readBuf(char *buf) override;
+        void readBuf(BinaryString *buf) override;
 
         Buffer *getBuffer() override;
 
@@ -41,7 +41,6 @@ namespace ProxyServer {
         void setPollElement(struct pollfd pollfd) override;
 
         void setReventsZero() override;
-
 
 
     private:

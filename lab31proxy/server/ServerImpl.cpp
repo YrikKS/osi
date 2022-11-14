@@ -72,23 +72,22 @@ ServerImpl::ServerImpl() {
     _serverSocket = new ServerSocketImpl();
     _serverSocket->connectSocket();
     _cash = new CashImpl();
+    _binaryString = new BinaryString;
 }
 
 void ServerImpl::handlingEvent() {
     int i = 1;
-    char buf[BUF_SIZE] = {0};
     bool isNeedUpdatePollSet = false;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
+        _binaryString->deleteData();
         if ((*it)->getPollFd().revents & POLLIN) {
-//            std::cout << i << " ";
             (*it)->setReventsZero();
-            memset(buf, 0, BUF_SIZE);
-            int countByteRead = (*it)->readBuf(buf);
-            if (countByteRead == 0) {
+            (*it)->readBuf(_binaryString);
+            if (_binaryString->getLength() == 0) {
                 isNeedUpdatePollSet = deleteClient(*it, &it);
             } else {
                 try {
-                    (*it)->getBuffer()->readRequest(buf);
+                    (*it)->getBuffer()->readRequest(_binaryString);
                 } catch (ParseException ex) {
                     LOG_ERROR("send error and disconnect");
 
@@ -132,9 +131,9 @@ void ServerImpl::handlingEvent() {
                     ((*it)->getTypeClient() == TypeClient::USER
                      && (*it)->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE)) {
 
-                    const char *bufferSend = (*it)->getBuffer()->sendBuf();
-                    (*it)->sendBuf(bufferSend);
-                    (*it)->getBuffer()->proofSend(bufferSend);
+                    (*it)->getBuffer()->sendBuf(_binaryString);
+                    (*it)->sendBuf(_binaryString);
+                    (*it)->getBuffer()->proofSend(_binaryString);
                 }
             } else {
 //                (*it)->setReventsZero();
@@ -154,6 +153,7 @@ ServerImpl::~ServerImpl() {
         delete it;
     }
     delete _cash;
+    delete _binaryString;
 }
 
 

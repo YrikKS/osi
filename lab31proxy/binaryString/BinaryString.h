@@ -15,6 +15,10 @@ public:
 
     BinaryString(char *otherData, int otherLength);
 
+    void setBinaryString(char *otherData, int otherLength);
+
+    void deleteData();
+
     BinaryString(BinaryString const &other);
 
     BinaryString subBinaryString(int positionStart, int positionEnd);

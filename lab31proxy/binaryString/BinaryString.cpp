@@ -41,7 +41,7 @@ char *BinaryString::getData() {
 
 BinaryString::~BinaryString() {
     if (data != NULL)
-        delete data;
+        delete[] data;
 }
 
 BinaryString::BinaryString(const BinaryString &other) {
@@ -54,10 +54,14 @@ BinaryString::BinaryString(const BinaryString &other) {
 
 BinaryString BinaryString::subBinaryString(int positionStart, int positionEnd) {
     BinaryString binaryString;
-    binaryString.dataSize = positionEnd - positionStart;
+    if (dataSize >= positionEnd - positionStart) {
+        binaryString.dataSize = positionEnd - positionStart;
+    } else {
+        binaryString.dataSize = dataSize;
+    }
     binaryString.data = new char[binaryString.dataSize];
-    for (int i = positionStart; i < positionEnd; i++) {
-        binaryString.data[i] = data[i];
+    for (int i = 0; i < binaryString.dataSize; i++) {
+        binaryString.data[i] = data[i + positionStart];
     }
     return binaryString;
 }
@@ -66,7 +70,7 @@ BinaryString operator+(const BinaryString &other1, const BinaryString &other2) {
     BinaryString binaryString;
     binaryString.dataSize = other1.dataSize + other2.dataSize;
     binaryString.data = new char[binaryString.dataSize];
-//    binaryString.data = new char[dataSize];
+//    _binaryString.data = new char[dataSize];
     for (int i = 0; i < other1.dataSize; i++) {
         binaryString.data[i] = other1.data[i];
     }
@@ -95,6 +99,26 @@ void BinaryString::printer() {
 }
 
 void BinaryString::clearData() {
-    for(int i = 0; i < dataSize; i++)
+    for (int i = 0; i < dataSize; i++)
         data[i] = 0;
+}
+
+
+/*
+ * set new, need delete data before
+ */
+void BinaryString::setBinaryString(char *otherData, int otherLength) {
+    dataSize = otherLength;
+    data = new char[otherLength];
+    for (int i = 0; i < otherLength; i++) {
+        data[i] = otherData[i];
+    }
+}
+
+void BinaryString::deleteData() {
+    if (data != NULL) {
+        delete[] data;
+        data = NULL;
+        dataSize = -1;
+    }
 }

@@ -6,6 +6,7 @@
 #define LAB31PROXY_CLIENTINTERFACE_H
 //#include "ClientData.h"
 #include "../buffer/Buffer.h"
+#include "../binaryString/BinaryString.h"
 #include <sys/poll.h>
 
 namespace ProxyServer {
@@ -20,9 +21,9 @@ namespace ProxyServer {
 
         virtual int getFdClient() = 0;
 
-        virtual void sendBuf(const char *buf) = 0;
+        virtual void sendBuf(BinaryString* buf) = 0;
 
-        virtual int readBuf(char *buf) = 0;
+        virtual void readBuf(BinaryString* buf) = 0;
 
         virtual Buffer *getBuffer() = 0;
 

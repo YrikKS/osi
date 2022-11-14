@@ -6,6 +6,7 @@
 #define LAB31PROXY_BUFFER_H
 
 #include "../parser/ResultParseHeading.h"
+#include "../binaryString/BinaryString.h"
 
 namespace ProxyServer {
     typedef enum {
@@ -21,13 +22,13 @@ namespace ProxyServer {
 
     class Buffer {
     public:
-        virtual void readRequest(char *buf) = 0;
+        virtual void readRequest(BinaryString* binaryString) = 0;
 
-        virtual void readResponse(char *buf) = 0;
+//        virtual void readResponse(char *buf) = 0;
 
-        virtual const char *sendBuf() = 0;
+        virtual void sendBuf(BinaryString* binaryString) = 0;
 
-        virtual void proofSend(const char *buf) = 0;
+        virtual void proofSend(BinaryString* binaryString) = 0;
 
         virtual bool isReadyConnectHttpServer() = 0;
 

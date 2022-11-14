@@ -19,13 +19,13 @@ namespace ProxyServer {
     public:
         BufferImpl(Cash *cash);
 
-        void readRequest(char *buf) override;
+        void readFromSocket(BinaryString* binaryString) override;
 
-        void readResponse(char *buf) override;
+//        void readResponse(char *buf) override;
 
-        const char *sendBuf() override;
+        void sendBuf(BinaryString* binaryString) override;
 
-        void proofSend(const char *buf) override;
+        void proofSend(BinaryString* binaryString) override;
 
         bool isReadyConnectHttpServer() override;
 
@@ -47,7 +47,7 @@ namespace ProxyServer {
         StatusHttp _statusClient = StatusHttp::WRITE_REQUEST_HEADING;
         StatusHttp _statusHttpServer = StatusHttp::READ_REQUEST;
         std::string _requestHeading;
-        std::string _buf;
+        BinaryString _buf;
         std::bitset<8> _bitBuffer;
         std::string _sendingString;
         bool _isReadyToSend = false;
