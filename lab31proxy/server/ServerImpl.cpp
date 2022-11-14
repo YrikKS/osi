@@ -72,14 +72,15 @@ ServerImpl::ServerImpl() {
     _serverSocket = new ServerSocketImpl();
     _serverSocket->connectSocket();
     _cash = new CashImpl();
-    _binaryString = new BinaryString;
+    char data[1024] = {0};
+    _binaryString = new BinaryString(data, 1024);
 }
 
 void ServerImpl::handlingEvent() {
     int i = 1;
     bool isNeedUpdatePollSet = false;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-        _binaryString->deleteData();
+        _binaryString->clearData();
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
             (*it)->readBuf(_binaryString);

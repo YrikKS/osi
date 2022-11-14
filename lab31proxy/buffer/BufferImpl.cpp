@@ -119,9 +119,9 @@ bool BufferImpl::isCashingData(ResultParseHeading resultParseHeading) {
 
 void BufferImpl::sendBuf(BinaryString *binaryString) {
     if (_buf.getLength() >= BUF_SIZE - 1) {
-        *binaryString = _buf.subBinaryString(0, BUF_SIZE - 1);
+        binaryString->copyData(_buf.subBinaryString(0, BUF_SIZE - 1));
     } else {
-        *binaryString = _buf;
+        binaryString->copyData(_buf);
     }
 //    return _sendingString.c_str();
 }

@@ -42,6 +42,7 @@ namespace ProxyServer {
 
         char *getData();
 
+        void copyData(BinaryString other);
     private:
         int dataSize;
         char *data;
