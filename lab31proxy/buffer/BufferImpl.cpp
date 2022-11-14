@@ -16,10 +16,10 @@ void BufferImpl::readFromSocket(BinaryString *binaryString) {
             _requestHeading = _buf.subBinaryString(0, posEndHeading).toSting(); // так как не бинарные ресурсы
             std::cout << _requestHeading << std::endl;
             parsHead();
-//            if (_resultParseHeading->getType() == TypeRequestAndResponse::GET_REQUEST) {
-//                if (checkCash())
-//                    return;
-//            }
+            if (_resultParseHeading->getType() == TypeRequestAndResponse::GET_REQUEST) {
+                if (checkCash())
+                    return;
+            }
 
 //            parsHead();
             _isReadyConnectHttpServer = true;
@@ -53,12 +53,12 @@ void BufferImpl::readFromSocket(BinaryString *binaryString) {
             std::cout << "parsing heading!" << std::endl;
             ResultParseHeading resultParseHeading = ParserImpl::parsingResponseHeading(responseHead);
             std::cout << "parsing heading!" << std::endl;
-//            if (isCashingData(resultParseHeading)) {
-//                _isWrightDataToCash = true;
-//                LOG_EVENT("Add response to cash");
-//                _cashElement = _cash->addStringToCash(_requestHeading);
-//                *_cashElement->getCash() += _buf.toSting(); // TODO заменить
-//            }
+            if (isCashingData(resultParseHeading)) {
+                _isWrightDataToCash = true;
+                LOG_EVENT("Add response to cash");
+                _cashElement = _cash->addStringToCash(_requestHeading);
+                _cashElement->getCash()->add(_buf); // TODO заменить
+            }
 
             _isReadyToSend = true;
             _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
@@ -93,14 +93,14 @@ void BufferImpl::readFromSocket(BinaryString *binaryString) {
         } else {
             if (ParserImpl::findEndBody(_buf.toSting(), &posEnd) == ResultPars::END_BODY) {
                 _isEndSend = true;
-//                if (_cashElement != NULL) {
-//                    _cashElement->setIsCashEnd();
-//                }
+                if (_cashElement != NULL) {
+                    _cashElement->setIsCashEnd();
+                }
                 LOG_EVENT("end body response read");
             }
         }
         if (_isWrightDataToCash) {
-//            *(_cashElement->getCash()) += buf; // TODO доделать
+            (_cashElement->getCash())->add(*binaryString);
         }
     }
 // TODO parse RESPONSE RESULT heading
@@ -175,9 +175,10 @@ void BufferImpl::setStatusBuf(StatusHttp statusHttp) {
 
 bool BufferImpl::isReadyToSend() {
     if (_isGetDataFromCash && !_isEndSend) {
-        std::string str = _cashElement->getCash()->substr(bytesReadFromCash);
-        bytesReadFromCash += str.size();
-//        _buf += str;
+        BinaryString str = _cashElement->getCash()->subBinaryString(bytesReadFromCash,
+                                                                   _cashElement->getCash()->getLength());
+        bytesReadFromCash += str.getLength();
+        _buf.add(str);
         _isReadyToSend = true;
         if (_cashElement->isCashEnd()) {
             _isEndSend = true;
@@ -232,15 +233,15 @@ bool BufferImpl::checkCash() {
     _cashElement = _cash->findResponseInCash(_requestHeading);
     if (_cashElement != NULL) {
         _isGetDataFromCash = true;
-//        _buf.deleteData();
+        _buf.deleteData();
 //        _buf.clearData();
-//        _buf = *_cashElement->getCash();
+        _buf.copyAndCreateData(*_cashElement->getCash());
         _statusClient = StatusHttp::READ_RESPONSE;
         if (_cashElement->isCashEnd()) {
             _isEndSend = true;
         } else {
             _isEndSend = false;
-            bytesReadFromCash = _cashElement->getCash()->size();
+            bytesReadFromCash = _cashElement->getCash()->getLength();
         }
         _isReadyToSend = true;
         return true;

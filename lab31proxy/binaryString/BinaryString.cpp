@@ -141,6 +141,15 @@ void BinaryString::copyData(BinaryString other) {
 }
 
 
+void BinaryString::copyAndCreateData(BinaryString other) {
+    dataSize = other.dataSize;
+    data = new char[dataSize];
+    for (int i = 0; i < other.dataSize; i++) {
+        data[i] = other.data[i];
+    }
+}
+
+
 /*
  * set new, need delete data before
  */

@@ -14,7 +14,7 @@ void CashElementImpl::setIsCashEnd() {
     _isCashEnd = true;
 }
 
-std::string *CashElementImpl::getCash() {
+BinaryString *CashElementImpl::getCash() {
     return &_cash;
 }
 
@@ -29,5 +29,5 @@ size_t CashElementImpl::getHash() {
 }
 
 CashElementImpl::~CashElementImpl() {
-    _cash.clear();
+    _cash.deleteData();
 }

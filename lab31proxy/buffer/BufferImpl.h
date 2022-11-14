@@ -48,7 +48,7 @@ namespace ProxyServer {
         StatusHttp _statusHttpServer = StatusHttp::READ_REQUEST;
         std::string _requestHeading;
         BinaryString _buf;
-        std::bitset<8> _bitBuffer;
+
         std::string _sendingString;
         bool _isReadyToSend = false;
         bool _isEndSend = false;

@@ -11,13 +11,13 @@
 namespace ProxyServer {
     class CashElementImpl : public CashElement {
     public:
-        CashElementImpl(std::string heading);
+        explicit CashElementImpl(std::string heading);
 
         bool isCashEnd() override;
 
         void setIsCashEnd() override;
 
-        std::string *getCash() override;
+        BinaryString *getCash() override;
 
         size_t getHash() override;
 
@@ -26,7 +26,7 @@ namespace ProxyServer {
         bool _isCashEnd = false;
         size_t _hashHead = 0;
         std::string _head;
-        std::string _cash;
+        BinaryString _cash;
     };
 }
 

@@ -6,6 +6,7 @@
 #define LAB31PROXY_CASHELEMENT_H
 
 #include <string>
+#include "../binaryString/BinaryString.h"
 
 namespace ProxyServer {
     class CashElement {
@@ -16,7 +17,7 @@ namespace ProxyServer {
 
         virtual void setIsCashEnd() = 0;
 
-        virtual std::string *getCash() = 0;
+        virtual BinaryString *getCash() = 0;
 
         virtual size_t getHash() = 0;
     };
