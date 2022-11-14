@@ -20,6 +20,12 @@ namespace ProxyServer {
         virtual BinaryString *getCash() = 0;
 
         virtual size_t getHash() = 0;
+
+        virtual int getCountUsers() = 0;
+
+        virtual void addCountUsers() = 0;
+
+        virtual void minusCountUsers() = 0;
     };
 }
 #endif //LAB31PROXY_CASHELEMENT_H

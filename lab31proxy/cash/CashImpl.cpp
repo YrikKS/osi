@@ -22,8 +22,19 @@ ProxyServer::CashElement *ProxyServer::CashImpl::findResponseInCash(std::string 
 ProxyServer::CashElement *ProxyServer::CashImpl::addStringToCash(std::string request) {
     if (_listCash.size() >= COUNT_CASH_ELEMENT) {
         if (_listCash.size() > 1) {
-            delete *_listCash.begin();
-            _listCash.pop_front();
+//            delete *_listCash.begin();
+//            _listCash.pop_front();
+            bool isDel = false;
+            for (auto it = _listCash.begin(); it != _listCash.end(); it++) {
+                if ((*it)->getCountUsers() <= 0) {
+                    _listCash.erase(it);
+                    isDel = true;
+                    break;
+                }
+            }
+            if (!isDel) {
+                return NULL;
+            }
         }
     }
     LOG_EVENT("add to cash");

@@ -7,6 +7,7 @@
 
 #include "../parser/ResultParseHeading.h"
 #include "../binaryString/BinaryString.h"
+#include "../cash/CashElement.h"
 
 namespace ProxyServer {
     typedef enum {
@@ -45,6 +46,8 @@ namespace ProxyServer {
         virtual ~Buffer() = default;
 
         virtual bool isSendEnd() = 0;
+
+        virtual CashElement* getCashElement() = 0;
     };
 
 }

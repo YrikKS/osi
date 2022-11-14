@@ -43,6 +43,8 @@ namespace ProxyServer {
 
         bool isSendEnd() override;
 
+        CashElement *getCashElement() override;
+
     private:
         StatusHttp _statusClient = StatusHttp::WRITE_REQUEST_HEADING;
         StatusHttp _statusHttpServer = StatusHttp::READ_REQUEST;

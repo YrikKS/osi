@@ -54,10 +54,15 @@ void BufferImpl::readFromSocket(BinaryString *binaryString) {
             ResultParseHeading resultParseHeading = ParserImpl::parsingResponseHeading(responseHead);
 //            std::cout << "parsing heading!" << std::endl;
             if (isCashingData(resultParseHeading)) {
-                _isWrightDataToCash = true;
-                LOG_EVENT("Add response to cash");
                 _cashElement = _cash->addStringToCash(_requestHeading);
-                _cashElement->getCash()->add(_buf); // TODO заменить
+                if (_cashElement == NULL) {
+                    _isWrightDataToCash = false;
+                } else {
+                    LOG_EVENT("Add response to cash");
+                    _isWrightDataToCash = true;
+                    _cashElement->getCash()->add(_buf); // TODO заменить
+                    _cashElement->addCountUsers();
+                }
             }
 
             _isReadyToSend = true;
@@ -243,6 +248,7 @@ bool BufferImpl::checkCash() {
 //        _buf.clearData();
         _buf.copyAndCreateData(*_cashElement->getCash());
         _statusClient = StatusHttp::READ_RESPONSE;
+        _cashElement->addCountUsers();
         if (_cashElement->isCashEnd()) {
             _isEndSend = true;
         } else {
@@ -253,6 +259,10 @@ bool BufferImpl::checkCash() {
         return true;
     }
     return false;
+}
+
+CashElement *BufferImpl::getCashElement() {
+    return _cashElement;
 }
 
 // socket reuse_add

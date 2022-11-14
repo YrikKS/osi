@@ -22,7 +22,15 @@ namespace ProxyServer {
         size_t getHash() override;
 
         ~CashElementImpl() override;
+
+        int getCountUsers() override;
+
+        void addCountUsers() override;
+
+        void minusCountUsers() override;
+
     private:
+        int _countUsers = 0;
         bool _isCashEnd = false;
         size_t _hashHead = 0;
         std::string _head;

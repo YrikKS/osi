@@ -31,3 +31,15 @@ size_t CashElementImpl::getHash() {
 CashElementImpl::~CashElementImpl() {
     _cash.deleteData();
 }
+
+int CashElementImpl::getCountUsers() {
+    return _countUsers;
+}
+
+void CashElementImpl::addCountUsers() {
+    _countUsers++;
+}
+
+void CashElementImpl::minusCountUsers() {
+    _countUsers--;
+}
