@@ -70,14 +70,22 @@ ResultParseHeading ParserImpl::parsingResponseHeading(std::string heading) {
     ResultParseHeading result; //HTTP/1.1 200 OK
     int statusResponse = heading.find("HTTP/1.1 200 OK");
     if (statusResponse == std::string::npos) {
+
+        int test = heading.find("200 OK");
+        if (test != std::string::npos) {
+            result.setType(TypeRequestAndResponse::NORMAL_RESPONSE);
+            result.setResponseWithError(false);
+            findContentLength(&result, heading);
+            return result;
+        }
+
         result.setType(TypeRequestAndResponse::INVALID);
         result.setResponseWithError(true);
     } else {
-        result.setType(TypeRequestAndResponse::NORAL_RESPONSE);
+        result.setType(TypeRequestAndResponse::NORMAL_RESPONSE);
         result.setResponseWithError(false);
     }
     findContentLength(&result, heading);
-
     return result;
 }
 
@@ -101,7 +109,7 @@ void ParserImpl::findHostAndPort(ResultParseHeading *result, std::string buf) {
             result->setHostName(resRegex[1]);
         } else {
             result->setHostName(resRegex[1]);
-            if(resRegex[2].str().size() > 1) {
+            if (resRegex[2].str().size() > 1) {
                 result->setPort(atoi(resRegex[2].str().substr(1).c_str()));
             } else {
                 result->setPort(80);
@@ -122,7 +130,7 @@ void ParserImpl::findContentLength(ResultParseHeading *result, std::string buf) 
         if (resRegex.size() == 2) {
             result->setContentLength(atoi(resRegex[1].str().c_str()));
             result->setHaveContentLength(true);
-//            result->setType(TypeRequestAndResponse::NORAL_RESPONSE);
+//            result->setType(TypeRequestAndResponse::NORMAL_RESPONSE);
         }
     } else {
         result->setHaveContentLength(false);
