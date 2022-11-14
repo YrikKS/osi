@@ -1,16 +1,44 @@
 //
-// Created by kurya on 09.11.2022.
+// Created by kurya on 10.11.2022.
 //
 
-#ifndef LAB31PROXY_BINARYSTRING_H
-#define LAB31PROXY_BINARYSTRING_H
+#ifndef STRINGTEST_BINARYSTRING_H
+#define STRINGTEST_BINARYSTRING_H
 
-namespace ProxyServer {
-    class BinaryString {
-    public:
+#include <string>
+#include <cstring>
+#include <cctype>
 
-    private:
-        char *buffer;
-    };
-}
-#endif //LAB31PROXY_BINARYSTRING_H
+class BinaryString {
+public:
+    BinaryString();
+
+    BinaryString(char *otherData, int otherLength);
+
+    BinaryString(BinaryString const &other);
+
+    BinaryString subBinaryString(int positionStart, int positionEnd);
+
+    friend BinaryString operator+(const BinaryString &other1, const BinaryString &other2);
+
+    BinaryString & operator=(const BinaryString &other);
+
+    void clearData();
+
+    void printer();
+
+    ~BinaryString();
+
+    int getLength();
+
+    std::string toSting();
+
+    char *getData();
+
+private:
+    char *data;
+    int dataSize;
+};
+
+
+#endif //STRINGTEST_BINARYSTRING_H

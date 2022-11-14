@@ -36,7 +36,7 @@ int ServerSocketImpl::getFdSocket() {
     return serverSocket_;
 }
 
-Client *ServerSocketImpl::acceptNewClient(Cash* cash) {
+Client *ServerSocketImpl::acceptNewClient(Cash *cash) {
     int clientSock = 0;
     struct sockaddr clientAddr;
     socklen_t len = 0;
@@ -72,7 +72,7 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
     sockAddr.sin_port = htons(port);
     sockAddr.sin_family = AF_INET;
 
-    int sock = socket(AF_INET, SOCK_STREAM, 0); //PF_INET
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock == ERROR_CODE) {
         LOG_ERROR_WITH_ERRNO("setsockopt");
         throw ConnectException("setsockport");

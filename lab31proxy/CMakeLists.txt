@@ -33,7 +33,7 @@ add_executable(lab31proxy
 #        client/ClientData.h
 #        client/ClientDataImpl.cpp
 #        client/ClientDataImpl.h
-        buffer/Buffer.h buffer/BufferImpl.cpp buffer/BufferImpl.h cash/Cash.h cash/CashElement.h cash/CashElementImpl.cpp cash/CashElementImpl.h cash/CashImpl.cpp cash/CashImpl.h binaryString/BinaryString.h binaryString/BinaryString.cpp)
+        buffer/Buffer.h buffer/BufferImpl.cpp buffer/BufferImpl.h cash/Cash.h cash/CashElement.h cash/CashElementImpl.cpp cash/CashElementImpl.h cash/CashImpl.cpp cash/CashImpl.h)
 #include_directories(${Boost_INCLUDE_DIRS})
 
 #target_link_libraries(lab31proxy
