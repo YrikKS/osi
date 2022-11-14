@@ -16,10 +16,10 @@ void BufferImpl::readFromSocket(BinaryString *binaryString) {
             _requestHeading = _buf.subBinaryString(0, posEndHeading).toSting(); // так как не бинарные ресурсы
             std::cout << _requestHeading << std::endl;
             parsHead();
-            if (_resultParseHeading->getType() == TypeRequestAndResponse::GET_REQUEST) {
-                if (checkCash())
-                    return;
-            }
+//            if (_resultParseHeading->getType() == TypeRequestAndResponse::GET_REQUEST) {
+//                if (checkCash())
+//                    return;
+//            }
 
 //            parsHead();
             _isReadyConnectHttpServer = true;
@@ -49,12 +49,12 @@ void BufferImpl::readFromSocket(BinaryString *binaryString) {
         if (ParserImpl::findEndHeading(_buf.toSting(), &posEndHeading) == ResultPars::END_HEADING) {
             std::string responseHead = _buf.subBinaryString(0, posEndHeading).toSting();
             ResultParseHeading resultParseHeading = ParserImpl::parsingResponseHeading(responseHead);
-            if (isCashingData(resultParseHeading)) {
-                _isWrightDataToCash = true;
-                LOG_EVENT("Add response to cash");
-                _cashElement = _cash->addStringToCash(_requestHeading);
-                *_cashElement->getCash() += _buf.toSting(); // TODO заменить
-            }
+//            if (isCashingData(resultParseHeading)) {
+//                _isWrightDataToCash = true;
+//                LOG_EVENT("Add response to cash");
+//                _cashElement = _cash->addStringToCash(_requestHeading);
+//                *_cashElement->getCash() += _buf.toSting(); // TODO заменить
+//            }
 
             _isReadyToSend = true;
             _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
@@ -62,7 +62,8 @@ void BufferImpl::readFromSocket(BinaryString *binaryString) {
             if (_isHaveContentLengthresponse) {
                 _lengthBody = resultParseHeading.getContentLength();
                 _lengthBody -= _buf.getLength() - responseHead.size();
-//                std::cout << "_lengthBody " << _lengthBody << std::endl;
+
+                std::cout << "_lengthBody " << _lengthBody << std::endl;
                 if (_lengthBody <= 0) {
                     _isEndSend = true;
                 }
@@ -88,9 +89,9 @@ void BufferImpl::readFromSocket(BinaryString *binaryString) {
         } else {
             if (ParserImpl::findEndBody(_buf.toSting(), &posEnd) == ResultPars::END_BODY) {
                 _isEndSend = true;
-                if (_cashElement != NULL) {
-                    _cashElement->setIsCashEnd();
-                }
+//                if (_cashElement != NULL) {
+//                    _cashElement->setIsCashEnd();
+//                }
                 LOG_EVENT("end body response read");
             }
         }
