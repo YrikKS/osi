@@ -75,11 +75,11 @@ int main(int argc, char *argv[]) {
 //            std::cout << j << std::endl;
 //            std::cout << std::bitset<8>(buffer[j])<< std::endl;
 //            std::cout.flush();
-        if (binaryString.getLength() > 0) {
+//        if (binaryString.getLength() > 0) {
             binaryString.printer();
 //        fprintf(stderr, "%s", buffer);
             binaryString.clearData();
-        }
+//        }
 //        bzero(buffer, BUFFER_SIZE);
     }
 
