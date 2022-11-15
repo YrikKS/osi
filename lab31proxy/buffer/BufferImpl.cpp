@@ -27,12 +27,15 @@ void BufferImpl::wrightRequestHeading(BinaryString *binaryString) {
         _requestHeading = _buf.subBinaryString(0, posEndHeading).toSting(); // так как не бинарные ресурсы
         parsHead();
         if (_cash->isElementInCash(_requestHeading)) {
+            std::cout << "data get from cash" << std::endl;
             _isDataGetCash = true;
             _cashElement = _cash->findResponseInCash(_requestHeading);
             _cashElement->addCountUsers();
             _buf.deleteData();
             _statusClient = StatusHttp::READ_RESPONSE;
             return;
+        } else {
+            std::cout << "NOT data get from cash" << std::endl;
         }
 
         _isReadyConnectHttpServer = true;
