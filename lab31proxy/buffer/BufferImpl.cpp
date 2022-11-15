@@ -25,7 +25,7 @@ void BufferImpl::wrightRequestHeading(BinaryString *binaryString) {
     int posEndHeading = 0;
     if (ParserImpl::findEndHeading(_buf.toSting(), &posEndHeading) == ResultPars::END_HEADING) {
         _requestHeading = _buf.subBinaryString(0, posEndHeading).toSting(); // так как не бинарные ресурсы
-        std::cout << _requestHeading << std::endl;
+//        std::cout << _requestHeading << std::endl;
         parsHead();
         if (_cash->isElementInCash(_requestHeading)) {
 //            std::cout << "data get from cash" << std::endl;
