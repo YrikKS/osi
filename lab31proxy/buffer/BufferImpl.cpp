@@ -159,10 +159,10 @@ void BufferImpl::proofSend(BinaryString *binaryString) {
             _statusClient = StatusHttp::END_WORK;
             return;
         }
-//        if (_statusClient == READ_RESPONSE && _isGetDataFromCash) { // TODO подумать как иначе
-//            _statusClient = StatusHttp::END_WORK;
-//            return;
-//        }
+        if (_statusClient == READ_RESPONSE && _isDataGetCash) { // TODO подумать как иначе
+            _statusClient = StatusHttp::END_WORK;
+            return;
+        }
 
         if (_statusHttpServer == StatusHttp::READ_REQUEST) {
             _statusClient = StatusHttp::READ_RESPONSE;
