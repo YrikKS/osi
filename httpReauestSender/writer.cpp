@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
             fprintf(stderr, "%s", buffer);
             binaryString.clearData();
         }
-//        bzero(buffer, BUFFER_SIZE);
+        bzero(buffer, 999);
     }
 
     return 0;
