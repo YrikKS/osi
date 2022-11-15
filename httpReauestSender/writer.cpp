@@ -61,27 +61,33 @@ int main(int argc, char *argv[]) {
             write(sock, str.data(), str.size());
         }
     }
-    char buffer[1000] = {0};
-//    BinaryString binaryString(buffer, 1000);
-    int i = 1;
-    while (i != 0) {
-        int i = read(sock, buffer, 999);
-        BinaryString binaryString(buffer, i);
-//        std::cout << i << std::endl;
-//        std::string buf = buffer;
-//        int pos = buf.find("\r\n\r\n") + 2;
-//        std::cout << buf.size() << std::endl;
-//        for (int j = pos; j < i; j++) {
-//            std::cout << j << std::endl;
-//            std::cout << std::bitset<8>(buffer[j])<< std::endl;
-//            std::cout.flush();
-        if (binaryString.getLength() > 0) {
-            binaryString.printer();
-            fprintf(stderr, "%s", buffer);
-            binaryString.clearData();
-        }
-        bzero(buffer, 999);
+
+    char buffer[BUFFER_SIZE] = {0};
+    while (read(sock, buffer, BUFFER_SIZE - 1) != 0) {
+        fprintf(stderr, "%s", buffer);
+        bzero(buffer, BUFFER_SIZE);
     }
+//    char buffer[1000] = {0};
+//    BinaryString binaryString(buffer, 1000);
+//    int i = 1;
+//    while (read(sock, buffer, 999) >) {
+//        int i = read(sock, buffer, 999);
+//        BinaryString binaryString(buffer, i);
+////        std::cout << i << std::endl;
+////        std::string buf = buffer;
+////        int pos = buf.find("\r\n\r\n") + 2;
+////        std::cout << buf.size() << std::endl;
+////        for (int j = pos; j < i; j++) {
+////            std::cout << j << std::endl;
+////            std::cout << std::bitset<8>(buffer[j])<< std::endl;
+////            std::cout.flush();
+//        if (binaryString.getLength() > 0) {
+//            binaryString.printer();
+//            fprintf(stderr, "%s", buffer);
+//            binaryString.clearData();
+//        }
+//        bzero(buffer, 999);
+//    }
 
     return 0;
 }
