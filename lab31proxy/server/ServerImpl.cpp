@@ -185,7 +185,6 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
             }
         }
         delete client;
-        std::cout << "end delete client" << std::endl;
         return true;
     } else if (client->getTypeClient() == TypeClient::HTTP_SERVER) {
         LOG_EVENT("http server logout");
@@ -200,13 +199,11 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
             client->getBuffer()->setStatusServer(StatusHttp::END_WORK);
             client->getBuffer()->setIsServerConnect(false);
             if (!client->getBuffer()->isIsClientConnect()) {
-                std::cout << "del buffer" << std::endl;
                 delete client->getBuffer();
                 client->setBuffer(NULL);
             }
         }
         delete client;
-        std::cout << "end delete server" << std::endl;
         return true;
     }
     return false;
