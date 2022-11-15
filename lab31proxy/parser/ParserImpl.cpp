@@ -115,7 +115,7 @@ void ParserImpl::findHostAndPort(ResultParseHeading *result, std::string buf) {
                 result->setPort(80);
             }
         }
-        std::cout << "port = " << result->getPort() << " host name = " << result->getHostName() << std::endl;
+//        std::cout << "port = " << result->getPort() << " host name = " << result->getHostName() << std::endl;
     } else {
         result->setType(TypeRequestAndResponse::INVALID);
         LOG_ERROR("incorrect heading");

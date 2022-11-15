@@ -94,7 +94,8 @@ void ServerImpl::handlingEvent() {
             } else {
                 try {
                     (*it)->getBuffer()->readFromSocket(_binaryString);
-                } catch (ParseException ex) {
+                } catch (ParseException &ex) {
+                    std::cerr << ex.what() << std::endl;
                     LOG_ERROR("send error and disconnect");
                     //TODO disconnect
                 }
@@ -109,7 +110,7 @@ void ServerImpl::handlingEvent() {
 //                        (*it)->setPair(client);
                         _clientList.push_back(client);
                         isNeedUpdatePollSet = true;
-                    } catch (std::exception ex) {
+                    } catch (std::exception &ex) {
                         std::cerr << ex.what() << std::endl;
                         LOG_ERROR("can't connect to http server");
                         isNeedUpdatePollSet = deleteClient(*it, &it);
