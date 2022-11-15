@@ -42,6 +42,12 @@ namespace ProxyServer {
 
         bool isSendEnd() override;
 
+        bool isIsAddDataToCash();
+
+        bool isIsDataGetCash();
+
+        CashElement *getCashElement();
+
     private:
         StatusHttp _statusClient = StatusHttp::WRITE_REQUEST_HEADING;
         StatusHttp _statusHttpServer = StatusHttp::READ_REQUEST;
@@ -56,6 +62,12 @@ namespace ProxyServer {
         ResultParseHeading *_resultParseHeading = NULL;
         bool _isHaveContentLengthresponse = false;
 
+        bool _isAddDataToCash = false;
+        bool _isDataGetCash = false;
+        size_t _countByteReadFromCash = 0;
+
+        CashElement *_cashElement = NULL;
+
         void wrightRequestHeading(BinaryString *binaryString);
 
         void wrightRequestBody(BinaryString *binaryString);
@@ -68,6 +80,8 @@ namespace ProxyServer {
 
         bool error = false;
         Cash *_cash;
+
+        bool isCashingData(int sizeHeading, ResultParseHeading resultParseHeading);
     };
 }
 

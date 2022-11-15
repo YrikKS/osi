@@ -97,7 +97,9 @@ void BinaryString::add(BinaryString binaryString) {
     for (int i = 0; i < binaryString.getLength(); i++) {
         newData[i + dataSize] = binaryString.getData()[i];
     }
-    delete[] data;
+    if (data != NULL) {
+        delete[] data;
+    }
     data = newData;
     dataSize = newSize;
 }
@@ -159,7 +161,7 @@ void BinaryString::deleteData() {
     if (data != NULL) {
         delete[] data;
         data = NULL;
-        dataSize = -1;
+        dataSize = 0;
     }
 }
 

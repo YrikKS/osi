@@ -18,6 +18,8 @@ namespace ProxyServer {
 
         CashElement *addStringToCash(std::string request) override;
 
+        bool isElementInCash(std::string request) override;
+
     private:
         std::list<CashElement*> _listCash;
     };

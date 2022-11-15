@@ -10,8 +10,8 @@ bool CashElementImpl::isCashEnd() {
     return _isCashEnd;
 }
 
-void CashElementImpl::setIsCashEnd() {
-    _isCashEnd = true;
+void CashElementImpl::setIsCashEnd(bool var) {
+    _isCashEnd = var;
 }
 
 BinaryString *CashElementImpl::getCash() {
@@ -42,4 +42,12 @@ void CashElementImpl::addCountUsers() {
 
 void CashElementImpl::minusCountUsers() {
     _countUsers--;
+}
+
+bool CashElementImpl::isIsServerConnected() {
+    return _isServerConnected;
+}
+
+void CashElementImpl::setIsServerConnect(bool isServerConnected) {
+    _isServerConnected = isServerConnected;
 }

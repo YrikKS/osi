@@ -24,13 +24,13 @@ namespace ProxyServer {
 
     class Buffer {
     public:
-        virtual void readFromSocket(BinaryString* binaryString) = 0;
+        virtual void readFromSocket(BinaryString *binaryString) = 0;
 
 //        virtual void readResponse(char *buf) = 0;
 
-        virtual void sendBuf(BinaryString* binaryString) = 0;
+        virtual void sendBuf(BinaryString *binaryString) = 0;
 
-        virtual void proofSend(BinaryString* binaryString) = 0;
+        virtual void proofSend(BinaryString *binaryString) = 0;
 
         virtual bool isReadyConnectHttpServer() = 0;
 
@@ -47,6 +47,13 @@ namespace ProxyServer {
         virtual ~Buffer() = default;
 
         virtual bool isSendEnd() = 0;
+
+
+        virtual bool isIsAddDataToCash() = 0;
+
+        virtual bool isIsDataGetCash() = 0;
+
+        virtual CashElement *getCashElement() = 0;
     };
 
 }

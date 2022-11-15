@@ -15,7 +15,7 @@ namespace ProxyServer {
 
         virtual bool isCashEnd() = 0;
 
-        virtual void setIsCashEnd() = 0;
+        virtual void setIsCashEnd(bool var) = 0;
 
         virtual BinaryString *getCash() = 0;
 
@@ -26,6 +26,10 @@ namespace ProxyServer {
         virtual void addCountUsers() = 0;
 
         virtual void minusCountUsers() = 0;
+
+        virtual bool isIsServerConnected() = 0;
+
+        virtual void setIsServerConnect(bool isServerConnected) = 0;
     };
 }
 #endif //LAB31PROXY_CASHELEMENT_H

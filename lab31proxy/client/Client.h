@@ -27,11 +27,11 @@ namespace ProxyServer {
 
         virtual Buffer *getBuffer() = 0;
 
-        virtual Client *getPair() = 0;
+//        virtual Client *getPair() = 0;
 
         virtual void setBuffer(Buffer *buffer) = 0;
 
-        virtual void setPair(Client *pair) = 0;
+//        virtual void setPair(Client *pair) = 0;
 
         virtual TypeClient getTypeClient() = 0;
 

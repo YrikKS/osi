@@ -15,7 +15,7 @@ namespace ProxyServer {
 
         bool isCashEnd() override;
 
-        void setIsCashEnd() override;
+        void setIsCashEnd(bool var) override;
 
         BinaryString *getCash() override;
 
@@ -29,9 +29,14 @@ namespace ProxyServer {
 
         void minusCountUsers() override;
 
+        bool isIsServerConnected() override;
+
+        void setIsServerConnect(bool isServerConnected) override;
+
     private:
         int _countUsers = 0;
         bool _isCashEnd = false;
+        bool _isServerConnected = false;
         size_t _hashHead = 0;
         std::string _head;
         BinaryString _cash;

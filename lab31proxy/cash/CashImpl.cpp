@@ -22,8 +22,6 @@ ProxyServer::CashElement *ProxyServer::CashImpl::findResponseInCash(std::string 
 ProxyServer::CashElement *ProxyServer::CashImpl::addStringToCash(std::string request) {
     if (_listCash.size() >= COUNT_CASH_ELEMENT) {
         if (_listCash.size() > 1) {
-//            delete *_listCash.begin();
-//            _listCash.pop_front();
             std::cout << "need del" << std::endl;
             bool isDel = false;
             for (auto it = _listCash.begin(); it != _listCash.end(); it++) {
@@ -48,5 +46,16 @@ ProxyServer::CashImpl::~CashImpl() {
     for (auto &it: _listCash) {
         delete it;
     }
+}
+
+bool ProxyServer::CashImpl::isElementInCash(std::string request) {
+    std::hash<std::string> hasher;
+    size_t hashHeading = hasher(request);
+    for (auto it = _listCash.begin(); it != _listCash.end(); it++) {
+        if ((*it)->getHash() == hashHeading) {
+            return true;
+        }
+    }
+    return false;
 }
 
