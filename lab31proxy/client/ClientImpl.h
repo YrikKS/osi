@@ -32,9 +32,9 @@ namespace ProxyServer {
 
         TypeClient getTypeClient() override;
 
-        void setPair(Client *pair) override;
+//        void setPair(Client *pair) override;
 
-        Client *getPair() override;
+//        Client *getPair() override;
 
         struct pollfd getPollFd() override;
 

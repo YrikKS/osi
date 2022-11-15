@@ -52,13 +52,13 @@ void ClientImpl::setBuffer(Buffer *buffer) {
     _buffer = buffer;
 }
 
-Client *ClientImpl::getPair() {
-    return _pair;
-}
-
-void ClientImpl::setPair(Client *pair) {
-    _pair = pair;
-}
+//Client *ClientImpl::getPair() {
+//    return _pair;
+//}
+//
+//void ClientImpl::setPair(Client *pair) {
+//    _pair = pair;
+//}
 
 struct pollfd ClientImpl::getPollFd() {
     return _structPollFd;
