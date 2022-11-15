@@ -179,7 +179,6 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
             client->getBuffer()->setIsClientConnect(false);
 
             if (!client->getBuffer()->isIsServerConnect()) {
-                std::cout << "del buffer" << std::endl;
                 delete client->getBuffer();
                 client->setBuffer(NULL);
             }
