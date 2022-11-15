@@ -271,6 +271,22 @@ void BufferImpl::setStatusClient(StatusHttp statusHttp) {
     _statusClient = statusHttp;
 }
 
+bool BufferImpl::isIsClientConnect() {
+    return _isClientConnect;
+}
+
+void BufferImpl::setIsClientConnect(bool isClientConnect) {
+    _isClientConnect = isClientConnect;
+}
+
+bool BufferImpl::isIsServerConnect() {
+    return _isServerConnect;
+}
+
+void BufferImpl::setIsServerConnect(bool isServerConnect) {
+    _isServerConnect = isServerConnect;
+}
+
 
 
 // socket reuse_add

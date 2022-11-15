@@ -46,6 +46,7 @@ Client *ServerSocketImpl::acceptNewClient(Cash *cash) {
     }
 
     Client *client = new ClientImpl(clientSock, TypeClient::USER, new BufferImpl(cash));
+    client->getBuffer()->setIsClientConnect(true);
     LOG_EVENT("accept new client");
     return client;
 }

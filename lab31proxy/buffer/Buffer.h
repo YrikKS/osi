@@ -55,6 +55,14 @@ namespace ProxyServer {
         virtual bool isIsDataGetCash() = 0;
 
         virtual CashElement *getCashElement() = 0;
+
+        virtual bool isIsClientConnect() = 0;
+
+        virtual void setIsClientConnect(bool isClientConnect) = 0;
+
+        virtual bool isIsServerConnect() = 0;
+
+        virtual void setIsServerConnect(bool isServerConnect) = 0;
     };
 
 }

@@ -44,18 +44,27 @@ namespace ProxyServer {
 
         bool isSendEnd() override;
 
-        bool isIsAddDataToCash();
+        bool isIsAddDataToCash() override;
 
-        bool isIsDataGetCash();
+        bool isIsDataGetCash() override;
 
-        CashElement *getCashElement();
+        CashElement *getCashElement() override;
+
+        bool isIsClientConnect();
+
+        void setIsClientConnect(bool isClientConnect);
+
+        bool isIsServerConnect();
+
+        void setIsServerConnect(bool isServerConnect);
 
     private:
         StatusHttp _statusClient = StatusHttp::WRITE_REQUEST_HEADING;
         StatusHttp _statusHttpServer = StatusHttp::READ_REQUEST;
         std::string _requestHeading;
         BinaryString _buf;
-
+        bool _isClientConnect = false;
+        bool _isServerConnect = false;
         std::string _sendingString;
         bool _isReadyToSend = false;
         bool _isEndSend = false;
