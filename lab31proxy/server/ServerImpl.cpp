@@ -166,15 +166,16 @@ ServerImpl::~ServerImpl() {
 bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *iterator) { // TODO norm del!
     if (client->getTypeClient() == TypeClient::USER) {
         LOG_EVENT("user logout");
-        if (client->getBuffer()->isIsDataGetCash()) {
-            client->getBuffer()->getCashElement()->minusCountUsers();
-        }
 
         (*iterator) = _clientList.erase((*iterator));
 
         if (client->getBuffer() != NULL) {
+            if (client->getBuffer()->isIsDataGetCash()) {
+                client->getBuffer()->getCashElement()->minusCountUsers();
+            }
             client->getBuffer()->setStatusClient(StatusHttp::END_WORK);
             if (client->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
+                std::cout << "del buffer" << std::endl;
                 delete client->getBuffer();
                 client->setBuffer(NULL);
             }
@@ -185,12 +186,15 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
         LOG_EVENT("http server logout");
         (*iterator) = _clientList.erase((*iterator));
 
-        if (client->getBuffer()->isIsAddDataToCash()) {
-            client->getBuffer()->getCashElement()->setIsServerConnect(false);
-        }
-        if(client->getBuffer() != NULL) {
+        if (client->getBuffer() != NULL) {
+            if (client->getBuffer()->isIsAddDataToCash()) {
+                client->getBuffer()->getCashElement()->setIsServerConnect(false);
+            }
+
+
             client->getBuffer()->setStatusServer(StatusHttp::END_WORK);
             if (client->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
+                std::cout << "del buffer" << std::endl;
                 delete client->getBuffer();
                 client->setBuffer(NULL);
             }
