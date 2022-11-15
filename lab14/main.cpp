@@ -74,7 +74,7 @@ void *printTextInThread(void *args) {
     int code = SUCCESS;
     for (int i = 0; i < value->count; i++) {
         thisSem = value->start % NUMBER_OF_SEMAPHORES;
-        nextSem = thisSem + 1 % NUMBER_OF_SEMAPHORES;
+        nextSem = (thisSem + 1) % NUMBER_OF_SEMAPHORES;
         code = semaphoreWait(thisSem);
         if (code != SUCCESS) {
             perror("wait error");
