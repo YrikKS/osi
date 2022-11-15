@@ -4,6 +4,7 @@
 #include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 
 #define SUCCESS 0
 #define NUMBER_OF_SEMAPHORES 2
@@ -73,8 +74,7 @@ void *printTextInThread(void *args) {
             return NULL;
         }
 
-        printf("%s %d\n", value->text, i);
-
+        std::cout << value->text << " " << i << std::endl;
         code = semaphorePost(nextSem);
         if (code != SUCCESS) {
             perror("post error");
