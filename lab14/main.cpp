@@ -94,8 +94,8 @@ void *printTextInThread(void *args) {
 
 int main(int argc, char *argv[]) {
     pthread_t thread;
-    argumentsForFunction newThread = {"Hello, I'm new thread", 10, 1};
-    argumentsForFunction mainThread = {"Hello, I'm main thread", 10, 0};
+    argumentsForFunction newThread = {"Hello, I'm new thread", 10, 0};
+    argumentsForFunction mainThread = {"Hello, I'm main thread", 10, 1};
     int code = initializeSems();
     if (code != SUCCESS) {
         perror("");
