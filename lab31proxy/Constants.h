@@ -7,12 +7,12 @@
 #define ERROR_CODE -1
 namespace ProxyServer {
     static const int TIME_OUT_POLL = 10000;
-    static const int PORT_SERVER_SOCKET = 8100; //???
+    static const int PORT_SERVER_SOCKET = 8090; //???
     static const int MAX_COUNT_CONNECTIONS = 1024;
     static const int BUF_SIZE = 1024;
     static int DEFAULT_PORT = 80;
     static int COUNT_CASH_ELEMENT = 100;
-    static long long int SIZE_EACH_CASH_ELEMENT = 1024 * 1024;
+    static long long int SIZE_EACH_CASH_ELEMENT = LONG_LONG_MAX;
     static int MAX_CASH_SIZE = 1024 * 1024; // 1 кб
 
     static std::string REGEX_FOR_HOST_AND_PORT = "Host: ([\\w.\\d-]*)(:(\\d)+)*";
