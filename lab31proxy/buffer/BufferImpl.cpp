@@ -191,7 +191,7 @@ StatusHttp BufferImpl::getStatusClient() {
     return _statusClient;
 }
 
-void BufferImpl::setStatusBuf(StatusHttp statusHttp) {
+void BufferImpl::setStatusServer(StatusHttp statusHttp) {
     _statusHttpServer = statusHttp;
 }
 
@@ -265,6 +265,10 @@ bool BufferImpl::isIsDataGetCash() {
 
 CashElement *BufferImpl::getCashElement() {
     return _cashElement;
+}
+
+void BufferImpl::setStatusClient(StatusHttp statusHttp) {
+    _statusClient = statusHttp;
 }
 
 

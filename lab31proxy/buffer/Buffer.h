@@ -40,14 +40,15 @@ namespace ProxyServer {
 
         virtual StatusHttp getStatusHttpServer() = 0;
 
-        virtual void setStatusBuf(StatusHttp statusHttp) = 0;
+        virtual void setStatusServer(StatusHttp statusHttp) = 0;
+
+        virtual void setStatusClient(StatusHttp statusHttp) = 0;
 
         virtual bool isReadyToSend() = 0;
 
         virtual ~Buffer() = default;
 
         virtual bool isSendEnd() = 0;
-
 
         virtual bool isIsAddDataToCash() = 0;
 

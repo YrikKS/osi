@@ -34,7 +34,9 @@ namespace ProxyServer {
 
         bool isReadyToSend() override;
 
-        void setStatusBuf(StatusHttp statusHttp) override;
+        void setStatusServer(StatusHttp statusHttp) override;
+
+        void setStatusClient(StatusHttp statusHttp) override;
 
         ResultParseHeading getParseResult() override;
 

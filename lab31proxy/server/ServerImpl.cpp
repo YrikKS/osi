@@ -166,29 +166,16 @@ ServerImpl::~ServerImpl() {
 bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *iterator) { // TODO norm del!
     if (client->getTypeClient() == TypeClient::USER) {
         LOG_EVENT("user logout");
-//        if (client->getPair() != NULL) {
-//            for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
-//                if ((*it) == client->getPair()) {
-//                    LOG_EVENT("http server logout with user");
-//                    _clientList.erase(it);
-//                    break;
-//                }
-//            }
-//            if (client->getBuffer()->isIsAddDataToCash()) {
-//                client->getBuffer()->getCashElement()->setIsServerConnect(false);
-//                if(!client->getBuffer()->isSendEnd()) {
-//
-//                }
-//            }
-//            delete client->getPair();
-//        }
         if (client->getBuffer()->isIsDataGetCash()) {
             client->getBuffer()->getCashElement()->minusCountUsers();
         }
+
+        client->getBuffer()->setStatusClient(StatusHttp::END_WORK);
         (*iterator) = _clientList.erase((*iterator));
-        delete client->getBuffer();
+        if (client->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
+            delete client->getBuffer();
+        }
         delete client;
-//        updatePollArr(); // не уверен
         return true;
     } else if (client->getTypeClient() == TypeClient::HTTP_SERVER) {
         LOG_EVENT("http server logout");
@@ -197,10 +184,10 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
         if (client->getBuffer()->isIsAddDataToCash()) {
             client->getBuffer()->getCashElement()->setIsServerConnect(false);
         }
-//        if (client->getPair() != NULL) {
-//            client->getPair()->setPair(NULL);
-//        }
-//        client->getBuffer()->setStatusBuf(StatusHttp::END_WORK);
+        client->getBuffer()->setStatusServer(StatusHttp::END_WORK);
+        if (client->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
+            delete client->getBuffer();
+        }
         delete client;
         return true;
     }
