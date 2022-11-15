@@ -11,18 +11,10 @@
 sem_t sems[NUMBER_OF_SEMAPHORES];
 
 typedef struct argumentsForFunction {
-    const char *text;
+    char *text;
     int count;
     int start;
 } argumentsForFunction;
-
-//int errorCheck(int code, char *inscription) {
-//    if (code != SUCCESS) {
-//        perror(inscription);
-//        return code;
-//    }
-//    return SUCCESS;
-//}
 
 int destroySems(int number) {
     int code = 0;
@@ -73,7 +65,7 @@ void *printTextInThread(void *args) {
 
     int code = SUCCESS;
     for (int i = 0; i < value->count; i++) {
-        thisSem = value->start % NUMBER_OF_SEMAPHORES;
+        thisSem = (value->start + 1) % NUMBER_OF_SEMAPHORES;
         nextSem = (thisSem + 1) % NUMBER_OF_SEMAPHORES;
         code = semaphoreWait(thisSem);
         if (code != SUCCESS) {
@@ -94,8 +86,8 @@ void *printTextInThread(void *args) {
 
 int main(int argc, char *argv[]) {
     pthread_t thread;
-    argumentsForFunction newThread = {"Hello, I'm new thread", 10, 0};
-    argumentsForFunction mainThread = {"Hello, I'm main thread", 10, 1};
+    argumentsForFunction mainThread = {"Hello, I'm main thread", 10, 0};
+    argumentsForFunction newThread = {"Hello, I'm new thread", 10, 1};
     int code = initializeSems();
     if (code != SUCCESS) {
         perror("");
@@ -106,7 +98,7 @@ int main(int argc, char *argv[]) {
     if (code != SUCCESS) {
         perror("pthread_create error");
         destroySems(NUMBER_OF_SEMAPHORES);
-        exit(errno);
+        exit(code);
     }
 
     printTextInThread(&mainThread);
@@ -115,7 +107,7 @@ int main(int argc, char *argv[]) {
     if (code != SUCCESS) {
         perror("join error");
         destroySems(NUMBER_OF_SEMAPHORES);
-        exit(errno);
+        exit(code);
     }
 
     destroySems(NUMBER_OF_SEMAPHORES);
