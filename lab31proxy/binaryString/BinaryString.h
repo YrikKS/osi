@@ -36,7 +36,7 @@ namespace ProxyServer {
 
         ~BinaryString();
 
-        int getLength();
+        long long int getLength();
 
         std::string toSting();
 
