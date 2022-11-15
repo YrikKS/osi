@@ -11,7 +11,7 @@
 sem_t sems[NUMBER_OF_SEMAPHORES];
 
 typedef struct argumentsForFunction {
-    char *text;
+    const char *text;
     int count;
     int start;
 } argumentsForFunction;
