@@ -170,10 +170,14 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
             client->getBuffer()->getCashElement()->minusCountUsers();
         }
 
-        client->getBuffer()->setStatusClient(StatusHttp::END_WORK);
         (*iterator) = _clientList.erase((*iterator));
-        if (client->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
-            delete client->getBuffer();
+
+        if (client->getBuffer() != NULL) {
+            client->getBuffer()->setStatusClient(StatusHttp::END_WORK);
+            if (client->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
+                delete client->getBuffer();
+                client->setBuffer(NULL);
+            }
         }
         delete client;
         return true;
@@ -184,9 +188,12 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
         if (client->getBuffer()->isIsAddDataToCash()) {
             client->getBuffer()->getCashElement()->setIsServerConnect(false);
         }
-        client->getBuffer()->setStatusServer(StatusHttp::END_WORK);
-        if (client->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
-            delete client->getBuffer();
+        if(client->getBuffer() != NULL) {
+            client->getBuffer()->setStatusServer(StatusHttp::END_WORK);
+            if (client->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
+                delete client->getBuffer();
+                client->setBuffer(NULL);
+            }
         }
         delete client;
         return true;
