@@ -12,11 +12,11 @@ BinaryString::BinaryString() {
     dataSize = 0;
 }
 
-BinaryString::BinaryString(char *otherData, int otherLength) {
+BinaryString::BinaryString(char *otherData, long long int otherLength) {
     dataSize = otherLength;
     if (otherLength > 0) {
         data = new char[otherLength];
-        for (int i = 0; i < otherLength; i++) {
+        for (long long int i = 0; i < otherLength; i++) {
             data[i] = otherData[i];
         }
     } else {
@@ -24,7 +24,7 @@ BinaryString::BinaryString(char *otherData, int otherLength) {
     }
 }
 
-int BinaryString::getLength() {
+long long int BinaryString::getLength() {
     return dataSize;
 }
 
@@ -33,7 +33,7 @@ std::string BinaryString::toSting() {
         return std::string("");
     } else {
         std::string newString;
-        for (int i = 0; i < dataSize; i++) {
+        for (long long int i = 0; i < dataSize; i++) {
             newString += data[i];
         }
         return newString;
@@ -53,12 +53,12 @@ BinaryString::~BinaryString() {
 BinaryString::BinaryString(const BinaryString &other) {
     dataSize = other.dataSize;
     data = new char[other.dataSize];
-    for (int i = 0; i < other.dataSize; i++) {
+    for (long long int i = 0; i < other.dataSize; i++) {
         data[i] = other.data[i];
     }
 }
 
-BinaryString BinaryString::subBinaryString(int positionStart, int positionEnd) {
+BinaryString BinaryString::subBinaryString(long long int positionStart, long long int positionEnd) {
     BinaryString binaryString;
     if (dataSize >= positionEnd - positionStart) {
         binaryString.dataSize = positionEnd - positionStart;
@@ -66,20 +66,20 @@ BinaryString BinaryString::subBinaryString(int positionStart, int positionEnd) {
         binaryString.dataSize = dataSize;
     }
     binaryString.data = new char[binaryString.dataSize];
-    for (int i = 0; i < binaryString.dataSize; i++) {
+    for (long long int i = 0; i < binaryString.dataSize; i++) {
         binaryString.data[i] = data[i + positionStart];
     }
     return binaryString;
 }
 
 BinaryString operator+(BinaryString &other1, BinaryString &other2) {
-    int size = other1.getLength() + other2.getLength();
+    long long int size = other1.getLength() + other2.getLength();
     char *buf = new char[size];
 //    _binaryString.data = new char[dataSize];
-    for (int i = 0; i < other1.getLength(); i++) {
+    for (long long int i = 0; i < other1.getLength(); i++) {
         buf[i] = other1.getData()[i];
     }
-    for (int i = 0; i < other2.getLength(); i++) {
+    for (long long int i = 0; i < other2.getLength(); i++) {
         buf[i + other1.getLength()] = other2.getData()[i];
     }
     BinaryString binaryString(buf, size);
@@ -89,12 +89,12 @@ BinaryString operator+(BinaryString &other1, BinaryString &other2) {
 
 
 void BinaryString::add(BinaryString binaryString) {
-    int newSize = dataSize + binaryString.dataSize;
+    long long int newSize = dataSize + binaryString.dataSize;
     char *newData = new char[newSize];
-    for (int i = 0; i < dataSize; i++) {
+    for (long long int i = 0; i < dataSize; i++) {
         newData[i] = data[i];
     }
-    for (int i = 0; i < binaryString.getLength(); i++) {
+    for (long long int i = 0; i < binaryString.getLength(); i++) {
         newData[i + dataSize] = binaryString.getData()[i];
     }
     if (data != NULL) {
@@ -108,36 +108,36 @@ BinaryString &BinaryString::operator=(const BinaryString &other) {
     delete[] data;
     dataSize = other.dataSize;
     data = new char[dataSize];
-    for (int i = 0; i < other.dataSize; i++) {
+    for (long long int i = 0; i < other.dataSize; i++) {
         data[i] = other.data[i];
     }
     return *this;
 }
 
 void BinaryString::printer() {
-    for (int i = 0; i < dataSize; i++) {
+    for (long long int i = 0; i < dataSize; i++) {
         std::cout << data[i];
     }
     std::cout << std::endl;
 }
 
 void BinaryString::clearData() {
-    for (int i = 0; i < dataSize; i++)
+    for (long long int i = 0; i < dataSize; i++)
         data[i] = 0;
     dataSize = 0;
 }
 
-void BinaryString::setBinaryString(char *otherData, int otherLength) {
+void BinaryString::setBinaryString(char *otherData, long long int otherLength) {
     dataSize = otherLength;
 //    data = new char[otherLength];
-    for (int i = 0; i < otherLength; i++) {
+    for (long long int i = 0; i < otherLength; i++) {
         data[i] = otherData[i];
     }
 }
 
 void BinaryString::copyData(BinaryString other) {
     dataSize = other.dataSize;
-    for (int i = 0; i < other.dataSize; i++) {
+    for (long long int i = 0; i < other.dataSize; i++) {
         data[i] = other.data[i];
     }
 }
@@ -146,7 +146,7 @@ void BinaryString::copyData(BinaryString other) {
 void BinaryString::copyAndCreateData(BinaryString other) {
     dataSize = other.dataSize;
     data = new char[dataSize];
-    for (int i = 0; i < other.dataSize; i++) {
+    for (long long int i = 0; i < other.dataSize; i++) {
         data[i] = other.data[i];
     }
 }

@@ -24,7 +24,7 @@ CashElementImpl::CashElementImpl(std::string heading) {
     _hashHead = hasher(heading);
 }
 
-size_t CashElementImpl::getHash() {
+long long int CashElementImpl::getHash() {
     return _hashHead;
 }
 

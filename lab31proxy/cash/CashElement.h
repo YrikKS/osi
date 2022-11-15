@@ -19,7 +19,7 @@ namespace ProxyServer {
 
         virtual BinaryString *getCash() = 0;
 
-        virtual size_t getHash() = 0;
+        virtual long long int getHash() = 0;
 
         virtual int getCountUsers() = 0;
 

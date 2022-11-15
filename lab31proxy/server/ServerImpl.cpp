@@ -175,6 +175,7 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
             if (client->getBuffer()->isIsDataGetCash()) {
                 client->getBuffer()->getCashElement()->minusCountUsers();
             }
+
             client->getBuffer()->setStatusClient(StatusHttp::END_WORK);
             client->getBuffer()->setIsClientConnect(false);
 
@@ -193,8 +194,6 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
             if (client->getBuffer()->isIsAddDataToCash()) {
                 client->getBuffer()->getCashElement()->setIsServerConnect(false);
             }
-
-
             client->getBuffer()->setStatusServer(StatusHttp::END_WORK);
             client->getBuffer()->setIsServerConnect(false);
             if (!client->getBuffer()->isIsClientConnect()) {

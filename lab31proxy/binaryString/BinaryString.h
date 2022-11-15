@@ -14,15 +14,15 @@ namespace ProxyServer {
     public:
         BinaryString();
 
-        BinaryString(char *otherData, int otherLength);
+        BinaryString(char *otherData, long long int otherLength);
 
-        void setBinaryString(char *otherData, int otherLength);
+        void setBinaryString(char *otherData, long long int otherLength);
 
         void deleteData();
 
         BinaryString(BinaryString const &other);
 
-        BinaryString subBinaryString(int positionStart, int positionEnd);
+        BinaryString subBinaryString(long long int positionStart, long long int positionEnd);
 
         friend BinaryString operator+(BinaryString &other1, BinaryString &other2);
 
@@ -47,7 +47,7 @@ namespace ProxyServer {
         void copyAndCreateData(BinaryString other);
 
     private:
-        int dataSize = 0;
+        long long int dataSize = 0;
         char *data = NULL;
 
 

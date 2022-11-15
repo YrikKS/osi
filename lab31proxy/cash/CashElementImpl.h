@@ -19,7 +19,7 @@ namespace ProxyServer {
 
         BinaryString *getCash() override;
 
-        size_t getHash() override;
+        long long int getHash() override;
 
         ~CashElementImpl() override;
 
@@ -37,7 +37,7 @@ namespace ProxyServer {
         int _countUsers = 0;
         bool _isCashEnd = false;
         bool _isServerConnected = false;
-        size_t _hashHead = 0;
+        long long int _hashHead = 0;
         std::string _head;
         BinaryString _cash;
     };

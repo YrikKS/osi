@@ -50,13 +50,13 @@ namespace ProxyServer {
 
         CashElement *getCashElement() override;
 
-        bool isIsClientConnect();
+        bool isIsClientConnect() override;
 
-        void setIsClientConnect(bool isClientConnect);
+        void setIsClientConnect(bool isClientConnect) override;
 
-        bool isIsServerConnect();
+        bool isIsServerConnect() override;
 
-        void setIsServerConnect(bool isServerConnect);
+        void setIsServerConnect(bool isServerConnect) override;
 
     private:
         StatusHttp _statusClient = StatusHttp::WRITE_REQUEST_HEADING;
@@ -69,7 +69,7 @@ namespace ProxyServer {
         bool _isReadyToSend = false;
         bool _isEndSend = false;
         bool _isReadyConnectHttpServer = false;
-        int _lengthBody = 0;
+        long long int _lengthBody = 0;
         ResultParseHeading *_resultParseHeading = NULL;
         bool _isHaveContentLengthresponse = false;
 
