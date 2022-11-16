@@ -149,18 +149,19 @@ bool BufferImpl::isCashingData(int sizeHeading, ResultParseHeading resultParseHe
 
 void BufferImpl::sendBuf(BinaryString *binaryString) {
     if (_isDataGetCash) {
-        std::cout << _cashElement->getCash()->getLength() << " vs " << _countByteReadFromCash << std::endl;
+//        std::cout << _cashElement->getCash()->getLength() << " vs " << _countByteReadFromCash << std::endl;
         if (_cashElement->getCash()->getLength() > _countByteReadFromCash) {
             if (_cashElement->getCash()->getLength() >= BUF_SIZE - 1) {
                 binaryString->setNewDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash,
                                                   _countByteReadFromCash + BUF_SIZE - 1);
-                std::cout << binaryString->getLength() << "   ";
+//                std::cout << binaryString->getLength() << "   ";
             } else {
                 binaryString->setNewDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash,
                                                   _cashElement->getCash()->getLength());
-                std::cout << binaryString->getLength() << "   ";
+//                std::cout << binaryString->getLength() << "   ";
             }
         }
+        std::cout << "second == " << binaryString->getLength() << std::endl;
     } else {
 
         if (_buf.getLength() >= BUF_SIZE - 1) {
