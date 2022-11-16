@@ -75,6 +75,7 @@ void BufferImpl::wrightResponseHeading(BinaryString *binaryString) {
             _cashElement = _cash->addStringToCash(_requestHeading);
             if (_cashElement != NULL) {
                 _isAddDataToCash = true;
+                _isReadyToSend = true;
                 _cashElement->getCash()->mallocNeedSize(resultParseHeading.getContentLength() + responseHead.size());
                 _cashElement->getCash()->addToMallocedBuf(_buf);
                 _cashElement->setIsCashEnd(false);
