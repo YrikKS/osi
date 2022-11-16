@@ -75,6 +75,7 @@ void BufferImpl::wrightResponseHeading(BinaryString *binaryString) {
             _cashElement = _cash->addStringToCash(_requestHeading);
             if (_cashElement != NULL) {
                 _isAddDataToCash = true;
+                std::cout << "malloced == " << resultParseHeading.getContentLength() + responseHead.size() << std::endl;
                 _cashElement->getCash()->mallocNeedSize(resultParseHeading.getContentLength() + responseHead.size());
                 _cashElement->getCash()->copyData(_buf);
                 _cashElement->setIsCashEnd(false);
