@@ -23,7 +23,6 @@ void ServerImpl::startServer() {
         } else {
             handlingEvent();
             if (_pollSet[0].revents & POLLIN) { // poll sock
-                std::cout << "POLLL PLEASE" << std::endl;
                 _pollSet[0].revents = 0;
                 try {
                     _clientList.push_back(_serverSocket->acceptNewClient(_cash));
@@ -84,7 +83,6 @@ void ServerImpl::handlingEvent() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         _binaryString->clearData();
         if ((*it)->getPollFd().revents & POLLIN) {
-            std::cout << "read  ";
             (*it)->setReventsZero();
 //            std::cout << "read " << (*it)->getTypeClient() << std::endl;
 //            std::cout.flush();
@@ -134,7 +132,6 @@ void ServerImpl::handlingEvent() {
             isNeedUpdatePollSet = deleteClient(*it, &it);
 
         } else if ((*it)->getPollFd().revents & POLLOUT) {
-            std::cout << "wrigth  ";
             (*it)->setReventsZero();
 //            std::cout << (*it)->getTypeClient() << std::endl;
             if ((*it)->getBuffer()->isReadyToSend()) {
