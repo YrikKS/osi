@@ -148,12 +148,14 @@ bool BufferImpl::isCashingData(int sizeHeading, ResultParseHeading resultParseHe
 
 void BufferImpl::sendBuf(BinaryString *binaryString) {
     if (_isDataGetCash) {
-        if (_cashElement->getCash()->getLength() >= BUF_SIZE - 1) {
-            binaryString->setNewDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash,
-                                              _countByteReadFromCash + BUF_SIZE - 1);
-        } else {
-            binaryString->setNewDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash,
-                                              _cashElement->getCash()->getLength());
+        if (_cashElement->getCash()->getLength() > _countByteReadFromCash) {
+            if (_cashElement->getCash()->getLength() >= BUF_SIZE - 1) {
+                binaryString->setNewDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash,
+                                                  _countByteReadFromCash + BUF_SIZE - 1);
+            } else {
+                binaryString->setNewDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash,
+                                                  _cashElement->getCash()->getLength());
+            }
         }
     } else {
         if (_buf.getLength() >= BUF_SIZE - 1) {
@@ -176,6 +178,7 @@ void BufferImpl::proofSend(BinaryString *binaryString) {
         } else if (!_cashElement->isIsServerConnected()) {
             error = true;
         }
+        return;
     }
     _buf = _buf.subBinaryString(binaryString->getLength(), _buf.getLength());
     if (_buf.getLength() <= 0 && !_isEndSend) {
