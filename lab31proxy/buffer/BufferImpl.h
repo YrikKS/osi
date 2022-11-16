@@ -75,7 +75,7 @@ namespace ProxyServer {
 
         bool _isAddDataToCash = false;
         bool _isDataGetCash = false;
-        size_t _countByteReadFromCash = 0;
+        long long int _countByteReadFromCash = 0;
 
         CashElement *_cashElement = NULL;
 

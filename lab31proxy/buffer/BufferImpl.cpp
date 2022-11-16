@@ -75,7 +75,6 @@ void BufferImpl::wrightResponseHeading(BinaryString *binaryString) {
             _cashElement = _cash->addStringToCash(_requestHeading);
             if (_cashElement != NULL) {
                 _isAddDataToCash = true;
-                _isReadyToSend = true;
                 _cashElement->getCash()->mallocNeedSize(resultParseHeading.getContentLength() + responseHead.size());
                 _cashElement->getCash()->addToMallocedBuf(_buf);
                 _cashElement->setIsCashEnd(false);
@@ -205,6 +204,7 @@ bool BufferImpl::isReadyToSend() {
 //            BinaryString binaryString = _cashElement->getCash()->
 //                    subBinaryString(_countByteReadFromCash, _cashElement->getCash()->getLength());
             _buf.copyDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash, _cashElement->getCash()->getLength());
+            _buf.printer();
             _countByteReadFromCash += _buf.getLength();
             _isReadyToSend = true;
         }
