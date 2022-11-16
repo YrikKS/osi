@@ -155,7 +155,7 @@ void BinaryString::copyDataNotMalloc(BinaryString other, long long int start, lo
         mallocedSize = end - start + 10;
     }
     dataSize = end - start;
-    for (long long int i = start; i < dataSize; i++) {
+    for (long long int i = start; i < end; i++) {
         data[i - start] = other.data[i];
     }
 }
