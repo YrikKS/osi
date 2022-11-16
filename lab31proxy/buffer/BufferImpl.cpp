@@ -204,7 +204,7 @@ bool BufferImpl::isReadyToSend() {
 //            BinaryString binaryString = _cashElement->getCash()->
 //                    subBinaryString(_countByteReadFromCash, _cashElement->getCash()->getLength());
             _buf.copyDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash, _cashElement->getCash()->getLength());
-            _buf.printer();
+            _buf.subBinaryString(0, 1024).printer();
             _countByteReadFromCash += _buf.getLength();
             _isReadyToSend = true;
         }
