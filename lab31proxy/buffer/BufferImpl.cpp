@@ -147,15 +147,36 @@ bool BufferImpl::isCashingData(int sizeHeading, ResultParseHeading resultParseHe
 }
 
 void BufferImpl::sendBuf(BinaryString *binaryString) {
-    if (_buf.getLength() >= BUF_SIZE - 1) {
-        binaryString->setNewDataNotMalloc(_buf, 0, BUF_SIZE - 1);
+    if (_isDataGetCash) {
+        if (_cashElement->getCash()->getLength() >= BUF_SIZE - 1) {
+            binaryString->setNewDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash,
+                                              _countByteReadFromCash + BUF_SIZE - 1);
+        } else {
+            binaryString->setNewDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash,
+                                              _cashElement->getCash()->getLength());
+        }
     } else {
-        binaryString->setNewDataNotMalloc(_buf, 0, _buf.getLength()); // TODO: check
+        if (_buf.getLength() >= BUF_SIZE - 1) {
+            binaryString->setNewDataNotMalloc(_buf, 0, BUF_SIZE - 1);
+        } else {
+            binaryString->setNewDataNotMalloc(_buf, 0, _buf.getLength()); // TODO: check
 //        binaryString->copyData(_buf);
+        }
     }
 }
 
 void BufferImpl::proofSend(BinaryString *binaryString) {
+    if (_isDataGetCash && !error) {
+        _countByteReadFromCash += binaryString->getLength();
+
+        if (_cashElement->isCashEnd()) {
+            _isEndSend = true;
+            _statusClient = StatusHttp::END_WORK;
+            return;
+        } else if (!_cashElement->isIsServerConnected()) {
+            error = true;
+        }
+    }
     _buf = _buf.subBinaryString(binaryString->getLength(), _buf.getLength());
     if (_buf.getLength() <= 0 && !_isEndSend) {
         _isReadyToSend = false;
@@ -200,21 +221,8 @@ void BufferImpl::setStatusServer(StatusHttp statusHttp) {
 }
 
 bool BufferImpl::isReadyToSend() {
-    if (!_isReadyToSend && _isDataGetCash) {
-        if (_cashElement->getCash()->getLength() > _countByteReadFromCash) {
-//            BinaryString binaryString = _cashElement->getCash()->
-//                    subBinaryString(_countByteReadFromCash, _cashElement->getCash()->getLength());
-            _buf.setNewDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash,
-                                     _cashElement->getCash()->getLength());
-//            _buf.subBinaryString(0, 1024).printer();
-            _countByteReadFromCash += _buf.getLength();
-            _isReadyToSend = true;
-        }
-        if (_cashElement->isCashEnd()) {
-            _isEndSend = true;
-        } else if (!_cashElement->isIsServerConnected()) {
-            error = true;
-        }
+    if (!_isReadyToSend && _isDataGetCash && _cashElement->getCash()->getLength() > _countByteReadFromCash) {
+        _isReadyToSend = true;
     }
     return _isReadyToSend;
 }
