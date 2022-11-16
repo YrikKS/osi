@@ -23,6 +23,7 @@ void ServerImpl::startServer() {
         } else {
             handlingEvent();
             if (_pollSet[0].revents & POLLIN) { // poll sock
+                std::cout << "POLLL PLEASE" << std::endl;
                 _pollSet[0].revents = 0;
                 try {
                     _clientList.push_back(_serverSocket->acceptNewClient(_cash));
