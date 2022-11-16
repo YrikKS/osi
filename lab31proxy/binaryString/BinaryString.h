@@ -46,10 +46,21 @@ namespace ProxyServer {
 
         void copyAndCreateData(BinaryString other);
 
+        void mallocNeedSize(long long int size);
+
+        void addToMallocedBuf(BinaryString other);
+
+        void deleteMallocedBuf();
+
+        void copyDataNotMalloc(BinaryString other, long long int start, long long int end);
+
+        long long int getMallocedSize() const;
+
     private:
         long long int dataSize = 0;
         char *data = NULL;
 
+        long long int mallocedSize = 0;
 
     };
 }

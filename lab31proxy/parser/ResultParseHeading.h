@@ -65,7 +65,7 @@ namespace ProxyServer {
 
     private:
         std::string hostName;
-        int contentLength = 0;
+        long long int contentLength = 0;
         TypeRequestAndResponse type;
         bool responseWithError = false;
         int port = 80;

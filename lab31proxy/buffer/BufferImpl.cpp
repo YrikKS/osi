@@ -33,6 +33,7 @@ void BufferImpl::wrightRequestHeading(BinaryString *binaryString) {
             _cashElement = _cash->findResponseInCash(_requestHeading);
             _cashElement->addCountUsers();
             _buf.deleteData();
+            _buf.mallocNeedSize(_cashElement->getCash()->getMallocedSize());
             _statusClient = StatusHttp::READ_RESPONSE;
             return;
         } else {
@@ -74,7 +75,8 @@ void BufferImpl::wrightResponseHeading(BinaryString *binaryString) {
             _cashElement = _cash->addStringToCash(_requestHeading);
             if (_cashElement != NULL) {
                 _isAddDataToCash = true;
-                _cashElement->getCash()->add(_buf);
+                _cashElement->getCash()->mallocNeedSize(resultParseHeading.getContentLength() + responseHead.size());
+                _cashElement->getCash()->addToMallocedBuf(_buf);
                 _cashElement->setIsCashEnd(false);
                 _cashElement->setIsServerConnect(true);
             } else {
@@ -112,7 +114,7 @@ void BufferImpl::wrightResponseBody(BinaryString *binaryString) {
     int posEnd = 0;
     _isReadyToSend = true;
     if (_isAddDataToCash) {
-        _cashElement->getCash()->add(*binaryString);
+        _cashElement->getCash()->addToMallocedBuf(*binaryString);
     }
     if (_isHaveContentLengthresponse) {
         _lengthBody -= binaryString->getLength();
@@ -146,7 +148,7 @@ bool BufferImpl::isCashingData(int sizeHeading, ResultParseHeading resultParseHe
 
 void BufferImpl::sendBuf(BinaryString *binaryString) {
     if (_buf.getLength() >= BUF_SIZE - 1) {
-        binaryString->copyData(_buf.subBinaryString(0, BUF_SIZE - 1));
+        binaryString->copyDataNotMalloc(_buf, 0, BUF_SIZE - 1);
     } else {
         binaryString->copyData(_buf);
     }
@@ -199,10 +201,10 @@ void BufferImpl::setStatusServer(StatusHttp statusHttp) {
 bool BufferImpl::isReadyToSend() {
     if (!_isReadyToSend && _isDataGetCash) {
         if (_cashElement->getCash()->getLength() > _countByteReadFromCash) {
-            BinaryString binaryString = _cashElement->getCash()->
-                    subBinaryString(_countByteReadFromCash, _cashElement->getCash()->getLength());
-            _buf.add(binaryString);
-            _countByteReadFromCash += binaryString.getLength();
+//            BinaryString binaryString = _cashElement->getCash()->
+//                    subBinaryString(_countByteReadFromCash, _cashElement->getCash()->getLength());
+            _buf.copyDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash, _cashElement->getCash()->getLength());
+            _countByteReadFromCash += _buf.getLength();
             _isReadyToSend = true;
         }
         if (_cashElement->isCashEnd()) {
