@@ -199,14 +199,16 @@ void BinaryString::addToMallocedBuf(BinaryString other) {
             newBuf[i] = data[i];
         }
         delete[] data;
-        for(long long int i = dataSize; i < other.dataSize; i++) {
-            newBuf[i] = other.data[i];
+        for(long long int i = dataSize; i < dataSize + other.dataSize; i++) {
+            newBuf[i] = other.data[i - dataSize];
         }
         dataSize = other.dataSize;
         data = newBuf;
+
     } else {
-        for (int i = dataSize; i < other.dataSize; i++) {
-            data[i] = other.data[i];
+
+        for (int i = dataSize; i < dataSize + other.dataSize; i++) {
+            data[i] = other.data[i - dataSize];
         }
         dataSize = other.dataSize;
     }
