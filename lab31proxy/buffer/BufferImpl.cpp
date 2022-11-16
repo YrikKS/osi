@@ -148,9 +148,10 @@ bool BufferImpl::isCashingData(int sizeHeading, ResultParseHeading resultParseHe
 
 void BufferImpl::sendBuf(BinaryString *binaryString) {
     if (_buf.getLength() >= BUF_SIZE - 1) {
-        binaryString->copyDataNotMalloc(_buf, 0, BUF_SIZE - 1);
+        binaryString->setNewDataNotMalloc(_buf, 0, BUF_SIZE - 1);
     } else {
-        binaryString->copyData(_buf);
+        binaryString->setNewDataNotMalloc(_buf, 0, _buf.getLength()); // TODO: check
+//        binaryString->copyData(_buf);
     }
 }
 
@@ -203,7 +204,8 @@ bool BufferImpl::isReadyToSend() {
         if (_cashElement->getCash()->getLength() > _countByteReadFromCash) {
 //            BinaryString binaryString = _cashElement->getCash()->
 //                    subBinaryString(_countByteReadFromCash, _cashElement->getCash()->getLength());
-            _buf.copyDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash, _cashElement->getCash()->getLength());
+            _buf.setNewDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash,
+                                     _cashElement->getCash()->getLength());
 //            _buf.subBinaryString(0, 1024).printer();
             _countByteReadFromCash += _buf.getLength();
             _isReadyToSend = true;

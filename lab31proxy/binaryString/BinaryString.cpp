@@ -148,7 +148,7 @@ void BinaryString::copyData(BinaryString other) {
     }
 }
 
-void BinaryString::copyDataNotMalloc(BinaryString other, long long int start, long long int end) {
+void BinaryString::setNewDataNotMalloc(BinaryString other, long long int start, long long int end) {
     if (mallocedSize <= end - start) {
         delete[] data;
         data = new char[end - start + 10];
@@ -160,7 +160,7 @@ void BinaryString::copyDataNotMalloc(BinaryString other, long long int start, lo
     }
 }
 
-//void BinaryString::copyDataNotMalloc(BinaryString other, long long int start, long long int end) {
+//void BinaryString::setNewDataNotMalloc(BinaryString other, long long int start, long long int end) {
 //    if (mallocedSize <= end - start) {
 //        delete[] data;
 //        data = new char[dataSize + end - start + 10];
@@ -192,9 +192,9 @@ void BinaryString::mallocNeedSize(long long int size) {
 }
 
 void BinaryString::addToMallocedBuf(BinaryString other) {
-    if (mallocedSize < other.dataSize) {
-        char *newBuf = new char[other.dataSize + 10];
-        mallocedSize = other.dataSize + 10;
+    if (mallocedSize < dataSize + other.dataSize) {
+        char *newBuf = new char[dataSize + other.dataSize + 10];
+        mallocedSize = dataSize + other.dataSize + 10;
         for (int i = 0; i < dataSize; i++) {
             newBuf[i] = data[i];
         }
@@ -202,15 +202,14 @@ void BinaryString::addToMallocedBuf(BinaryString other) {
         for(long long int i = dataSize; i < dataSize + other.dataSize; i++) {
             newBuf[i] = other.data[i - dataSize];
         }
-        dataSize = other.dataSize;
+        dataSize = dataSize + other.dataSize;
         data = newBuf;
 
     } else {
-
         for (int i = dataSize; i < dataSize + other.dataSize; i++) {
             data[i] = other.data[i - dataSize];
         }
-        dataSize = other.dataSize;
+        dataSize = dataSize + other.dataSize;
     }
 }
 

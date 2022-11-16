@@ -52,7 +52,7 @@ namespace ProxyServer {
 
         void deleteMallocedBuf();
 
-        void copyDataNotMalloc(BinaryString other, long long int start, long long int end);
+        void setNewDataNotMalloc(BinaryString other, long long int start, long long int end);
 
         long long int getMallocedSize() const;
 
