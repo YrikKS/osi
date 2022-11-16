@@ -161,16 +161,15 @@ void BufferImpl::sendBuf(BinaryString *binaryString) {
 //                std::cout << binaryString->getLength() << "   ";
             }
         }
-        std::cout << "second == " << binaryString->getLength() << std::endl;
+//        std::cout << "second == " << binaryString->getLength() << std::endl;
     } else {
-
         if (_buf.getLength() >= BUF_SIZE - 1) {
             binaryString->setNewDataNotMalloc(_buf, 0, BUF_SIZE - 1);
         } else {
             binaryString->setNewDataNotMalloc(_buf, 0, _buf.getLength()); // TODO: check
 //        binaryString->copyData(_buf);
         }
-        std::cout << "main == " << binaryString->getLength() << std::endl;
+//        std::cout << "main == " << binaryString->getLength() << std::endl;
     }
 }
 
