@@ -81,7 +81,7 @@ void ServerImpl::handlingEvent() {
     int i = 1;
     bool isNeedUpdatePollSet = false;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-//        std::cout << i << "  ";
+        std::cout << _binaryString->getLength() << "  ";
         _binaryString->clearData();
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
