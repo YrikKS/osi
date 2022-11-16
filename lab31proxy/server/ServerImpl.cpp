@@ -80,6 +80,7 @@ ServerImpl::ServerImpl() {
 void ServerImpl::handlingEvent() {
     int i = 1;
     bool isNeedUpdatePollSet = false;
+    std::cout << "start " << std::endl;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
         _binaryString->clearData();
         if ((*it)->getPollFd().revents & POLLIN) {
@@ -149,6 +150,7 @@ void ServerImpl::handlingEvent() {
             }
         }
     }
+    std::cout << "end " << std::endl;
 
     if (isNeedUpdatePollSet) {
         configuratePollArr();
