@@ -11,7 +11,7 @@ void ServerImpl::startServer() {
     configuratePollArr();
     std::cout << "start server" << std::endl;
     while (_isWork) {
-        int code = poll(_pollSet, _clientList.size(), TIME_OUT_POLL);
+        int code = poll(_pollSet, _clientList.size() + 1, TIME_OUT_POLL);
         setPollElements();
         if (code == -1) {
             LOG_ERROR_WITH_ERRNO("poll error");
@@ -82,9 +82,9 @@ void ServerImpl::handlingEvent() {
     int i = 1;
     bool isNeedUpdatePollSet = false;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-        std::cout << _binaryString->getLength() << "  ";
         _binaryString->clearData();
         if ((*it)->getPollFd().revents & POLLIN) {
+            std::cout << "read  ";
             (*it)->setReventsZero();
 //            std::cout << "read " << (*it)->getTypeClient() << std::endl;
 //            std::cout.flush();
@@ -134,6 +134,7 @@ void ServerImpl::handlingEvent() {
             isNeedUpdatePollSet = deleteClient(*it, &it);
 
         } else if ((*it)->getPollFd().revents & POLLOUT) {
+            std::cout << "wrigth  ";
             (*it)->setReventsZero();
 //            std::cout << (*it)->getTypeClient() << std::endl;
             if ((*it)->getBuffer()->isReadyToSend()) {
