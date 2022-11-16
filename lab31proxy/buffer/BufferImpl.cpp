@@ -33,7 +33,7 @@ void BufferImpl::wrightRequestHeading(BinaryString *binaryString) {
             _cashElement = _cash->findResponseInCash(_requestHeading);
             _cashElement->addCountUsers();
             _buf.deleteData();
-            _buf.mallocNeedSize(_cashElement->getCash()->getMallocedSize());
+//            _buf.mallocNeedSize(_cashElement->getCash()->getMallocedSize());
             _statusClient = StatusHttp::READ_RESPONSE;
             return;
         } else {

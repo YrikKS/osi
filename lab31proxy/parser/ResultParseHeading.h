@@ -19,11 +19,11 @@ namespace ProxyServer {
             ResultParseHeading::hostName = hostName;
         }
 
-        int getContentLength() const {
+        long long int getContentLength() const {
             return contentLength;
         }
 
-        void setContentLength(int contentLength) {
+        void setContentLength(long long int contentLength) {
             ResultParseHeading::contentLength = contentLength;
         }
 

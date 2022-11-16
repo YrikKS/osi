@@ -194,20 +194,22 @@ void BinaryString::mallocNeedSize(long long int size) {
 void BinaryString::addToMallocedBuf(BinaryString other) {
     if (mallocedSize < dataSize + other.dataSize) {
         char *newBuf = new char[dataSize + other.dataSize + 10];
+
         mallocedSize = dataSize + other.dataSize + 10;
         for (int i = 0; i < dataSize; i++) {
             newBuf[i] = data[i];
         }
         delete[] data;
-        for(long long int i = dataSize; i < dataSize + other.dataSize; i++) {
+
+        for (long long int i = dataSize; i < dataSize + other.dataSize; i++) {
             newBuf[i] = other.data[i - dataSize];
         }
         dataSize = dataSize + other.dataSize;
         data = newBuf;
 
     } else {
-        for (int i = dataSize; i < dataSize + other.dataSize; i++) {
-            data[i] = other.data[i - dataSize];
+        for (int i = 0; i < other.dataSize; i++) {
+            data[i + dataSize] = other.data[i];
         }
         dataSize = dataSize + other.dataSize;
     }
