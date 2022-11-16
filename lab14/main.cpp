@@ -1,13 +1,11 @@
 #include <pthread.h>
-#include <string.h>
-#include <errno.h>
 #include <semaphore.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <iostream>
 
 #define SUCCESS 0
 #define NUMBER_OF_SEMAPHORES 2
+#define COUNT_INERATION 10
 
 sem_t sems[NUMBER_OF_SEMAPHORES];
 
@@ -63,7 +61,6 @@ void *printTextInThread(void *args) {
     argumentsForFunction *value = (argumentsForFunction *) args;
     int thisSem = 0;
     int nextSem = 0;
-
     int code = SUCCESS;
     for (int i = 0; i < value->count; i++) {
         thisSem = (value->start + 1) % NUMBER_OF_SEMAPHORES;
@@ -86,8 +83,8 @@ void *printTextInThread(void *args) {
 
 int main(int argc, char *argv[]) {
     pthread_t thread;
-    argumentsForFunction mainThread = {"Hello, I'm main thread", 10, 0};
-    argumentsForFunction newThread = {"Hello, I'm new thread", 10, 1};
+    argumentsForFunction mainThread = {"Hello, I'm main thread", COUNT_INERATION, 0};
+    argumentsForFunction newThread = {"Hello, I'm new thread", COUNT_INERATION, 1};
     int code = initializeSems();
     if (code != SUCCESS) {
         perror("");
