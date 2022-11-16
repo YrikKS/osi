@@ -128,7 +128,7 @@ void BinaryString::printer() {
 }
 
 void BinaryString::clearData() {
-    for (long long int i = 0; i < dataSize; i++)
+    for (long long int i = 0; i < mallocedSize; i++)
         data[i] = 0;
     dataSize = 0;
 }
