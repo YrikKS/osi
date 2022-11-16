@@ -73,10 +73,10 @@ ServerImpl::ServerImpl() {
     _serverSocket = new ServerSocketImpl();
     _serverSocket->connectSocket();
     _cash = new CashImpl();
-    char* newBuf = new char[BUF_SIZE];
-//    char data[BUF_SIZE] = {0};
-    _binaryString = new BinaryString(newBuf, BUF_SIZE);
-    delete[] newBuf;
+//    char* newBuf = new char[BUF_SIZE];
+    char data[BUF_SIZE] = {0};
+    _binaryString = new BinaryString(data, BUF_SIZE);
+//    delete[] newBuf;
 }
 
 void ServerImpl::handlingEvent() {
