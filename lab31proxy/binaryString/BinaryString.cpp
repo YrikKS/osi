@@ -10,12 +10,14 @@ using namespace ProxyServer;
 BinaryString::BinaryString() {
     data = NULL;
     dataSize = 0;
+    mallocedSize = 0;
 }
 
 BinaryString::BinaryString(char *otherData, long long int otherLength) {
     dataSize = otherLength;
     if (otherLength > 0) {
         data = new char[otherLength];
+        mallocedSize = otherLength;
         for (long long int i = 0; i < otherLength; i++) {
             data[i] = otherData[i];
         }
@@ -53,6 +55,7 @@ BinaryString::~BinaryString() {
 BinaryString::BinaryString(const BinaryString &other) {
     dataSize = other.dataSize;
     data = new char[other.dataSize];
+    mallocedSize = other.dataSize;
     for (long long int i = 0; i < other.dataSize; i++) {
         data[i] = other.data[i];
     }
@@ -66,6 +69,7 @@ BinaryString BinaryString::subBinaryString(long long int positionStart, long lon
         binaryString.dataSize = dataSize;
     }
     binaryString.data = new char[binaryString.dataSize];
+    mallocedSize = binaryString.dataSize;
     for (long long int i = 0; i < binaryString.dataSize; i++) {
         binaryString.data[i] = data[i + positionStart];
     }
@@ -102,12 +106,14 @@ void BinaryString::add(BinaryString binaryString) {
     }
     data = newData;
     dataSize = newSize;
+    mallocedSize = newSize;
 }
 
 BinaryString &BinaryString::operator=(const BinaryString &other) {
     delete[] data;
     dataSize = other.dataSize;
     data = new char[dataSize];
+    mallocedSize = dataSize;
     for (long long int i = 0; i < other.dataSize; i++) {
         data[i] = other.data[i];
     }
@@ -146,6 +152,7 @@ void BinaryString::copyDataNotMalloc(BinaryString other, long long int start, lo
     if (mallocedSize <= end - start) {
         delete[] data;
         data = new char[end - start + 10];
+        mallocedSize = end - start + 10;
     }
     dataSize = end - start;
     for (long long int i = start; i < dataSize; i++) {
@@ -157,6 +164,7 @@ void BinaryString::copyDataNotMalloc(BinaryString other, long long int start, lo
 void BinaryString::copyAndCreateData(BinaryString other) {
     dataSize = other.dataSize;
     data = new char[dataSize];
+    mallocedSize = dataSize;
     for (long long int i = 0; i < other.dataSize; i++) {
         data[i] = other.data[i];
     }
@@ -197,6 +205,7 @@ void BinaryString::deleteMallocedBuf() {
 void BinaryString::deleteData() {
     if (data != NULL) {
         delete[] data;
+        mallocedSize = 0;
         data = NULL;
         dataSize = 0;
     }
