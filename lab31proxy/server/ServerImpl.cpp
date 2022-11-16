@@ -18,6 +18,7 @@ void ServerImpl::startServer() {
             perror("poll error");
             //TODO exit
         } else if (code == 0) {
+            std::cout << "time out" << std::endl;
             //??
         } else {
             handlingEvent();
