@@ -152,10 +152,11 @@ void BufferImpl::sendBuf(BinaryString *binaryString) {
             if (_cashElement->getCash()->getLength() >= BUF_SIZE - 1) {
                 binaryString->setNewDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash,
                                                   _countByteReadFromCash + BUF_SIZE - 1);
-                std::cout << binaryString->getLength();
+                std::cout << binaryString->getLength() << "   ";
             } else {
                 binaryString->setNewDataNotMalloc(*_cashElement->getCash(), _countByteReadFromCash,
                                                   _cashElement->getCash()->getLength());
+                std::cout << binaryString->getLength() << "   ";
             }
         }
     } else {
