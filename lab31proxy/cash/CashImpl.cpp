@@ -22,7 +22,7 @@ ProxyServer::CashElement *ProxyServer::CashImpl::findResponseInCash(std::string 
 ProxyServer::CashElement *ProxyServer::CashImpl::addStringToCash(std::string request) {
     if (_listCash.size() >= COUNT_CASH_ELEMENT) {
         if (_listCash.size() > 1) {
-            std::cout << "need del" << std::endl;
+//            std::cout << "need del" << std::endl;
             bool isDel = false;
             for (auto it = _listCash.begin(); it != _listCash.end(); it++) {
                 if ((*it)->getCountUsers() <= 0) {
