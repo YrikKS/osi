@@ -181,7 +181,7 @@ void BufferImpl::sendBuf(BinaryString *binaryString) {
 }
 
 void BufferImpl::proofSend(BinaryString *binaryString) {
-    if (_isDataGetCash && !error) { // TODO: error rework
+    if (_isDataGetCash) { // TODO: error rework !error
         _countByteReadFromCash += binaryString->getLength();
             // 71 ws 72
         std::cout << _cashElement->getCash()->getLength() << " ws " << _countByteReadFromCash << std::endl;
@@ -198,7 +198,7 @@ void BufferImpl::proofSend(BinaryString *binaryString) {
         return;
     }
 
-    _buf.setNewDataNotMalloc(_buf, binaryString->getLength(), _buf.getLength());
+    _buf.shiftDataNotMalloc(_buf, binaryString->getLength());
     if (_buf.getLength() <= 0 && !_isEndSend) {
         _isReadyToSend = false;
     }

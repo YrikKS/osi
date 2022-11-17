@@ -162,6 +162,15 @@ void BinaryString::setNewDataNotMalloc(BinaryString other, long long int start, 
     }
 }
 
+
+void BinaryString::shiftDataNotMalloc(BinaryString other, long long int size) {
+    dataSize = dataSize - size;
+    for (long long int i = size; i < dataSize; i++) {
+        data[i - size] = other.data[i];
+    }
+}
+
+
 void BinaryString::setNewDataNotMallocWithPtr(BinaryString* other, long long int start, long long int end) {
 //    if (mallocedSize < end - start) {
 //        delete[] data;

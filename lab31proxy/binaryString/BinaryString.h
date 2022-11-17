@@ -56,13 +56,17 @@ namespace ProxyServer {
 
         long long int getMallocedSize() const;
 
-        void setNewDataNotMallocWithPtr(BinaryString* other, long long int start, long long int end);
+        void setNewDataNotMallocWithPtr(BinaryString *other, long long int start, long long int end);
+
+
+        void shiftDataNotMalloc(BinaryString other, long long int size);
 
     private:
         long long int dataSize = 0;
         char *data = NULL;
 
         long long int mallocedSize = 0;
+
     };
 }
 
