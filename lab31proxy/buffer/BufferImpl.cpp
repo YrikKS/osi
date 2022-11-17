@@ -181,7 +181,7 @@ void BufferImpl::sendBuf(BinaryString *binaryString) {
 }
 
 void BufferImpl::proofSend(BinaryString *binaryString) {
-    if (_isDataGetCash && !error) {
+    if (_isDataGetCash && !error) { // TODO: error rework
         _countByteReadFromCash += binaryString->getLength();
 
         if (_cashElement->getCash()->getLength() == _countByteReadFromCash) {
@@ -196,11 +196,11 @@ void BufferImpl::proofSend(BinaryString *binaryString) {
         }
         return;
     }
-
     _buf = _buf.subBinaryString(binaryString->getLength(), _buf.getLength());
     if (_buf.getLength() <= 0 && !_isEndSend) {
         _isReadyToSend = false;
     }
+
 
     if (_buf.getLength() <= 0 && _isEndSend) {
         if (_statusClient == READ_RESPONSE && error) { // TODO подумать как иначе
