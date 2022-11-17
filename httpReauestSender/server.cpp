@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
     while (read(clientSock, buf, BUFFER_SIZE - 1) != 0) {
         fprintf(stderr, "%s", buf);
         std::string buffer(buf);
-        if (buffer.find("0") != std::string::npos) {
+        if (buffer.find("0\r\n") != std::string::npos) {
             bzero(buf, BUFFER_SIZE);
             break;
         }
