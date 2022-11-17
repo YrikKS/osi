@@ -149,11 +149,11 @@ void BinaryString::copyData(BinaryString other) {
 }
 
 void BinaryString::setNewDataNotMalloc(BinaryString other, long long int start, long long int end) {
-    if (mallocedSize < end - start) {
-        delete[] data;
-        data = new char[end - start + 10];
-        mallocedSize = end - start + 10;
-    }
+//    if (mallocedSize < end - start) {
+//        delete[] data;
+//        data = new char[end - start + 10];
+//        mallocedSize = end - start + 10;
+//    }
     dataSize = end - start;
     for (long long int i = start; i < end; i++) {
         data[i - start] = other.data[i];
