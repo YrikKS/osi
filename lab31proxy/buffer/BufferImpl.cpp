@@ -159,21 +159,21 @@ void BufferImpl::sendBuf(BinaryString *binaryString) {
 
 //                binaryString->setNewDataNotMalloc(*_cashElement->getCash(), 0,
 //                                                   BUF_SIZE - 1);
-                std::cout << "second == " << binaryString->getLength() << std::endl;
+//                std::cout << "second == " << binaryString->getLength() << std::endl;
             } else {
                 binaryString->setNewDataNotMallocWithPtr(_cashElement->getCash(), _countByteReadFromCash,
                                                          _cashElement->getCash()->getLength());
-                std::cout << "second == " << binaryString->getLength() << std::endl;
+//                std::cout << "second == " << binaryString->getLength() << std::endl;
             }
         }
 //        std::cout << "second == " << binaryString->getLength() << std::endl;
     } else {
         if (_buf.getLength() >= BUF_SIZE - 1) {
             binaryString->setNewDataNotMalloc(_buf, 0, BUF_SIZE - 1);
-            std::cout << "main == " << binaryString->getLength() << std::endl;
+//            std::cout << "main == " << binaryString->getLength() << std::endl;
         } else {
             binaryString->setNewDataNotMalloc(_buf, 0, _buf.getLength()); // TODO: check
-            std::cout << "main == " << binaryString->getLength() << std::endl;
+//            std::cout << "main == " << binaryString->getLength() << std::endl;
 //        binaryString->copyData(_buf);
         }
 //        std::cout << "main == " << binaryString->getLength() << std::endl;
@@ -184,6 +184,7 @@ void BufferImpl::proofSend(BinaryString *binaryString) {
     if (_isDataGetCash && !error) { // TODO: error rework
         _countByteReadFromCash += binaryString->getLength();
 
+        std::cout << _cashElement->getCash()->getLength() << " ws " << _countByteReadFromCash << std::endl;
         if (_cashElement->getCash()->getLength() == _countByteReadFromCash) {
             _isReadyToSend = false;
         }
@@ -196,6 +197,7 @@ void BufferImpl::proofSend(BinaryString *binaryString) {
         }
         return;
     }
+
     _buf = _buf.subBinaryString(binaryString->getLength(), _buf.getLength());
     if (_buf.getLength() <= 0 && !_isEndSend) {
         _isReadyToSend = false;
