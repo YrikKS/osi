@@ -75,6 +75,7 @@ void BufferImpl::wrightResponseHeading(BinaryString *binaryString) {
             _cashElement = _cash->addStringToCash(_requestHeading);
             if (_cashElement != NULL) {
                 _isAddDataToCash = true;
+//                malloced = 829151 752 // 829151 232
                 std::cout << "malloced == " << resultParseHeading.getContentLength() + responseHead.size() << std::endl;
                 _cashElement->getCash()->mallocNeedSize(resultParseHeading.getContentLength() + responseHead.size());
                 _cashElement->getCash()->copyData(_buf);
@@ -154,14 +155,14 @@ void BufferImpl::sendBuf(BinaryString *binaryString) {
         if (_cashElement->getCash()->getLength() > _countByteReadFromCash) {
             if (_cashElement->getCash()->getLength() >= BUF_SIZE - 1) {
                 binaryString->setNewDataNotMallocWithPtr(_cashElement->getCash(), _countByteReadFromCash,
-                                                  _countByteReadFromCash + BUF_SIZE - 1);
+                                                         _countByteReadFromCash + BUF_SIZE - 1);
 
 //                binaryString->setNewDataNotMalloc(*_cashElement->getCash(), 0,
 //                                                   BUF_SIZE - 1);
                 std::cout << "second == " << binaryString->getLength() << std::endl;
             } else {
                 binaryString->setNewDataNotMallocWithPtr(_cashElement->getCash(), _countByteReadFromCash,
-                                                  _cashElement->getCash()->getLength());
+                                                         _cashElement->getCash()->getLength());
                 std::cout << "second == " << binaryString->getLength() << std::endl;
             }
         }
@@ -183,6 +184,9 @@ void BufferImpl::proofSend(BinaryString *binaryString) {
     if (_isDataGetCash && !error) {
         _countByteReadFromCash += binaryString->getLength();
 
+        if (_cashElement->getCash()->getLength() == _countByteReadFromCash) {
+            _isReadyToSend = false;
+        }
         if (_cashElement->isCashEnd()) {
             _isEndSend = true;
             _statusClient = StatusHttp::END_WORK;

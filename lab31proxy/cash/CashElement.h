@@ -7,6 +7,7 @@
 
 #include <string>
 #include "../binaryString/BinaryString.h"
+#include "../logger/Logger.h"
 
 namespace ProxyServer {
     class CashElement {

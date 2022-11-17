@@ -29,6 +29,7 @@ long long int CashElementImpl::getHash() {
 }
 
 CashElementImpl::~CashElementImpl() {
+    LOG_EVENT("delete cash ");
     _cash.deleteData();
 }
 
