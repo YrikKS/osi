@@ -114,6 +114,7 @@ void BufferImpl::wrightResponseHeading(BinaryString *binaryString) {
 void BufferImpl::wrightResponseBody(BinaryString *binaryString) {
     int posEnd = 0;
     _isReadyToSend = true;
+    std::cout << "read from server = " << binaryString->getLength() << std::endl;
     if (_isAddDataToCash) {
         _cashElement->getCash()->addToMallocedBuf(*binaryString);
     }
