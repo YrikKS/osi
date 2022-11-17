@@ -199,6 +199,7 @@ void BufferImpl::proofSend(BinaryString *binaryString) {
     }
 
     _buf.shiftDataNotMalloc(_buf, binaryString->getLength());
+    _buf.printer();
     if (_buf.getLength() <= 0 && !_isEndSend) {
         _isReadyToSend = false;
     }
