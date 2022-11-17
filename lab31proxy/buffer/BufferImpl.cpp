@@ -154,6 +154,7 @@ void BufferImpl::sendBuf(BinaryString *binaryString) {
 //        std::cout << _cashElement->getCash()->getLength() << " vs " << _countByteReadFromCash << std::endl;
         if (_cashElement->getCash()->getLength() > _countByteReadFromCash) {
             if (_cashElement->getCash()->getLength() >= _countByteReadFromCash + BUF_SIZE - 1) {
+
                 binaryString->setNewDataNotMallocWithPtr(_cashElement->getCash(), _countByteReadFromCash,
                                                          _countByteReadFromCash + BUF_SIZE - 1);
 
@@ -199,7 +200,7 @@ void BufferImpl::proofSend(BinaryString *binaryString) {
     }
 
     _buf.shiftDataNotMalloc(_buf, binaryString->getLength());
-    _buf.printer();
+//    _buf.printer();
     if (_buf.getLength() <= 0 && !_isEndSend) {
         _isReadyToSend = false;
     }
