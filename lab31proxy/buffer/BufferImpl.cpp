@@ -45,11 +45,10 @@ void BufferImpl::wrightRequestHeading(std::shared_ptr<std::string> *binaryString
 //            _buf.mallocNeedSize(_cashElement->getCash()->getMallocedSize());
             _statusClient = StatusHttp::READ_RESPONSE;
             return;
-        } else {
-//            std::cout << "NOT data get from cash" << std::endl;
         }
 
         _isReadyConnectHttpServer = true;
+        std::cout << "ready connect to server" << std::endl;
         if (_resultParseHeading->getType() == GET_REQUEST) {
             _isReadyToSend = true;
             _isEndSend = true;
