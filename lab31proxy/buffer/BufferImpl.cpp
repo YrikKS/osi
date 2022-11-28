@@ -174,8 +174,8 @@ void BufferImpl::sendBuf(std::string *binaryString) {
 ////                                                   BUF_SIZE - 1);
 ////                std::cout << "second == " << binaryString->getLength() << std::endl;
             } else {
-                (binaryString)->resize(_cashElement->getCash()->length());
-                std::memcpy((void *) (binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash, _cashElement->getCash()->length());
+                (binaryString)->resize(_cashElement->getCash()->length() - _countByteReadFromCash);
+                std::memcpy((void *) (binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash, _cashElement->getCash()->length() - _countByteReadFromCash);
 //                binaryString->setNewDataNotMallocWithPtr(_cashElement->getCash(), _countByteReadFromCash,
 //                                                         _cashElement->getCash()->getLength());
 //                std::cout << "second == " << binaryString->getLength() << std::endl;
