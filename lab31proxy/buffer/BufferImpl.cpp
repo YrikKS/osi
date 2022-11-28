@@ -78,21 +78,21 @@ void BufferImpl::wrightResponseHeading(std::shared_ptr<std::string> *binaryStrin
         std::string responseHead = _buf->substr(0, posEndHeading);
         ResultParseHeading resultParseHeading = ParserImpl::parsingResponseHeading(responseHead);
 
-        if (isCashingData(responseHead.length(), resultParseHeading) &&
-            !_cash->isElementInCash(_requestHeading)) {
-            _cashElement = _cash->addStringToCash(_requestHeading);
-            if (_cashElement != NULL) {
-                _isAddDataToCash = true;
-//                malloced = 829151 752 // 829151 232
-                std::cout << "malloced == " << resultParseHeading.getContentLength() + responseHead.size() << std::endl;
-                _cashElement->getCash()->resize(resultParseHeading.getContentLength() + responseHead.size());
-                *_cashElement->getCash() += (*_buf);
-                _cashElement->setIsCashEnd(false);
-                _cashElement->setIsServerConnect(true);
-            } else {
+//        if (isCashingData(responseHead.length(), resultParseHeading) &&
+//            !_cash->isElementInCash(_requestHeading)) {
+//            _cashElement = _cash->addStringToCash(_requestHeading);
+//            if (_cashElement != NULL) {
+//                _isAddDataToCash = true;
+////                malloced = 829151 752 // 829151 232
+//                std::cout << "malloced == " << resultParseHeading.getContentLength() + responseHead.size() << std::endl;
+//                _cashElement->getCash()->resize(resultParseHeading.getContentLength() + responseHead.size());
+//                *_cashElement->getCash() += (*_buf);
+//                _cashElement->setIsCashEnd(false);
+//                _cashElement->setIsServerConnect(true);
+//            } else {
                 _isAddDataToCash = false;
-            }
-        }
+//            }
+//        }
 
         _isReadyToSend = true;
         _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
