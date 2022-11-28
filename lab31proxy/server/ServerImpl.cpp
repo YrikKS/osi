@@ -95,7 +95,7 @@ void ServerImpl::handlingEvent() {
             (*it)->readBuf(&buffer);
 //            std::cout << "read " << (*it)->getTypeClient() << std::endl;
 //            std::cout.flush();
-            if ((buffer)->length() == 0) {
+            if (buffer.length() == 0) {
 //                std::cout << "del Client" << std::endl;
                 isNeedUpdatePollSet = deleteClient(*it, &it);
             } else {
