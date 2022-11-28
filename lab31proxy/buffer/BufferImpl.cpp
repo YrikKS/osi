@@ -15,8 +15,7 @@ void BufferImpl::readFromSocket(std::shared_ptr<std::string> *binaryString) {
 //    std::memcmp((void*) _buf->c_str(), )
 //    *_buf += (*binaryString)->c_str();
     (*_buf) += *(*binaryString);
-    std::cout << "add buf end" << std::endl;
-    std::cout.flush();
+    std::cout << *_buf << std::endl;
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
         wrightRequestHeading(binaryString);
     } else if (_statusClient == StatusHttp::WRITE_REQUEST_BODY) {
@@ -26,6 +25,8 @@ void BufferImpl::readFromSocket(std::shared_ptr<std::string> *binaryString) {
     } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_BODY) {
         wrightResponseBody(binaryString);
     }
+    std::cout << "add buf end" << std::endl;
+    std::cout.flush();
 // TODO parse RESPONSE RESULT heading
 }
 
