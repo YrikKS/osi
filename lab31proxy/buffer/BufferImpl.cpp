@@ -10,7 +10,10 @@ using namespace ProxyServer;
 void BufferImpl::readFromSocket(std::shared_ptr<std::string> *binaryString) {
     std::cout << "add buf" << std::endl;
     std::cout.flush();
-    *_buf += (*binaryString)->c_str();
+    _buf->resize(_buf->length() + (*binaryString)->length());
+    _buf->insert(_buf->size(), **binaryString);
+//    std::memcmp((void*) _buf->c_str(), )
+//    *_buf += (*binaryString)->c_str();
     std::cout << "add buf end" << std::endl;
     std::cout.flush();
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
