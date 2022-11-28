@@ -21,7 +21,7 @@ void ClientImpl::readBuf(std::shared_ptr<std::string>* buf) { // передат�
     (*buf)->resize(byte);
     std::cout << "memcopy" << std::endl;
     std::cout.flush();
-    std::memcmp((void *) (*buf)->c_str(), readBuf, byte);
+    std::memcpy((void *) (*buf)->c_str(), readBuf, byte);
     std::cout << "buf = " <<(*buf) << ":end, buf size = " << (*buf)->length() << std::endl;
 //    buf->setBinaryString(readBuf, byte);
 //    std::cout << "buf read:" << std::endl;

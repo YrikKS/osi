@@ -163,7 +163,7 @@ void BufferImpl::sendBuf(std::shared_ptr<std::string> *binaryString) {
         if (_cashElement->getCash()->length() > _countByteReadFromCash) {
             if (_cashElement->getCash()->length() >= _countByteReadFromCash + BUF_SIZE - 1) {
                 (*binaryString)->resize(BUF_SIZE - 1);
-                std::memcmp((void *) (*binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash, BUF_SIZE - 1);
+                std::memcpy((void *) (*binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash, BUF_SIZE - 1);
 //                (*binaryString)->setNewDataNotMallocWithPtr(_cashElement->getCash(), _countByteReadFromCash,
 //                                                         _countByteReadFromCash + BUF_SIZE - 1);
 //
@@ -172,7 +172,7 @@ void BufferImpl::sendBuf(std::shared_ptr<std::string> *binaryString) {
 ////                std::cout << "second == " << binaryString->getLength() << std::endl;
             } else {
                 (*binaryString)->resize(_cashElement->getCash()->length());
-                std::memcmp((void *) (*binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash, _cashElement->getCash()->length());
+                std::memcpy((void *) (*binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash, _cashElement->getCash()->length());
 //                binaryString->setNewDataNotMallocWithPtr(_cashElement->getCash(), _countByteReadFromCash,
 //                                                         _cashElement->getCash()->getLength());
 //                std::cout << "second == " << binaryString->getLength() << std::endl;
@@ -182,11 +182,11 @@ void BufferImpl::sendBuf(std::shared_ptr<std::string> *binaryString) {
     } else {
         if (_buf->length() >= BUF_SIZE - 1) {
             (*binaryString)->resize(BUF_SIZE - 1);
-            std::memcmp((void *) (*binaryString)->c_str(), _buf->c_str(), BUF_SIZE - 1);
+            std::memcpy((void *) (*binaryString)->c_str(), _buf->c_str(), BUF_SIZE - 1);
 //            std::cout << "main == " << binaryString->getLength() << std::endl;
         } else {
             (*binaryString)->resize(BUF_SIZE - 1);
-            std::memcmp((void *) (*binaryString)->c_str(), _buf->c_str(), _buf->length());
+            std::memcpy((void *) (*binaryString)->c_str(), _buf->c_str(), _buf->length());
 //            binaryString->setNewDataNotMalloc(_buf, 0, _buf.getLength()); // TODO: check
 //            std::cout << "main == " << binaryString->getLength() << std::endl;
 //        binaryString->copyData(_buf);
