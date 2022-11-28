@@ -31,7 +31,7 @@ void ClientImpl::readBuf(std::shared_ptr<std::string>* buf) { // передат�
     std::cout.flush();
 //    std::string str1(readBuf, byte);
     try {
-        (*buf)->resize(byte);
+        (*buf)->resize(byte, ' ');
     }catch (std::exception &exeption) {
         std::cout << exeption.what() << std::endl;
         exit(0);
