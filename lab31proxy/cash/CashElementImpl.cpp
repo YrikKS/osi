@@ -14,8 +14,8 @@ void CashElementImpl::setIsCashEnd(bool var) {
     _isCashEnd = var;
 }
 
-BinaryString *CashElementImpl::getCash() {
-    return &_cash;
+std::shared_ptr<std::string> CashElementImpl::getCash() {
+    return _cash;
 }
 
 CashElementImpl::CashElementImpl(std::string heading) {
@@ -30,7 +30,6 @@ long long int CashElementImpl::getHash() {
 
 CashElementImpl::~CashElementImpl() {
     LOG_EVENT("delete cash ");
-    _cash.deleteData();
 }
 
 int CashElementImpl::getCountUsers() {

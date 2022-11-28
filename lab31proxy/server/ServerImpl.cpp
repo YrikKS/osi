@@ -75,7 +75,9 @@ ServerImpl::ServerImpl() {
     _cash = new CashImpl();
 //    char* newBuf = new char[BUF_SIZE];
     char data[BUF_SIZE] = {0};
-    _binaryString = new BinaryString(data, BUF_SIZE);
+    buffer = std::make_shared<std::string>();
+    buffer->resize(BUF_SIZE);
+//    _binaryString = new BinaryString(data, BUF_SIZE);
 //    delete[] newBuf;
 }
 
@@ -84,20 +86,20 @@ void ServerImpl::handlingEvent() {
     bool isNeedUpdatePollSet = false;
 //    std::cout << "start " << std::endl;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-        _binaryString->clearData();
+        (*buffer).clear();
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
 //            std::cout << "read " << (*it)->getTypeClient() << std::endl;
 //            std::cout.flush();
-            (*it)->readBuf(_binaryString);
+            (*it)->readBuf(&buffer);
 //            std::cout << "read " << (*it)->getTypeClient() << std::endl;
 //            std::cout.flush();
-            if (_binaryString->getLength() == 0) {
+            if ((*buffer).length() == 0) {
 //                std::cout << "del Client" << std::endl;
                 isNeedUpdatePollSet = deleteClient(*it, &it);
             } else {
                 try {
-                    (*it)->getBuffer()->readFromSocket(_binaryString);
+                    (*it)->getBuffer()->readFromSocket(&buffer);
                 } catch (ParseException &ex) {
                     std::cerr << ex.what() << std::endl;
                     LOG_ERROR("send error and disconnect");
@@ -143,9 +145,9 @@ void ServerImpl::handlingEvent() {
                     ((*it)->getTypeClient() == TypeClient::USER
                      && (*it)->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE)) {
 
-                    (*it)->getBuffer()->sendBuf(_binaryString);
-                    (*it)->sendBuf(_binaryString);
-                    (*it)->getBuffer()->proofSend(_binaryString);
+                    (*it)->getBuffer()->sendBuf(&buffer);
+                    (*it)->sendBuf(&buffer);
+                    (*it)->getBuffer()->proofSend(&buffer);
                 }
             } else {
 //                (*it)->setReventsZero();
@@ -166,7 +168,6 @@ ServerImpl::~ServerImpl() {
         delete it;
     }
     delete _cash;
-    delete _binaryString;
 }
 
 

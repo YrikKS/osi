@@ -8,6 +8,7 @@
 #include "../buffer/Buffer.h"
 #include "../binaryString/BinaryString.h"
 #include <sys/poll.h>
+#include <memory>
 
 namespace ProxyServer {
     typedef enum {
@@ -21,9 +22,9 @@ namespace ProxyServer {
 
         virtual int getFdClient() = 0;
 
-        virtual void sendBuf(BinaryString* buf) = 0;
+        virtual void sendBuf(std::shared_ptr<std::string>* buf) = 0;
 
-        virtual void readBuf(BinaryString* buf) = 0;
+        virtual void readBuf(std::shared_ptr<std::string> *buf) = 0;
 
         virtual Buffer *getBuffer() = 0;
 

@@ -5,6 +5,7 @@
 #ifndef LAB31PROXY_CASHELEMENTIMPL_H
 #define LAB31PROXY_CASHELEMENTIMPL_H
 
+#include <memory>
 #include "CashElement.h"
 
 
@@ -17,7 +18,7 @@ namespace ProxyServer {
 
         void setIsCashEnd(bool var) override;
 
-        BinaryString *getCash() override;
+        std::shared_ptr<std::string> getCash() override;
 
         long long int getHash() override;
 
@@ -39,7 +40,7 @@ namespace ProxyServer {
         bool _isServerConnected = false;
         long long int _hashHead = 0;
         std::string _head;
-        BinaryString _cash;
+        std::shared_ptr<std::string> _cash;
     };
 }
 

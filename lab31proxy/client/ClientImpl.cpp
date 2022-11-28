@@ -9,16 +9,18 @@ int ClientImpl::getFdClient() {
     return _fd;
 }
 
-void ClientImpl::sendBuf(BinaryString* buf) {
-    write(_fd, buf->getData(), buf->getLength()); // Chek!?
+void ClientImpl::sendBuf(std::shared_ptr<std::string>* buf) {
+    write(_fd, (*buf)->c_str(), (*buf)->length()); // Chek!?
 //    std::cout << "buf prinf:" << std::endl;
 //    buf->printer();
 }
 
-void ClientImpl::readBuf(BinaryString* buf) { // передать пустой буффер размером BUF_SIZE!
+void ClientImpl::readBuf(std::shared_ptr<std::string>* buf) { // передать пустой буффер размером BUF_SIZE!
     char readBuf[BUF_SIZE] = {0};
     int byte = read(_fd, readBuf, BUF_SIZE - 1);
-    buf->setBinaryString(readBuf, byte);
+    (*buf)->resize(byte);
+    std::memcmp((void *) (*buf)->c_str(), readBuf, byte);
+//    buf->setBinaryString(readBuf, byte);
 //    std::cout << "buf read:" << std::endl;
 //    buf->printer();
 //    std::cout << strlen(buf) << " ws " << byte << std::endl;

@@ -18,13 +18,13 @@ namespace ProxyServer {
     public:
         BufferImpl(Cash *cash);
 
-        void readFromSocket(BinaryString *binaryString) override;
+        void readFromSocket(std::shared_ptr<std::string> *binaryString) override;
 
 //        void readResponse(char *buf) override;
 
-        void sendBuf(BinaryString *binaryString) override;
+        void sendBuf(std::shared_ptr<std::string> *binaryString) override;
 
-        void proofSend(BinaryString *binaryString) override;
+        void proofSend(std::shared_ptr<std::string> *binaryString) override;
 
         bool isReadyConnectHttpServer() override;
 
@@ -62,7 +62,7 @@ namespace ProxyServer {
         StatusHttp _statusClient = StatusHttp::WRITE_REQUEST_HEADING;
         StatusHttp _statusHttpServer = StatusHttp::READ_REQUEST;
         std::string _requestHeading;
-        BinaryString _buf;
+        std::shared_ptr<std::string> _buf;
         bool _isClientConnect = false;
         bool _isServerConnect = false;
         std::string _sendingString;
@@ -79,13 +79,13 @@ namespace ProxyServer {
 
         CashElement *_cashElement = NULL;
 
-        void wrightRequestHeading(BinaryString *binaryString);
+        void wrightRequestHeading(std::shared_ptr<std::string> *binaryString);
 
-        void wrightRequestBody(BinaryString *binaryString);
+        void wrightRequestBody(std::shared_ptr<std::string> *binaryString);
 
-        void wrightResponseHeading(BinaryString *binaryString);
+        void wrightResponseHeading(std::shared_ptr<std::string> *binaryString);
 
-        void wrightResponseBody(BinaryString *binaryString);
+        void wrightResponseBody(std::shared_ptr<std::string> *binaryString);
 
         void parsHead();
 

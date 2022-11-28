@@ -12,6 +12,7 @@
 #include <iostream>
 #include <map>
 #include <list>
+#include <memory>
 #include "../Constants.h"
 #include "../client/Client.h"
 #include "../socket/ServerSocket.h"
@@ -36,7 +37,7 @@ namespace ProxyServer {
         struct pollfd _pollSet[MAX_COUNT_CONNECTIONS];
         std::list<Client*> _clientList;
         Cash *_cash;
-        BinaryString* _binaryString;
+        std::shared_ptr<std::string> buffer;
     };
 }
 

@@ -18,7 +18,7 @@ namespace ProxyServer {
 
         virtual void setIsCashEnd(bool var) = 0;
 
-        virtual BinaryString *getCash() = 0;
+        virtual std::shared_ptr<std::string> getCash() = 0;
 
         virtual long long int getHash() = 0;
 
