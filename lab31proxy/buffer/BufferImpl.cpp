@@ -188,7 +188,7 @@ void BufferImpl::sendBuf(std::string *binaryString) {
             std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), BUF_SIZE - 1);
 //            std::cout << "main == " << binaryString->getLength() << std::endl;
         } else {
-            (binaryString)->resize(BUF_SIZE - 1);
+            (binaryString)->resize(_buf->length());
             std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), _buf->length());
 //            binaryString->setNewDataNotMalloc(_buf, 0, _buf.getLength()); // TODO: check
 //            std::cout << "main == " << binaryString->getLength() << std::endl;
