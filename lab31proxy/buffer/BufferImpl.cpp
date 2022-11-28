@@ -10,10 +10,11 @@ using namespace ProxyServer;
 void BufferImpl::readFromSocket(std::string *binaryString) {
 //    std::cout << "add buf" << std::endl;
 //    std::cout.flush();
-    _buf->resize(_buf->length() + (binaryString)->length());
-    _buf->insert(_buf->length(), *binaryString);
+//    _buf->resize(_buf->length() + (binaryString)->length());
+//    _buf->insert(_buf->length(), *binaryString);
 //    std::memcmp((void*) _buf->c_str(), )
 //    *_buf += (*binaryString)->c_str();
+    _buf->append(*binaryString);
 //    (*_buf) += (*binaryString);
 //    (binaryString)->resize(BUF_SIZE - 1);
 //    std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), BUF_SIZE - 1);
