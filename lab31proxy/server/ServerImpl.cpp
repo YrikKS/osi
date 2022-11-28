@@ -75,8 +75,8 @@ ServerImpl::ServerImpl() {
     _cash = new CashImpl();
 //    char* newBuf = new char[BUF_SIZE];
     char data[BUF_SIZE] = {0};
-    buffer = std::make_shared<std::string>();
-    buffer->resize(BUF_SIZE);
+    buffer2 = std::make_shared<std::string>();
+    buffer2->resize(BUF_SIZE);
 //    _binaryString = new BinaryString(data, BUF_SIZE);
 //    delete[] newBuf;
 }
@@ -87,6 +87,7 @@ void ServerImpl::handlingEvent() {
 //    std::cout << "start " << std::endl;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
 //        (buffer)->clear();
+        std::shared_ptr<std::string> buffer = std::make_shared<std::string>();
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
 //            std::cout << "read " << (*it)->getTypeClient() << std::endl;

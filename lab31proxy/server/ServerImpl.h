@@ -37,7 +37,7 @@ namespace ProxyServer {
         struct pollfd _pollSet[MAX_COUNT_CONNECTIONS];
         std::list<Client*> _clientList;
         Cash *_cash;
-        std::shared_ptr<std::string> buffer;
+        std::shared_ptr<std::string> buffer2;
     };
 }
 
