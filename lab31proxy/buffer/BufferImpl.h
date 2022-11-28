@@ -62,7 +62,7 @@ namespace ProxyServer {
         StatusHttp _statusClient = StatusHttp::WRITE_REQUEST_HEADING;
         StatusHttp _statusHttpServer = StatusHttp::READ_REQUEST;
         std::string _requestHeading;
-        std::shared_ptr<std::string> _buf;
+        std::shared_ptr<std::string> _buf = std::make_shared<std::string>();
         bool _isClientConnect = false;
         bool _isServerConnect = false;
         std::string _sendingString;

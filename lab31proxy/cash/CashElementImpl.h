@@ -40,7 +40,7 @@ namespace ProxyServer {
         bool _isServerConnected = false;
         long long int _hashHead = 0;
         std::string _head;
-        std::shared_ptr<std::string> _cash;
+        std::shared_ptr<std::string> _cash = std::make_shared<std::string>();
     };
 }
 
