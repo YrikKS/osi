@@ -86,7 +86,7 @@ void ServerImpl::handlingEvent() {
     bool isNeedUpdatePollSet = false;
 //    std::cout << "start " << std::endl;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
-        (buffer)->clear();
+//        (buffer)->clear();
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
 //            std::cout << "read " << (*it)->getTypeClient() << std::endl;
