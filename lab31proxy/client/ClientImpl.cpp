@@ -18,6 +18,7 @@ void ClientImpl::sendBuf(std::shared_ptr<std::string>* buf) {
 void ClientImpl::readBuf(std::shared_ptr<std::string>* buf) { // передать пустой буффер размером BUF_SIZE!
     char readBuf[BUF_SIZE] = {0};
     int byte = read(_fd, readBuf, BUF_SIZE - 1);
+//    (*buf)->copy()
     (*buf)->resize(byte);
 //    std::cout << "memcopy" << std::endl;
 //    std::cout.flush();
