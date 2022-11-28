@@ -87,7 +87,7 @@ void ServerImpl::handlingEvent() {
 //    std::cout << "start " << std::endl;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
 //        (buffer)->clear();
-        std::shared_ptr<std::string> buffer = std::make_shared<std::string>();
+        std::string buffer;
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
 //            std::cout << "read " << (*it)->getTypeClient() << std::endl;

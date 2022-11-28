@@ -7,14 +7,14 @@
 
 using namespace ProxyServer;
 
-void BufferImpl::readFromSocket(std::shared_ptr<std::string> *binaryString) {
+void BufferImpl::readFromSocket(std::string *binaryString) {
 //    std::cout << "add buf" << std::endl;
 //    std::cout.flush();
 //    _buf->resize(_buf->length() + (*binaryString)->length());
 //    _buf->insert(_buf->length(), **binaryString);
 //    std::memcmp((void*) _buf->c_str(), )
 //    *_buf += (*binaryString)->c_str();
-    (*_buf) += *(*binaryString);
+    (*_buf) += (*binaryString);
 //    std::cout << *_buf << std::endl;
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
         wrightRequestHeading(binaryString);
@@ -30,7 +30,7 @@ void BufferImpl::readFromSocket(std::shared_ptr<std::string> *binaryString) {
 // TODO parse RESPONSE RESULT heading
 }
 
-void BufferImpl::wrightRequestHeading(std::shared_ptr<std::string> *binaryString) {
+void BufferImpl::wrightRequestHeading(std::string *binaryString) {
     int posEndHeading = 0;
     if (ParserImpl::findEndHeading(*_buf, &posEndHeading) == ResultPars::END_HEADING) {
         _requestHeading = _buf->substr(0, posEndHeading); // так как не бинарные ресурсы
@@ -64,15 +64,15 @@ void BufferImpl::wrightRequestHeading(std::shared_ptr<std::string> *binaryString
     }
 }
 
-void BufferImpl::wrightRequestBody(std::shared_ptr<std::string> *binaryString) {
+void BufferImpl::wrightRequestBody(std::string *binaryString) {
     _isReadyToSend = true;
-    _lengthBody -= (*binaryString)->length();
+    _lengthBody -= (binaryString)->length();
     if (_lengthBody <= 0) {
         _isEndSend = true;
     }
 }
 
-void BufferImpl::wrightResponseHeading(std::shared_ptr<std::string> *binaryString) {
+void BufferImpl::wrightResponseHeading(std::string *binaryString) {
     int posEndHeading = 0;
     if (ParserImpl::findEndHeading(*_buf, &posEndHeading) == ResultPars::END_HEADING) {
         std::string responseHead = _buf->substr(0, posEndHeading);
@@ -120,15 +120,15 @@ void BufferImpl::wrightResponseHeading(std::shared_ptr<std::string> *binaryStrin
     }
 }
 
-void BufferImpl::wrightResponseBody(std::shared_ptr<std::string> *binaryString) {
+void BufferImpl::wrightResponseBody(std::string *binaryString) {
     int posEnd = 0;
     _isReadyToSend = true;
-    std::cout << "read from server = " << (*binaryString)->length() << std::endl;
+    std::cout << "read from server = " << (binaryString)->length() << std::endl;
     if (_isAddDataToCash) {
-        *_cashElement->getCash() += *(*binaryString);
+        *_cashElement->getCash() += (*binaryString);
     }
     if (_isHaveContentLengthresponse) {
-        _lengthBody -= (*binaryString)->length();
+        _lengthBody -= (binaryString)->length();
         if (_lengthBody <= 0) {
             _isEndSend = true;
             if (_isAddDataToCash) {
@@ -157,13 +157,13 @@ bool BufferImpl::isCashingData(int sizeHeading, ResultParseHeading resultParseHe
     return false;
 }
 
-void BufferImpl::sendBuf(std::shared_ptr<std::string> *binaryString) {
+void BufferImpl::sendBuf(std::string *binaryString) {
     if (_isDataGetCash) {
 //        std::cout << _cashElement->getCash()->getLength() << " vs " << _countByteReadFromCash << std::endl;
         if (_cashElement->getCash()->length() > _countByteReadFromCash) {
             if (_cashElement->getCash()->length() >= _countByteReadFromCash + BUF_SIZE - 1) {
-                (*binaryString)->resize(BUF_SIZE - 1);
-                std::memcpy((void *) (*binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash, BUF_SIZE - 1);
+                (binaryString)->resize(BUF_SIZE - 1);
+                std::memcpy((void *) (binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash, BUF_SIZE - 1);
 //                (*binaryString)->setNewDataNotMallocWithPtr(_cashElement->getCash(), _countByteReadFromCash,
 //                                                         _countByteReadFromCash + BUF_SIZE - 1);
 //
@@ -171,8 +171,8 @@ void BufferImpl::sendBuf(std::shared_ptr<std::string> *binaryString) {
 ////                                                   BUF_SIZE - 1);
 ////                std::cout << "second == " << binaryString->getLength() << std::endl;
             } else {
-                (*binaryString)->resize(_cashElement->getCash()->length());
-                std::memcpy((void *) (*binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash, _cashElement->getCash()->length());
+                (binaryString)->resize(_cashElement->getCash()->length());
+                std::memcpy((void *) (binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash, _cashElement->getCash()->length());
 //                binaryString->setNewDataNotMallocWithPtr(_cashElement->getCash(), _countByteReadFromCash,
 //                                                         _cashElement->getCash()->getLength());
 //                std::cout << "second == " << binaryString->getLength() << std::endl;
@@ -181,12 +181,12 @@ void BufferImpl::sendBuf(std::shared_ptr<std::string> *binaryString) {
 //        std::cout << "second == " << binaryString->getLength() << std::endl;
     } else {
         if (_buf->length() >= BUF_SIZE - 1) {
-            (*binaryString)->resize(BUF_SIZE - 1);
-            std::memcpy((void *) (*binaryString)->c_str(), _buf->c_str(), BUF_SIZE - 1);
+            (binaryString)->resize(BUF_SIZE - 1);
+            std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), BUF_SIZE - 1);
 //            std::cout << "main == " << binaryString->getLength() << std::endl;
         } else {
-            (*binaryString)->resize(BUF_SIZE - 1);
-            std::memcpy((void *) (*binaryString)->c_str(), _buf->c_str(), _buf->length());
+            (binaryString)->resize(BUF_SIZE - 1);
+            std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), _buf->length());
 //            binaryString->setNewDataNotMalloc(_buf, 0, _buf.getLength()); // TODO: check
 //            std::cout << "main == " << binaryString->getLength() << std::endl;
 //        binaryString->copyData(_buf);
@@ -195,9 +195,9 @@ void BufferImpl::sendBuf(std::shared_ptr<std::string> *binaryString) {
     }
 }
 
-void BufferImpl::proofSend(std::shared_ptr<std::string> *binaryString) {
+void BufferImpl::proofSend(std::string *binaryString) {
     if (_isDataGetCash) { // TODO: error rework !error
-        _countByteReadFromCash += (*binaryString)->length();
+        _countByteReadFromCash += (binaryString)->length();
         // 71 ws 72
         std::cout << _cashElement->getCash()->length() << " ws " << _countByteReadFromCash << std::endl;
         if (_cashElement->getCash()->length() == _countByteReadFromCash) {
@@ -213,7 +213,7 @@ void BufferImpl::proofSend(std::shared_ptr<std::string> *binaryString) {
         return;
     }
 
-    _buf->erase(0, (*binaryString)->length());
+    _buf->erase(0, (binaryString)->length());
 //    _buf.shiftDataNotMalloc(_buf, binaryString->getLength());
     if (_buf->empty() && !_isEndSend) {
         _isReadyToSend = false;

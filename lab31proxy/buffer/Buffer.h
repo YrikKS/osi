@@ -26,13 +26,13 @@ namespace ProxyServer {
 
     class Buffer {
     public:
-        virtual void readFromSocket(std::shared_ptr<std::string> *binaryString) = 0;
+        virtual void readFromSocket(std::string *binaryString) = 0;
 
 //        virtual void readResponse(char *buf) = 0;
 
-        virtual void sendBuf(std::shared_ptr<std::string> *binaryString) = 0;
+        virtual void sendBuf(std::string *binaryString) = 0;
 
-        virtual void proofSend(std::shared_ptr<std::string> *binaryString) = 0;
+        virtual void proofSend(std::string *binaryString) = 0;
 
         virtual bool isReadyConnectHttpServer() = 0;
 

@@ -20,9 +20,9 @@ namespace ProxyServer {
 
         int getFdClient() override;
 
-        void sendBuf(std::shared_ptr<std::string> *buf) override;
+        void sendBuf(std::string *buf) override;
 
-        void readBuf(std::shared_ptr<std::string> *buf) override;
+        void readBuf(std::string *buf) override;
 
         Buffer *getBuffer() override;
 
