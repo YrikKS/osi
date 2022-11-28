@@ -99,9 +99,10 @@ void ServerImpl::handlingEvent() {
                 isNeedUpdatePollSet = deleteClient(*it, &it);
             } else {
                 try {
-                    (*it)->getBuffer()->readFromSocket(&buffer);
                     std::cout << "memcopy end" << std::endl;
                     std::cout.flush();
+                    (*it)->getBuffer()->readFromSocket(&buffer);
+
                 } catch (ParseException &ex) {
                     std::cerr << ex.what() << std::endl;
                     LOG_ERROR("send error and disconnect");
