@@ -100,6 +100,8 @@ void ServerImpl::handlingEvent() {
             } else {
                 try {
                     (*it)->getBuffer()->readFromSocket(&buffer);
+                    std::cout << "memcopy end" << std::endl;
+                    std::cout.flush();
                 } catch (ParseException &ex) {
                     std::cerr << ex.what() << std::endl;
                     LOG_ERROR("send error and disconnect");
