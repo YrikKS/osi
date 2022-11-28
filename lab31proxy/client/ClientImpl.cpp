@@ -22,11 +22,12 @@ void ClientImpl::readBuf(std::shared_ptr<std::string>* buf) { // передат�
         std::cout << "buf read:" << std::endl;
     std::cout.flush();
     (*buf)->clear();
-    std::cout << "buf read: clear" << std::endl;
+    std::cout << "buf read: clear " << (*buf)->capacity() << std::endl;
     std::cout.flush();
+    std::string str1(readBuf, byte);
     (*buf)->resize(byte);
-        std::cout << "buf read end" << std::endl;
-        std::cout.flush();
+    std::cout << "buf read end" << std::endl;
+    std::cout.flush();
 //    std::cout << "memcopy" << std::endl;
 //    std::cout.flush();
     std::memcpy((void *) (*buf)->c_str(), readBuf, byte);
