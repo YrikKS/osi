@@ -75,9 +75,8 @@ ServerImpl::ServerImpl() {
 }
 
 void ServerImpl::handlingEvent() {
-    int i = 1;
     bool isNeedUpdatePollSet = false;
-    for (auto it = _clientList.begin(); it != _clientList.end(); it++, i++) {
+    for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
         std::string buffer;
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
@@ -139,6 +138,7 @@ void ServerImpl::handlingEvent() {
 //                (*it)->setReventsZero();
             }
         }
+        changePollEvenetForClient(*it);
     }
 
     if (isNeedUpdatePollSet) {
@@ -196,4 +196,22 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
         return true;
     }
     return false;
+}
+
+void ServerImpl::changePollEvenetForClient(Client* client) {
+    if(client->getTypeClient() == TypeClient::USER) {
+        if(client->getBuffer()->getStatusClient() == StatusHttp::WRITE_REQUEST_BODY ||
+                client->getBuffer()->getStatusClient() == StatusHttp::WRITE_REQUEST_HEADING) {
+            client->setPollElement(POLLIN);
+        } else if(client->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE) {
+            client->setPollElement(POLLOUT);
+        }
+    } else {
+        if(client->getBuffer()->getStatusClient() == StatusHttp::WRITE_RESPONSE_BODY ||
+           client->getBuffer()->getStatusClient() == StatusHttp::WRITE_RESPONSE_HEADING) {
+            client->setPollElement(POLLIN);
+        } else if(client->getBuffer()->getStatusClient() == StatusHttp::READ_REQUEST) {
+            client->setPollElement(POLLOUT);
+        }
+    }
 }

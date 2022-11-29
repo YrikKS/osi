@@ -31,6 +31,8 @@ namespace ProxyServer {
         void handlingEvent();
         bool deleteClient(Client* client, std::list<Client*>::iterator* iterator);
         void setPollElements();
+        void changePollEvenetForClient(Client* client);
+
 
         bool _isWork = true;
         ServerSocket* _serverSocket;
