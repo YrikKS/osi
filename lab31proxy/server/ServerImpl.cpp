@@ -139,12 +139,12 @@ void ServerImpl::handlingEvent() {
             }
         }
     }
-//    for (auto & it : _clientList) {
-//        changePollEventForClient(it);
-//    }
-    if (isNeedUpdatePollSet) {
-        configuratePollArr();
+    for (auto & it : _clientList) {
+        changePollEventForClient(it);
     }
+//    if (isNeedUpdatePollSet) {
+        configuratePollArr();
+//    }
 }
 
 ServerImpl::~ServerImpl() {
@@ -207,7 +207,7 @@ void ServerImpl::changePollEventForClient(Client *client) {
         } else if (client->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE) {
             client->setEvents(POLLIN | POLLOUT);
         }
-    } else {
+    } else if(client->getTypeClient() == TypeClient::HTTP_SERVER) {
         if (client->getBuffer()->getStatusHttpServer() == StatusHttp::WRITE_RESPONSE_BODY ||
             client->getBuffer()->getStatusHttpServer() == StatusHttp::WRITE_RESPONSE_HEADING) {
             client->setEvents(POLLIN | POLLOUT);
