@@ -51,3 +51,7 @@ bool CashElementImpl::isIsServerConnected() {
 void CashElementImpl::setIsServerConnect(bool isServerConnected) {
     _isServerConnected = isServerConnected;
 }
+
+const std::string &CashElementImpl::getHead() {
+    return _head;
+}

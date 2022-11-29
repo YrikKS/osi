@@ -34,6 +34,8 @@ namespace ProxyServer {
 
         void setIsServerConnect(bool isServerConnected) override;
 
+        const std::string &getHead() override;
+
     private:
         int _countUsers = 0;
         bool _isCashEnd = false;

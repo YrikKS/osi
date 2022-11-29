@@ -15,7 +15,7 @@ namespace ProxyServer {
     static int COUNT_CASH_ELEMENT = 100;
     static long long int SIZE_EACH_CASH_ELEMENT = 9223372036854775000;
 //    static long long int SIZE_EACH_CASH_ELEMENT = 1024 * 1024;
-    static int MAX_CASH_SIZE = 1024 * 1024; // 1 кб
+    static long long int MAX_CASH_SIZE = 1024 * 1024 * 1024; // 1 гб?
 
     static std::string REGEX_FOR_HOST_AND_PORT = "Host: ([\\w.\\d-]*)(:(\\d)+)*";
     static std::string REGEX_FOR_CONTENT_LENGTH = "Content-Length: ([\\d]*)";

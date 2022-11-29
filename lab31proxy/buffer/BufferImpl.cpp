@@ -83,7 +83,7 @@ void BufferImpl::wrightResponseHeading(std::string *binaryString) {
 
         if (isCashingData(responseHead.length(), resultParseHeading) &&
             !_cash->isElementInCash(_requestHeading)) {
-            _cashElement = _cash->addStringToCash(_requestHeading);
+            _cashElement = _cash->addStringToCash(_requestHeading, resultParseHeading.getContentLength() + responseHead.size());
             if (_cashElement != NULL) {
                 _isAddDataToCash = true;
 //                malloced = 829151 752 // 829151 232

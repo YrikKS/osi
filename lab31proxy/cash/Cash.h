@@ -15,7 +15,7 @@ namespace ProxyServer {
 
         virtual CashElement *findResponseInCash(std::string heading) = 0;
 
-        virtual CashElement *addStringToCash(std::string request) = 0;
+        virtual CashElement *addStringToCash(std::string request, long long int dataSize) = 0;
 
         virtual bool isElementInCash(std::string request) = 0;
     };
