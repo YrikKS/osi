@@ -36,6 +36,8 @@ namespace ProxyServer {
 
         virtual bool isReadyConnectHttpServer() = 0;
 
+        virtual void setReadyConnectHttpServer(bool value) = 0;
+
         virtual ResultParseHeading getParseResult() = 0;
 
         virtual StatusHttp getStatusClient() = 0;

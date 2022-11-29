@@ -22,7 +22,7 @@ void ServerImpl::startServer() {
             //??
         } else {
             handlingEvent();
-            if (_pollSet[0].revents & POLLIN) { // poll sock
+            if (_pollSet[0].revents & POLLIN && _clientList.size() + 1 < MAX_COUNT_CONNECTIONS) { // poll sock
                 _pollSet[0].revents = 0;
                 try {
                     _clientList.push_back(_serverSocket->acceptNewClient(_cash));
@@ -109,7 +109,8 @@ void ServerImpl::handlingEvent() {
                     LOG_ERROR("send error and disconnect");
                     //TODO disconnect
                 }
-                if ((*it)->getBuffer()->isReadyConnectHttpServer()) {
+                if ((*it)->getBuffer()->isReadyConnectHttpServer() && _clientList.size() + 1 < MAX_COUNT_CONNECTIONS ) {
+                    (*it)->getBuffer()->setReadyConnectHttpServer(false);
                     try {
                         Client *client = _serverSocket->connectToClient
                                 ((*it)->getBuffer()->getParseResult().getHostName(),

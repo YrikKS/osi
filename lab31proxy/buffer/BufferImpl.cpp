@@ -246,11 +246,12 @@ void BufferImpl::proofSend(std::string *binaryString) {
 }
 
 bool BufferImpl::isReadyConnectHttpServer() {
-    if (_isReadyConnectHttpServer) {
-        _isReadyConnectHttpServer = false;
-        return true;
-    }
-    return false;
+    return _isReadyConnectHttpServer;
+}
+
+
+void BufferImpl::setReadyConnectHttpServer(bool value) {
+    _isReadyConnectHttpServer = value;
 }
 
 StatusHttp BufferImpl::getStatusClient() {
@@ -341,6 +342,7 @@ bool BufferImpl::isIsServerConnect() {
 void BufferImpl::setIsServerConnect(bool isServerConnect) {
     _isServerConnect = isServerConnect;
 }
+
 
 
 
