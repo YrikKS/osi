@@ -142,9 +142,9 @@ void ServerImpl::handlingEvent() {
     for (auto & it : _clientList) {
         changePollEventForClient(it);
     }
-    if (isNeedUpdatePollSet) {
+//    if (isNeedUpdatePollSet) {
         configuratePollArr();
-    }
+//    }
 }
 
 ServerImpl::~ServerImpl() {
