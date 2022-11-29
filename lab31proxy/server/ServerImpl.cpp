@@ -139,7 +139,10 @@ void ServerImpl::handlingEvent() {
                    (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
                    !(*it)->getBuffer()->isReadyToSend()) {
             isNeedUpdatePollSet = deleteClient(*it, &it);
-
+        } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
+                   (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
+                   (*it)->getBuffer()->isSendEnd()) {
+            isNeedUpdatePollSet = deleteClient(*it, &it);
         } else if ((*it)->getPollFd().revents & POLLOUT) {
             (*it)->setReventsZero();
 //            std::cout << (*it)->getTypeClient() << std::endl;
