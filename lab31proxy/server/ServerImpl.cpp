@@ -52,7 +52,7 @@ void ServerImpl::setPollElements() {
 
 void ServerImpl::configuratePollArr() {
     LOG_EVENT("update pollSet");
-//    memset(_pollSet, 0, MAX_COUNT_CONNECTIONS * sizeof(struct pollfd));
+    memset(_pollSet, 0, MAX_COUNT_CONNECTIONS * sizeof(struct pollfd));
     _pollSet[0].fd = _serverSocket->getFdSocket();
     _pollSet[0].events = POLLIN;
 
@@ -139,12 +139,12 @@ void ServerImpl::handlingEvent() {
             }
         }
     }
-    for (auto & it : _clientList) {
-        changePollEventForClient(it);
-    }
-//    if (isNeedUpdatePollSet) {
-        configuratePollArr();
+//    for (auto & it : _clientList) {
+//        changePollEventForClient(it);
 //    }
+    if (isNeedUpdatePollSet) {
+        configuratePollArr();
+    }
 }
 
 ServerImpl::~ServerImpl() {
