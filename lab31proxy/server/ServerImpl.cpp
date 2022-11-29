@@ -91,7 +91,7 @@ void ServerImpl::handlingEvent() {
                     LOG_ERROR("send error and disconnect");
                     //TODO disconnect
                 }
-                if ((*it)->getBuffer()->isReadyConnectHttpServer() && _clientList.size() + 1 < MAX_COUNT_CONNECTIONS ) {
+                if ((*it)->getBuffer()->isReadyConnectHttpServer() && _clientList.size() + 1 < MAX_COUNT_CONNECTIONS) {
                     (*it)->getBuffer()->setReadyConnectHttpServer(false);
                     try {
                         Client *client = _serverSocket->connectToClient
@@ -138,12 +138,12 @@ void ServerImpl::handlingEvent() {
 //                (*it)->setReventsZero();
             }
         }
-        changePollEvenetForClient(*it);
+        changePollEventForClient(*it);
     }
 
-    if (isNeedUpdatePollSet) {
-        configuratePollArr();
-    }
+//    if (isNeedUpdatePollSet) {
+    configuratePollArr();
+//    }
 }
 
 ServerImpl::~ServerImpl() {
@@ -198,19 +198,19 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
     return false;
 }
 
-void ServerImpl::changePollEvenetForClient(Client* client) {
-    if(client->getTypeClient() == TypeClient::USER) {
-        if(client->getBuffer()->getStatusClient() == StatusHttp::WRITE_REQUEST_BODY ||
-                client->getBuffer()->getStatusClient() == StatusHttp::WRITE_REQUEST_HEADING) {
+void ServerImpl::changePollEventForClient(Client *client) {
+    if (client->getTypeClient() == TypeClient::USER) {
+        if (client->getBuffer()->getStatusClient() == StatusHttp::WRITE_REQUEST_BODY ||
+            client->getBuffer()->getStatusClient() == StatusHttp::WRITE_REQUEST_HEADING) {
             client->setPollElement(POLLIN);
-        } else if(client->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE) {
+        } else if (client->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE) {
             client->setPollElement(POLLOUT);
         }
     } else {
-        if(client->getBuffer()->getStatusClient() == StatusHttp::WRITE_RESPONSE_BODY ||
-           client->getBuffer()->getStatusClient() == StatusHttp::WRITE_RESPONSE_HEADING) {
+        if (client->getBuffer()->getStatusClient() == StatusHttp::WRITE_RESPONSE_BODY ||
+            client->getBuffer()->getStatusClient() == StatusHttp::WRITE_RESPONSE_HEADING) {
             client->setPollElement(POLLIN);
-        } else if(client->getBuffer()->getStatusClient() == StatusHttp::READ_REQUEST) {
+        } else if (client->getBuffer()->getStatusClient() == StatusHttp::READ_REQUEST) {
             client->setPollElement(POLLOUT);
         }
     }
