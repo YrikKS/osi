@@ -203,16 +203,16 @@ void ServerImpl::changePollEventForClient(Client *client) {
     if (client->getTypeClient() == TypeClient::USER) {
         if (client->getBuffer()->getStatusClient() == StatusHttp::WRITE_REQUEST_BODY ||
             client->getBuffer()->getStatusClient() == StatusHttp::WRITE_REQUEST_HEADING) {
-            client->setEvents(POLLIN);
+            client->setEvents(POLLIN | POLLOUT);
         } else if (client->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE) {
-            client->setEvents(POLLOUT);
+            client->setEvents(POLLIN | POLLOUT);
         }
     } else {
         if (client->getBuffer()->getStatusHttpServer() == StatusHttp::WRITE_RESPONSE_BODY ||
             client->getBuffer()->getStatusHttpServer() == StatusHttp::WRITE_RESPONSE_HEADING) {
-            client->setEvents(POLLIN);
+            client->setEvents(POLLIN | POLLOUT);
         } else if (client->getBuffer()->getStatusHttpServer() == StatusHttp::READ_REQUEST) {
-            client->setEvents(POLLOUT);
+            client->setEvents(POLLIN | POLLOUT);
         }
     }
 }
