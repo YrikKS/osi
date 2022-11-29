@@ -138,9 +138,10 @@ void ServerImpl::handlingEvent() {
 //                (*it)->setReventsZero();
             }
         }
-        changePollEventForClient(*it);
     }
-
+    for (auto & it : _clientList) {
+        changePollEventForClient(it);
+    }
 //    if (isNeedUpdatePollSet) {
     configuratePollArr();
 //    }
