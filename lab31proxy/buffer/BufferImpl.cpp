@@ -8,17 +8,7 @@
 using namespace ProxyServer;
 
 void BufferImpl::readFromSocket(std::string *binaryString) {
-//    std::cout << "add buf" << std::endl;
-//    std::cout.flush();
-//    _buf->resize(_buf->length() + (binaryString)->length());
-//    _buf->insert(_buf->length(), *binaryString);
-//    std::memcmp((void*) _buf->c_str(), )
-//    *_buf += (*binaryString)->c_str();
     _buf->append(*binaryString);
-//    (*_buf) += (*binaryString);
-//    (binaryString)->resize(BUF_SIZE - 1);
-//    std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), BUF_SIZE - 1);
-//    std::cout << *_buf << std::endl;
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
         wrightRequestHeading(binaryString);
     } else if (_statusClient == StatusHttp::WRITE_REQUEST_BODY) {
@@ -37,7 +27,7 @@ void BufferImpl::wrightRequestHeading(std::string *binaryString) {
         _requestHeading = _buf->substr(0, posEndHeading); // так как не бинарные ресурсы
         parsHead();
         if (_cash->isElementInCash(_requestHeading)) {
-            std::cout << "data get from cash" << std::endl;
+//            std::cout << "data get from cash" << std::endl;
             _isDataGetCash = true;
             _cashElement = _cash->findResponseInCash(_requestHeading);
             _cashElement->addCountUsers();
@@ -47,7 +37,7 @@ void BufferImpl::wrightRequestHeading(std::string *binaryString) {
         }
 
         _isReadyConnectHttpServer = true;
-        std::cout << "ready connect to server" << std::endl;
+//        std::cout << "ready connect to server" << std::endl;
         if (_resultParseHeading->getType() == GET_REQUEST) {
             _isReadyToSend = true;
             _isEndSend = true;
@@ -84,7 +74,7 @@ void BufferImpl::wrightResponseHeading(std::string *binaryString) {
             if (_cashElement != NULL) {
                 _isAddDataToCash = true;
 //                malloced = 829151 752 // 829151 232
-                std::cout << "malloced == " << resultParseHeading.getContentLength() + responseHead.size() << std::endl;
+//                std::cout << "malloced == " << resultParseHeading.getContentLength() + responseHead.size() << std::endl;
 //                _cashElement->getCash()->resize(resultParseHeading.getContentLength() + responseHead.size());
                 _cashElement->getCash()->append(*_buf);
                 _cashElement->setIsCashEnd(false);
@@ -122,7 +112,7 @@ void BufferImpl::wrightResponseHeading(std::string *binaryString) {
 void BufferImpl::wrightResponseBody(std::string *binaryString) {
     int posEnd = 0;
     _isReadyToSend = true;
-    std::cout << "read from server = " << (binaryString)->length() << std::endl;
+//    std::cout << "read from server = " << (binaryString)->length() << std::endl;
     if (_isAddDataToCash) {
         *_cashElement->getCash() += (*binaryString);
     }
