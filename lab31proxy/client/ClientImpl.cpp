@@ -3,46 +3,45 @@
 //
 
 #include "ClientImpl.h"
+
 using namespace ProxyServer;
 
 int ClientImpl::getFdClient() {
     return _fd;
 }
 
-void ClientImpl::sendBuf(std::string* buf) {
-    write(_fd, (buf)->c_str(), (buf)->length()); // Chek!?
-//    std::cout << "buf prinf:" << std::endl;
-//    buf->printer();
+void ClientImpl::sendBuf(std::string *buf) {
+    write(_fd, (buf)->c_str(), (buf)->length());
 }
 
-void ClientImpl::readBuf(std::string* buf) { // передать пустой буффер размером BUF_SIZE!
+void ClientImpl::readBuf(std::string *buf) { // передать пустой буффер размером BUF_SIZE!
     char readBuf[BUF_SIZE] = {0};
     int byte = read(_fd, readBuf, BUF_SIZE - 1);
-    if(byte < 0) {
-        while(true) {
-            std::cout << "eto ppz" << std::endl;
-        }
+    if (byte < 0) {
+        perror("read error");
+        buf->clear();
+        return;
     }
-//    (*buf)->copy()
-        std::cout << "buf read:" << std::endl;
-    std::cout.flush();
+////    (*buf)->copy()
+//    std::cout << "buf read:" << std::endl;
+//    std::cout.flush();
     (buf)->clear();
-    std::cout << "buf read: clear " << (buf)->capacity() << " and " << (buf)->length() << std::endl;
-    std::cout.flush();
+//    std::cout << "buf read: clear " << (buf)->capacity() << " and " << (buf)->length() << std::endl;
+//    std::cout.flush();
 //    std::string str1(readBuf, byte);
-    try {
-        (buf)->resize(byte, ' ');
-    }catch (std::exception &exeption) {
-        std::cout << exeption.what() << std::endl;
-        exit(0);
-    }
-    std::cout << "buf " << (buf)->capacity() << " and " << (buf)->length();
-    std::cout.flush();
+//    try {
+    (buf)->resize(byte, ' ');
+//    } catch (std::exception &exeption) {
+//        std::cout << exeption.what() << std::endl;
+//        exit(0);
+//    }
+//    std::cout << "buf " << (buf)->capacity() << " and " << (buf)->length();
+//    std::cout.flush();
 //    std::cout << "memcopy" << std::endl;
 //    std::cout.flush();
     std::memcpy((void *) (buf)->c_str(), readBuf, byte);
-    std::cout << " !!!!!!!!1 buf " << (buf)->capacity() << " and " << (buf)->length() << std::endl;
-    std::cout.flush();
+//    std::cout << " !!!!!!!!1 buf " << (buf)->capacity() << " and " << (buf)->length() << std::endl;
+//    std::cout.flush();
 //    std::cout << "buf = " <<(*buf) << ":end, buf size = " << (*buf)->length() << std::endl;
 //    buf->setBinaryString(readBuf, byte);
 //    std::cout << "buf read:" << std::endl;
@@ -52,7 +51,7 @@ void ClientImpl::readBuf(std::string* buf) { // передать пустой б
 //    return byte;
 }
 
-ClientImpl::ClientImpl(int sock, TypeClient typeClient, Buffer* buf) {
+ClientImpl::ClientImpl(int sock, TypeClient typeClient, Buffer *buf) {
     _fd = sock;
     _typeClient = typeClient;
     _buffer = buf;

@@ -11,6 +11,7 @@ ProxyServer::CashElement *ProxyServer::CashImpl::findResponseInCash(std::string 
     size_t hashHeading = hasher(heading);
     for (auto it = _listCash.begin(); it != _listCash.end(); it++) {
         if ((*it)->getHash() == hashHeading) {
+            _listCash.splice(_listCash.end(), _listCash, it);
             LOG_EVENT("find in cash");
             return (*it);
         }
