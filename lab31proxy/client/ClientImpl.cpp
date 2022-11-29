@@ -22,33 +22,9 @@ void ClientImpl::readBuf(std::string *buf) { // передать пустой б
         buf->clear();
         return;
     }
-////    (*buf)->copy()
-//    std::cout << "buf read:" << std::endl;
-//    std::cout.flush();
-    (buf)->clear();
-//    std::cout << "buf read: clear " << (buf)->capacity() << " and " << (buf)->length() << std::endl;
-//    std::cout.flush();
-//    std::string str1(readBuf, byte);
-//    try {
+//    (buf)->clear();
     (buf)->resize(byte, ' ');
-//    } catch (std::exception &exeption) {
-//        std::cout << exeption.what() << std::endl;
-//        exit(0);
-//    }
-//    std::cout << "buf " << (buf)->capacity() << " and " << (buf)->length();
-//    std::cout.flush();
-//    std::cout << "memcopy" << std::endl;
-//    std::cout.flush();
     std::memcpy((void *) (buf)->c_str(), readBuf, byte);
-//    std::cout << " !!!!!!!!1 buf " << (buf)->capacity() << " and " << (buf)->length() << std::endl;
-//    std::cout.flush();
-//    std::cout << "buf = " <<(*buf) << ":end, buf size = " << (*buf)->length() << std::endl;
-//    buf->setBinaryString(readBuf, byte);
-//    std::cout << "buf read:" << std::endl;
-//    buf->printer();
-//    std::cout << strlen(buf) << " ws " << byte << std::endl;
-//    std::cout.flush();
-//    return byte;
 }
 
 ClientImpl::ClientImpl(int sock, TypeClient typeClient, Buffer *buf) {
@@ -77,14 +53,6 @@ void ClientImpl::setBuffer(Buffer *buffer) {
     _buffer = buffer;
 }
 
-//Client *ClientImpl::getPair() {
-//    return _pair;
-//}
-//
-//void ClientImpl::setPair(Client *pair) {
-//    _pair = pair;
-//}
-
 struct pollfd ClientImpl::getPollFd() {
     return _structPollFd;
 }
@@ -97,4 +65,8 @@ void ClientImpl::setPollElement(struct pollfd pollfd) {
 
 void ClientImpl::setReventsZero() {
     _structPollFd.revents = 0;
+}
+
+void ClientImpl::setEvents(short event) {
+    _structPollFd.events = event;
 }

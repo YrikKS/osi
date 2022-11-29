@@ -14,6 +14,16 @@ int ServerSocketImpl::connectSocket() {
         throw ConnectException("bind socket");
     }
 
+    const int enable = 1;
+    if (setsockopt(sockFd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0) {
+        LOG_ERROR_WITH_ERRNO("setsockopt(SO_REUSEADDR) failed");
+        throw ConnectException("setsockopt(SO_REUSEADDR) failed");
+    }
+    if (setsockopt(sockFd, SOL_SOCKET, SO_REUSEPORT, &enable, sizeof(int)) < 0) {
+        LOG_ERROR_WITH_ERRNO("setsockopt(SO_REUSEADDR) failed");
+        throw ConnectException("setsockopt(SO_REUSEADDR) failed");
+    }
+
     struct sockaddr_in sockAddr;
     sockAddr.sin_port = htons(PORT_SERVER_SOCKET);
     sockAddr.sin_addr.s_addr = INADDR_ANY;

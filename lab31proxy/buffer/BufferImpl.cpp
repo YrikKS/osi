@@ -28,8 +28,6 @@ void BufferImpl::readFromSocket(std::string *binaryString) {
     } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_BODY) {
         wrightResponseBody(binaryString);
     }
-//    std::cout << "add buf end" << std::endl;
-//    std::cout.flush();
 // TODO parse RESPONSE RESULT heading
 }
 
@@ -37,7 +35,6 @@ void BufferImpl::wrightRequestHeading(std::string *binaryString) {
     int posEndHeading = 0;
     if (ParserImpl::findEndHeading(*_buf, &posEndHeading) == ResultPars::END_HEADING) {
         _requestHeading = _buf->substr(0, posEndHeading); // так как не бинарные ресурсы
-//        std::cout << _requestHeading << std::endl;
         parsHead();
         if (_cash->isElementInCash(_requestHeading)) {
             std::cout << "data get from cash" << std::endl;
@@ -45,7 +42,6 @@ void BufferImpl::wrightRequestHeading(std::string *binaryString) {
             _cashElement = _cash->findResponseInCash(_requestHeading);
             _cashElement->addCountUsers();
             _buf->clear();
-//            _buf.mallocNeedSize(_cashElement->getCash()->getMallocedSize());
             _statusClient = StatusHttp::READ_RESPONSE;
             return;
         }
@@ -83,7 +79,8 @@ void BufferImpl::wrightResponseHeading(std::string *binaryString) {
 
         if (isCashingData(responseHead.length(), resultParseHeading) &&
             !_cash->isElementInCash(_requestHeading)) {
-            _cashElement = _cash->addStringToCash(_requestHeading, resultParseHeading.getContentLength() + responseHead.size());
+            _cashElement = _cash->addStringToCash(_requestHeading,
+                                                  resultParseHeading.getContentLength() + responseHead.size());
             if (_cashElement != NULL) {
                 _isAddDataToCash = true;
 //                malloced = 829151 752 // 829151 232
@@ -116,7 +113,6 @@ void BufferImpl::wrightResponseHeading(std::string *binaryString) {
                 _isEndSend = true;
                 if (_isAddDataToCash) {
                     std::cout << "!!maybe error" << std::endl;
-//                    _cashElement->setIsCashEnd(true);
                 }
             }
         }
@@ -143,7 +139,6 @@ void BufferImpl::wrightResponseBody(std::string *binaryString) {
         if (ParserImpl::findEndBody(*_buf, &posEnd) == ResultPars::END_BODY) {
             if (_isAddDataToCash) {
                 std::cout << "!!maybe Error" << std::endl;
-//                _cashElement->setIsCashEnd(true);
             }
             _isEndSend = true;
             LOG_EVENT("end body response read");
@@ -162,47 +157,31 @@ bool BufferImpl::isCashingData(int sizeHeading, ResultParseHeading resultParseHe
 
 void BufferImpl::sendBuf(std::string *binaryString) {
     if (_isDataGetCash) {
-//        std::cout << _cashElement->getCash()->getLength() << " vs " << _countByteReadFromCash << std::endl;
         if (_cashElement->getCash()->length() > _countByteReadFromCash) {
             if (_cashElement->getCash()->length() >= _countByteReadFromCash + BUF_SIZE - 1) {
                 (binaryString)->resize(BUF_SIZE - 1);
-                std::memcpy((void *) (binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash, BUF_SIZE - 1);
-//                (*binaryString)->setNewDataNotMallocWithPtr(_cashElement->getCash(), _countByteReadFromCash,
-//                                                         _countByteReadFromCash + BUF_SIZE - 1);
-//
-////                binaryString->setNewDataNotMalloc(*_cashElement->getCash(), 0,
-////                                                   BUF_SIZE - 1);
-////                std::cout << "second == " << binaryString->getLength() << std::endl;
+                std::memcpy((void *) (binaryString)->c_str(), _cashElement->getCash()->c_str() +
+                                                              _countByteReadFromCash, BUF_SIZE - 1);
             } else {
                 (binaryString)->resize(_cashElement->getCash()->length() - _countByteReadFromCash);
-                std::memcpy((void *) (binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash, _cashElement->getCash()->length() - _countByteReadFromCash);
-//                binaryString->setNewDataNotMallocWithPtr(_cashElement->getCash(), _countByteReadFromCash,
-//                                                         _cashElement->getCash()->getLength());
-//                std::cout << "second == " << binaryString->getLength() << std::endl;
+                std::memcpy((void *) (binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash,
+                            _cashElement->getCash()->length() - _countByteReadFromCash);
             }
         }
-//        std::cout << "second == " << binaryString->getLength() << std::endl;
     } else {
         if (_buf->length() >= BUF_SIZE - 1) {
             (binaryString)->resize(BUF_SIZE - 1);
             std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), BUF_SIZE - 1);
-//            std::cout << "main == " << binaryString->getLength() << std::endl;
         } else {
             (binaryString)->resize(_buf->length());
             std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), _buf->length());
-//            binaryString->setNewDataNotMalloc(_buf, 0, _buf.getLength()); // TODO: check
-//            std::cout << "main == " << binaryString->getLength() << std::endl;
-//        binaryString->copyData(_buf);
         }
-//        std::cout << "main == " << binaryString->getLength() << std::endl;
     }
 }
 
 void BufferImpl::proofSend(std::string *binaryString) {
     if (_isDataGetCash) { // TODO: error rework !error
         _countByteReadFromCash += (binaryString)->length();
-        // 71 ws 72
-        std::cout << _cashElement->getCash()->length() << " ws " << _countByteReadFromCash << std::endl;
         if (_cashElement->getCash()->length() == _countByteReadFromCash) {
             _isReadyToSend = false;
         }
@@ -217,7 +196,6 @@ void BufferImpl::proofSend(std::string *binaryString) {
     }
 
     _buf->erase(0, (binaryString)->length());
-//    _buf.shiftDataNotMalloc(_buf, binaryString->getLength());
     if (_buf->empty() && !_isEndSend) {
         _isReadyToSend = false;
     }
@@ -228,10 +206,6 @@ void BufferImpl::proofSend(std::string *binaryString) {
             _statusClient = StatusHttp::END_WORK;
             return;
         }
-//        if (_statusClient == READ_RESPONSE && _isDataGetCash) { // TODO подумать как иначе
-//            _statusClient = StatusHttp::END_WORK;
-//            return;
-//        }
 
         if (_statusHttpServer == StatusHttp::READ_REQUEST) {
             _statusClient = StatusHttp::READ_RESPONSE;
@@ -294,12 +268,9 @@ BufferImpl::BufferImpl(Cash *cash) {
 
 void BufferImpl::parsHead() {
     try {
-//        std::cout << "START normal parse" << std::endl;
         _resultParseHeading = ParserImpl::parsingHeading(_requestHeading);
-//        std::cout << "normal parse" << std::endl;
     } catch (ParseException ex) {
         std::cerr << ex.what() << std::endl;
-//        _buf.deleteData();
         _buf->clear();
         char data[] = "incorrect heading\r\n";
         *_buf += data;
