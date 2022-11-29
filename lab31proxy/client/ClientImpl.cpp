@@ -67,6 +67,6 @@ void ClientImpl::setReventsZero() {
     _structPollFd.revents = 0;
 }
 
-void ClientImpl::setEvents(short event) {
+void ClientImpl::setEvents(int event) {
     _structPollFd.events = event;
 }

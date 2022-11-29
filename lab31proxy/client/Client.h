@@ -28,7 +28,7 @@ namespace ProxyServer {
 
         virtual Buffer *getBuffer() = 0;
 
-        virtual void setEvents(short event) = 0;
+        virtual void setEvents(int event) = 0;
 
         virtual void setBuffer(Buffer *buffer) = 0;
 

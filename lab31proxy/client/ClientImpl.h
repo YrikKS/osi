@@ -32,7 +32,7 @@ namespace ProxyServer {
 
         TypeClient getTypeClient() override;
 
-        void setEvents(short event) override;
+        void setEvents(int event) override;
 
         struct pollfd getPollFd() override;
 
