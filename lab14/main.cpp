@@ -19,10 +19,10 @@ typedef struct argumentsForFunction {
 int destroySems(int number) {
     int code = 0;
     for (int i = 0; i < number; i++) {
-        code = sem_destroy(&sems[i]);
-        if (code != SUCCESS) {
+        errno = sem_destroy(&sems[i]);
+        if (errno != SUCCESS) {
             perror("destroy sems");
-            return code;
+            return errno;
         }
     }
     return SUCCESS;
@@ -30,19 +30,19 @@ int destroySems(int number) {
 
 int initializeSems() {
     for (int i = 0; i < NUMBER_OF_SEMAPHORES; ++i) {
-        int code = sem_init(&sems[i], 0, i);
-        if (code != SUCCESS) {
+        errno = sem_init(&sems[i], 0, i);
+        if (errno != SUCCESS) {
             perror("init error");
             destroySems(i);
-            return code;
+            return errno;
         }
     }
     return SUCCESS;
 }
 
 int semaphoreWait(int num) {
-    int code = sem_wait(&sems[num]);
-    if (code != SUCCESS) {
+    errno = sem_wait(&sems[num]);
+    if (errno != SUCCESS) {
         perror("wait error");
         return code;
     }
@@ -50,10 +50,10 @@ int semaphoreWait(int num) {
 }
 
 int semaphorePost(int num) {
-    int code = sem_post(&sems[num]);
-    if (code != SUCCESS) {
+    errno = sem_post(&sems[num]);
+    if (errno != SUCCESS) {
         perror("post error");
-        return code;
+        return errno;
     }
     return SUCCESS;
 }
@@ -66,15 +66,15 @@ void *printTextInThread(void *args) {
     for (int i = 0; i < value->count; i++) {
         thisSem = (value->start + 1) % NUMBER_OF_SEMAPHORES;
         nextSem = (thisSem + 1) % NUMBER_OF_SEMAPHORES;
-        code = semaphoreWait(thisSem);
-        if (code != SUCCESS) {
+        errno = semaphoreWait(thisSem);
+        if (errno != SUCCESS) {
             perror("wait error");
             return NULL;
         }
 
         std::cout << value->text << " " << i << std::endl;
-        code = semaphorePost(nextSem);
-        if (code != SUCCESS) {
+        errno = semaphorePost(nextSem);
+        if (errno != SUCCESS) {
             perror("post error");
             return NULL;
         }
@@ -86,26 +86,26 @@ int main(int argc, char *argv[]) {
     pthread_t thread;
     argumentsForFunction mainThread = {"Hello, I'm main thread", COUNT_INERATION, 0};
     argumentsForFunction newThread = {"Hello, I'm new thread", COUNT_INERATION, 1};
-    int code = initializeSems();
-    if (code != SUCCESS) {
+    errno = initializeSems();
+    if (errno != SUCCESS) {
         perror("");
-        exit(code);
+        exit(errno);
     }
 
-    code = pthread_create(&thread, NULL, printTextInThread, &newThread);
-    if (code != SUCCESS) {
+    errno = pthread_create(&thread, NULL, printTextInThread, &newThread);
+    if (errno != SUCCESS) {
         perror("pthread_create error");
         destroySems(NUMBER_OF_SEMAPHORES);
-        exit(code);
+        exit(errno);
     }
 
     printTextInThread(&mainThread);
 
-    code = pthread_join(thread, NULL);
-    if (code != SUCCESS) {
+    errno = pthread_join(thread, NULL);
+    if (errno != SUCCESS) {
         perror("join error");
         destroySems(NUMBER_OF_SEMAPHORES);
-        exit(code);
+        exit(errno);
     }
 
     destroySems(NUMBER_OF_SEMAPHORES);
