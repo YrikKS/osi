@@ -45,7 +45,7 @@ int semaphoreWait(int num) {
     errno = sem_wait(&sems[num]);
     if (errno != SUCCESS) {
         perror("wait error");
-        return code;
+        return errno;
     }
     return SUCCESS;
 }
