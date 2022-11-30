@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <cstdlib>
+#include <cerrno>
 
 #define SUCCESS 0
 #define NUMBER_OF_SEMAPHORES 2
