@@ -2,6 +2,7 @@
 #include <semaphore.h>
 #include <stdio.h>
 #include <iostream>
+#include <cstdlib>
 
 #define SUCCESS 0
 #define NUMBER_OF_SEMAPHORES 2
