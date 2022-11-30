@@ -26,22 +26,21 @@ ProxyServer::CashElement *ProxyServer::CashImpl::addStringToCash(std::string req
         if (dataSize > SIZE_EACH_CASH_ELEMENT) {
             return NULL;
         }
-        bool isDel = false;
         for (auto it = _listCash.begin(); it != _listCash.end(); it++) {
             if ((*it)->getCountUsers() <= 0) {
                 byteInCash -= (*it)->getCash()->length();
                 byteInCash -= (*it)->getHead().length();
                 it = _listCash.erase(it);
-                isDel = true;
                 if (byteInCash + dataSize < MAX_CASH_SIZE) {
                     break;
                 }
             }
         }
-        if (!isDel || byteInCash + dataSize >= MAX_CASH_SIZE) {
+        if (byteInCash + dataSize >= MAX_CASH_SIZE) {
             return NULL;
         }
-
+    } else {
+        return NULL;
     }
     LOG_EVENT("add to cash");
     byteInCash += dataSize;
