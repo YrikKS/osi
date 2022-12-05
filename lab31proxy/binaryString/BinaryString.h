@@ -13,7 +13,7 @@ namespace ProxyServer {
     class BinaryString {
     public:
         BinaryString();
-
+    //asd
         BinaryString(char *otherData, long long int otherLength);
 
         void setBinaryString(char *otherData, long long int otherLength);
