@@ -40,12 +40,17 @@ namespace ProxyServer {
 
         void setReventsZero() override;
 
+        Client *getPair() override;
+
+        void setPair(Client *pair) override;
+
 
     private:
         int _fd;
         TypeClient _typeClient;
         ProxyServer::Buffer *_buffer;
         Client *_pair = NULL;
+    private:
         struct pollfd _structPollFd;
     };
 }

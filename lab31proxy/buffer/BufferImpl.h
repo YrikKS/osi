@@ -18,7 +18,7 @@ namespace ProxyServer {
     public:
         BufferImpl(Cash *cash);
 
-        void readFromSocket(std::string *binaryString) override;
+        void readFromSocket(std::string *binaryString, Client* client) override;
 
 //        void readResponse(char *buf) override;
 
@@ -81,7 +81,7 @@ namespace ProxyServer {
 
         CashElement *_cashElement = NULL;
 
-        void wrightRequestHeading(std::string *binaryString);
+        void wrightRequestHeading(std::string *binaryString, Client* client);
 
         void wrightRequestBody(std::string *binaryString);
 

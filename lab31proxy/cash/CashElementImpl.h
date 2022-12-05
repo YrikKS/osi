@@ -6,7 +6,9 @@
 #define LAB31PROXY_CASHELEMENTIMPL_H
 
 #include <memory>
+#include <list>
 #include "CashElement.h"
+#include "../client/Client.h"
 
 
 namespace ProxyServer {
@@ -24,11 +26,11 @@ namespace ProxyServer {
 
         ~CashElementImpl() override;
 
-        int getCountUsers() override;
+        void addUser(Client *client) override;
 
-        void addCountUsers() override;
+        void dellUser(Client *client) override;
 
-        void minusCountUsers() override;
+        std::list<Client *> getGetUsers() override;
 
         bool isIsServerConnected() override;
 
@@ -37,7 +39,7 @@ namespace ProxyServer {
         const std::string &getHead() override;
 
     private:
-        int _countUsers = 0;
+        std::list<Client*> _connectionsUsers;
         bool _isCashEnd = false;
         bool _isServerConnected = false;
         long long int _hashHead = 0;

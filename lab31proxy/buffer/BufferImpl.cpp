@@ -7,10 +7,10 @@
 
 using namespace ProxyServer;
 
-void BufferImpl::readFromSocket(std::string *binaryString) {
+void BufferImpl::readFromSocket(std::string *binaryString, Client* client) {
     _buf->append(*binaryString);
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
-        wrightRequestHeading(binaryString);
+        wrightRequestHeading(binaryString, client);
     } else if (_statusClient == StatusHttp::WRITE_REQUEST_BODY) {
         wrightRequestBody(binaryString);
     } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_HEADING) {
@@ -21,7 +21,7 @@ void BufferImpl::readFromSocket(std::string *binaryString) {
 // TODO parse RESPONSE RESULT heading
 }
 
-void BufferImpl::wrightRequestHeading(std::string *binaryString) {
+void BufferImpl::wrightRequestHeading(std::string *binaryString, Client* client) {
     int posEndHeading = 0;
     if (ParserImpl::findEndHeading(*_buf, &posEndHeading) == ResultPars::END_HEADING) {
         _requestHeading = _buf->substr(0, posEndHeading); // так как не бинарные ресурсы
@@ -30,7 +30,7 @@ void BufferImpl::wrightRequestHeading(std::string *binaryString) {
 //            std::cout << "data get from cash" << std::endl;
             _isDataGetCash = true;
             _cashElement = _cash->findResponseInCash(_requestHeading);
-            _cashElement->addCountUsers();
+            _cashElement->addUser(client);
             _buf->clear();
             _statusClient = StatusHttp::READ_RESPONSE;
             return;

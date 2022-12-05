@@ -58,7 +58,7 @@ add_executable(lab31proxy
         cash/CashImpl.h
         binaryString/BinaryString.cpp
         binaryString/BinaryString.h
-        )
+        pollArr/PollArrImpl.cpp pollArr/PollArrImpl.h)
 #include_directories(${Boost_INCLUDE_DIRS})
 
 #target_link_libraries(lab31proxy
