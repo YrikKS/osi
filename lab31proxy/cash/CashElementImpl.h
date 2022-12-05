@@ -8,7 +8,6 @@
 #include <memory>
 #include <list>
 #include "CashElement.h"
-#include "../client/Client.h"
 
 
 namespace ProxyServer {
