@@ -40,7 +40,7 @@ ProxyServer::CashElement *ProxyServer::CashImpl::addStringToCash(std::string req
             return NULL;
         }
     } else {
-        return NULL;
+//        return NULL;
     }
     LOG_EVENT("add to cash");
     byteInCash += dataSize;
