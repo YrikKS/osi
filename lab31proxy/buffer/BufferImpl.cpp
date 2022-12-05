@@ -27,7 +27,7 @@ void BufferImpl::wrightRequestHeading(std::string *binaryString) {
         _requestHeading = _buf->substr(0, posEndHeading); // так как не бинарные ресурсы
         parsHead();
         if (_cash->isElementInCash(_requestHeading)) {
-//            std::cout << "data get from cash" << std::endl;
+            std::cout << "data get from cash" << std::endl;
             _isDataGetCash = true;
             _cashElement = _cash->findResponseInCash(_requestHeading);
             _cashElement->addCountUsers();
