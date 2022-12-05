@@ -85,7 +85,7 @@ void ServerImpl::handlingEvent() {
                 isNeedUpdatePollSet = deleteClient(*it, &it);
             } else {
                 try {
-                    (*it)->getBuffer()->readFromSocket(&buffer, *it);
+                    (*it)->getBuffer()->readFromSocket(&buffer);
                 } catch (ParseException &ex) {
                     std::cerr << ex.what() << std::endl;
                     LOG_ERROR("send error and disconnect");
@@ -99,8 +99,6 @@ void ServerImpl::handlingEvent() {
                                  (*it)->getBuffer()->getParseResult().getPort());
                         client->setBuffer((*it)->getBuffer());
                         client->getBuffer()->setIsServerConnect(true);
-                        client->setPair(*it);
-                        (*it)->setPair(client);
                         _clientList.push_back(client);
                         isNeedUpdatePollSet = true;
                     } catch (std::exception &ex) {
@@ -141,9 +139,9 @@ void ServerImpl::handlingEvent() {
             }
         }
     }
-    for (auto & it : _clientList) {
-        changePollEventForClient(it);
-    }
+//    for (auto & it : _clientList) {
+//        changePollEventForClient(it);
+//    }
     if (isNeedUpdatePollSet) {
         configuratePollArr();
     }
@@ -167,7 +165,7 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
 
         if (client->getBuffer() != NULL) {
             if (client->getBuffer()->isIsDataGetCash()) {
-                client->getBuffer()->getCashElement()->dellUser(client);
+                client->getBuffer()->getCashElement()->minusCountUsers();
             }
 
             client->getBuffer()->setStatusClient(StatusHttp::END_WORK);
@@ -177,9 +175,6 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
                 delete client->getBuffer();
                 client->setBuffer(NULL);
             }
-        }
-        if(client->getPair() != NULL) {
-            client->getPair()->setPair(NULL);
         }
         delete client;
         return true;
@@ -197,9 +192,6 @@ bool ServerImpl::deleteClient(Client *client, std::list<Client *>::iterator *ite
                 delete client->getBuffer();
                 client->setBuffer(NULL);
             }
-        }
-        if(client->getPair() != NULL) {
-            client->getPair()->setPair(NULL);
         }
         delete client;
         return true;

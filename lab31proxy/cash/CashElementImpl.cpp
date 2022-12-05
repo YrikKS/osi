@@ -32,6 +32,18 @@ CashElementImpl::~CashElementImpl() {
     LOG_EVENT("delete cash ");
 }
 
+int CashElementImpl::getCountUsers() {
+    return _countUsers;
+}
+
+void CashElementImpl::addCountUsers() {
+    _countUsers++;
+}
+
+void CashElementImpl::minusCountUsers() {
+    _countUsers--;
+}
+
 bool CashElementImpl::isIsServerConnected() {
     return _isServerConnected;
 }
@@ -42,25 +54,4 @@ void CashElementImpl::setIsServerConnect(bool isServerConnected) {
 
 const std::string &CashElementImpl::getHead() {
     return _head;
-}
-
-void CashElementImpl::addUser(Client *client) {
-    for (auto it = _connectionsUsers.begin(); it != _connectionsUsers.end(); it++) {
-        if(*it == client) {
-            return;
-        }
-    }
-    _connectionsUsers.push_back(client);
-}
-
-void CashElementImpl::dellUser(Client *client) {
-    for (auto it = _connectionsUsers.begin(); it != _connectionsUsers.end(); it++) {
-        if(*it == client) {
-            it = _connectionsUsers.erase(it);
-        }
-    }
-}
-
-std::list<Client *> CashElementImpl::getGetUsers() {
-    return _connectionsUsers;
 }

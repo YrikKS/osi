@@ -8,9 +8,7 @@
 #include <string>
 #include "../binaryString/BinaryString.h"
 #include "../logger/Logger.h"
-#include "../client/Client.h"
 #include <memory>
-#include <list>
 
 namespace ProxyServer {
     class CashElement {
@@ -25,11 +23,11 @@ namespace ProxyServer {
 
         virtual long long int getHash() = 0;
 
-        virtual std::list<Client*> getGetUsers() = 0;
+        virtual int getCountUsers() = 0;
 
-        virtual void addUser(Client* client) = 0;
+        virtual void addCountUsers() = 0;
 
-        virtual void dellUser(Client* client) = 0;
+        virtual void minusCountUsers() = 0;
 
         virtual bool isIsServerConnected() = 0;
 

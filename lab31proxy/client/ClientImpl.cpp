@@ -70,11 +70,3 @@ void ClientImpl::setReventsZero() {
 void ClientImpl::setEvents(int event) {
     _structPollFd.events = event;
 }
-
-Client *ClientImpl::getPair() {
-    return _pair;
-}
-
-void ClientImpl::setPair(Client *pair) {
-    _pair = pair;
-}

@@ -26,7 +26,7 @@ namespace ProxyServer {
 
     class Buffer {
     public:
-        virtual void readFromSocket(std::string *binaryString, Client* client) = 0;
+        virtual void readFromSocket(std::string *binaryString) = 0;
 
 //        virtual void readResponse(char *buf) = 0;
 
