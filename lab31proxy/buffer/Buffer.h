@@ -5,12 +5,11 @@
 #ifndef LAB31PROXY_BUFFER_H
 #define LAB31PROXY_BUFFER_H
 
-//#include "../parser/ResultParseHeading.h"
-//#include "../binaryString/BinaryString.h"
-
 #include <memory>
 #include <string>
-
+#include "../cash/CashElement.h"
+#include "../cash/Cash.h"
+#include "../parser/ResultParseHeading.h"
 
 namespace ProxyServer {
     typedef enum {
@@ -26,7 +25,7 @@ namespace ProxyServer {
 
     class Buffer {
     public:
-        virtual void readFromSocket(std::string *binaryString, Client *client) = 0;
+        virtual int readFromSocket(std::string *binaryString) = 0;
 
 //        virtual void readResponse(char *buf) = 0;
 
