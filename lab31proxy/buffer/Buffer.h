@@ -8,14 +8,15 @@
 //#include "../parser/ResultParseHeading.h"
 //#include "../binaryString/BinaryString.h"
 
+
+
+namespace ProxyServer {
 #include <memory>
 #include <string>
 #include "../cash/CashElement.h"
 #include "../cash/Cash.h"
 #include "../client/Client.h"
 #include "../parser/ResultParseHeading.h"
-
-namespace ProxyServer {
     typedef enum {
         WRITE_REQUEST_HEADING,
         WRITE_REQUEST_BODY,
