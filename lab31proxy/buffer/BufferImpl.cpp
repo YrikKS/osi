@@ -7,10 +7,10 @@
 
 using namespace ProxyServer;
 
-int BufferImpl::readFromSocket(std::string *binaryString) {
+void BufferImpl::readFromSocket(std::string *binaryString, Client* client) {
     _buf->append(*binaryString);
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
-        return wrightRequestHeading(binaryString);
+        wrightRequestHeading(binaryString, client);
     } else if (_statusClient == StatusHttp::WRITE_REQUEST_BODY) {
         wrightRequestBody(binaryString);
     } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_HEADING) {
@@ -18,11 +18,10 @@ int BufferImpl::readFromSocket(std::string *binaryString) {
     } else if (_statusHttpServer == StatusHttp::WRITE_RESPONSE_BODY) {
         wrightResponseBody(binaryString);
     }
-    return 0;
 // TODO parse RESPONSE RESULT heading
 }
 
-int BufferImpl::wrightRequestHeading(std::string *binaryString) {
+void BufferImpl::wrightRequestHeading(std::string *binaryString, Client* client) {
     int posEndHeading = 0;
     if (ParserImpl::findEndHeading(*_buf, &posEndHeading) == ResultPars::END_HEADING) {
         _requestHeading = _buf->substr(0, posEndHeading); // так как не бинарные ресурсы
@@ -31,10 +30,10 @@ int BufferImpl::wrightRequestHeading(std::string *binaryString) {
 //            std::cout << "data get from cash" << std::endl;
             _isDataGetCash = true;
             _cashElement = _cash->findResponseInCash(_requestHeading);
-//            _cashElement->addUser(client);
+            _cashElement->addUser(client);
             _buf->clear();
             _statusClient = StatusHttp::READ_RESPONSE;
-            return 1;
+            return;
         }
 
         _isReadyConnectHttpServer = true;
