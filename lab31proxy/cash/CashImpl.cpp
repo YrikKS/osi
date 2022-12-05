@@ -39,9 +39,8 @@ ProxyServer::CashElement *ProxyServer::CashImpl::addStringToCash(std::string req
         if (byteInCash + dataSize >= MAX_CASH_SIZE) {
             return NULL;
         }
-    } else {
-//        return NULL;
     }
+
     LOG_EVENT("add to cash");
     byteInCash += dataSize;
     CashElementImpl *cash = new CashElementImpl(request);
