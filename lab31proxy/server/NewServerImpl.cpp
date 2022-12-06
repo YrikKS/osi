@@ -89,6 +89,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
             (*it)->readBuf(&buffer);
             if (buffer.length() == 0) {
                 deleteClient(&it);
+                continue;
             } else {
                 try {
                     (*it)->getBuffer()->readFromSocket(&buffer);
@@ -140,6 +141,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         std::cerr << ex.what() << std::endl;
                         LOG_ERROR("can't connect to http server");
                         deleteClient(&it);
+                        continue;
                     }
                 }
             }
@@ -179,6 +181,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                                (*it)->getBuffer()->getStatusClient() == END_WORK
                                && !(*it)->getBuffer()->isReadyToSend()) {
                         deleteClient(&it);
+                        continue;
                     }
                 }
             } else {
