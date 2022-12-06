@@ -58,7 +58,7 @@ add_executable(lab31proxy
         cash/CashImpl.h
         binaryString/BinaryString.cpp
         binaryString/BinaryString.h
-        observer/Observable.cpp observer/Observable.h)
+        observer/Observable.cpp observer/Observable.h server/NewServerImpl.cpp server/NewServerImpl.h)
 #include_directories(${Boost_INCLUDE_DIRS})
 
 #target_link_libraries(lab31proxy

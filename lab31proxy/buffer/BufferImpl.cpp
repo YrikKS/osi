@@ -26,15 +26,15 @@ void BufferImpl::wrightRequestHeading(std::string *binaryString) {
     if (ParserImpl::findEndHeading(*_buf, &posEndHeading) == ResultPars::END_HEADING) {
         _requestHeading = _buf->substr(0, posEndHeading); // так как не бинарные ресурсы
         parsHead();
-        if (_cash->isElementInCash(_requestHeading)) {
-            std::cout << "data get from cash" << std::endl;
-            _isDataGetCash = true;
-            _cashElement = _cash->findResponseInCash(_requestHeading);
-            _cashElement->addCountUsers();
-            _buf->clear();
-            _statusClient = StatusHttp::READ_RESPONSE;
-            return;
-        }
+//        if (_cash->isElementInCash(_requestHeading)) {
+//            std::cout << "data get from cash" << std::endl;
+//            _isDataGetCash = true;
+//            _cashElement = _cash->findResponseInCash(_requestHeading);
+//            _cashElement->addCountUsers();
+//            _buf->clear();
+//            _statusClient = StatusHttp::READ_RESPONSE;
+//            return;
+//        }
 
         _isReadyConnectHttpServer = true;
 //        std::cout << "ready connect to server" << std::endl;
@@ -196,19 +196,21 @@ void BufferImpl::proofSend(std::string *binaryString) {
     if (_buf->empty() && _isEndSend) {
         if (_statusClient == READ_RESPONSE && error) { // TODO подумать как иначе
             _statusClient = StatusHttp::END_WORK;
+            _isEndSend = false;
             return;
         }
 
         if (_statusHttpServer == StatusHttp::READ_REQUEST) {
             _statusClient = StatusHttp::READ_RESPONSE;
             _statusHttpServer = StatusHttp::WRITE_RESPONSE_HEADING;
-
+            _isEndSend = false;
         } else if (_statusClient == StatusHttp::READ_RESPONSE) {
             _statusClient = StatusHttp::END_WORK;
             _statusHttpServer = StatusHttp::END_WORK;
+            _isEndSend = true;
         }
         _isReadyToSend = false;
-        _isEndSend = false;
+
     }
 }
 
