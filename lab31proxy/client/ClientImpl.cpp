@@ -32,11 +32,12 @@ ClientImpl::ClientImpl(int sock, TypeClient typeClient, Buffer *buf) {
     _typeClient = typeClient;
     _buffer = buf;
     _structPollFd.fd = _fd;
-    if (typeClient == TypeClient::USER) {
-        _structPollFd.events = POLLIN;
-    } else if (typeClient == TypeClient::HTTP_SERVER) {
-        _structPollFd.events = POLLOUT;
-    }
+//    if (typeClient == TypeClient::USER) {
+//        _structPollFd.events = POLLIN;
+//    } else if (typeClient == TypeClient::HTTP_SERVER) {
+//        _structPollFd.events = POLLOUT;
+//    }
+    _structPollFd.events = POLLOUT | POLLIN;
     _structPollFd.revents = 0;
 }
 
@@ -89,4 +90,21 @@ Client *ClientImpl::getPair() {
 
 void ClientImpl::setPair(Client *pair) {
     _pair = pair;
+}
+
+std::list<Client *> ClientImpl::getListHandlingEvent() {
+    return _listHandlingEvent;
+}
+
+void ClientImpl::eraseIt(Client *client) {
+    for (auto it = _listHandlingEvent.begin(); it != _listHandlingEvent.end(); it++) {
+        if (client == *it) {
+            _listHandlingEvent.erase(it);
+            break;
+        }
+    }
+}
+
+void ClientImpl::addClientToHandlingEvent(Client *client) {
+    _listHandlingEvent.push_back(client);
 }

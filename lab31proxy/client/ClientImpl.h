@@ -48,11 +48,18 @@ namespace ProxyServer {
 
         void setPair(Client *pair);
 
+        std::list<Client*> getListHandlingEvent() override;
+
+        void addClientToHandlingEvent(Client* client) override;
+
+        void eraseIt(Client* client) override;
+
     private:
         bool _isInClientList = true;
         int _fd;
         TypeClient _typeClient;
         ProxyServer::Buffer *_buffer;
+        std::list<Client*> _listHandlingEvent;
         Client *_pair = NULL;
         struct pollfd _structPollFd;
     };
