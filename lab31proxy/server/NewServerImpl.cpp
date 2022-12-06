@@ -197,13 +197,13 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                                (*it)->getBuffer()->getStatusClient() == END_WORK
                                && !(*it)->getBuffer()->isReadyToSend()) {
 //                        deleteClient(&it);
-//                        continue;
+                        continue;
                     } else if ((*it)->getTypeClient() == TypeClient::USER // при отключении сервера
                                && (*it)->getBuffer()->isIsDataGetCash()
                                && (*it)->getBuffer()->getCashElement()->isCashEnd()
                                && !(*it)->getBuffer()->isReadyToSend()) {
 //                        deleteClient(&it);
-//                        continue;
+                        continue;
                     }
                 }
             } else {
