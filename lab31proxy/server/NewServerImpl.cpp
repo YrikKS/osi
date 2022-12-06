@@ -157,8 +157,8 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         (*it)->setEvents(POLLIN);
                         for (auto itList = (*it)->getListHandlingEvent().begin();
                              itList != (*it)->getListHandlingEvent().end(); itList++) {
+                            std::cout << "itearion " << std::endl;
                             if (!(*itList)->isInClientList()) {
-
                                 (*itList)->setEvents(POLLOUT);
                                 _clientList.push_back(*itList);
                             }
