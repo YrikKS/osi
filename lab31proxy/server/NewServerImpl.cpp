@@ -99,10 +99,11 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                             if ((*it)->getBuffer()->getCashElement()->isCashEnd()) {
                                 (*it)->setEvents(POLLOUT | POLLIN);
                                 continue;
-                            } else {
-                                findElementWithCurrentCash(*it);
-                                continue;
                             }
+//                            else {
+//                                findElementWithCurrentCash(*it);
+//                                continue;
+//                            }
                         }
                     }
                     std::cout << "end read from socket" << std::endl;
