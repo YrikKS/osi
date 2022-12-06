@@ -170,14 +170,11 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                     } else if ((*it)->getTypeClient() == TypeClient::USER &&
                                (*it)->getBuffer()->getStatusClient() == END_WORK
                                && !(*it)->getBuffer()->isReadyToSend()) {
-
-//                        if((*it)->getPair() != NULL) {
-//                            deleteClient()
-//                        }
                         deleteClient(&it);
                     }
                 }
             } else {
+                std::cout << "ERASE !! " << std::endl;
                 (*it)->setInClientList(false);
                 _clientList.erase(it);
             }
