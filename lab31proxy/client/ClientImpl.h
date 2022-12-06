@@ -10,7 +10,7 @@
 #include <cstring>
 #include <unistd.h>
 #include <iostream>
-#include "ClientImpl.h"
+//#include "ClientImpl.h"
 #include "../Constants.h"
 
 namespace ProxyServer {
@@ -41,7 +41,16 @@ namespace ProxyServer {
         void setReventsZero() override;
 
 
+        bool isInClientList() override;
+
+        void setInClientList(bool value) override;
+
+        Client *getPair();
+
+        void setPair(Client *pair);
+
     private:
+        bool _isInClientList = true;
         int _fd;
         TypeClient _typeClient;
         ProxyServer::Buffer *_buffer;

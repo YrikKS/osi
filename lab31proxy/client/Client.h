@@ -6,7 +6,7 @@
 #define LAB31PROXY_CLIENTINTERFACE_H
 //#include "ClientData.h"
 #include "../buffer/Buffer.h"
-#include "../binaryString/BinaryString.h"
+//#include "../binaryString/BinaryString.h"
 #include <sys/poll.h>
 #include <memory>
 
@@ -39,6 +39,14 @@ namespace ProxyServer {
         virtual void setPollElement(struct pollfd pollfd) = 0;
 
         virtual void setReventsZero() = 0;
+
+        virtual bool isInClientList() = 0;
+
+        virtual void setInClientList(bool value) = 0;
+
+        virtual Client *getPair() = 0;
+
+        virtual void setPair(Client *pair) = 0;
     };
 }
 #endif //LAB31PROXY_CLIENTINTERFACE_H

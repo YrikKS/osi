@@ -8,12 +8,15 @@
 #include <string>
 #include "../binaryString/BinaryString.h"
 #include "../logger/Logger.h"
+//#include "../observer/Observable.h"
 #include <memory>
 
 namespace ProxyServer {
     class CashElement {
     public:
         virtual ~CashElement() = default;
+
+//        virtual void addToObserver(Client* client) = 0;
 
         virtual bool isCashEnd() = 0;
 

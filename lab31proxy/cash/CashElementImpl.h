@@ -16,6 +16,11 @@ namespace ProxyServer {
 
         bool isCashEnd() override;
 
+
+//        void addToObserver(Client* client) override {
+//            std::cout << "test" << std::endl;
+//        }
+
         void setIsCashEnd(bool var) override;
 
         std::shared_ptr<std::string> getCash() override;

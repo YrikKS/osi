@@ -86,6 +86,10 @@ void ServerImpl::handlingEvent() {
             } else {
                 try {
                     (*it)->getBuffer()->readFromSocket(&buffer);
+                    if ((*it)->getPair() != NULL && !(*it)->getPair()->isInClientList()) {
+                        (*it)->getPair()->setEvents(POLLOUT);
+                        _clientList.push_back((*it)->getPair());
+                    }
                 } catch (ParseException &ex) {
                     std::cerr << ex.what() << std::endl;
                     LOG_ERROR("send error and disconnect");
@@ -99,6 +103,9 @@ void ServerImpl::handlingEvent() {
                                  (*it)->getBuffer()->getParseResult().getPort());
                         client->setBuffer((*it)->getBuffer());
                         client->getBuffer()->setIsServerConnect(true);
+                        (*it)->setPair(client);
+                        client->setPair(*it);
+                        client->setEvents(POLLOUT);
                         _clientList.push_back(client);
                         isNeedUpdatePollSet = true;
                     } catch (std::exception &ex) {
@@ -113,10 +120,6 @@ void ServerImpl::handlingEvent() {
             isNeedUpdatePollSet = deleteClient(*it, &it);
         } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                    (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
-            isNeedUpdatePollSet = deleteClient(*it, &it);
-        } else if ((*it)->getTypeClient() == TypeClient::USER &&
-                   (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
-                   !(*it)->getBuffer()->isReadyToSend()) {
             isNeedUpdatePollSet = deleteClient(*it, &it);
         } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                    (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
@@ -133,6 +136,21 @@ void ServerImpl::handlingEvent() {
                     (*it)->getBuffer()->sendBuf(&buffer);
                     (*it)->sendBuf(&buffer);
                     (*it)->getBuffer()->proofSend(&buffer);
+
+                    if ((*it)->getBuffer()->getStatusHttpServer() == StatusHttp::READ_RESPONSE
+                        && (*it)->getTypeClient() == TypeClient::HTTP_SERVER) {
+                        (*it)->setEvents(POLLIN);
+                        if ((*it)->getPair() != NULL) {
+                            (*it)->getPair()->setEvents(POLLOUT);
+                        }
+                    } else if ((*it)->getTypeClient() == TypeClient::USER &&
+                               (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
+                               !(*it)->getBuffer()->isReadyToSend()) {
+                        isNeedUpdatePollSet = deleteClient(*it, &it);
+                    } else if (!(*it)->getBuffer()->isReadyToSend()) {
+                        (*it)->setInClientList(false);
+                        it = _clientList.erase(it);
+                    }
                 }
             } else {
 //                (*it)->setReventsZero();
@@ -207,7 +225,7 @@ void ServerImpl::changePollEventForClient(Client *client) {
         } else if (client->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE) {
             client->setEvents(POLLOUT | POLLIN);
         }
-    } else if(client->getTypeClient() == TypeClient::HTTP_SERVER) {
+    } else if (client->getTypeClient() == TypeClient::HTTP_SERVER) {
         if (client->getBuffer()->getStatusHttpServer() == StatusHttp::WRITE_RESPONSE_BODY ||
             client->getBuffer()->getStatusHttpServer() == StatusHttp::WRITE_RESPONSE_HEADING) {
             client->setEvents(POLLIN);
