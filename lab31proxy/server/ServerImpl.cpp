@@ -137,7 +137,8 @@ void ServerImpl::handlingEvent() {
                     (*it)->sendBuf(&buffer);
                     (*it)->getBuffer()->proofSend(&buffer);
 
-                    if ((*it)->getBuffer()->getStatusHttpServer() == StatusHttp::READ_RESPONSE
+                    if (((*it)->getBuffer()->getStatusHttpServer() == StatusHttp::WRITE_RESPONSE_HEADING ||
+                         (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::WRITE_RESPONSE_BODY)
                         && (*it)->getTypeClient() == TypeClient::HTTP_SERVER) {
                         (*it)->setEvents(POLLIN);
                         if ((*it)->getPair() != NULL) {
