@@ -158,10 +158,12 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         for (auto itList = (*it)->getListHandlingEvent().begin();
                              itList != (*it)->getListHandlingEvent().end(); itList++) {
                             if (!(*itList)->isInClientList()) {
+
                                 (*itList)->setEvents(POLLOUT);
                                 _clientList.push_back(*itList);
                             }
                         }
+                        std::cout << "end pereclich " << std::endl;
                     } else if ((*it)->getTypeClient() == TypeClient::USER &&
                                (*it)->getBuffer()->getStatusClient() == END_WORK
                                && !(*it)->getBuffer()->isReadyToSend()) {
