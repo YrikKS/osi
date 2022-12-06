@@ -82,7 +82,7 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
     std::time_t t1 = std::time(0);   // get time now
     std::tm *now1 = std::localtime(&t1);
 
-    if (now->tm_sec - now1->tm_sec) {
+    if (now->tm_sec - now1->tm_sec > 0) {
         while (true)
             std::cout << "all normal" << std::endl;
     }
