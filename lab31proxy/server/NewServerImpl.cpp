@@ -160,7 +160,8 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                     }
                 }
             }
-        } else if ((*it)->getPollFd().revents & POLLOUT) {
+        }
+        if ((*it)->getPollFd().revents & POLLOUT) {
             (*it)->setReventsZero();
             if ((*it)->getBuffer()->isReadyToSend()) {
                 if (((*it)->getTypeClient() == TypeClient::HTTP_SERVER
