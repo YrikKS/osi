@@ -102,7 +102,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                                 (*itList)->setEvents(POLLOUT);
                                 _clientList.push_back(*itList);
                             } else {
-                                (*itList)->setEvents(POLLOUT);
+//                                (*itList)->setEvents(POLLOUT);
                             }
                         }
                     } else if ((*it)->getTypeClient() == USER) {
@@ -112,7 +112,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                                 (*it)->getPair()->setEvents(POLLOUT);
                                 _clientList.push_back((*it)->getPair());
                             } else {
-                                (*it)->getPair()->setEvents(POLLOUT);
+//                                (*it)->getPair()->setEvents(POLLOUT);
                             }
                         }
                     }
@@ -228,11 +228,11 @@ void ProxyServer::NewServerImpl::deleteClientUser(Client *client) {
     if (client->getPair() != NULL) {
         client->getPair()->eraseIt(client);
     }
+
     if (client->getBuffer() != NULL) {
         if (client->getBuffer()->isIsDataGetCash()) {
             client->getBuffer()->getCashElement()->minusCountUsers();
         }
-
         client->getBuffer()->setStatusClient(StatusHttp::END_WORK);
         client->getBuffer()->setIsClientConnect(false);
         if (!client->getBuffer()->isIsServerConnect()) {
