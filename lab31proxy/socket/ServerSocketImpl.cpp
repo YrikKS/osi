@@ -70,11 +70,7 @@ ServerSocketImpl::~ServerSocketImpl() {
     close(serverSocket_);
 }
 
-#include <sys/time.h>
-
 Client *ServerSocketImpl::connectToClient(std::string url, int port) {
-    struct timespec start, end;
-    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 
     struct hostent *hostent = gethostbyname(url.data());
     if (hostent == NULL) {
@@ -82,10 +78,6 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
         herror("gethostbyname");
         throw ConnectException("gethostbyname");
     }
-
-    clock_gettime(CLOCK_MONOTONIC_RAW, &end);
-    uint64_t delta_us = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_nsec - start.tv_nsec) / 1000;
-    std::cout << delta_us << std::endl;
 
     struct sockaddr_in sockAddr;
     bcopy(hostent->h_addr, &sockAddr.sin_addr, hostent->h_length);

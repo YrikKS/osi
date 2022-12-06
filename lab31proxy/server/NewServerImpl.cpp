@@ -212,6 +212,25 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 it = _clientList.erase(it);
             }
         }
+        if ((*it)->getTypeClient() == TypeClient::USER &&
+            (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
+            deleteClient(&it);
+            continue;
+        } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
+                   (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
+            deleteClient(&it);
+            continue;
+        } else if ((*it)->getTypeClient() == TypeClient::USER &&
+                   (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
+                   !(*it)->getBuffer()->isReadyToSend()) {
+            deleteClient(&it);
+            continue;
+        } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
+                   (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
+                   (*it)->getBuffer()->isSendEnd()) {
+            deleteClient(&it);
+            continue;
+        }
     }
 }
 
