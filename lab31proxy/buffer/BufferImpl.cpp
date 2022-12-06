@@ -202,6 +202,7 @@ void BufferImpl::proofSend(std::string *binaryString) {
         if (_statusHttpServer == StatusHttp::READ_REQUEST) {
             _statusClient = StatusHttp::READ_RESPONSE;
             _statusHttpServer = StatusHttp::WRITE_RESPONSE_HEADING;
+
         } else if (_statusClient == StatusHttp::READ_RESPONSE) {
             _statusClient = StatusHttp::END_WORK;
             _statusHttpServer = StatusHttp::END_WORK;

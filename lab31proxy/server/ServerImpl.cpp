@@ -20,7 +20,6 @@ void ServerImpl::startServer() {
         } else if (code == 0) {
             std::cout << "time out" << std::endl;
         } else {
-            handlingEvent();
             if (_pollSet[0].revents & POLLIN) { // poll sock
                 _pollSet[0].revents = 0;
                 try {
@@ -33,6 +32,7 @@ void ServerImpl::startServer() {
                     LOG_ERROR("exception in connect");
                 }
             }
+            handlingEvent();
         }
     }
 
@@ -150,6 +150,7 @@ void ServerImpl::handlingEvent() {
                     } else if ((*it)->getTypeClient() == TypeClient::USER &&
                                (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
                                !(*it)->getBuffer()->isReadyToSend()) {
+                        std::cout << "not normal del" << std::endl;
                         isNeedUpdatePollSet = deleteClient(*it, &it);
                     } else if (!(*it)->getBuffer()->isReadyToSend()) {
                         (*it)->setInClientList(false);
