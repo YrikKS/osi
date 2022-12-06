@@ -111,7 +111,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         std::cout << "try add to list from user " << std::endl;
                         if ((*it)->getPair() != NULL) {
                             if (!(*it)->getPair()->isInClientList()) {
-                                (*itList)->setInClientList(true);
+                                (*it)->getPair()->setInClientList(true);
                                 (*it)->getPair()->setEvents(POLLOUT);
                                 _clientList.push_back((*it)->getPair());
                             } else {
