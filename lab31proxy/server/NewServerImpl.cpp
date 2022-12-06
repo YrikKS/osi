@@ -100,6 +100,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         for (auto itList = fromServ.begin();
                              itList != fromServ.end(); itList++) {
                             if (!(*itList)->isInClientList()) {
+                                (*itList)->setInClientList(true);
                                 (*itList)->setEvents(POLLOUT);
                                 _clientList.push_back(*itList);
                             } else {
@@ -110,6 +111,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         std::cout << "try add to list from user " << std::endl;
                         if ((*it)->getPair() != NULL) {
                             if (!(*it)->getPair()->isInClientList()) {
+                                (*itList)->setInClientList(true);
                                 (*it)->getPair()->setEvents(POLLOUT);
                                 _clientList.push_back((*it)->getPair());
                             } else {
@@ -170,6 +172,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                              itList != fromServ.end(); itList++) {
                             std::cout << "itearion " << std::endl;
                             if (!(*itList)->isInClientList()) {
+                                (*itList)->setInClientList(true);
                                 (*itList)->setEvents(POLLOUT);
                                 _clientList.push_back(*itList);
                             } else {
