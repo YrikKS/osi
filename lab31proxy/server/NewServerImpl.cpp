@@ -101,7 +101,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                              itList != fromServ.end(); itList++) {
                             if (!(*itList)->isInClientList()) {
                                 (*itList)->setInClientList(true);
-                                (*itList)->setEvents(POLLOUT);
+                                (*itList)->setEvents(POLLOUT | POLLIN);
                                 _clientList.push_back(*itList);
                             } else {
 //                                (*itList)->setEvents(POLLOUT);
@@ -112,7 +112,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         if ((*it)->getPair() != NULL) {
                             if (!(*it)->getPair()->isInClientList()) {
                                 (*it)->getPair()->setInClientList(true);
-                                (*it)->getPair()->setEvents(POLLOUT);
+                                (*it)->getPair()->setEvents(POLLOUT | POLLIN);
                                 _clientList.push_back((*it)->getPair());
                             } else {
 //                                (*it)->getPair()->setEvents(POLLOUT);
@@ -135,7 +135,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         client->getBuffer()->setIsServerConnect(true);
                         (*it)->setPair(client);
                         client->addClientToHandlingEvent(*it);
-                        client->setEvents(POLLOUT);
+                        client->setEvents(POLLOUT | POLLIN );
                         client->setInClientList(true);
                         _clientList.push_back(client);
                         std::cout << "end connect server " << std::endl;
@@ -173,10 +173,10 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                             std::cout << "itearion " << std::endl;
                             if (!(*itList)->isInClientList()) {
                                 (*itList)->setInClientList(true);
-                                (*itList)->setEvents(POLLOUT);
+                                (*itList)->setEvents(POLLOUT | POLLIN);
                                 _clientList.push_back(*itList);
                             } else {
-                                (*itList)->setEvents(POLLOUT);
+                                (*itList)->setEvents(POLLOUT | POLLIN);
                             }
                         }
                         std::cout << "end pereclich " << std::endl;
