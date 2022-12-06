@@ -40,7 +40,6 @@ namespace ProxyServer {
 
         void setReventsZero() override;
 
-
         bool isInClientList() override;
 
         void setInClientList(bool value) override;
