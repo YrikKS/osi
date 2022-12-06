@@ -231,6 +231,7 @@ void ProxyServer::NewServerImpl::deleteClientServer(Client *client) {
     for (auto itList = fromServ.begin(); itList != fromServ.end(); itList++) {
         (*itList)->setPair(NULL);
         if (!(*itList)->isInClientList()) {
+            (*itList)->setInClientList(true);
             _clientList.push_back((*itList));
         }
     }
