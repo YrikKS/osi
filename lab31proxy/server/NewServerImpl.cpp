@@ -197,6 +197,7 @@ void ProxyServer::NewServerImpl::deleteClient(std::list<ProxyServer::Client *>::
         deleteClientServer(**iterator);
     }
     (*iterator) = _clientList.erase((*iterator));
+    std::cout << "end delete" << std::endl;
 }
 
 void ProxyServer::NewServerImpl::deleteClientServer(Client *client) {
