@@ -93,19 +93,19 @@ void ProxyServer::NewServerImpl::handlingEvent() {
             } else {
                 try {
                     (*it)->getBuffer()->readFromSocket(&buffer);
-                    if ((*it)->getTypeClient() == USER) {
-                        if ((*it)->getBuffer()->getStatusClient() == READ_RESPONSE
-                            && (*it)->getBuffer()->isIsDataGetCash()) {
-                            if ((*it)->getBuffer()->getCashElement()->isCashEnd()) {
-                                (*it)->setEvents(POLLOUT | POLLIN);
-                                continue;
-                            }
+//                    if ((*it)->getTypeClient() == USER) {
+//                        if ((*it)->getBuffer()->getStatusClient() == READ_RESPONSE
+//                            && (*it)->getBuffer()->isIsDataGetCash()) {
+//                            if ((*it)->getBuffer()->getCashElement()->isCashEnd()) {
+//                                (*it)->setEvents(POLLOUT | POLLIN);
+//                                continue;
+//                            }
 //                            else {
 //                                findElementWithCurrentCash(*it);
 //                                continue;
 //                            }
-                        }
-                    }
+//                        }
+//                    }
                     std::cout << "end read from socket" << std::endl;
                     if ((*it)->getTypeClient() == HTTP_SERVER) {
                         std::cout << "try add to list from HTTP_SERVER " << std::endl;
