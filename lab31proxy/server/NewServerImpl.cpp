@@ -161,6 +161,25 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 }
             }
         }
+        if ((*it)->getTypeClient() == TypeClient::USER &&
+            (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
+            deleteClient(&it);
+            continue;
+        } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
+                   (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
+            deleteClient(&it);
+            continue;
+        } else if ((*it)->getTypeClient() == TypeClient::USER &&
+                   (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
+                   !(*it)->getBuffer()->isReadyToSend()) {
+            deleteClient(&it);
+            continue;
+        } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
+                   (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
+                   (*it)->getBuffer()->isSendEnd()) {
+            deleteClient(&it);
+            continue;
+        }
         if ((*it)->getPollFd().revents & POLLOUT) {
             (*it)->setReventsZero();
             if ((*it)->getBuffer()->isReadyToSend()) {
@@ -214,25 +233,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 continue;
             }
         }
-        if ((*it)->getTypeClient() == TypeClient::USER &&
-            (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
-            deleteClient(&it);
-            continue;
-        } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
-                   (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
-            deleteClient(&it);
-            continue;
-        } else if ((*it)->getTypeClient() == TypeClient::USER &&
-                   (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
-                   !(*it)->getBuffer()->isReadyToSend()) {
-            deleteClient(&it);
-            continue;
-        } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
-                   (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
-                   (*it)->getBuffer()->isSendEnd()) {
-            deleteClient(&it);
-            continue;
-        }
+
     }
 }
 
