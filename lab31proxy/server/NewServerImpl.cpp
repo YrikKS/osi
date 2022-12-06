@@ -210,6 +210,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 std::cout << "ERASE !! " << std::endl;
                 (*it)->setInClientList(false);
                 it = _clientList.erase(it);
+                continue;
             }
         }
         if ((*it)->getTypeClient() == TypeClient::USER &&
