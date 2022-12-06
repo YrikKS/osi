@@ -139,7 +139,7 @@ void ServerImpl::handlingEvent() {
 
                     if (((*it)->getBuffer()->getStatusHttpServer() == StatusHttp::WRITE_RESPONSE_HEADING ||
                          (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::WRITE_RESPONSE_BODY)
-                        && (*it)->getTypeClient() == TypeClient::HTTP_SERVER) {
+                        && (*it)->getTypeClient() == TypeClient::HTTP_SERVER && !(*it)->getBuffer()->isReadyToSend()) {
                         (*it)->setEvents(POLLIN);
                         if ((*it)->getPair() != NULL) {
                             (*it)->getPair()->setEvents(POLLOUT);
