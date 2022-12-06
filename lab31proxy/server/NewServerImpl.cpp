@@ -107,9 +107,12 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                     } else if ((*it)->getTypeClient() == USER) {
                         std::cout << "try add to list from user " << std::endl;
                         if ((*it)->getPair() != NULL) {
-                            if (!(*it)->getPair()->isInClientList())
+                            if (!(*it)->getPair()->isInClientList()) {
                                 (*it)->getPair()->setEvents(POLLOUT);
-                            _clientList.push_back((*it)->getPair());
+                                _clientList.push_back((*it)->getPair());
+                            } else {
+                                (*it)->getPair()->setEvents(POLLOUT);
+                            }
                         }
                     }
                 } catch (ParseException &ex) {
@@ -179,8 +182,8 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 }
             } else {
                 std::cout << "ERASE !! " << std::endl;
-                (*it)->setInClientList(false);
-                _clientList.erase(it);
+//                (*it)->setInClientList(false);
+//                _clientList.erase(it);
             }
         }
     }
