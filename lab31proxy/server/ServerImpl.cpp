@@ -77,6 +77,7 @@ ServerImpl::ServerImpl() {
 void ServerImpl::handlingEvent() {
     bool isNeedUpdatePollSet = false;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
+        std::cout << "pleas" << std::endl;
         std::string buffer;
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
