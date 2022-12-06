@@ -86,7 +86,7 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
     uint64_t delta_us = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_nsec - start.tv_nsec) / 1000;
     int i = 0;
-    while (i < 10000)
+    while (i < 100)
         std::cout << delta_us << std::endl;
 
     struct sockaddr_in sockAddr;
