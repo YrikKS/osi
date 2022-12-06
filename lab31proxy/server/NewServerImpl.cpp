@@ -80,9 +80,9 @@ ProxyServer::NewServerImpl::~NewServerImpl() {
 
 
 void ProxyServer::NewServerImpl::handlingEvent() {
-    std::cout << "new iteration" << std::endl;
+//    std::cout << "new iteration" << std::endl;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
-        std::cout << "start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
+//        std::cout << "start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
         std::string buffer;
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
@@ -109,9 +109,9 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                             }
                         }
                     }
-                    std::cout << "end read from socket" << std::endl;
+//                    std::cout << "end read from socket" << std::endl;
                     if ((*it)->getTypeClient() == HTTP_SERVER) {
-                        std::cout << "try add to list from HTTP_SERVER " << std::endl;
+//                        std::cout << "try add to list from HTTP_SERVER " << std::endl;
                         std::list<Client *> fromServ = (*it)->getListHandlingEvent();
                         for (auto itList = fromServ.begin();
                              itList != fromServ.end(); itList++) {
@@ -124,7 +124,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                             }
                         }
                     } else if ((*it)->getTypeClient() == USER) {
-                        std::cout << "try add to list from user " << std::endl;
+//                        std::cout << "try add to list from user " << std::endl;
                         if ((*it)->getPair() != NULL) {
                             if (!(*it)->getPair()->isInClientList()) {
                                 (*it)->getPair()->setInClientList(true);
@@ -143,7 +143,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 if ((*it)->getBuffer()->isReadyConnectHttpServer()) {
                     (*it)->getBuffer()->setReadyConnectHttpServer(false);
                     try {
-                        std::cout << "try connect server " << std::endl;
+//                        std::cout << "try connect server " << std::endl;
                         Client *client = _serverSocket->connectToClient
                                 ((*it)->getBuffer()->getParseResult().getHostName(),
                                  (*it)->getBuffer()->getParseResult().getPort());
@@ -154,7 +154,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         client->setEvents(POLLOUT | POLLIN);
                         client->setInClientList(true);
                         _clientList.push_back(client);
-                        std::cout << "end connect server " << std::endl;
+//                        std::cout << "end connect server " << std::endl;
                     } catch (std::exception &ex) {
                         std::cerr << ex.what() << std::endl;
                         LOG_ERROR("can't connect to http server");
@@ -191,22 +191,22 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                     ((*it)->getTypeClient() == TypeClient::USER
                      && (*it)->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE)) {
 
-                    std::cout << "wright to client " << std::endl;
+//                    std::cout << "wright to client " << std::endl;
                     (*it)->getBuffer()->sendBuf(&buffer);
                     (*it)->sendBuf(&buffer);
                     (*it)->getBuffer()->proofSend(&buffer);
-                    std::cout << "end wright to client " << std::endl;
+//                    std::cout << "end wright to client " << std::endl;
                     if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                         (*it)->getBuffer()->getStatusHttpServer() == WRITE_RESPONSE_HEADING
                         && !(*it)->getBuffer()->isReadyToSend()) {
 
-                        std::cout << "pereclich " << std::endl;
+//                        std::cout << "pereclich " << std::endl;
                         (*it)->setEvents(POLLIN);
                         std::list<Client *> fromServ = (*it)->getListHandlingEvent();
-                        std::cout << fromServ.size() << std::endl;
+//                        std::cout << fromServ.size() << std::endl;
                         for (auto itList = fromServ.begin();
                              itList != fromServ.end(); itList++) {
-                            std::cout << "itearion " << std::endl;
+//                            std::cout << "itearion " << std::endl;
                             if (!(*itList)->isInClientList()) {
                                 (*itList)->setInClientList(true);
                                 (*itList)->setEvents(POLLOUT | POLLIN);
@@ -215,7 +215,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                                 (*itList)->setEvents(POLLOUT | POLLIN);
                             }
                         }
-                        std::cout << "end pereclich " << std::endl;
+//                        std::cout << "end pereclich " << std::endl;
                     } else if ((*it)->getTypeClient() == TypeClient::USER && // при отключении сервера
                                (*it)->getBuffer()->getStatusClient() == END_WORK
                                && !(*it)->getBuffer()->isReadyToSend()) {
@@ -230,7 +230,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                     }
                 }
             } else {
-                std::cout << "ERASE !! " << std::endl;
+//                std::cout << "ERASE !! " << std::endl;
                 (*it)->setInClientList(false);
                 it = _clientList.erase(it);
                 continue;
@@ -247,7 +247,7 @@ void ProxyServer::NewServerImpl::deleteClient(std::list<ProxyServer::Client *>::
         deleteClientServer(**iterator);
     }
     (*iterator) = _clientList.erase((*iterator));
-    std::cout << "end delete" << std::endl;
+//    std::cout << "end delete" << std::endl;
 }
 
 void ProxyServer::NewServerImpl::deleteClientServer(Client *client) {
