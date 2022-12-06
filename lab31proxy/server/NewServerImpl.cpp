@@ -80,8 +80,9 @@ ProxyServer::NewServerImpl::~NewServerImpl() {
 
 
 void ProxyServer::NewServerImpl::handlingEvent() {
+    std::cout << "new iteration" << std::endl;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
-        std::cout << "start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
+//        std::cout << "start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
         std::string buffer;
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
