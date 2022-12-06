@@ -207,9 +207,9 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                     }
                 }
             } else {
-                std::cout << "ERASE !! " << std::endl;
-                (*it)->setInClientList(false);
-                it = _clientList.erase(it);
+//                std::cout << "ERASE !! " << std::endl;
+//                (*it)->setInClientList(false);
+//                it = _clientList.erase(it);
             }
         }
     }
@@ -230,7 +230,6 @@ void ProxyServer::NewServerImpl::deleteClientServer(Client *client) {
     std::list<Client *> fromServ = client->getListHandlingEvent();
     for (auto itList = fromServ.begin(); itList != fromServ.end(); itList++) {
         (*itList)->setPair(NULL);
-
         if (!(*itList)->isInClientList()) {
             _clientList.push_back((*itList));
         }
