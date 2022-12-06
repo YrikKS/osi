@@ -81,7 +81,7 @@ ProxyServer::NewServerImpl::~NewServerImpl() {
 
 void ProxyServer::NewServerImpl::handlingEvent() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
-        std::cout << "start for list size : "  << _clientList.size() << " silka: " << *it << std::endl;
+        std::cout << "start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
         std::string buffer;
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
@@ -182,8 +182,8 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 }
             } else {
                 std::cout << "ERASE !! " << std::endl;
-//                (*it)->setInClientList(false);
-//                _clientList.erase(it);
+                (*it)->setInClientList(false);
+                _clientList.erase(it);
             }
         }
     }
