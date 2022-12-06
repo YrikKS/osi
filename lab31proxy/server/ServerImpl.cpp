@@ -107,6 +107,7 @@ void ServerImpl::handlingEvent() {
                         (*it)->setPair(client);
                         client->setPair(*it);
                         client->setEvents(POLLOUT);
+                        client->setInClientList(true);
                         _clientList.push_back(client);
                         isNeedUpdatePollSet = true;
                     } catch (std::exception &ex) {
@@ -145,6 +146,7 @@ void ServerImpl::handlingEvent() {
                         if ((*it)->getPair() != NULL) {
                             (*it)->getPair()->setEvents(POLLOUT);
                         }
+//                        isNeedUpdatePollSet = true;
                     } else if ((*it)->getTypeClient() == TypeClient::USER &&
                                (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
                                !(*it)->getBuffer()->isReadyToSend()) {
@@ -152,6 +154,7 @@ void ServerImpl::handlingEvent() {
                     } else if (!(*it)->getBuffer()->isReadyToSend()) {
                         (*it)->setInClientList(false);
                         it = _clientList.erase(it);
+//                        isNeedUpdatePollSet = true;
                     }
                 }
             } else {
@@ -162,9 +165,9 @@ void ServerImpl::handlingEvent() {
 //    for (auto & it : _clientList) {
 //        changePollEventForClient(it);
 //    }
-    if (isNeedUpdatePollSet) {
+//    if (isNeedUpdatePollSet) {
         configuratePollArr();
-    }
+//    }
 }
 
 ServerImpl::~ServerImpl() {
