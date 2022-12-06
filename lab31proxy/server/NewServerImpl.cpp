@@ -93,6 +93,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                     (*it)->getBuffer()->readFromSocket(&buffer);
                     std::cout << "end read from socket" << std::endl;
                     if ((*it)->getTypeClient() == HTTP_SERVER) {
+                        std::cout << "try add to list from HTTP_SERVER " << std::endl;
                         for (auto itList = (*it)->getListHandlingEvent().begin();
                              itList != (*it)->getListHandlingEvent().end(); itList++) {
                             if (!(*itList)->isInClientList()) {
@@ -101,8 +102,10 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                             }
                         }
                     } else if ((*it)->getTypeClient() == USER) {
-                        if ((*it)->getPair() != NULL || !(*it)->getPair()->isInClientList()) {
-                            (*it)->getPair()->setEvents(POLLOUT);
+                        std::cout << "try add to list from user " << std::endl;
+                        if ((*it)->getPair() != NULL) {
+                            if (!(*it)->getPair()->isInClientList())
+                                (*it)->getPair()->setEvents(POLLOUT);
                             _clientList.push_back((*it)->getPair());
                         }
                     }
@@ -114,6 +117,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 if ((*it)->getBuffer()->isReadyConnectHttpServer()) {
                     (*it)->getBuffer()->setReadyConnectHttpServer(false);
                     try {
+                        std::cout << "try connect server " << std::endl;
                         Client *client = _serverSocket->connectToClient
                                 ((*it)->getBuffer()->getParseResult().getHostName(),
                                  (*it)->getBuffer()->getParseResult().getPort());
@@ -124,6 +128,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         client->setEvents(POLLOUT);
                         client->setInClientList(true);
                         _clientList.push_back(client);
+                        std::cout << "end connect server " << std::endl;
                     } catch (std::exception &ex) {
                         std::cerr << ex.what() << std::endl;
                         LOG_ERROR("can't connect to http server");
@@ -139,14 +144,16 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                     ((*it)->getTypeClient() == TypeClient::USER
                      && (*it)->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE)) {
 
+                    std::cout << "wright to client " << std::endl;
                     (*it)->getBuffer()->sendBuf(&buffer);
                     (*it)->sendBuf(&buffer);
                     (*it)->getBuffer()->proofSend(&buffer);
-
+                    std::cout << "end wright to client " << std::endl;
                     if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                         (*it)->getBuffer()->getStatusHttpServer() == WRITE_RESPONSE_HEADING
                         && !(*it)->getBuffer()->isReadyToSend()) {
 
+                        std::cout << "pereclich " << std::endl;
                         (*it)->setEvents(POLLIN);
                         for (auto itList = (*it)->getListHandlingEvent().begin();
                              itList != (*it)->getListHandlingEvent().end(); itList++) {
