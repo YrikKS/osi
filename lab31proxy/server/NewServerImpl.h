@@ -33,8 +33,7 @@ namespace ProxyServer {
         void deleteClient(std::list<Client*>::iterator* iterator);
         void deleteClientUser(Client* client);
         void deleteClientServer(Client* client);
-        void setPollElements();
-        void changePollEventForClient(Client* client);
+        void findElementWithCurrentCash(Client* client);
 
 
         ServerSocket* _serverSocket;
