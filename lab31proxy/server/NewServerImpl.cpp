@@ -93,6 +93,15 @@ void ProxyServer::NewServerImpl::handlingEvent() {
             } else {
                 try {
                     (*it)->getBuffer()->readFromSocket(&buffer);
+                    if ((*it)->getTypeClient() == USER) {
+                        if ((*it)->getBuffer()->getStatusClient() == READ_RESPONSE
+                            && (*it)->getBuffer()->isIsDataGetCash()) {
+                            if ((*it)->getBuffer()->getCashElement()->isCashEnd()) {
+                                (*it)->setEvents(POLLOUT | POLLIN);
+                                continue;
+                            }
+                        }
+                    }
                     std::cout << "end read from socket" << std::endl;
                     if ((*it)->getTypeClient() == HTTP_SERVER) {
                         std::cout << "try add to list from HTTP_SERVER " << std::endl;
@@ -135,7 +144,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         client->getBuffer()->setIsServerConnect(true);
                         (*it)->setPair(client);
                         client->addClientToHandlingEvent(*it);
-                        client->setEvents(POLLOUT | POLLIN );
+                        client->setEvents(POLLOUT | POLLIN);
                         client->setInClientList(true);
                         _clientList.push_back(client);
                         std::cout << "end connect server " << std::endl;
@@ -180,8 +189,14 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                             }
                         }
                         std::cout << "end pereclich " << std::endl;
-                    } else if ((*it)->getTypeClient() == TypeClient::USER &&
+                    } else if ((*it)->getTypeClient() == TypeClient::USER && // при отключении сервера
                                (*it)->getBuffer()->getStatusClient() == END_WORK
+                               && !(*it)->getBuffer()->isReadyToSend()) {
+                        deleteClient(&it);
+                        continue;
+                    } else if ((*it)->getTypeClient() == TypeClient::USER // при отключении сервера
+                               && (*it)->getBuffer()->isIsDataGetCash()
+                               && (*it)->getBuffer()->getCashElement()->isCashEnd()
                                && !(*it)->getBuffer()->isReadyToSend()) {
                         deleteClient(&it);
                         continue;
