@@ -1,5 +1,6 @@
 #include <iostream>
 #include "server/NewServerImpl.h"
+#include "server/ServerImpl.h"
 #include "logger/Logger.h"
 
 //#include "cash/CashImpl.h"
@@ -8,7 +9,7 @@
 int main(int argc, char *argv[]) {
     LOG_EVENT("start program");
     try {
-        ProxyServer::NewServerImpl *server = new ProxyServer::NewServerImpl();
+        ProxyServer::ServerImpl *server = new ProxyServer::ServerImpl();
         server->startServer();
     } catch (std::exception &ex) {
         std::cout << ex.what() << std::endl;
