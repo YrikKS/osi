@@ -101,7 +101,10 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                                 continue;
                             }
                             else {
+                                (*it)->setEvents(POLLOUT | POLLIN);
                                 findElementWithCurrentCash(*it);
+                                (*it)->setInClientList(false);
+                                it = _clientList.erase(it);
                                 continue;
                             }
                         }
@@ -296,6 +299,7 @@ void ProxyServer::NewServerImpl::findElementWithCurrentCash(Client *client) {
         if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER) {
             if ((*it)->getBuffer()->getCashElement() == client->getBuffer()->getCashElement()) {
                 (*it)->addClientToHandlingEvent(client);
+                client->setPair(*it);
                 break;
             }
         }
