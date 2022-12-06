@@ -201,8 +201,8 @@ void ProxyServer::NewServerImpl::deleteClient(std::list<ProxyServer::Client *>::
 
 void ProxyServer::NewServerImpl::deleteClientServer(Client *client) {
     LOG_EVENT("http server logout");
-    for (auto itList = client->getListHandlingEvent().begin();
-         itList != client->getListHandlingEvent().end(); itList++) {
+    std::list<Client *> fromServ = client->getListHandlingEvent();
+    for (auto itList = fromServ.begin(); itList != fromServ.end(); itList++) {
         (*itList)->setPair(NULL);
 
         if (!(*itList)->isInClientList()) {
