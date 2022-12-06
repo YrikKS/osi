@@ -183,7 +183,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
             } else {
                 std::cout << "ERASE !! " << std::endl;
                 (*it)->setInClientList(false);
-                _clientList.erase(it);
+                it = _clientList.erase(it);
             }
         }
     }
