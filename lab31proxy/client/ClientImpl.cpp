@@ -99,6 +99,7 @@ std::list<Client *> ClientImpl::getListHandlingEvent() {
 void ClientImpl::eraseIt(Client *client) {
     for (auto it = _listHandlingEvent.begin(); it != _listHandlingEvent.end(); it++) {
         if (client == *it) {
+            std::cout << "erase client " << client << std::endl;
             _listHandlingEvent.erase(it);
             break;
         }
