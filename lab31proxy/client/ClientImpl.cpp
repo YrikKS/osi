@@ -104,6 +104,7 @@ void ClientImpl::eraseIt(Client *client) {
             break;
         }
     }
+    std::cout << "end erase client " << client << std::endl;
 }
 
 void ClientImpl::addClientToHandlingEvent(Client *client) {
