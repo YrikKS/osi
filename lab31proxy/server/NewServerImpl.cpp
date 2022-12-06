@@ -94,8 +94,9 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                     std::cout << "end read from socket" << std::endl;
                     if ((*it)->getTypeClient() == HTTP_SERVER) {
                         std::cout << "try add to list from HTTP_SERVER " << std::endl;
-                        for (auto itList = (*it)->getListHandlingEvent().begin();
-                             itList != (*it)->getListHandlingEvent().end(); itList++) {
+                        std::list<Client *> fromServ = (*it)->getListHandlingEvent();
+                        for (auto itList = fromServ.begin();
+                             itList != fromServ.end(); itList++) {
                             if (!(*itList)->isInClientList()) {
                                 (*itList)->setEvents(POLLOUT);
                                 _clientList.push_back(*itList);
