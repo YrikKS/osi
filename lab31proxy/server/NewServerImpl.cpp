@@ -81,6 +81,7 @@ ProxyServer::NewServerImpl::~NewServerImpl() {
 
 void ProxyServer::NewServerImpl::handlingEvent() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
+        std::cout << "start for" << std::endl;
         std::string buffer;
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
@@ -90,6 +91,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
             } else {
                 try {
                     (*it)->getBuffer()->readFromSocket(&buffer);
+                    std::cout << "end read from socket" << std::endl;
                     if ((*it)->getTypeClient() == HTTP_SERVER) {
                         for (auto itList = (*it)->getListHandlingEvent().begin();
                              itList != (*it)->getListHandlingEvent().end(); itList++) {
@@ -99,7 +101,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                             }
                         }
                     } else if ((*it)->getTypeClient() == USER) {
-                        if ((*it)->getPair() != NULL && !(*it)->getPair()->isInClientList()) {
+                        if ((*it)->getPair() != NULL || !(*it)->getPair()->isInClientList()) {
                             (*it)->getPair()->setEvents(POLLOUT);
                             _clientList.push_back((*it)->getPair());
                         }
