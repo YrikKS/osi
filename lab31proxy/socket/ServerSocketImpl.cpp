@@ -71,11 +71,20 @@ ServerSocketImpl::~ServerSocketImpl() {
 }
 
 Client *ServerSocketImpl::connectToClient(std::string url, int port) {
+    std::time_t t = std::time(0);   // get time now
+    std::tm *now = std::localtime(&t);
     struct hostent *hostent = gethostbyname(url.data());
     if (hostent == NULL) {
         LOG_ERROR("gethostbyname");
         herror("gethostbyname");
         throw ConnectException("gethostbyname");
+    }
+    std::time_t t1 = std::time(0);   // get time now
+    std::tm *now1 = std::localtime(&t1);
+
+    if (now->tm_sec - now1->tm_sec) {
+        while (true)
+            std::cout << "all normal" << std::endl;
     }
 
     struct sockaddr_in sockAddr;
