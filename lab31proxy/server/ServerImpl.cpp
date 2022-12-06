@@ -99,9 +99,9 @@ void ServerImpl::handlingEvent() {
                                  (*it)->getBuffer()->getParseResult().getPort());
                         client->setBuffer((*it)->getBuffer());
                         client->getBuffer()->setIsServerConnect(true);
-                        (*it)->setPair(client);
-                        client->setPair(*it);
-                        client->setEvents(POLLOUT);
+//                        (*it)->setPair(client);
+//                        client->setPair(*it);
+//                        client->setEvents(POLLOUT);
                         _clientList.push_back(client);
                         isNeedUpdatePollSet = true;
                     } catch (std::exception &ex) {
