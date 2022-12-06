@@ -20,6 +20,7 @@ void ServerImpl::startServer() {
         } else if (code == 0) {
             std::cout << "time out" << std::endl;
         } else {
+            handlingEvent();
             if (_pollSet[0].revents & POLLIN) { // poll sock
                 _pollSet[0].revents = 0;
                 try {
@@ -32,7 +33,6 @@ void ServerImpl::startServer() {
                     LOG_ERROR("exception in connect");
                 }
             }
-            handlingEvent();
         }
     }
 
@@ -77,7 +77,6 @@ ServerImpl::ServerImpl() {
 void ServerImpl::handlingEvent() {
     bool isNeedUpdatePollSet = false;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
-        std::cout << "pleas" << std::endl;
         std::string buffer;
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
@@ -87,10 +86,6 @@ void ServerImpl::handlingEvent() {
             } else {
                 try {
                     (*it)->getBuffer()->readFromSocket(&buffer);
-                    if ((*it)->getPair() != NULL && !(*it)->getPair()->isInClientList()) {
-                        (*it)->getPair()->setEvents(POLLOUT);
-                        _clientList.push_back((*it)->getPair());
-                    }
                 } catch (ParseException &ex) {
                     std::cerr << ex.what() << std::endl;
                     LOG_ERROR("send error and disconnect");
@@ -107,7 +102,6 @@ void ServerImpl::handlingEvent() {
                         (*it)->setPair(client);
                         client->setPair(*it);
                         client->setEvents(POLLOUT);
-                        client->setInClientList(true);
                         _clientList.push_back(client);
                         isNeedUpdatePollSet = true;
                     } catch (std::exception &ex) {
@@ -122,6 +116,10 @@ void ServerImpl::handlingEvent() {
             isNeedUpdatePollSet = deleteClient(*it, &it);
         } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                    (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
+            isNeedUpdatePollSet = deleteClient(*it, &it);
+        } else if ((*it)->getTypeClient() == TypeClient::USER &&
+                   (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
+                   !(*it)->getBuffer()->isReadyToSend()) {
             isNeedUpdatePollSet = deleteClient(*it, &it);
         } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                    (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
@@ -139,24 +137,6 @@ void ServerImpl::handlingEvent() {
                     (*it)->sendBuf(&buffer);
                     (*it)->getBuffer()->proofSend(&buffer);
 
-                    if (((*it)->getBuffer()->getStatusHttpServer() == StatusHttp::WRITE_RESPONSE_HEADING ||
-                         (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::WRITE_RESPONSE_BODY)
-                        && (*it)->getTypeClient() == TypeClient::HTTP_SERVER && !(*it)->getBuffer()->isReadyToSend()) {
-                        (*it)->setEvents(POLLIN);
-                        if ((*it)->getPair() != NULL) {
-                            (*it)->getPair()->setEvents(POLLOUT);
-                        }
-//                        isNeedUpdatePollSet = true;
-                    } else if ((*it)->getTypeClient() == TypeClient::USER &&
-                               (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
-                               !(*it)->getBuffer()->isReadyToSend()) {
-                        std::cout << "not normal del" << std::endl;
-                        isNeedUpdatePollSet = deleteClient(*it, &it);
-                    } else if (!(*it)->getBuffer()->isReadyToSend()) {
-                        (*it)->setInClientList(false);
-                        it = _clientList.erase(it);
-//                        isNeedUpdatePollSet = true;
-                    }
                 }
             } else {
 //                (*it)->setReventsZero();
@@ -166,9 +146,9 @@ void ServerImpl::handlingEvent() {
 //    for (auto & it : _clientList) {
 //        changePollEventForClient(it);
 //    }
-//    if (isNeedUpdatePollSet) {
+    if (isNeedUpdatePollSet) {
         configuratePollArr();
-//    }
+    }
 }
 
 ServerImpl::~ServerImpl() {
