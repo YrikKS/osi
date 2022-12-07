@@ -16,6 +16,7 @@ void ProxyServer::NewServerImpl::startServer() {
             perror("poll error");
             //TODO exit
         } else if (code == 0) {
+            handlingEvent();
             std::cout << "time out" << std::endl;
         } else {
             handlingEvent();
@@ -99,8 +100,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                             if ((*it)->getBuffer()->getCashElement()->isCashEnd()) {
                                 (*it)->setEvents(POLLOUT | POLLIN);
                                 continue;
-                            }
-                            else {
+                            } else {
                                 (*it)->setEvents(POLLOUT | POLLIN);
                                 findElementWithCurrentCash(*it);
                                 (*it)->setInClientList(false);
@@ -164,8 +164,13 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 }
             }
         }
-        if ((*it)->getTypeClient() == TypeClient::USER &&
-            (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
+        if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
+            (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
+            !(*it)->getBuffer()->isIsDataGetCash()) {
+            deleteClient(&it);
+            continue;
+        } else if ((*it)->getTypeClient() == TypeClient::USER &&
+                   (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
             deleteClient(&it);
             continue;
         } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
