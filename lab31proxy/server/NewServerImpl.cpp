@@ -289,6 +289,15 @@ void ProxyServer::NewServerImpl::deleteClientUser(Client *client) {
     LOG_EVENT("user logout");
     if (client->getPair() != NULL) {
         client->getPair()->eraseIt(client);
+
+        if (client->getBuffer() != NULL) {
+            if(!client->getBuffer()->isIsDataGetCash()) {
+                for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
+                    if(*it == client->getPair())
+                    deleteClient(&it);
+                }
+            }
+        }
     }
 
     if (client->getBuffer() != NULL) {
