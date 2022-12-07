@@ -164,7 +164,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 }
             }
         }
-        if ((*it)->getPollFd().revents & POLLERR) {
+        if ((*it)->getPollFd().revents & POLLRDHUP) {
             deleteClient(&it);
             continue;
         }
@@ -240,7 +240,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 }
             } else {
 //                std::cout << "ERASE !! " << std::endl;
-                (*it)->setEvents(POLLERR);
+                (*it)->setEvents(POLLRDHUP);
 //                (*it)->setInClientList(false);
 //                it = _clientList.erase(it);
                 continue;
