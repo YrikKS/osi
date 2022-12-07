@@ -240,7 +240,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 }
             } else {
 //                std::cout << "ERASE !! " << std::endl;
-                (*it)->setEvents(POLLERR)
+                (*it)->setEvents(POLLERR);
                 (*it)->setInClientList(false);
 //                it = _clientList.erase(it);
                 continue;
