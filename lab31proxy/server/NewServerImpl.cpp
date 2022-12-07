@@ -83,6 +83,10 @@ ProxyServer::NewServerImpl::~NewServerImpl() {
 void ProxyServer::NewServerImpl::handlingEvent() {
 //    std::cout << "new iteration" << std::endl;
     for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
+        if ((*it)->getPollFd().revents & POLLRDHUP) {
+            deleteClient(&it);
+            continue;
+        }
 //        std::cout << "start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
         std::string buffer;
         if ((*it)->getPollFd().revents & POLLIN) {
@@ -164,10 +168,6 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 }
             }
         }
-        if ((*it)->getPollFd().revents & POLLRDHUP) {
-            deleteClient(&it);
-            continue;
-        }
         if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
             (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
             !(*it)->getBuffer()->isIsDataGetCash()) {
@@ -240,6 +240,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 }
             } else {
 //                std::cout << "ERASE !! " << std::endl;
+                (*it)->getPair()->setInClientList(true);
                 (*it)->setEvents(POLLRDHUP);
 //                (*it)->setInClientList(false);
 //                it = _clientList.erase(it);
