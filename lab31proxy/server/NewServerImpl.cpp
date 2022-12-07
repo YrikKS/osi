@@ -164,10 +164,10 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 }
             }
         }
-//        if ((*it)->getPollFd().revents & POLLERR) {
-//            deleteClient(&it);
-//            continue;
-//        }
+        if ((*it)->getPollFd().revents & POLLERR) {
+            deleteClient(&it);
+            continue;
+        }
         if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
             (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
             !(*it)->getBuffer()->isIsDataGetCash()) {
