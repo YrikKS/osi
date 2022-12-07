@@ -164,6 +164,10 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 }
             }
         }
+        if ((*it)->getPollFd().revents & POLLERR) {
+            deleteClient(&it);
+            continue;
+        }
         if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
             (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
             !(*it)->getBuffer()->isIsDataGetCash()) {
@@ -236,8 +240,9 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                 }
             } else {
 //                std::cout << "ERASE !! " << std::endl;
+                (*it)->setEvents(POLLERR)
                 (*it)->setInClientList(false);
-                it = _clientList.erase(it);
+//                it = _clientList.erase(it);
                 continue;
             }
         }
