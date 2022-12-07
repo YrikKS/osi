@@ -102,10 +102,10 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         if ((*it)->getBuffer()->getStatusClient() == READ_RESPONSE
                             && (*it)->getBuffer()->isIsDataGetCash()) {
                             if ((*it)->getBuffer()->getCashElement()->isCashEnd()) {
-                                (*it)->setEvents(POLLOUT | POLLIN);
+                                (*it)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                                 continue;
                             } else {
-                                (*it)->setEvents(POLLOUT | POLLIN);
+                                (*it)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                                 findElementWithCurrentCash(*it);
                                 (*it)->setInClientList(false);
                                 it = _clientList.erase(it);
@@ -121,7 +121,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                              itList != fromServ.end(); itList++) {
                             if (!(*itList)->isInClientList()) {
                                 (*itList)->setInClientList(true);
-                                (*itList)->setEvents(POLLOUT | POLLIN);
+                                (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                                 _clientList.push_back(*itList);
                             } else {
 //                                (*itList)->setEvents(POLLOUT);
@@ -132,7 +132,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         if ((*it)->getPair() != NULL) {
                             if (!(*it)->getPair()->isInClientList()) {
                                 (*it)->getPair()->setInClientList(true);
-                                (*it)->getPair()->setEvents(POLLOUT | POLLIN);
+                                (*it)->getPair()->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                                 _clientList.push_back((*it)->getPair());
                             } else {
 //                                (*it)->getPair()->setEvents(POLLOUT);
@@ -155,7 +155,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         client->getBuffer()->setIsServerConnect(true);
                         (*it)->setPair(client);
                         client->addClientToHandlingEvent(*it);
-                        client->setEvents(POLLOUT | POLLIN);
+                        client->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                         client->setInClientList(true);
                         _clientList.push_back(client);
 //                        std::cout << "end connect server " << std::endl;
@@ -210,7 +210,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         && !(*it)->getBuffer()->isReadyToSend()) {
 
 //                        std::cout << "pereclich " << std::endl;
-                        (*it)->setEvents(POLLIN);
+                        (*it)->setEvents(POLLIN | POLLRDHUP);
                         std::list<Client *> fromServ = (*it)->getListHandlingEvent();
 //                        std::cout << fromServ.size() << std::endl;
                         for (auto itList = fromServ.begin();
@@ -218,10 +218,10 @@ void ProxyServer::NewServerImpl::handlingEvent() {
 //                            std::cout << "itearion " << std::endl;
                             if (!(*itList)->isInClientList()) {
                                 (*itList)->setInClientList(true);
-                                (*itList)->setEvents(POLLOUT | POLLIN);
+                                (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                                 _clientList.push_back(*itList);
                             } else {
-                                (*itList)->setEvents(POLLOUT | POLLIN);
+                                (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                             }
                         }
 //                        std::cout << "end pereclich " << std::endl;

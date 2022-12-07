@@ -33,9 +33,9 @@ ClientImpl::ClientImpl(int sock, TypeClient typeClient, Buffer *buf) {
     _buffer = buf;
     _structPollFd.fd = _fd;
     if (typeClient == TypeClient::USER) {
-        _structPollFd.events = POLLIN;
+        _structPollFd.events = POLLIN  | POLLRDHUP ;
     } else if (typeClient == TypeClient::HTTP_SERVER) {
-        _structPollFd.events = POLLOUT | POLLIN;
+        _structPollFd.events = POLLOUT | POLLIN | POLLRDHUP;
     }
 //    _structPollFd.events = POLLOUT | POLLIN;
     _structPollFd.revents = 0;
