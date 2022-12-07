@@ -124,7 +124,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                                 (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                                 _clientList.push_back(*itList);
                             } else {
-//                                (*itList)->setEvents(POLLOUT);
+                                (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                             }
                         }
                     } else if ((*it)->getTypeClient() == USER) {
@@ -135,7 +135,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                                 (*it)->getPair()->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                                 _clientList.push_back((*it)->getPair());
                             } else {
-//                                (*it)->getPair()->setEvents(POLLOUT);
+                                (*it)->getPair()->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                             }
                         }
                     }
