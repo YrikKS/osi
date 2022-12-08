@@ -6,7 +6,6 @@
 #define LAB31PROXY_CASHELEMENT_H
 
 #include <string>
-#include "../binaryString/BinaryString.h"
 #include "../logger/Logger.h"
 //#include "../observer/Observable.h"
 #include <memory>
