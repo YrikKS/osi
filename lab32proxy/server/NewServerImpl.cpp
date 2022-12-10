@@ -3,6 +3,7 @@
 //
 
 #include "NewServerImpl.h"
+#include <pthread.h>
 
 using namespace ProxyServer;
 void NewServerImpl::startServer() {
