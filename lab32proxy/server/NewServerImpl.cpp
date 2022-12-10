@@ -4,13 +4,13 @@
 
 #include "NewServerImpl.h"
 
-
-void ProxyServer::NewServerImpl::startServer() {
+using namespace ProxyServer;
+void NewServerImpl::startServer() {
     while (true) {
         try {
             Client *client = _serverSocket->acceptNewClient(_cash);
             pthread_t pthread;
-            errno = pthread_create(&pthread, NULL, &ProxyServer::NewServerImpl::startingMethodForThread, &client);
+            errno = pthread_create(&pthread, NULL, &NewServerImpl::startingMethodForThread, &client);
             if (errno != SUCCESS) {
                 perror("pthread_create error");
 //            exit(errno);
@@ -22,27 +22,27 @@ void ProxyServer::NewServerImpl::startServer() {
     }
 }
 
-void *ProxyServer::NewServerImpl::startingMethodForThread(void *args) {
+void *NewServerImpl::startingMethodForThread(void *args) {
     Client* client = (Client *) args;
     std::cout << "client connect " << client->getTypeClient() << std::endl;
 //    return nullptr;
 }
 
-ProxyServer::NewServerImpl::NewServerImpl() {
+NewServerImpl::NewServerImpl() {
     _serverSocket = new ServerSocketImpl();
     _serverSocket->connectSocket();
     _cash = new CashImpl();
 //    char data[BUF_SIZE] = {0};
 }
 
-ProxyServer::NewServerImpl::~NewServerImpl() {
+NewServerImpl::~NewServerImpl() {
     _serverSocket->closeSocket();
     delete (ServerSocketImpl *) _serverSocket;
     delete _cash;
 }
 
 
-void ProxyServer::NewServerImpl::handlingEvent() {
+void NewServerImpl::handlingEvent() {
 
 }
 
