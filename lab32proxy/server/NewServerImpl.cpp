@@ -28,7 +28,9 @@ void NewServerImpl::startServer() {
 void *NewServerImpl::startingMethodForThread(void *args) {
     std::cout << "all okey 03" << std::endl;
     Client* client = (Client *) args;
+    std::cout << "all okey 4" << std::endl;
     std::cout << "client connect " << client->getTypeClient() << std::endl;
+    std::cout << "all okey 5" << std::endl;
 //    return nullptr;
 }
 
