@@ -10,7 +10,7 @@ void ProxyServer::NewServerImpl::startServer() {
         try {
             Client *client = _serverSocket->acceptNewClient(_cash);
             pthread_t pthread;
-            errno = pthread_create(&pthread, NULL, ProxyServer::NewServerImpl::startingMethodForThread, &client);
+            errno = pthread_create(&pthread, NULL, &ProxyServer::NewServerImpl::startingMethodForThread, &client);
             if (errno != SUCCESS) {
                 perror("pthread_create error");
 //            exit(errno);
