@@ -9,7 +9,6 @@
 #include "Server.h"
 #include "errno.h"
 #include "../logger/Logger.h"
-#include <poll.h>
 #include <iostream>
 #include <map>
 #include <list>

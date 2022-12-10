@@ -5,7 +5,6 @@
 #ifndef LAB31PROXY_CLIENTINTERFACE_H
 #define LAB31PROXY_CLIENTINTERFACE_H
 #include "../buffer/Buffer.h"
-#include <sys/poll.h>
 #include <memory>
 #include <list>
 
