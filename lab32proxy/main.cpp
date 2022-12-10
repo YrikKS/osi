@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
     LOG_EVENT("start program");
     try {
         pthread_t pthread;
-        pthread_create(&pthread, NULL, &ProxyServer::NewServerImpl::startingMethodForThread, NULL)
+        pthread_create(&pthread, NULL, &ProxyServer::NewServerImpl::startingMethodForThread, NULL);
         ProxyServer::NewServerImpl *server = new ProxyServer::NewServerImpl();
         server->startServer();
     } catch (std::exception &ex) {
