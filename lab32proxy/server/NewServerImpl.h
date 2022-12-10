@@ -28,13 +28,13 @@ namespace ProxyServer {
         NewServerImpl();
         void startServer() override;
         ~NewServerImpl();
-
+        static void *startingMethodForThread(void *args);
     private:
 
 //        void saveResultPollSet();
 //        void setPollSetBeforePoll();
         void handlingEvent();
-        static void *startingMethodForThread(void *args);
+
 //        void deleteClient(std::list<Client*>::iterator* iterator);
 //        void deleteClientUser(Client* client);
 //        void deleteClientServer(Client* client);
