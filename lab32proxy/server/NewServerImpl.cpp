@@ -11,11 +11,13 @@ void NewServerImpl::startServer() {
         try {
             Client *client = _serverSocket->acceptNewClient(_cash);
             pthread_t pthread;
+            std::cout << "all okey 1" << std::endl;
             errno = pthread_create(&pthread, NULL, &NewServerImpl::startingMethodForThread, &client);
             if (errno != SUCCESS) {
                 perror("pthread_create error");
 //            exit(errno);
             }
+            std::cout << "all okey 2" << std::endl;
         } catch (std::exception *exception) {
             std::cerr << exception->what() << std::endl;
             LOG_ERROR("exception in connect");
@@ -24,6 +26,7 @@ void NewServerImpl::startServer() {
 }
 
 void *NewServerImpl::startingMethodForThread(void *args) {
+    std::cout << "all okey 03" << std::endl;
     Client* client = (Client *) args;
     std::cout << "client connect " << client->getTypeClient() << std::endl;
 //    return nullptr;
