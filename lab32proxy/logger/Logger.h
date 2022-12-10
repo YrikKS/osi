@@ -21,7 +21,7 @@
 class Logger {
 public:
     static Logger &getInstance() {
-        pthread_mutex_lock(&mutex);
+        pthread_mutex_lock(&Logger::mutex);
         static Logger instance;
         pthread_mutex_unlock(&mutex);
         return instance;

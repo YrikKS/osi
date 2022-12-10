@@ -14,6 +14,7 @@
 #include <map>
 #include <list>
 #include <memory>
+#include <pthread.h>
 #include "../Constants.h"
 #include "../cash/CashImpl.h"
 #include "../client/Client.h"
