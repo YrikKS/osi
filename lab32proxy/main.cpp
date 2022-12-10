@@ -5,6 +5,7 @@
 //#include "cash/CashImpl.h"
 //#include "buffer/BufferImpl.h"
 
+#include <pthread.h>
 int main(int argc, char *argv[]) {
     LOG_EVENT("start program");
     try {
