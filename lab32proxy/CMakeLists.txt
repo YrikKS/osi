@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 23)
 #set(CMAKE_CXX_FLAGS -lpthread)
 set(CMAKE_CXX_FLAGS -std=c++11)
 
-add_executable(lab31proxy
+add_executable(lab32proxy
         main.cpp
         server/Server.h
         Constants.h
