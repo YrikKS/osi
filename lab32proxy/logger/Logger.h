@@ -51,6 +51,7 @@ public:
         loggerFile.close();
     }
 
+    static pthread_mutex_t mutex;
 private:
     Logger() {
         pthread_mutex_init(&mutex, NULL);
@@ -62,7 +63,6 @@ private:
         pthread_mutex_destroy(&mutex);
     }
 
-    static pthread_mutex_t mutex;
     std::ofstream loggerFile;
 };
 
