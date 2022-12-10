@@ -3,7 +3,7 @@ project(lab32proxy)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_FLAGS -pthread)
-set(CMAKE_CXX_FLAGS -std=c++11)
+#set(CMAKE_CXX_FLAGS -std=c++11)
 
 add_executable(lab32proxy
         main.cpp
