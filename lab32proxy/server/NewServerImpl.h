@@ -7,6 +7,7 @@
 
 
 #include "Server.h"
+#include "errno.h"
 #include "../logger/Logger.h"
 #include <poll.h>
 #include <iostream>
@@ -19,6 +20,8 @@
 #include "../socket/ServerSocket.h"
 #include "../socket/ServerSocketImpl.h"
 
+#define SUCCESS 0
+
 namespace ProxyServer {
     class NewServerImpl : public Server {
     public:
@@ -27,13 +30,15 @@ namespace ProxyServer {
         ~NewServerImpl();
 
     private:
-        void saveResultPollSet();
-        void setPollSetBeforePoll();
+
+//        void saveResultPollSet();
+//        void setPollSetBeforePoll();
         void handlingEvent();
-        void deleteClient(std::list<Client*>::iterator* iterator);
-        void deleteClientUser(Client* client);
-        void deleteClientServer(Client* client);
-        void findElementWithCurrentCash(Client* client);
+        static void *startingMethodForThread(void *args);
+//        void deleteClient(std::list<Client*>::iterator* iterator);
+//        void deleteClientUser(Client* client);
+//        void deleteClientServer(Client* client);
+//        void findElementWithCurrentCash(Client* client);
 
         ServerSocket* _serverSocket;
         Cash *_cash;

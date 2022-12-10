@@ -26,9 +26,11 @@
 namespace ProxyServer {
     class ServerSocketImpl : public ServerSocket{
     public:
+        ServerSocketImpl();
+
         int connectSocket() override;
 
-        Client *connectToClient(std::string url, int port) override;
+        static Client *connectToClient(std::string url, int port);
 
         int getFdSocket() override;
 
@@ -39,6 +41,7 @@ namespace ProxyServer {
         ~ServerSocketImpl();
 
     private:
+//        pthread_mutex_t mutex;
         int serverSocket_ = 0;
     };
 }
