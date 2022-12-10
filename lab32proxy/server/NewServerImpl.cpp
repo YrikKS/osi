@@ -11,6 +11,11 @@ void NewServerImpl::startServer() {
         try {
             Client *client = _serverSocket->acceptNewClient(_cash);
             pthread_t pthread;
+            errno = pthread_detach(pthread);
+            if (errno != SUCCESS) {
+                perror("pthread_create error");
+                continue;
+            }
             std::cout << "all okey 1" << std::endl;
             errno = pthread_create(&pthread, NULL, &NewServerImpl::startingMethodForThread, (void*)client);
             if (errno != SUCCESS) {
