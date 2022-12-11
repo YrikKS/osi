@@ -117,9 +117,12 @@ void HandlerOneClientImpl::handlingEvent() {
                     (*it)->getBuffer()->setReadyConnectHttpServer(false);
                     try {
 //                        std::cout << "try connect server " << std::endl;
-                        Client *client = _serverSocket->connectToClient
-                                ((*it)->getBuffer()->getParseResult().getHostName(),
-                                 (*it)->getBuffer()->getParseResult().getPort());
+                        Client* client = ServerSocketImpl().connectToClient(
+                                (*it)->getBuffer()->getParseResult().getHostName(),
+                                (*it)->getBuffer()->getParseResult().getPort());
+//                        Client *client = ServerSocket->->connectToClient
+//                                ((*it)->getBuffer()->getParseResult().getHostName(),
+//                                 (*it)->getBuffer()->getParseResult().getPort());
                         client->setBuffer((*it)->getBuffer());
                         client->getBuffer()->setIsServerConnect(true);
                         (*it)->setPair(client);
