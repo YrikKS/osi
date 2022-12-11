@@ -132,7 +132,7 @@ void HandlerOneClientImpl::handlingEvent() {
                         client->addClientToHandlingEvent(*it);
                         client->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                         client->setInClientList(true);
-                        _clientList.push_back(client);
+                        _clientList.push_front(client);
                         std::cout << "end connect server " << std::endl;
                     } catch (std::exception &ex) {
                         std::cerr << ex.what() << std::endl;
