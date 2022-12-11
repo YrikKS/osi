@@ -7,7 +7,7 @@
 using namespace ProxyServer;
 
 void HandlerOneClientImpl::startHandler() {
-    while (true) {
+    while (_clientList.size() > 0) {
         setPollSetBeforePoll();
         int code = poll(_pollSet, _clientList.size(), TIME_OUT_POLL);
         saveResultPollSet();
