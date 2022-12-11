@@ -12,6 +12,7 @@ void NewServerImpl::startServer() {
     while (true) {
         try {
             listFd.push_front(ArgsForThread(_serverSocket->acceptNewClientSock(), _cash));
+            std::cout << "read from == " << listFd.begin()->getSock() << std::endl;
             pthread_t pthread;
             errno = pthread_create(&pthread, NULL, &NewServerImpl::startingMethodForThread,
                                    (void *) &(*listFd.begin()));
