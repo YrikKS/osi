@@ -71,7 +71,7 @@ int ServerSocketImpl::acceptNewClientSock() {
         LOG_ERROR_WITH_ERRNO("accept new client");
         throw ConnectException("accept new client");
     }
-
+    std::cout << "connection socke ======= " << clientSock << std::endl;
 //    Client *client = new ClientImpl(clientSock, TypeClient::USER, new BufferImpl(cash));
 //    client->getBuffer()->setIsClientConnect(true);
     LOG_EVENT("accept new client");
