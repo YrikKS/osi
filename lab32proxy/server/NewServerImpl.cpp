@@ -42,8 +42,8 @@ void *NewServerImpl::startingMethodForThread(void *args) {
     client->getBuffer()->setIsClientConnect(true);
     std::cout << "client connect " << client->getTypeClient() << std::endl;
     HandlerOneClientImpl handlerOneClient = HandlerOneClientImpl(client);
+        handlerOneClient.startHandler();
     sleep(1000);
-//    handlerOneClient.startHandler();
 }
 
 NewServerImpl::NewServerImpl() {
