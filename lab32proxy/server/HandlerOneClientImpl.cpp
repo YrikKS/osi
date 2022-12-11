@@ -75,7 +75,7 @@ void HandlerOneClientImpl::handlingEvent() {
                                 continue;
                             } else {
                                 (*it)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
-                                findElementWithCurrentCash(*it);
+//                                findElementWithCurrentCash(*it);
                                 (*it)->setInClientList(false);
                                 it = _clientList.erase(it);
                                 continue;
