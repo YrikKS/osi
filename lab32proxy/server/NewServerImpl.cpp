@@ -29,13 +29,13 @@ void NewServerImpl::startServer() {
                 continue;
                 errno = SUCCESS;
             }
-
-            errno = pthread_detach(pthread);
-            if (errno != SUCCESS) {
-                perror("pthread_create error");
-                errno = SUCCESS;
-                continue;
-            }
+            pthread_join(pthread, NULL);
+//            errno = pthread_detach(pthread);
+//            if (errno != SUCCESS) {
+//                perror("pthread_create error");
+//                errno = SUCCESS;
+//                continue;
+//            }
         } catch (std::exception *exception) {
             std::cerr << exception->what() << std::endl;
             LOG_ERROR("exception in connect");
