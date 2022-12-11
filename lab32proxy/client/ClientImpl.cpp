@@ -18,7 +18,7 @@ int ClientImpl::readBuf(std::string *buf) { // передать пустой б�
     char readBuf[BUF_SIZE] = {0};
     int byte = read(_fd, readBuf, BUF_SIZE - 1);
     if (byte < 0) {
-        std::string str = std::string(reinterpret_cast<const char *>(_fd)) + "read error";
+        std::string str = std::to_string(_fd) + "read error";
         perror(str.c_str());
 //        buf->clear();
 //        return;
