@@ -56,7 +56,7 @@ void HandlerOneClientImpl::handlingEvent() {
             deleteClient(&it);
             continue;
         }
-        std::cout << "start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
+//        std::cout << "start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
         std::string buffer;
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
