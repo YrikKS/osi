@@ -48,6 +48,7 @@ NewServerImpl::NewServerImpl() {
     _serverSocket = new ServerSocketImpl();
     _serverSocket->connectSocket();
     _cash = new CashImpl();
+    pthread_mutex_init(&mutexForServer, NULL);
 //    char data[BUF_SIZE] = {0};
 }
 

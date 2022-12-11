@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include "MutexForServer.h"
 #include "../Constants.h"
 #include "../client/Client.h"
 #include "../client/ClientImpl.h"
@@ -24,7 +25,7 @@
 #include "../buffer/BufferImpl.h"
 
 namespace ProxyServer {
-    class ServerSocketImpl : public ServerSocket{
+    class ServerSocketImpl : public ServerSocket {
     public:
         ServerSocketImpl();
 
@@ -34,7 +35,7 @@ namespace ProxyServer {
 
         int getFdSocket() override;
 
-        Client* acceptNewClient(Cash* cash) override;
+        Client *acceptNewClient(Cash *cash) override;
 
         int acceptNewClientSock() override;
 
@@ -42,8 +43,8 @@ namespace ProxyServer {
 
         ~ServerSocketImpl();
 
+        static pthread_mutex_t mutex;
     private:
-//        pthread_mutex_t mutex;
         int serverSocket_ = 0;
     };
 }

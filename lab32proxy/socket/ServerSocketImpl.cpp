@@ -5,6 +5,7 @@
 #include <iostream>
 #include "ServerSocketImpl.h"
 
+
 using namespace ProxyServer;
 
 int ServerSocketImpl::connectSocket() {
@@ -87,14 +88,14 @@ ServerSocketImpl::~ServerSocketImpl() {
 }
 
 Client *ServerSocketImpl::connectToClient(std::string url, int port) {
-//    pthread_mutex_lock(&mutex);
+    pthread_mutex_lock(&mutexForServer);
     struct hostent *hostent = gethostbyname(url.data());
     if (hostent == NULL) {
         LOG_ERROR("gethostbyname");
         herror("gethostbyname");
         throw ConnectException("gethostbyname");
     }
-
+    pthread_mutex_unlock(&mutexForServer);
     struct sockaddr_in sockAddr;
     bcopy(hostent->h_addr, &sockAddr.sin_addr, hostent->h_length);
     sockAddr.sin_port = htons(port);
@@ -116,6 +117,6 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
 }
 
 ServerSocketImpl::ServerSocketImpl() {
-//    pthread_mutex_init(&mutex, NULL);
+
 }
 
