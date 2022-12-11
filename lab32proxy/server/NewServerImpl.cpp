@@ -12,7 +12,6 @@ void NewServerImpl::startServer() {
     while (true) {
         try {
             listFd.push_front(ArgsForThread(_serverSocket->acceptNewClientSock(), _cash));
-            std::cout << (*listFd.begin()).getSock() << std::endl;
             pthread_t pthread;
             errno = pthread_create(&pthread, NULL, &NewServerImpl::startingMethodForThread,
                                    (void *) &(*listFd.begin()));
@@ -37,6 +36,7 @@ void NewServerImpl::startServer() {
 
 void *NewServerImpl::startingMethodForThread(void *args) {
     ArgsForThread *argsForThread = (ArgsForThread *) args;
+    std::cout << "socke == " << args->getSock() << std::endl;
     Client *client = new ClientImpl(argsForThread->getSock(), TypeClient::USER,
                                     new BufferImpl(argsForThread->getCash()));
     client->getBuffer()->setIsClientConnect(true);
