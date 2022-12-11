@@ -95,7 +95,6 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
         herror("gethostbyname");
         throw ConnectException("gethostbyname");
     }
-    pthread_mutex_unlock(&mutexForServer);
     struct sockaddr_in sockAddr;
     bcopy(hostent->h_addr, &sockAddr.sin_addr, hostent->h_length);
     sockAddr.sin_port = htons(port);
@@ -113,6 +112,7 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
 
     LOG_EVENT("http server connect");
     Client *client = new ClientImpl(sock, TypeClient::HTTP_SERVER, NULL);
+    pthread_mutex_unlock(&mutexForServer);
     return client;
 }
 
