@@ -21,6 +21,7 @@
 #include "../socket/ServerSocketImpl.h"
 #include "HandlerOneClient.h"
 #include "HandlerOneClientImpl.h"
+#include "ArgsForThread.h"
 
 #define SUCCESS 0
 

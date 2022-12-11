@@ -8,11 +8,13 @@
 using namespace ProxyServer;
 
 void NewServerImpl::startServer() {
+    std::list<ArgsForThread> listFd;
     while (true) {
         try {
-            Client *client = _serverSocket->acceptNewClient(_cash);
+            listFd.push_front(ArgsForThread(_serverSocket->acceptNewClientSock(), _cash));
             pthread_t pthread;
-            errno = pthread_create(&pthread, NULL, &NewServerImpl::startingMethodForThread, (void *) client);
+            errno = pthread_create(&pthread, NULL, &NewServerImpl::startingMethodForThread,
+                                   (void *) &(*listFd.begin()));
             if (errno != SUCCESS) {
                 perror("pthread_create error");
                 continue;
@@ -33,7 +35,10 @@ void NewServerImpl::startServer() {
 }
 
 void *NewServerImpl::startingMethodForThread(void *args) {
-    Client *client = (Client *) args;
+    ArgsForThread *argsForThread = (ArgsForThread *) args;
+    Client *client = new ClientImpl(argsForThread->getSock(), TypeClient::USER,
+                                    new BufferImpl(argsForThread->getCash()));
+    client->getBuffer()->setIsClientConnect(true);
     std::cout << "client connect " << client->getTypeClient() << std::endl;
     HandlerOneClientImpl handlerOneClient = HandlerOneClientImpl(client);
     handlerOneClient.startHandler();

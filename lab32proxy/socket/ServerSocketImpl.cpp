@@ -61,6 +61,22 @@ Client *ServerSocketImpl::acceptNewClient(Cash *cash) {
     return client;
 }
 
+
+int ServerSocketImpl::acceptNewClientSock() {
+    int clientSock = 0;
+    struct sockaddr clientAddr;
+    socklen_t len = 0;
+    if ((clientSock = accept(serverSocket_, (struct sockaddr *) &clientAddr, &len)) < 0) {
+        LOG_ERROR_WITH_ERRNO("accept new client");
+        throw ConnectException("accept new client");
+    }
+
+//    Client *client = new ClientImpl(clientSock, TypeClient::USER, new BufferImpl(cash));
+//    client->getBuffer()->setIsClientConnect(true);
+    LOG_EVENT("accept new client");
+    return clientSock;
+}
+
 void ServerSocketImpl::closeSocket() {
     LOG_EVENT("close server socket");
     close(serverSocket_);
@@ -102,3 +118,4 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
 ServerSocketImpl::ServerSocketImpl() {
 //    pthread_mutex_init(&mutex, NULL);
 }
+

@@ -32,4 +32,4 @@ add_executable(lab32proxy
         cash/CashImpl.h
         server/NewServerImpl.cpp
         server/NewServerImpl.h
-        server/HandlerOneClientImpl.cpp server/HandlerOneClientImpl.h server/HandlerOneClient.h)
+        server/HandlerOneClientImpl.cpp server/HandlerOneClientImpl.h server/HandlerOneClient.h server/ArgsForThread.h)

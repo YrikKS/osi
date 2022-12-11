@@ -36,6 +36,8 @@ namespace ProxyServer {
 
         Client* acceptNewClient(Cash* cash) override;
 
+        int acceptNewClientSock() override;
+
         void closeSocket() override;
 
         ~ServerSocketImpl();
