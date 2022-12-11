@@ -12,7 +12,7 @@ void NewServerImpl::startServer() {
 //    std::string a;
 //    std::cin >> a;
 //    std::cout << a << std::endl;
-    close(0);
+//    close(0);
     while (true) {
         try {
             listFd.push_front(ArgsForThread(_serverSocket->acceptNewClientSock(), _cash));
