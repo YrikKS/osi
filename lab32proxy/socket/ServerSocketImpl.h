@@ -42,8 +42,6 @@ namespace ProxyServer {
         void closeSocket() override;
 
         ~ServerSocketImpl();
-
-        static pthread_mutex_t mutex;
     private:
         int serverSocket_ = 0;
     };
