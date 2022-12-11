@@ -68,19 +68,19 @@ void BufferImpl::wrightResponseHeading(std::string *binaryString) {
         std::string responseHead = _buf->substr(0, posEndHeading);
         ResultParseHeading resultParseHeading = ParserImpl::parsingResponseHeading(responseHead);
 
-        if (isCashingData(responseHead.length(), resultParseHeading) &&
-            !_cash->isElementInCash(_requestHeading)) {
-            _cashElement = _cash->addStringToCash(_requestHeading,
-                                                  resultParseHeading.getContentLength() + responseHead.size());
-            if (_cashElement != NULL) {
-                _isAddDataToCash = true;
-                _cashElement->appendStringToCash(*_buf);
-                _cashElement->setIsCashEnd(false);
-                _cashElement->setIsServerConnect(true);
-            } else {
-                _isAddDataToCash = false;
-            }
-        }
+//        if (isCashingData(responseHead.length(), resultParseHeading) &&
+//            !_cash->isElementInCash(_requestHeading)) {
+//            _cashElement = _cash->addStringToCash(_requestHeading,
+//                                                  resultParseHeading.getContentLength() + responseHead.size());
+//            if (_cashElement != NULL) {
+//                _isAddDataToCash = true;
+//                _cashElement->appendStringToCash(*_buf);
+//                _cashElement->setIsCashEnd(false);
+//                _cashElement->setIsServerConnect(true);
+//            } else {
+//                _isAddDataToCash = false;
+//            }
+//        }
 
         _isReadyToSend = true;
         _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
