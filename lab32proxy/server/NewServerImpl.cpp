@@ -36,7 +36,7 @@ void NewServerImpl::startServer() {
 
 void *NewServerImpl::startingMethodForThread(void *args) {
     ArgsForThread *argsForThread = (ArgsForThread *) args;
-    std::cout << "socke == " << args->getSock() << std::endl;
+    std::cout << "socke == " << argsForThread->getSock() << std::endl;
     Client *client = new ClientImpl(argsForThread->getSock(), TypeClient::USER,
                                     new BufferImpl(argsForThread->getCash()));
     client->getBuffer()->setIsClientConnect(true);
