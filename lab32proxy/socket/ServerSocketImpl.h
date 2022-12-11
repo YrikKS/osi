@@ -44,7 +44,7 @@ namespace ProxyServer {
         int serverSocket_ = 0;
     };
 
-    Client *connectToClient(std::string url, int port);
+//    Client *connectToClient(std::string url, int port);
 }
 
 
