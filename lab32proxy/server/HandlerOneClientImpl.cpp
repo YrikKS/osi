@@ -85,9 +85,9 @@ void HandlerOneClientImpl::handlingEvent() {
                             }
                         }
                     }
-                    std::cout << "end read from socket" << std::endl;
+//                    std::cout << "end read from socket" << std::endl;
                     if ((*it)->getTypeClient() == HTTP_SERVER) {
-                        std::cout << "try add to list from HTTP_SERVER " << std::endl;
+//                        std::cout << "try add to list from HTTP_SERVER " << std::endl;
                         std::list<Client *> fromServ = (*it)->getListHandlingEvent();
                         for (auto itList = fromServ.begin();
                              itList != fromServ.end(); itList++) {
@@ -100,7 +100,7 @@ void HandlerOneClientImpl::handlingEvent() {
                             }
                         }
                     } else if ((*it)->getTypeClient() == USER) {
-                        std::cout << "try add to list from user " << std::endl;
+//                        std::cout << "try add to list from user " << std::endl;
                         if ((*it)->getPair() != NULL) {
                             if (!(*it)->getPair()->isInClientList()) {
                                 (*it)->getPair()->setInClientList(true);
@@ -119,7 +119,7 @@ void HandlerOneClientImpl::handlingEvent() {
                 if ((*it)->getBuffer()->isReadyConnectHttpServer()) {
                     (*it)->getBuffer()->setReadyConnectHttpServer(false);
                     try {
-                        std::cout << "try connect server " << std::endl;
+//                        std::cout << "try connect server " << std::endl;
                         Client* client = ServerSocketImpl().connectToClient(
                                 (*it)->getBuffer()->getParseResult().getHostName(),
                                 (*it)->getBuffer()->getParseResult().getPort());
@@ -133,7 +133,7 @@ void HandlerOneClientImpl::handlingEvent() {
                         client->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                         client->setInClientList(true);
                         _clientList.push_front(client);
-                        std::cout << "end connect server " << std::endl;
+//                        std::cout << "end connect server " << std::endl;
                     } catch (std::exception &ex) {
                         std::cerr << ex.what() << std::endl;
                         LOG_ERROR("can't connect to http server");
@@ -175,7 +175,7 @@ void HandlerOneClientImpl::handlingEvent() {
                     ((*it)->getTypeClient() == TypeClient::USER
                      && (*it)->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE)) {
 
-                    std::cout << "wright to client " << std::endl;
+//                    std::cout << "wright to client " << std::endl;
                     (*it)->getBuffer()->sendBuf(&buffer);
                     (*it)->sendBuf(&buffer);
                     (*it)->getBuffer()->proofSend(&buffer);
@@ -184,7 +184,7 @@ void HandlerOneClientImpl::handlingEvent() {
                         (*it)->getBuffer()->getStatusHttpServer() == WRITE_RESPONSE_HEADING
                         && !(*it)->getBuffer()->isReadyToSend()) {
 
-                        std::cout << "pereclich " << std::endl;
+//                        std::cout << "pereclich " << std::endl;
                         (*it)->setEvents(POLLIN | POLLRDHUP);
                         std::list<Client *> fromServ = (*it)->getListHandlingEvent();
                         std::cout << fromServ.size() << std::endl;
@@ -199,7 +199,7 @@ void HandlerOneClientImpl::handlingEvent() {
                                 (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                             }
                         }
-                        std::cout << "end pereclich " << std::endl;
+//                        std::cout << "end pereclich " << std::endl;
                     } else if ((*it)->getTypeClient() == TypeClient::USER && // при отключении сервера
                                (*it)->getBuffer()->getStatusClient() == END_WORK
                                && !(*it)->getBuffer()->isReadyToSend()) {
