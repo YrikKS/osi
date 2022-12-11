@@ -9,9 +9,9 @@ using namespace ProxyServer;
 
 void NewServerImpl::startServer() {
     std::list<ArgsForThread> listFd;
-    std::string a;
-    std::cin >> a;
-    std::cout << a << std::endl;
+//    std::string a;
+//    std::cin >> a;
+//    std::cout << a << std::endl;
     while (true) {
         try {
             listFd.push_front(ArgsForThread(_serverSocket->acceptNewClientSock(), _cash));
