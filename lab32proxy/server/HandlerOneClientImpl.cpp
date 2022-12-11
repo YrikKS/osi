@@ -31,9 +31,9 @@ HandlerOneClientImpl::HandlerOneClientImpl(Client *client) {
 }
 
 HandlerOneClientImpl::~HandlerOneClientImpl() {
-    for (auto &it: _clientList) {
-        delete it;
-    }
+//    for (auto &it: _clientList) {
+//        delete it;
+//    }
 }
 
 void HandlerOneClientImpl::setPollSetBeforePoll() {
@@ -121,7 +121,7 @@ void HandlerOneClientImpl::handlingEvent() {
                     (*it)->getBuffer()->setReadyConnectHttpServer(false);
                     try {
 //                        std::cout << "try connect server " << std::endl;
-                        Client* client = ServerSocketImpl().connectToClient(
+                        Client* client = connectToClient(
                                 (*it)->getBuffer()->getParseResult().getHostName(),
                                 (*it)->getBuffer()->getParseResult().getPort());
 //                        Client *client = ServerSocket->->connectToClient

@@ -87,7 +87,7 @@ ServerSocketImpl::~ServerSocketImpl() {
     close(serverSocket_);
 }
 
-Client *ServerSocketImpl::connectToClient(std::string url, int port) {
+Client *connectToClient(std::string url, int port) {
 //    pthread_mutex_lock(&mutexForServer);
     struct hostent *hostent = gethostbyname(url.data());
     if (hostent == NULL) {
