@@ -6,22 +6,25 @@
 #include <pthread.h>
 
 using namespace ProxyServer;
+
 void NewServerImpl::startServer() {
     while (true) {
         try {
             Client *client = _serverSocket->acceptNewClient(_cash);
             pthread_t pthread;
-            std::cout << "all okey 1" << std::endl;
-            errno = pthread_create(&pthread, NULL, &NewServerImpl::startingMethodForThread, (void*)client);
-            if (errno != SUCCESS) {
-                perror("pthread_create error");
-            }
-            errno = pthread_detach(pthread);
+            errno = pthread_create(&pthread, NULL, &NewServerImpl::startingMethodForThread, (void *) client);
             if (errno != SUCCESS) {
                 perror("pthread_create error");
                 continue;
+                errno = SUCCESS;
             }
-            std::cout << "all okey 2" << std::endl;
+
+            errno = pthread_detach(pthread);
+            if (errno != SUCCESS) {
+                perror("pthread_create error");
+                errno = SUCCESS;
+                continue;
+            }
         } catch (std::exception *exception) {
             std::cerr << exception->what() << std::endl;
             LOG_ERROR("exception in connect");
@@ -30,12 +33,10 @@ void NewServerImpl::startServer() {
 }
 
 void *NewServerImpl::startingMethodForThread(void *args) {
-    std::cout << "all okey 03" << std::endl;
-    Client* client = (Client *) args;
-    std::cout << "all okey 4" << std::endl;
+    Client *client = (Client *) args;
     std::cout << "client connect " << client->getTypeClient() << std::endl;
-    std::cout << "all okey 5" << std::endl;
-//    return nullptr;
+    HandlerOneClientImpl handlerOneClient = HandlerOneClientImpl(client);
+    handlerOneClient.startHandler();
 }
 
 NewServerImpl::NewServerImpl() {
@@ -52,8 +53,7 @@ NewServerImpl::~NewServerImpl() {
 }
 
 
-void NewServerImpl::handlingEvent() {
-
-}
+//void NewServerImpl::handlingEvent() {
+//}
 
 

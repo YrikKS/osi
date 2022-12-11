@@ -19,6 +19,8 @@
 #include "../client/Client.h"
 #include "../socket/ServerSocket.h"
 #include "../socket/ServerSocketImpl.h"
+#include "HandlerOneClient.h"
+#include "HandlerOneClientImpl.h"
 
 #define SUCCESS 0
 
@@ -33,7 +35,7 @@ namespace ProxyServer {
 
 //        void saveResultPollSet();
 //        void setPollSetBeforePoll();
-        void handlingEvent();
+//        void handlingEvent();
 
 //        void deleteClient(std::list<Client*>::iterator* iterator);
 //        void deleteClientUser(Client* client);

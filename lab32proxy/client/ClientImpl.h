@@ -32,6 +32,18 @@ namespace ProxyServer {
 
         TypeClient getTypeClient() override;
 
+        void setEvents(int event) override;
+
+        struct pollfd getPollFd() override;
+
+        void setPollElement(struct pollfd pollfd) override;
+
+        void setReventsZero() override;
+
+        bool isInClientList() override;
+
+        void setInClientList(bool value) override;
+
         Client *getPair();
 
         void setPair(Client *pair);
@@ -43,11 +55,13 @@ namespace ProxyServer {
         void eraseIt(Client* client) override;
 
     private:
+        bool _isInClientList = true;
         int _fd;
         TypeClient _typeClient;
         ProxyServer::Buffer *_buffer;
         std::list<Client*> _listHandlingEvent;
         Client *_pair = NULL;
+        struct pollfd _structPollFd;
     };
 }
 

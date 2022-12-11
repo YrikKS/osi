@@ -31,6 +31,14 @@ ClientImpl::ClientImpl(int sock, TypeClient typeClient, Buffer *buf) {
     _fd = sock;
     _typeClient = typeClient;
     _buffer = buf;
+    _structPollFd.fd = _fd;
+    if (typeClient == TypeClient::USER) {
+        _structPollFd.events = POLLIN  | POLLRDHUP ;
+    } else if (typeClient == TypeClient::HTTP_SERVER) {
+        _structPollFd.events = POLLOUT | POLLIN | POLLRDHUP;
+    }
+//    _structPollFd.events = POLLOUT | POLLIN;
+    _structPollFd.revents = 0;
 }
 
 ClientImpl::~ClientImpl() {
@@ -48,6 +56,32 @@ Buffer *ClientImpl::getBuffer() {
 
 void ClientImpl::setBuffer(Buffer *buffer) {
     _buffer = buffer;
+}
+
+struct pollfd ClientImpl::getPollFd() {
+    return _structPollFd;
+}
+
+void ClientImpl::setPollElement(struct pollfd pollfd) {
+    _structPollFd.fd = pollfd.fd;
+    _structPollFd.events = pollfd.events;
+    _structPollFd.revents = pollfd.revents;
+}
+
+void ClientImpl::setReventsZero() {
+    _structPollFd.revents = 0;
+}
+
+void ClientImpl::setEvents(int event) {
+    _structPollFd.events = event;
+}
+
+bool ClientImpl::isInClientList() {
+    return _isInClientList;
+}
+
+void ClientImpl::setInClientList(bool value) {
+    _isInClientList = value;
 }
 
 Client *ClientImpl::getPair() {
