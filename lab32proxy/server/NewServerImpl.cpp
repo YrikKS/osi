@@ -49,7 +49,7 @@ void *NewServerImpl::startingMethodForThread(void *args) {
     Client *client = new ClientImpl(argsForThread->getSock(), TypeClient::USER,
                                     new BufferImpl(argsForThread->getCash()));
     client->getBuffer()->setIsClientConnect(true);
-    std::cout << "client connect " << client->getFdClient() << std::endl;
+    std::cout << "client connect!!!!!!!!!!!!!!!!!!!!! " << client->getFdClient() << std::endl;
     HandlerOneClientImpl handlerOneClient = HandlerOneClientImpl(client);
     handlerOneClient.startHandler();
     std::cout << "thread end work" << std::endl;
