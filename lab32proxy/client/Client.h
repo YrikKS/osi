@@ -25,7 +25,7 @@ namespace ProxyServer {
 
         virtual void sendBuf(std::string* buf) = 0;
 
-        virtual void readBuf(std::string *buf) = 0;
+        virtual int readBuf(std::string *buf) = 0;
 
         virtual Buffer *getBuffer() = 0;
 

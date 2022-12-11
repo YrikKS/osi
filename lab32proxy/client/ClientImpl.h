@@ -22,7 +22,7 @@ namespace ProxyServer {
 
         void sendBuf(std::string *buf) override;
 
-        void readBuf(std::string *buf) override;
+        int readBuf(std::string *buf) override;
 
         Buffer *getBuffer() override;
 

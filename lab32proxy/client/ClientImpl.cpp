@@ -14,17 +14,19 @@ void ClientImpl::sendBuf(std::string *buf) {
     write(_fd, (buf)->c_str(), (buf)->length());
 }
 
-void ClientImpl::readBuf(std::string *buf) { // передать пустой буффер размером BUF_SIZE!
+int ClientImpl::readBuf(std::string *buf) { // передать пустой буффер размером BUF_SIZE!
     char readBuf[BUF_SIZE] = {0};
     int byte = read(_fd, readBuf, BUF_SIZE - 1);
     if (byte < 0) {
         perror("read error");
 //        buf->clear();
 //        return;
+        return byte;
     }
 //    (buf)->clear();
     (buf)->resize(byte, ' ');
     std::memcpy((void *) (buf)->c_str(), readBuf, byte);
+    return 0;
 }
 
 ClientImpl::ClientImpl(int sock, TypeClient typeClient, Buffer *buf) {
@@ -33,7 +35,7 @@ ClientImpl::ClientImpl(int sock, TypeClient typeClient, Buffer *buf) {
     _buffer = buf;
     _structPollFd.fd = _fd;
     if (typeClient == TypeClient::USER) {
-        _structPollFd.events = POLLIN  | POLLRDHUP ;
+        _structPollFd.events = POLLIN | POLLRDHUP;
     } else if (typeClient == TypeClient::HTTP_SERVER) {
         _structPollFd.events = POLLOUT | POLLIN | POLLRDHUP;
     }
