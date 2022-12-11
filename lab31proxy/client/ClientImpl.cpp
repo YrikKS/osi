@@ -28,6 +28,7 @@ void ClientImpl::readBuf(std::string *buf) { // передать пустой б
 }
 
 ClientImpl::ClientImpl(int sock, TypeClient typeClient, Buffer *buf) {
+    std::cout << sock << std::endl;
     _fd = sock;
     _typeClient = typeClient;
     _buffer = buf;
