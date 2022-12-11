@@ -59,11 +59,11 @@ void HandlerOneClientImpl::handlingEvent() {
 //        std::cout << "start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
         std::string buffer;
         if ((*it)->getPollFd().revents & POLLIN) {
+            (*it)->setReventsZero();
             int code = (*it)->readBuf(&buffer);
             if(code < 0) {
                 continue;
             }
-            (*it)->setReventsZero();
             if (buffer.length() == 0) {
                 deleteClient(&it);
                 continue;
