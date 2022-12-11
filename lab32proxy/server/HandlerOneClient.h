@@ -10,6 +10,7 @@
 
 namespace ProxyServer {
     class HandlerOneClient {
+    public:
         virtual ~HandlerOneClient() = default;
 
         virtual void startHandler() = 0;
