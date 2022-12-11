@@ -224,6 +224,7 @@ void HandlerOneClientImpl::handlingEvent() {
 }
 
 void HandlerOneClientImpl::deleteClient(std::list<Client *>::iterator *iterator) {
+    std::cout << "dell client " << std::endl;
     if ((**iterator)->getTypeClient() == TypeClient::USER) {
         deleteClientUser(**iterator);
     } else if ((**iterator)->getTypeClient() == TypeClient::HTTP_SERVER) {
