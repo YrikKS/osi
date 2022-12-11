@@ -60,6 +60,7 @@ void HandlerOneClientImpl::handlingEvent() {
         std::string buffer;
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
+            std::cout << "read from sock == " << (*it)->getFdClient() << std::endl;
             int code = (*it)->readBuf(&buffer);
             if(code < 0) {
                 continue;
