@@ -8,6 +8,7 @@
 #include <pthread.h>
 int main(int argc, char *argv[]) {
     LOG_EVENT("start program");
+    signal(SIGPIPE, SIG_IGN);
     try {
         ProxyServer::NewServerImpl *server = new ProxyServer::NewServerImpl();
         server->startServer();
