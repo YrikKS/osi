@@ -81,7 +81,7 @@ void BufferImpl::wrightResponseHeading(std::string *binaryString) {
                 _isAddDataToCash = false;
             }
         }
-        _isAddDataToCash = false;
+//        _isAddDataToCash = false;
 
         _isReadyToSend = true;
         _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
