@@ -14,6 +14,7 @@ ProxyServer::CashElement *ProxyServer::CashImpl::findResponseInCash(std::string 
         if ((*it)->getHash() == hashHeading) {
             _listCash.splice(_listCash.end(), _listCash, it);
             LOG_EVENT("find in cash");
+            pthread_mutex_unlock(&mutex); // TODO
             return (*it);
         }
     }
@@ -27,6 +28,7 @@ ProxyServer::CashElement *ProxyServer::CashImpl::addStringToCash(std::string req
     pthread_mutex_lock(&mutex);
     if (byteInCash + dataSize >= MAX_CASH_SIZE) {
         if (dataSize > SIZE_EACH_CASH_ELEMENT) {
+            pthread_mutex_unlock(&mutex);
             return NULL;
         }
         for (auto it = _listCash.begin(); it != _listCash.end(); it++) {
@@ -40,6 +42,7 @@ ProxyServer::CashElement *ProxyServer::CashImpl::addStringToCash(std::string req
             }
         }
         if (byteInCash + dataSize >= MAX_CASH_SIZE) {
+            pthread_mutex_unlock(&mutex);
             return NULL;
         }
     }
