@@ -12,8 +12,8 @@ int ClientImpl::getFdClient() {
 
 void ClientImpl::sendBuf(std::string *buf) {
     std::cout << "wright" << std::endl;
-    write(_fd, (buf)->c_str(), (buf)->length());
-    std::cout << "wright end" << std::endl;
+    int code = write(_fd, (buf)->c_str(), (buf)->length());
+    std::cout << "wright end " << code << std::endl;
 }
 
 int ClientImpl::readBuf(std::string *buf) { // передать пустой буффер размером BUF_SIZE!
