@@ -29,13 +29,13 @@ void NewServerImpl::startServer() {
                 continue;
                 errno = SUCCESS;
             }
-            pthread_join(pthread, NULL);
-//            errno = pthread_detach(pthread);
-//            if (errno != SUCCESS) {
-//                perror("pthread_create error");
-//                errno = SUCCESS;
-//                continue;
-//            }
+//            pthread_join(pthread, NULL);
+            errno = pthread_detach(pthread);
+            if (errno != SUCCESS) {
+                perror("pthread_create error");
+                errno = SUCCESS;
+                continue;
+            }
         } catch (std::exception *exception) {
             std::cerr << exception->what() << std::endl;
             LOG_ERROR("exception in connect");
@@ -49,7 +49,6 @@ void *NewServerImpl::startingMethodForThread(void *args) {
     Client *client = new ClientImpl(argsForThread->getSock(), TypeClient::USER,
                                     new BufferImpl(argsForThread->getCash()));
     client->getBuffer()->setIsClientConnect(true);
-    std::cout << "client connect!!!!!!!!!!!!!!!!!!!!! " << client->getFdClient() << std::endl;
     HandlerOneClientImpl handlerOneClient = HandlerOneClientImpl(client);
     handlerOneClient.startHandler();
     std::cout << "thread end work" << std::endl;
