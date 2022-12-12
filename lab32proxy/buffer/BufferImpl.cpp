@@ -176,6 +176,7 @@ void BufferImpl::sendBuf(std::string *binaryString) {
         }
         std::cout << "5" << std::endl;
     }
+    std::cout << "6" << std::endl;
 }
 
 void BufferImpl::proofSend(std::string *binaryString) {
