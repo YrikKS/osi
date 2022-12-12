@@ -42,14 +42,7 @@ namespace ProxyServer {
 
         ~ServerSocketImpl();
 
-        class MutexForServer {
-        public:
-            MutexForServer() {
-                pthread_mutex_init(&MutexForServer::mutexForServer, NULL);
-            }
-            static pthread_mutex_t mutexForServer;
-        };
-        static MutexForServer mutexServ;
+        static pthread_mutex_t mutexForServer;
     private:
         int serverSocket_ = 0;
     };
