@@ -15,7 +15,7 @@ ProxyServer::CashElement *ProxyServer::CashImpl::findResponseInCash(std::string 
             _listCash.splice(_listCash.end(), _listCash, it);
             LOG_EVENT("find in cash");
             CashElement* local = (*it);
-            pthread_mutex_unlock(&mutex); // TODO
+            pthread_mutex_unlock(&mutex);
             return local;
         }
     }
