@@ -195,7 +195,7 @@ bool HandlerOneClientImpl::handlingEvent() {
 //                    if ((*it)->getBuffer()->getCashElement() != NULL)
 //                        pthread_mutex_unlock((*it)->getBuffer()->getCashElement()->getMutex());
 
-                    std::cout << "proof send end wright to client " << std::endl;
+//                    std::cout << "proof send end wright to client " << std::endl;
                     if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                         (*it)->getBuffer()->getStatusHttpServer() == WRITE_RESPONSE_HEADING
                         && !(*it)->getBuffer()->isReadyToSend()) {
@@ -253,6 +253,7 @@ void HandlerOneClientImpl::deleteClient(std::list<Client *>::iterator *iterator)
 
 void HandlerOneClientImpl::deleteClientUser(Client *client) {
     LOG_EVENT("user logout");
+    std::cout << "user logout" << std::endl;
     if (client->getPair() != NULL) {
         client->getPair()->eraseIt(client);
 
@@ -325,8 +326,6 @@ void HandlerOneClientImpl::getFromCash() {
     pthread_mutex_lock(&mutexForCond);
     _client->getBuffer()->getCashElement()->addCondVar(&cond);
     bool run = true;
-    std::cout << &mutexForCond << std::endl;
-    std::cout << &cond << std::endl;
     while (run) {
 //        std::cout << "start getting in while" << std::endl;
         while (_client->getBuffer()->getCashElement()->isIsServerConnected() &&
@@ -420,7 +419,7 @@ int HandlerOneClientImpl::sendAll() {
 //            pthread_mutex_unlock(_client->getBuffer()->getCashElement()->getMutex());
 
     }
-    std::cout << "end send cash in iteration" << std::endl;
+//    std::cout << "end send cash in iteration" << std::endl;
 }
 
 
