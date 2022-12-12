@@ -392,8 +392,11 @@ void HandlerOneClientImpl::sendAll() {
     while(_client->getBuffer()->isReadyToSend()) {
         std::string buf;
         _client->getBuffer()->sendBuf(&buf);
+        std::cout << "child send" << std::endl;
         _client->sendBuf(&buf);
+        std::cout << "child send in socket" << std::endl;
         _client->getBuffer()->proofSend(&buf);
+        std::cout << "child end proof" << std::endl;
     }
     std::cout << "end send cash in iteration" << std::endl;
 }
