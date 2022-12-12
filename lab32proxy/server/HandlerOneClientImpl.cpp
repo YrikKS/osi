@@ -83,11 +83,12 @@ bool HandlerOneClientImpl::handlingEvent() {
                     if ((*it)->getTypeClient() == USER) {
                         if ((*it)->getBuffer()->getStatusClient() == READ_RESPONSE
                             && (*it)->getBuffer()->isIsDataGetCash()) {
-                            if ((*it)->getBuffer()->getCashElement()->isCashEnd()) {
-                                return 1;
+//                            if ((*it)->getBuffer()->getCashElement()->isCashEnd()) {
+//                                return 1;
 //                                (*it)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
 //                                continue;
-                            }
+//                            }
+                            return 1;
                         }
                     }
 //                    std::cout << "end read from socket" << std::endl;
