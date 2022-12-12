@@ -14,8 +14,9 @@ ProxyServer::CashElement *ProxyServer::CashImpl::findResponseInCash(std::string 
         if ((*it)->getHash() == hashHeading) {
             _listCash.splice(_listCash.end(), _listCash, it);
             LOG_EVENT("find in cash");
+            CashElement* local = (*it);
             pthread_mutex_unlock(&mutex); // TODO
-            return (*it);
+            return local;
         }
     }
     pthread_mutex_unlock(&mutex);
