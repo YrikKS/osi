@@ -391,6 +391,7 @@ bool HandlerOneClientImpl::condWait(pthread_mutex_t* mutex, pthread_cond_t* cond
 void HandlerOneClientImpl::sendAll() {
     while(_client->getBuffer()->isReadyToSend()) {
         std::string buf;
+        std::cout << "child start send" << std::endl;
         _client->getBuffer()->sendBuf(&buf);
         std::cout << "child send" << std::endl;
         _client->sendBuf(&buf);

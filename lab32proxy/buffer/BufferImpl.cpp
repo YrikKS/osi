@@ -147,12 +147,14 @@ bool BufferImpl::isCashingData(int sizeHeading, ResultParseHeading resultParseHe
 
 void BufferImpl::sendBuf(std::string *binaryString) {
     std::cout << "1" << std::endl;
+    if(_cashElement != NULL)
+        pthread_mutex_lock(_cashElement->getMutex());
     if (_isDataGetCash) {
         std::cout << "2" << std::endl;
         if (_cashElement->getLength() > _countByteReadFromCash) {
             std::cout << "3" << std::endl;
             // или тут
-            pthread_mutex_lock(_cashElement->getMutex());
+
             if (_cashElement->getLength() >= _countByteReadFromCash + BUF_SIZE - 1) {
                 (binaryString)->resize(BUF_SIZE - 1);
                 std::cout << "3.1" << std::endl;
@@ -171,15 +173,12 @@ void BufferImpl::sendBuf(std::string *binaryString) {
 //                std::memcpy((void *) (binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash,
 //                            _cashElement->getCash()->length() - _countByteReadFromCash);
             }
-            pthread_mutex_unlock(_cashElement->getMutex());
         }
 
         std::cout << "4" << std::endl;
     } else {
         std::cout << "5" << std::endl;
         // ТУТ
-        if (isIsAddDataToCash())
-            pthread_mutex_lock(_cashElement->getMutex());
         if (_buf->length() >= BUF_SIZE - 1) {
             std::cout << "5.0" << std::endl;
             (binaryString)->resize(BUF_SIZE - 1);
@@ -194,10 +193,10 @@ void BufferImpl::sendBuf(std::string *binaryString) {
             std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), _buf->length());
             std::cout << "5.5" << std::endl;
         }
-        if (isIsAddDataToCash())
-            pthread_mutex_unlock(_cashElement->getMutex());
         std::cout << "6" << std::endl;
     }
+    if(_cashElement != NULL)
+        pthread_mutex_unlock(_cashElement->getMutex());
     std::cout << "7" << std::endl;
 }
 
