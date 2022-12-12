@@ -310,14 +310,17 @@ void HandlerOneClientImpl::getFromCash() {
     _client->getBuffer()->getCashElement()->addCondVar(&cond);
     bool run = true;
     while (run) {
-        //пока true - не выходим
+        std::cout << "start getting in while" << std::endl;
         while(_client->getBuffer()->getCashElement()->isIsServerConnected() &&
               !_client->getBuffer()->isReadyToSend()) {
+            std::cout << "cond wait" << std::endl;
             if(condWait(&mutexForCond, &cond) != SUCCSEC) {
                 run = false;
                 break;
             }
         }
+
+        std::cout << "cash not sleep" << std::endl;
         if(!_client->getBuffer()->getCashElement()->isIsServerConnected()) {
             sendAll();
             std::cout << "one send all" << std::endl;

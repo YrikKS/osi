@@ -8,11 +8,16 @@
 using namespace ProxyServer;
 
 bool CashElementImpl::isCashEnd() {
-    return _isCashEnd;
+    pthread_mutex_lock(&mutexForData);
+    bool local = _isCashEnd;
+    pthread_mutex_unlock(&mutexForData);
+    return local;
 }
 
 void CashElementImpl::setIsCashEnd(bool var) {
+    pthread_mutex_lock(&mutexForData);
     _isCashEnd = var;
+    pthread_mutex_unlock(&mutexForData);
 }
 
 std::shared_ptr<std::string> CashElementImpl::getCash() {
@@ -34,11 +39,11 @@ long long int CashElementImpl::getHash() {
 CashElementImpl::~CashElementImpl() {
     LOG_EVENT("delete cash ");
     errno = pthread_mutex_destroy(&mutexForData);
-    if(errno != 0) {
+    if (errno != 0) {
         perror("destroy mutex error");
     }
     errno = pthread_mutex_destroy(&mutexForList);
-    if(errno != 0) {
+    if (errno != 0) {
         perror("destroy mutex error");
     }
 }
@@ -74,7 +79,7 @@ void CashElementImpl::setIsServerConnect(bool isServerConnected) {
     _isServerConnected = isServerConnected;
     pthread_mutex_unlock(&mutexForData);
 
-    if(!isServerConnected) {
+    if (!isServerConnected) {
         signalUsers();
     }
 
@@ -121,8 +126,8 @@ void CashElementImpl::addCondVar(pthread_cond_t *condVar) {
 
 void CashElementImpl::dellCondVar(pthread_cond_t *condVar) {
     pthread_mutex_lock(&mutexForList);
-    for(auto it = listUsers.begin(); it != listUsers.end(); it++) {
-        if((*it) == condVar) {
+    for (auto it = listUsers.begin(); it != listUsers.end(); it++) {
+        if ((*it) == condVar) {
             listUsers.erase(it);
             break;
         }
@@ -132,7 +137,8 @@ void CashElementImpl::dellCondVar(pthread_cond_t *condVar) {
 
 void CashElementImpl::signalUsers() {
     pthread_mutex_lock(&mutexForList);
-    for (auto &item : listUsers) {
+    std::cout << "signal cash" << std::endl;
+    for (auto &item: listUsers) {
         pthread_cond_signal(item);
     }
     pthread_mutex_unlock(&mutexForList);
