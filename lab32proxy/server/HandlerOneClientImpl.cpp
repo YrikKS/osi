@@ -180,12 +180,12 @@ bool HandlerOneClientImpl::handlingEvent() {
                     ((*it)->getTypeClient() == TypeClient::USER
                      && (*it)->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE)) {
 
-                    if((*it)->getBuffer()->getCashElement() != NULL)
-                        pthread_mutex_lock((*it)->getBuffer()->getCashElement()->getMutex());
+//                    if((*it)->getBuffer()->getCashElement() != NULL)
+//                        pthread_mutex_lock((*it)->getBuffer()->getCashElement()->getMutex());
                     std::cout << "wright to client " << std::endl;
                     (*it)->getBuffer()->sendBuf(&buffer);
-                    if((*it)->getBuffer()->getCashElement() != NULL)
-                        pthread_mutex_unlock((*it)->getBuffer()->getCashElement()->getMutex());
+//                    if((*it)->getBuffer()->getCashElement() != NULL)
+//                        pthread_mutex_unlock((*it)->getBuffer()->getCashElement()->getMutex());
                     std::cout << "send buff end to client " << std::endl;
                     (*it)->sendBuf(&buffer);
                     std::cout << "wright to socket to client " << std::endl;
