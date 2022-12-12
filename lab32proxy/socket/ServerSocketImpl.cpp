@@ -120,6 +120,8 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
 }
 
 ServerSocketImpl::ServerSocketImpl() {
+    pthread_mutex_t mutex;
+    ServerSocketImpl::mutexForServer = mutex;
     pthread_mutex_init(&ServerSocketImpl::mutexForServer, NULL);
 }
 
