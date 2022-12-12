@@ -141,6 +141,6 @@ void CashElementImpl::signalUsers() {
     for (auto &item: listUsers) {
         pthread_cond_signal(item);
     }
-    std::cout << "end signal cash" << std::endl;
+    std::cout << "end signal cash size listUsers == " << listUsers.size() << std::endl;
     pthread_mutex_unlock(&mutexForList);
 }
