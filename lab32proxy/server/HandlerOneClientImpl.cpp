@@ -319,6 +319,7 @@ void HandlerOneClientImpl::getFromCash() {
         }
         if(!_client->getBuffer()->getCashElement()->isIsServerConnected()) {
             sendAll();
+            std::cout << "one send all" << std::endl;
             break;
         }
         if(_client->getBuffer()->isReadyToSend()) {
