@@ -219,6 +219,7 @@ bool HandlerOneClientImpl::handlingEvent() {
                         deleteClient(&it);
                         continue;
                     }
+                    std::cout << "end iteration :" << (*it) << std::endl;
                 }
             } else {
                 (*it)->getPair()->setInClientList(true);
