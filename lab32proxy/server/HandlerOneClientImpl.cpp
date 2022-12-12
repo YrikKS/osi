@@ -304,6 +304,7 @@ void HandlerOneClientImpl::getFromCash() {
         return;
     }
     pthread_mutex_lock(&mutexForCond);
+    _client->getBuffer()->getCashElement()->addCondVar(&cond);
     bool run = true;
     while (run) {
         //пока true - не выходим
@@ -323,6 +324,7 @@ void HandlerOneClientImpl::getFromCash() {
         }
     }
     pthread_mutex_unlock(&mutexForCond);
+    _client->getBuffer()->getCashElement()->dellCondVar(&cond);
     deleteResources(&mutexForCond, &cond);
 }
 
@@ -362,8 +364,8 @@ bool HandlerOneClientImpl::condWait(pthread_mutex_t* mutex, pthread_cond_t* cond
     errno = pthread_cond_wait(cond, mutex);
     if(errno != SUCCSEC) {
         perror("wait error");
-        pthread_mutex_unlock(mutex);
-        deleteResources(mutex, cond);
+//        pthread_mutex_unlock(mutex);
+//        deleteResources(mutex, cond);
         return FAILURE;
     }
     return SUCCSEC;
