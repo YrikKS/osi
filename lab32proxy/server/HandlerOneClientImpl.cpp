@@ -69,7 +69,7 @@ bool HandlerOneClientImpl::handlingEvent() {
         std::string buffer;
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
-            std::cout << "read from sock == " << (*it)->getFdClient() << std::endl;
+//            std::cout << "read from sock == " << (*it)->getFdClient() << std::endl;
             int code = (*it)->readBuf(&buffer);
             if (code < 0) {
                 continue;
@@ -186,10 +186,10 @@ bool HandlerOneClientImpl::handlingEvent() {
 //                        std::cout << "pereclich " << std::endl;
                         (*it)->setEvents(POLLIN | POLLRDHUP);
                         std::list<Client *> fromServ = (*it)->getListHandlingEvent();
-                        std::cout << fromServ.size() << std::endl;
+//                        std::cout << fromServ.size() << std::endl;
                         for (auto itList = fromServ.begin();
                              itList != fromServ.end(); itList++) {
-                            std::cout << "itearion " << std::endl;
+//                            std::cout << "itearion " << std::endl;
                             if (!(*itList)->isInClientList()) {
                                 (*itList)->setInClientList(true);
                                 (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
@@ -298,6 +298,7 @@ void HandlerOneClientImpl::saveResultPollSet() {
 }
 
 void HandlerOneClientImpl::getFromCash() {
+    std::cout << "start getting" << std::endl;
     pthread_mutex_t mutexForCond;
     pthread_cond_t cond;
     if(initializeResources(&mutexForCond, &cond) != SUCCSEC) {
