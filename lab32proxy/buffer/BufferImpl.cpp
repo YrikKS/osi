@@ -181,6 +181,7 @@ void BufferImpl::sendBuf(std::string *binaryString) {
         if (isIsAddDataToCash())
             pthread_mutex_lock(_cashElement->getMutex());
         if (_buf->length() >= BUF_SIZE - 1) {
+            std::cout << "5.0" << std::endl;
             (binaryString)->resize(BUF_SIZE - 1);
             std::cout << "5.1" << std::endl;
             std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), BUF_SIZE - 1);
