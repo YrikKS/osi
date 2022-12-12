@@ -309,6 +309,8 @@ void HandlerOneClientImpl::getFromCash() {
     pthread_mutex_lock(&mutexForCond);
     _client->getBuffer()->getCashElement()->addCondVar(&cond);
     bool run = true;
+    std::cout << &mutexForCond << std::endl;
+    std::cout << &cond << std::endl;
     while (run) {
         std::cout << "start getting in while" << std::endl;
         while(_client->getBuffer()->getCashElement()->isIsServerConnected() &&
