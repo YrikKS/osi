@@ -11,10 +11,8 @@ int ClientImpl::getFdClient() {
 }
 
 int ClientImpl::sendBuf(std::string *buf) {
-    std::cout << "wright" << std::endl;
     int code = write(_fd, (buf)->c_str(), (buf)->length());
     return code;
-    std::cout << "wright end " << code << std::endl;
 }
 
 int ClientImpl::readBuf(std::string *buf) { // передать пустой буффер размером BUF_SIZE!
@@ -23,11 +21,8 @@ int ClientImpl::readBuf(std::string *buf) { // передать пустой б�
     if (byte < 0) {
         std::string str = std::to_string(_fd) + " read error";
         perror(str.c_str());
-//        buf->clear();
-//        return;
         return byte;
     }
-//    (buf)->clear();
     (buf)->resize(byte, ' ');
     std::memcpy((void *) (buf)->c_str(), readBuf, byte);
     return 0;
