@@ -98,10 +98,10 @@ long long int CashElementImpl::getLength() {
 
 void CashElementImpl::memCopyFromCash(std::string *binaryString, long long int _countByteReadFromCash,
                                       long long int sizeCopy) {
-    pthread_mutex_lock(&mutexForData);
+//    pthread_mutex_lock(&mutexForData);
     std::memcpy((void *) (binaryString)->c_str(), _cash->c_str() +
                                                   _countByteReadFromCash, sizeCopy);
-    pthread_mutex_unlock(&mutexForData);
+//    pthread_mutex_unlock(&mutexForData);
 }
 
 void CashElementImpl::appendStringToCash(std::string *binaryString) {

@@ -152,6 +152,7 @@ void BufferImpl::sendBuf(std::string *binaryString) {
         if (_cashElement->getLength() > _countByteReadFromCash) {
             std::cout << "3" << std::endl;
             // или тут
+            pthread_mutex_lock(_cashElement->getMutex());
             if (_cashElement->getLength() >= _countByteReadFromCash + BUF_SIZE - 1) {
                 (binaryString)->resize(BUF_SIZE - 1);
                 std::cout << "3.1" << std::endl;
@@ -171,6 +172,7 @@ void BufferImpl::sendBuf(std::string *binaryString) {
 //                            _cashElement->getCash()->length() - _countByteReadFromCash);
             }
         }
+        pthread_mutex_unlock(_cashElement->getMutex());
         std::cout << "4" << std::endl;
     } else {
         std::cout << "5" << std::endl;
