@@ -395,18 +395,17 @@ bool HandlerOneClientImpl::condWait(pthread_mutex_t* mutex, pthread_cond_t* cond
 
 void HandlerOneClientImpl::sendAll() {
     while(_client->getBuffer()->isReadyToSend()) {
-        if(_client->getBuffer()->getCashElement() != NULL)
-            pthread_mutex_lock(_client->getBuffer()->getCashElement()->getMutex());
+//        if(_client->getBuffer()->getCashElement() != NULL)
+//            pthread_mutex_lock(_client->getBuffer()->getCashElement()->getMutex());
         std::string buf;
         std::cout << "child start send" << std::endl;
         _client->getBuffer()->sendBuf(&buf);
-        _client->getBuffer()->proofSend(&buf);
-        if(_client->getBuffer()->getCashElement() != NULL)
-            pthread_mutex_unlock(_client->getBuffer()->getCashElement()->getMutex());
+//        if(_client->getBuffer()->getCashElement() != NULL)
+//            pthread_mutex_unlock(_client->getBuffer()->getCashElement()->getMutex());
         std::cout << "child send" << std::endl;
         _client->sendBuf(&buf);
         std::cout << "child send in socket" << std::endl;
-
+        _client->getBuffer()->proofSend(&buf);
         std::cout << "child end proof" << std::endl;
 
     }
