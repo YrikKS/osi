@@ -27,6 +27,7 @@ std::shared_ptr<std::string> CashElementImpl::getCash() {
 CashElementImpl::CashElementImpl(std::string heading) {
     pthread_mutex_init(&mutexForData, NULL);
     pthread_mutex_init(&mutexForList, NULL);
+    pthread_mutex_init(&mutexForCopy, NULL);
     _head = heading;
     std::hash<std::string> hasher;
     _hashHead = hasher(heading);
@@ -98,10 +99,10 @@ long long int CashElementImpl::getLength() {
 
 void CashElementImpl::memCopyFromCash(std::string *binaryString, long long int _countByteReadFromCash,
                                       long long int sizeCopy) {
-//    pthread_mutex_lock(&mutexForData);
+    pthread_mutex_lock(&mutexForData);
     std::memcpy((void *) (binaryString)->c_str(), _cash->c_str() +
                                                   _countByteReadFromCash, sizeCopy);
-//    pthread_mutex_unlock(&mutexForData);
+    pthread_mutex_unlock(&mutexForData);
 }
 
 void CashElementImpl::appendStringToCash(std::string *binaryString) {
@@ -146,5 +147,5 @@ void CashElementImpl::signalUsers() {
 }
 
 pthread_mutex_t* CashElementImpl::getMutex() {
-    return &mutexForData;
+    return &mutexForCopy;
 }

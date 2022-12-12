@@ -63,6 +63,7 @@ namespace ProxyServer {
         void signalUsers();
         pthread_mutex_t mutexForList;
         pthread_mutex_t mutexForData;
+        pthread_mutex_t mutexForCopy;
     };
 }
 
