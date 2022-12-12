@@ -1,6 +1,7 @@
 #include <iostream>
 #include "server/NewServerImpl.h"
 #include "logger/Logger.h"
+#include <signal.h>
 
 //#include "cash/CashImpl.h"
 //#include "buffer/BufferImpl.h"
