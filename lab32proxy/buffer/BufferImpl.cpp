@@ -147,8 +147,8 @@ bool BufferImpl::isCashingData(int sizeHeading, ResultParseHeading resultParseHe
 
 void BufferImpl::sendBuf(std::string *binaryString) {
     std::cout << "1" << std::endl;
-    if(_cashElement != NULL)
-        pthread_mutex_lock(_cashElement->getMutex());
+//    if(_cashElement != NULL)
+//        pthread_mutex_lock(_cashElement->getMutex());
     if (_isDataGetCash) {
         std::cout << "2" << std::endl;
         if (_cashElement->getLength() > _countByteReadFromCash) {
@@ -195,8 +195,8 @@ void BufferImpl::sendBuf(std::string *binaryString) {
         }
         std::cout << "6" << std::endl;
     }
-    if(_cashElement != NULL)
-        pthread_mutex_unlock(_cashElement->getMutex());
+//    if(_cashElement != NULL)
+//        pthread_mutex_unlock(_cashElement->getMutex());
     std::cout << "7" << std::endl;
 }
 
