@@ -10,9 +10,10 @@ int ClientImpl::getFdClient() {
     return _fd;
 }
 
-void ClientImpl::sendBuf(std::string *buf) {
+int ClientImpl::sendBuf(std::string *buf) {
     std::cout << "wright" << std::endl;
     int code = write(_fd, (buf)->c_str(), (buf)->length());
+    return code;
     std::cout << "wright end " << code << std::endl;
 }
 

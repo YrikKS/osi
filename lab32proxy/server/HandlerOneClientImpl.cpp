@@ -67,11 +67,11 @@ bool HandlerOneClientImpl::handlingEvent() {
             deleteClient(&it);
             continue;
         }
-        if ((*it)->getTypeClient() == USER) {
-            std::cout << "user start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
-        } else {
-            std::cout << "server start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
-        }
+//        if ((*it)->getTypeClient() == USER) {
+//            std::cout << "user start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
+//        } else {
+//            std::cout << "server start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
+//        }
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
 //            std::cout << "read from sock == " << (*it)->getFdClient() << std::endl;
@@ -96,7 +96,7 @@ bool HandlerOneClientImpl::handlingEvent() {
                             return 1;
                         }
                     }
-                    std::cout << "end read from socket" << std::endl;
+//                    std::cout << "end read from socket" << std::endl;
                     if ((*it)->getTypeClient() == HTTP_SERVER) {
 //                        std::cout << "try add to list from HTTP_SERVER " << std::endl;
                         std::list<Client *> fromServ = (*it)->getListHandlingEvent();
@@ -173,30 +173,24 @@ bool HandlerOneClientImpl::handlingEvent() {
             continue;
         }
         if ((*it)->getPollFd().revents & POLLOUT) {
-            if ((*it)->getTypeClient() == USER) {
-                std::cout << "2user start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
-            }
             (*it)->setReventsZero();
-            if ((*it)->getTypeClient() == USER) {
-                std::cout << "3user start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
-            }
             if ((*it)->getBuffer()->isReadyToSend()) {
                 if (((*it)->getTypeClient() == TypeClient::HTTP_SERVER
                      && (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::READ_REQUEST) ||
                     ((*it)->getTypeClient() == TypeClient::USER
                      && (*it)->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE)) {
 
-                    if ((*it)->getTypeClient() == USER) {
-                        std::cout << "4user start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
-                    }
+//                    if ((*it)->getTypeClient() == USER) {
+//                        std::cout << "4user start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
+//                    }
 //                    if ((*it)->getBuffer()->getCashElement() != NULL)
 //                        pthread_mutex_lock((*it)->getBuffer()->getCashElement()->getMutex());
-                    std::cout << "wright to client " << std::endl;
+//                    std::cout << "wright to client " << std::endl;
                     (*it)->getBuffer()->sendBuf(&buffer);
 
-                    std::cout << "main send buff end to client " << std::endl;
+//                    std::cout << "main send buff end to client " << std::endl;
                     (*it)->sendBuf(&buffer);
-                    std::cout << "wright to socket to client " << std::endl;
+//                    std::cout << "wright to socket to client " << std::endl;
                     (*it)->getBuffer()->proofSend(&buffer);
 //                    if ((*it)->getBuffer()->getCashElement() != NULL)
 //                        pthread_mutex_unlock((*it)->getBuffer()->getCashElement()->getMutex());
@@ -234,7 +228,7 @@ bool HandlerOneClientImpl::handlingEvent() {
                         deleteClient(&it);
                         continue;
                     }
-                    std::cout << "end iteration :" << (*it) << std::endl;
+//                    std::cout << "end iteration :" << (*it) << std::endl;
                 }
             } else {
                 (*it)->getPair()->setInClientList(true);
@@ -322,7 +316,7 @@ void HandlerOneClientImpl::saveResultPollSet() {
 }
 
 void HandlerOneClientImpl::getFromCash() {
-    std::cout << "start getting" << std::endl;
+//    std::cout << "start getting" << std::endl;
     pthread_mutex_t mutexForCond;
     pthread_cond_t cond;
     if (initializeResources(&mutexForCond, &cond) != SUCCESS) {
@@ -334,25 +328,27 @@ void HandlerOneClientImpl::getFromCash() {
     std::cout << &mutexForCond << std::endl;
     std::cout << &cond << std::endl;
     while (run) {
-        std::cout << "start getting in while" << std::endl;
+//        std::cout << "start getting in while" << std::endl;
         while (_client->getBuffer()->getCashElement()->isIsServerConnected() &&
                !_client->getBuffer()->isReadyToSend()) {
-            std::cout << "cash sleep" << std::endl;
+//            std::cout << "cash sleep" << std::endl;
             if (condWait(&mutexForCond, &cond) != SUCCESS) {
                 run = false;
                 break;
             }
         }
 
-        std::cout << "cash not sleep" << std::endl;
+//        std::cout << "cash not sleep" << std::endl;
         if (!_client->getBuffer()->getCashElement()->isIsServerConnected()) {
             sendAll();
-            std::cout << "one send all" << std::endl;
+//            std::cout << "one send all" << std::endl;
             break;
         }
         if (_client->getBuffer()->isReadyToSend()) {
-            std::cout << "start send all" << std::endl;
-            sendAll();
+//            std::cout << "start send all" << std::endl;
+            if(sendAll() == FAILURE) {
+                break;
+            }
         }
     }
     pthread_mutex_unlock(&mutexForCond);
@@ -403,20 +399,23 @@ bool HandlerOneClientImpl::condWait(pthread_mutex_t *mutex, pthread_cond_t *cond
     return SUCCESS;
 }
 
-void HandlerOneClientImpl::sendAll() {
+int HandlerOneClientImpl::sendAll() {
     while (_client->getBuffer()->isReadyToSend()) {
 //        if (_client->getBuffer()->getCashElement() != NULL)
 //            pthread_mutex_lock(_client->getBuffer()->getCashElement()->getMutex());
 //        std::string buf;
 //        buf.resize(BUF_SIZE);
-buffer.clear();
-        std::cout << "child start send" << std::endl;
+        buffer.clear();
+//        std::cout << "child start send" << std::endl;
         _client->getBuffer()->sendBuf(&buffer);
-        std::cout << "child send in socket" << std::endl;
-        _client->sendBuf(&buffer);
-        std::cout << "child end send in socket" << std::endl;
+//        std::cout << "child send in socket" << std::endl;
+        int code = _client->sendBuf(&buffer);
+        if (code < 0) {
+            return FAILURE;
+        }
+//        std::cout << "child end send in socket" << std::endl;
         _client->getBuffer()->proofSend(&buffer);
-        std::cout << "child end proof" << std::endl;
+//        std::cout << "child end proof" << std::endl;
 //        if (_client->getBuffer()->getCashElement() != NULL)
 //            pthread_mutex_unlock(_client->getBuffer()->getCashElement()->getMutex());
 

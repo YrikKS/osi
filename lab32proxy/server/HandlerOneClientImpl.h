@@ -42,7 +42,7 @@ namespace ProxyServer {
         bool initializeResources(pthread_mutex_t* mutex, pthread_cond_t* cond);
         bool deleteResources(pthread_mutex_t* mutex, pthread_cond_t* cond);
         bool condWait(pthread_mutex_t* mutex, pthread_cond_t* cond);
-        void sendAll();
+        int sendAll();
 
         std::string buffer;
         Client* _client;
