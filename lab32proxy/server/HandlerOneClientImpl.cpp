@@ -48,7 +48,7 @@ HandlerOneClientImpl::~HandlerOneClientImpl() {
 }
 
 void HandlerOneClientImpl::setPollSetBeforePoll() {
-    LOG_EVENT("update pollSet");
+//    LOG_EVENT("update pollSet");
     memset(_pollSet, 0, 2 * sizeof(struct pollfd));
 
     int i = 0;

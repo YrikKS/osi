@@ -92,7 +92,7 @@ const std::string &CashElementImpl::getHead() {
 
 long long int CashElementImpl::getLength() {
     pthread_mutex_lock(&mutexForData);
-    size_t local = _cash->size();
+    long long int local = _cash->size();
     pthread_mutex_unlock(&mutexForData);
     return local;
 }
