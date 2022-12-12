@@ -175,7 +175,8 @@ void BufferImpl::sendBuf(std::string *binaryString) {
     } else {
         std::cout << "5" << std::endl;
         // ТУТ
-        pthread_mutex_lock(_cashElement->getMutex());
+        if (isIsAddDataToCash())
+            pthread_mutex_lock(_cashElement->getMutex());
         if (_buf->length() >= BUF_SIZE - 1) {
             (binaryString)->resize(BUF_SIZE - 1);
             std::cout << "5.1" << std::endl;
@@ -189,7 +190,8 @@ void BufferImpl::sendBuf(std::string *binaryString) {
             std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), _buf->length());
             std::cout << "5.5" << std::endl;
         }
-        pthread_mutex_unlock(_cashElement->getMutex());
+        if (isIsAddDataToCash())
+            pthread_mutex_unlock(_cashElement->getMutex());
         std::cout << "6" << std::endl;
     }
     std::cout << "7" << std::endl;
