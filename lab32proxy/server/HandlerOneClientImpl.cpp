@@ -66,8 +66,8 @@ bool HandlerOneClientImpl::handlingEvent() {
             deleteClient(&it);
             continue;
         }
-        if((*it)->getTypeClient() == USER) {
-            std::cout << "user start for list size : " << _clientList.size() << " silka: " << *it <<  std::endl;
+        if ((*it)->getTypeClient() == USER) {
+            std::cout << "user start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
         } else {
             std::cout << "server start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
         }
@@ -102,7 +102,7 @@ bool HandlerOneClientImpl::handlingEvent() {
                         std::list<Client *> fromServ = (*it)->getListHandlingEvent();
 //                        for (auto itList = fromServ.begin();
 //                             itList != fromServ.end(); itList++) {
-                            _client->setEvents(POLLOUT | POLLIN | POLLRDHUP);
+                        _client->setEvents(POLLOUT | POLLIN | POLLRDHUP);
 //                        }
                     } else if ((*it)->getTypeClient() == USER) {
 //                        std::cout << "try add to list from user " << std::endl;
@@ -180,16 +180,17 @@ bool HandlerOneClientImpl::handlingEvent() {
                     ((*it)->getTypeClient() == TypeClient::USER
                      && (*it)->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE)) {
 
-//                    if((*it)->getBuffer()->getCashElement() != NULL)
-//                        pthread_mutex_lock((*it)->getBuffer()->getCashElement()->getMutex());
+                    if ((*it)->getBuffer()->getCashElement() != NULL)
+                        pthread_mutex_lock((*it)->getBuffer()->getCashElement()->getMutex());
                     std::cout << "wright to client " << std::endl;
                     (*it)->getBuffer()->sendBuf(&buffer);
-//                    if((*it)->getBuffer()->getCashElement() != NULL)
-//                        pthread_mutex_unlock((*it)->getBuffer()->getCashElement()->getMutex());
+
                     std::cout << "send buff end to client " << std::endl;
                     (*it)->sendBuf(&buffer);
                     std::cout << "wright to socket to client " << std::endl;
                     (*it)->getBuffer()->proofSend(&buffer);
+                    if ((*it)->getBuffer()->getCashElement() != NULL)
+                        pthread_mutex_unlock((*it)->getBuffer()->getCashElement()->getMutex());
 
                     std::cout << "proof send end wright to client " << std::endl;
                     if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
@@ -315,7 +316,7 @@ void HandlerOneClientImpl::getFromCash() {
     std::cout << "start getting" << std::endl;
     pthread_mutex_t mutexForCond;
     pthread_cond_t cond;
-    if(initializeResources(&mutexForCond, &cond) != SUCCESS) {
+    if (initializeResources(&mutexForCond, &cond) != SUCCESS) {
         return;
     }
     pthread_mutex_lock(&mutexForCond);
@@ -325,22 +326,22 @@ void HandlerOneClientImpl::getFromCash() {
     std::cout << &cond << std::endl;
     while (run) {
         std::cout << "start getting in while" << std::endl;
-        while(_client->getBuffer()->getCashElement()->isIsServerConnected() &&
-              !_client->getBuffer()->isReadyToSend()) {
+        while (_client->getBuffer()->getCashElement()->isIsServerConnected() &&
+               !_client->getBuffer()->isReadyToSend()) {
             std::cout << "cash sleep" << std::endl;
-            if(condWait(&mutexForCond, &cond) != SUCCESS) {
+            if (condWait(&mutexForCond, &cond) != SUCCESS) {
                 run = false;
                 break;
             }
         }
 
         std::cout << "cash not sleep" << std::endl;
-        if(!_client->getBuffer()->getCashElement()->isIsServerConnected()) {
+        if (!_client->getBuffer()->getCashElement()->isIsServerConnected()) {
             sendAll();
             std::cout << "one send all" << std::endl;
             break;
         }
-        if(_client->getBuffer()->isReadyToSend()) {
+        if (_client->getBuffer()->isReadyToSend()) {
             std::cout << "start send all" << std::endl;
             sendAll();
         }
@@ -350,7 +351,7 @@ void HandlerOneClientImpl::getFromCash() {
     deleteResources(&mutexForCond, &cond);
 }
 
-bool HandlerOneClientImpl::initializeResources(pthread_mutex_t* mutex, pthread_cond_t* cond) {
+bool HandlerOneClientImpl::initializeResources(pthread_mutex_t *mutex, pthread_cond_t *cond) {
     errno = pthread_mutex_init(mutex, NULL);
     if (errno != SUCCESS) {
         perror("mutex init");
@@ -358,7 +359,7 @@ bool HandlerOneClientImpl::initializeResources(pthread_mutex_t* mutex, pthread_c
     }
 
     errno = pthread_cond_init(cond, NULL);
-    if(errno != SUCCESS) {
+    if (errno != SUCCESS) {
         pthread_mutex_destroy(mutex);
         perror("cond init");
         return FAILURE;
@@ -366,7 +367,7 @@ bool HandlerOneClientImpl::initializeResources(pthread_mutex_t* mutex, pthread_c
     return SUCCESS;
 }
 
-bool HandlerOneClientImpl::deleteResources(pthread_mutex_t* mutex, pthread_cond_t* cond) {
+bool HandlerOneClientImpl::deleteResources(pthread_mutex_t *mutex, pthread_cond_t *cond) {
     errno = pthread_mutex_destroy(mutex);
     if (errno != SUCCESS) {
         perror("mutex destroy");
@@ -374,7 +375,7 @@ bool HandlerOneClientImpl::deleteResources(pthread_mutex_t* mutex, pthread_cond_
     }
 
     errno = pthread_cond_destroy(cond);
-    if(errno != SUCCESS) {
+    if (errno != SUCCESS) {
         pthread_mutex_destroy(mutex);
         perror("cond destroy");
         return FAILURE;
@@ -382,9 +383,9 @@ bool HandlerOneClientImpl::deleteResources(pthread_mutex_t* mutex, pthread_cond_
     return SUCCESS;
 }
 
-bool HandlerOneClientImpl::condWait(pthread_mutex_t* mutex, pthread_cond_t* cond) {
+bool HandlerOneClientImpl::condWait(pthread_mutex_t *mutex, pthread_cond_t *cond) {
     errno = pthread_cond_wait(cond, mutex);
-    if(errno != SUCCESS) {
+    if (errno != SUCCESS) {
         perror("wait error");
 //        pthread_mutex_unlock(mutex);
 //        deleteResources(mutex, cond);
@@ -394,19 +395,19 @@ bool HandlerOneClientImpl::condWait(pthread_mutex_t* mutex, pthread_cond_t* cond
 }
 
 void HandlerOneClientImpl::sendAll() {
-    while(_client->getBuffer()->isReadyToSend()) {
-//        if(_client->getBuffer()->getCashElement() != NULL)
-//            pthread_mutex_lock(_client->getBuffer()->getCashElement()->getMutex());
+    while (_client->getBuffer()->isReadyToSend()) {
+        if (_client->getBuffer()->getCashElement() != NULL)
+            pthread_mutex_lock(_client->getBuffer()->getCashElement()->getMutex());
         std::string buf;
         std::cout << "child start send" << std::endl;
         _client->getBuffer()->sendBuf(&buf);
-//        if(_client->getBuffer()->getCashElement() != NULL)
-//            pthread_mutex_unlock(_client->getBuffer()->getCashElement()->getMutex());
         std::cout << "child send" << std::endl;
         _client->sendBuf(&buf);
         std::cout << "child send in socket" << std::endl;
         _client->getBuffer()->proofSend(&buf);
         std::cout << "child end proof" << std::endl;
+        if (_client->getBuffer()->getCashElement() != NULL)
+            pthread_mutex_unlock(_client->getBuffer()->getCashElement()->getMutex());
 
     }
     std::cout << "end send cash in iteration" << std::endl;
