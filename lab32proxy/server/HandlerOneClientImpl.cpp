@@ -184,13 +184,12 @@ bool HandlerOneClientImpl::handlingEvent() {
                         pthread_mutex_lock((*it)->getBuffer()->getCashElement()->getMutex());
                     std::cout << "wright to client " << std::endl;
                     (*it)->getBuffer()->sendBuf(&buffer);
-                    (*it)->getBuffer()->proofSend(&buffer);
                     if((*it)->getBuffer()->getCashElement() != NULL)
                         pthread_mutex_unlock((*it)->getBuffer()->getCashElement()->getMutex());
                     std::cout << "send buff end to client " << std::endl;
                     (*it)->sendBuf(&buffer);
                     std::cout << "wright to socket to client " << std::endl;
-
+                    (*it)->getBuffer()->proofSend(&buffer);
 
                     std::cout << "proof send end wright to client " << std::endl;
                     if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
