@@ -171,8 +171,9 @@ void BufferImpl::sendBuf(std::string *binaryString) {
 //                std::memcpy((void *) (binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash,
 //                            _cashElement->getCash()->length() - _countByteReadFromCash);
             }
+            pthread_mutex_unlock(_cashElement->getMutex());
         }
-        pthread_mutex_unlock(_cashElement->getMutex());
+
         std::cout << "4" << std::endl;
     } else {
         std::cout << "5" << std::endl;
