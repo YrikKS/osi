@@ -44,7 +44,7 @@ namespace ProxyServer {
 
         class MutexForServer {
             MutexForServer() {
-                pthread_mutex_init(&mutexForServer, NULL);
+                pthread_mutex_init(&MutexForServer::mutexForServer, NULL);
             }
 
         public:
