@@ -184,12 +184,13 @@ bool HandlerOneClientImpl::handlingEvent() {
                         pthread_mutex_lock((*it)->getBuffer()->getCashElement()->getMutex());
                     std::cout << "wright to client " << std::endl;
                     (*it)->getBuffer()->sendBuf(&buffer);
+                    if((*it)->getBuffer()->getCashElement() != NULL)
+                        pthread_mutex_unlock((*it)->getBuffer()->getCashElement()->getMutex());
                     std::cout << "send buff end to client " << std::endl;
                     (*it)->sendBuf(&buffer);
                     std::cout << "wright to socket to client " << std::endl;
                     (*it)->getBuffer()->proofSend(&buffer);
-                    if((*it)->getBuffer()->getCashElement() != NULL)
-                        pthread_mutex_unlock((*it)->getBuffer()->getCashElement()->getMutex());
+
                     std::cout << "proof send end wright to client " << std::endl;
                     if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                         (*it)->getBuffer()->getStatusHttpServer() == WRITE_RESPONSE_HEADING
@@ -399,13 +400,14 @@ void HandlerOneClientImpl::sendAll() {
         std::string buf;
         std::cout << "child start send" << std::endl;
         _client->getBuffer()->sendBuf(&buf);
+        if(_client->getBuffer()->getCashElement() != NULL)
+            pthread_mutex_unlock(_client->getBuffer()->getCashElement()->getMutex());
         std::cout << "child send" << std::endl;
         _client->sendBuf(&buf);
         std::cout << "child send in socket" << std::endl;
         _client->getBuffer()->proofSend(&buf);
         std::cout << "child end proof" << std::endl;
-        if(_client->getBuffer()->getCashElement() != NULL)
-            pthread_mutex_unlock(_client->getBuffer()->getCashElement()->getMutex());
+
     }
     std::cout << "end send cash in iteration" << std::endl;
 }
