@@ -185,7 +185,7 @@ bool HandlerOneClientImpl::handlingEvent() {
                     std::cout << "wright to client " << std::endl;
                     (*it)->getBuffer()->sendBuf(&buffer);
 
-                    std::cout << "send buff end to client " << std::endl;
+                    std::cout << "main send buff end to client " << std::endl;
                     (*it)->sendBuf(&buffer);
                     std::cout << "wright to socket to client " << std::endl;
                     (*it)->getBuffer()->proofSend(&buffer);
@@ -401,9 +401,9 @@ void HandlerOneClientImpl::sendAll() {
         std::string buf;
         std::cout << "child start send" << std::endl;
         _client->getBuffer()->sendBuf(&buf);
-        std::cout << "child send" << std::endl;
-        _client->sendBuf(&buf);
         std::cout << "child send in socket" << std::endl;
+        _client->sendBuf(&buf);
+        std::cout << "child end send in socket" << std::endl;
         _client->getBuffer()->proofSend(&buf);
         std::cout << "child end proof" << std::endl;
         if (_client->getBuffer()->getCashElement() != NULL)
