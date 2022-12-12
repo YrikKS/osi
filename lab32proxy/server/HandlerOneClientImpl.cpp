@@ -62,6 +62,7 @@ void HandlerOneClientImpl::setPollSetBeforePoll() {
 
 bool HandlerOneClientImpl::handlingEvent() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
+        buffer.clear();
         if ((*it)->getPollFd().revents & POLLRDHUP) {
             deleteClient(&it);
             continue;
@@ -71,7 +72,6 @@ bool HandlerOneClientImpl::handlingEvent() {
         } else {
             std::cout << "server start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
         }
-        std::string buffer;
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
 //            std::cout << "read from sock == " << (*it)->getFdClient() << std::endl;
@@ -407,13 +407,15 @@ void HandlerOneClientImpl::sendAll() {
     while (_client->getBuffer()->isReadyToSend()) {
 //        if (_client->getBuffer()->getCashElement() != NULL)
 //            pthread_mutex_lock(_client->getBuffer()->getCashElement()->getMutex());
-        std::string buf;
+//        std::string buf;
+//        buf.resize(BUF_SIZE);
+buffer.clear();
         std::cout << "child start send" << std::endl;
-        _client->getBuffer()->sendBuf(&buf);
+        _client->getBuffer()->sendBuf(&buffer);
         std::cout << "child send in socket" << std::endl;
-        _client->sendBuf(&buf);
+        _client->sendBuf(&buffer);
         std::cout << "child end send in socket" << std::endl;
-        _client->getBuffer()->proofSend(&buf);
+        _client->getBuffer()->proofSend(&buffer);
         std::cout << "child end proof" << std::endl;
 //        if (_client->getBuffer()->getCashElement() != NULL)
 //            pthread_mutex_unlock(_client->getBuffer()->getCashElement()->getMutex());

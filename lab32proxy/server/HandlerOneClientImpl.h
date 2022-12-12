@@ -44,6 +44,7 @@ namespace ProxyServer {
         bool condWait(pthread_mutex_t* mutex, pthread_cond_t* cond);
         void sendAll();
 
+        std::string buffer;
         Client* _client;
         struct pollfd _pollSet[2];
         std::list<Client*> _clientList;
