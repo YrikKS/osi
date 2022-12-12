@@ -173,13 +173,22 @@ bool HandlerOneClientImpl::handlingEvent() {
             continue;
         }
         if ((*it)->getPollFd().revents & POLLOUT) {
+            if ((*it)->getTypeClient() == USER) {
+                std::cout << "2user start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
+            }
             (*it)->setReventsZero();
+            if ((*it)->getTypeClient() == USER) {
+                std::cout << "3user start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
+            }
             if ((*it)->getBuffer()->isReadyToSend()) {
                 if (((*it)->getTypeClient() == TypeClient::HTTP_SERVER
                      && (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::READ_REQUEST) ||
                     ((*it)->getTypeClient() == TypeClient::USER
                      && (*it)->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE)) {
 
+                    if ((*it)->getTypeClient() == USER) {
+                        std::cout << "4user start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
+                    }
                     if ((*it)->getBuffer()->getCashElement() != NULL)
                         pthread_mutex_lock((*it)->getBuffer()->getCashElement()->getMutex());
                     std::cout << "wright to client " << std::endl;
