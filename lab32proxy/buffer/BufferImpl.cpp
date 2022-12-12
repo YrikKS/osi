@@ -183,7 +183,7 @@ void BufferImpl::sendBuf(std::string *binaryString) {
             std::cout << "5.0" << std::endl;
             (binaryString)->resize(BUF_SIZE - 1);
             std::cout << "5.1" << std::endl;
-            memcpy((void *)(binaryString)->c_str(), (void *)_buf->c_str(), _buf->length());
+            memcpy((void *)(binaryString)->c_str(), (void *)_buf->c_str(), BUF_SIZE - 1);
 //            std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), BUF_SIZE - 1);
             std::cout << "5.2" << std::endl;
         } else {

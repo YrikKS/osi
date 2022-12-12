@@ -100,10 +100,10 @@ bool HandlerOneClientImpl::handlingEvent() {
                     if ((*it)->getTypeClient() == HTTP_SERVER) {
 //                        std::cout << "try add to list from HTTP_SERVER " << std::endl;
                         std::list<Client *> fromServ = (*it)->getListHandlingEvent();
-                        for (auto itList = fromServ.begin();
-                             itList != fromServ.end(); itList++) {
-                            (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
-                        }
+//                        for (auto itList = fromServ.begin();
+//                             itList != fromServ.end(); itList++) {
+                            _client->setEvents(POLLOUT | POLLIN | POLLRDHUP);
+//                        }
                     } else if ((*it)->getTypeClient() == USER) {
 //                        std::cout << "try add to list from user " << std::endl;
                         if ((*it)->getPair() != NULL) {
