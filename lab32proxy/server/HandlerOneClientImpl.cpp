@@ -28,6 +28,7 @@ void HandlerOneClientImpl::startHandler() {
             int status = handlingEvent();
             if (status) {
                 getFromCash();
+                deleteClientUser(_client);
                 pthread_exit(NULL);
             }
         }
