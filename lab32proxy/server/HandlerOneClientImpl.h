@@ -18,6 +18,9 @@
 #include "../socket/ServerSocket.h"
 #include "../socket/ServerSocketImpl.h"
 
+#define SUCCSEC 0
+#define FAILURE 1
+
 namespace ProxyServer {
     class HandlerOneClientImpl : public HandlerOneClient {
     public:
@@ -30,11 +33,18 @@ namespace ProxyServer {
     private:
         void saveResultPollSet();
         void setPollSetBeforePoll();
-        void handlingEvent();
+        bool handlingEvent();
         void deleteClient(std::list<Client*>::iterator* iterator);
         void deleteClientUser(Client* client);
         void deleteClientServer(Client* client);
 
+        void getFromCash();
+        bool initializeResources(pthread_mutex_t* mutex, pthread_cond_t* cond);
+        bool deleteResources(pthread_mutex_t* mutex, pthread_cond_t* cond);
+        bool condWait(pthread_mutex_t* mutex, pthread_cond_t* cond);
+        void sendAll();
+
+        Client* _client;
         struct pollfd _pollSet[2];
         std::list<Client*> _clientList;
 

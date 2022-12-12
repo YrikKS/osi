@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <cstring>
+#include <list>
 #include "CashElement.h"
 
 
@@ -46,6 +47,10 @@ namespace ProxyServer {
 
         void appendStringToCash(std::string binaryString) override;
 
+        void addCondVar(pthread_cond_t *condVar) override;
+
+        void dellCondVar(pthread_cond_t *condVar) override;
+
     private:
         int _countUsers = 0;
         bool _isCashEnd = false;
@@ -53,7 +58,10 @@ namespace ProxyServer {
         long long int _hashHead = 0;
         std::string _head;
         std::shared_ptr<std::string> _cash = std::make_shared<std::string>();
-        pthread_mutex_t mutex;
+        std::list<pthread_cond_t*> listUsers;
+        void signalUsers();
+        pthread_mutex_t mutexForList;
+        pthread_mutex_t mutexForData;
     };
 }
 

@@ -17,10 +17,19 @@ void HandlerOneClientImpl::startHandler() {
             break;
             //TODO exit
         } else if (code == 0) {
-            handlingEvent();
+            int status = handlingEvent();
+            if (status) {
+                getFromCash();
+                deleteClientUser(_client);
+                pthread_exit(NULL);
+            }
             std::cout << "time out" << std::endl;
         } else {
-            handlingEvent();
+            int status = handlingEvent();
+            if (status) {
+                getFromCash();
+                pthread_exit(NULL);
+            }
         }
     }
 }
@@ -28,6 +37,7 @@ void HandlerOneClientImpl::startHandler() {
 
 HandlerOneClientImpl::HandlerOneClientImpl(Client *client) {
     _clientList.push_front(client);
+    _client = client;
 }
 
 HandlerOneClientImpl::~HandlerOneClientImpl() {
@@ -49,7 +59,7 @@ void HandlerOneClientImpl::setPollSetBeforePoll() {
     }
 }
 
-void HandlerOneClientImpl::handlingEvent() {
+bool HandlerOneClientImpl::handlingEvent() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
         if ((*it)->getPollFd().revents & POLLRDHUP) {
             deleteClient(&it);
@@ -61,7 +71,7 @@ void HandlerOneClientImpl::handlingEvent() {
             (*it)->setReventsZero();
             std::cout << "read from sock == " << (*it)->getFdClient() << std::endl;
             int code = (*it)->readBuf(&buffer);
-            if(code < 0) {
+            if (code < 0) {
                 continue;
             }
             if (buffer.length() == 0) {
@@ -74,14 +84,9 @@ void HandlerOneClientImpl::handlingEvent() {
                         if ((*it)->getBuffer()->getStatusClient() == READ_RESPONSE
                             && (*it)->getBuffer()->isIsDataGetCash()) {
                             if ((*it)->getBuffer()->getCashElement()->isCashEnd()) {
-                                (*it)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
-                                continue;
-                            } else {
-                                (*it)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
-//                                findElementWithCurrentCash(*it);
-                                (*it)->setInClientList(false);
-                                it = _clientList.erase(it);
-                                continue;
+                                return 1;
+//                                (*it)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
+//                                continue;
                             }
                         }
                     }
@@ -91,13 +96,7 @@ void HandlerOneClientImpl::handlingEvent() {
                         std::list<Client *> fromServ = (*it)->getListHandlingEvent();
                         for (auto itList = fromServ.begin();
                              itList != fromServ.end(); itList++) {
-                            if (!(*itList)->isInClientList()) {
-                                (*itList)->setInClientList(true);
-                                (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
-                                _clientList.push_back(*itList);
-                            } else {
-                                (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
-                            }
+                            (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                         }
                     } else if ((*it)->getTypeClient() == USER) {
 //                        std::cout << "try add to list from user " << std::endl;
@@ -120,7 +119,7 @@ void HandlerOneClientImpl::handlingEvent() {
                     (*it)->getBuffer()->setReadyConnectHttpServer(false);
                     try {
 //                        std::cout << "try connect server " << std::endl;
-                        Client* client = ServerSocketImpl::connectToClient(
+                        Client *client = ServerSocketImpl::connectToClient(
                                 (*it)->getBuffer()->getParseResult().getHostName(),
                                 (*it)->getBuffer()->getParseResult().getPort());
 //                        Client *client = ServerSocket->->connectToClient
@@ -221,6 +220,7 @@ void HandlerOneClientImpl::handlingEvent() {
         }
 
     }
+    return 0;
 }
 
 void HandlerOneClientImpl::deleteClient(std::list<Client *>::iterator *iterator) {
@@ -294,6 +294,87 @@ void HandlerOneClientImpl::saveResultPollSet() {
         pollElement.events = _pollSet[i].events;
         pollElement.revents = _pollSet[i].revents;
         (*it)->setPollElement(pollElement);
+    }
+}
+
+void HandlerOneClientImpl::getFromCash() {
+    pthread_mutex_t mutexForCond;
+    pthread_cond_t cond;
+    if(initializeResources(&mutexForCond, &cond) != SUCCSEC) {
+        return;
+    }
+    pthread_mutex_lock(&mutexForCond);
+    bool run = true;
+    while (run) {
+        //пока true - не выходим
+        while(_client->getBuffer()->getCashElement()->isIsServerConnected() &&
+              !_client->getBuffer()->isReadyToSend()) {
+            if(condWait(&mutexForCond, &cond) != SUCCSEC) {
+                run = false;
+                break;
+            }
+        }
+        if(!_client->getBuffer()->getCashElement()->isIsServerConnected()) {
+            sendAll();
+            break;
+        }
+        if(_client->getBuffer()->isReadyToSend()) {
+            sendAll();
+        }
+    }
+    pthread_mutex_unlock(&mutexForCond);
+    deleteResources(&mutexForCond, &cond);
+}
+
+bool HandlerOneClientImpl::initializeResources(pthread_mutex_t* mutex, pthread_cond_t* cond) {
+    errno = pthread_mutex_init(mutex, NULL);
+    if (errno != SUCCSEC) {
+        perror("mutex init");
+        return FAILURE;
+    }
+
+    errno = pthread_cond_init(cond, NULL);
+    if(errno != SUCCSEC) {
+        pthread_mutex_destroy(mutex);
+        perror("cond init");
+        return FAILURE;
+    }
+    return SUCCSEC;
+}
+
+bool HandlerOneClientImpl::deleteResources(pthread_mutex_t* mutex, pthread_cond_t* cond) {
+    errno = pthread_mutex_destroy(mutex);
+    if (errno != SUCCSEC) {
+        perror("mutex destroy");
+        return FAILURE;
+    }
+
+    errno = pthread_cond_destroy(cond);
+    if(errno != SUCCSEC) {
+        pthread_mutex_destroy(mutex);
+        perror("cond destroy");
+        return FAILURE;
+    }
+    return SUCCSEC;
+}
+
+bool HandlerOneClientImpl::condWait(pthread_mutex_t* mutex, pthread_cond_t* cond) {
+    errno = pthread_cond_wait(cond, mutex);
+    if(errno != SUCCSEC) {
+        perror("wait error");
+        pthread_mutex_unlock(mutex);
+        deleteResources(mutex, cond);
+        return FAILURE;
+    }
+    return SUCCSEC;
+}
+
+void HandlerOneClientImpl::sendAll() {
+    while(_client->getBuffer()->isReadyToSend()) {
+        std::string buf;
+        _client->getBuffer()->sendBuf(&buf);
+        _client->sendBuf(&buf);
+        _client->getBuffer()->proofSend(&buf);
     }
 }
 

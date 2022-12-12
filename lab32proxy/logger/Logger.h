@@ -21,9 +21,9 @@
 class Logger {
 public:
     static Logger &getInstance() {
-//        pthread_mutex_lock(&Logger::mutex);
+//        pthread_mutex_lock(&Logger::mutexForData);
         static Logger instance;
-//        pthread_mutex_unlock(&mutex);
+//        pthread_mutex_unlock(&mutexForData);
         return instance;
     }
 
@@ -32,35 +32,35 @@ public:
     }
 
     void logEvent(std::string str) {
-//        pthread_mutex_lock(&mutex);
+//        pthread_mutex_lock(&mutexForData);
         std::time_t t = std::time(0);   // get time now
         std::tm *now = std::localtime(&t);
         loggerFile << "time: " << TIME_NOW << "   event --->    " << str << std::endl;
-//        pthread_mutex_unlock(&mutex);
+//        pthread_mutex_unlock(&mutexForData);
     }
 
     void logError(std::string error) {
-//        pthread_mutex_lock(&mutex);
+//        pthread_mutex_lock(&mutexForData);
         std::time_t t = std::time(0);   // get time now
         std::tm *now = std::localtime(&t);
         loggerFile << "time: " << TIME_NOW << "   ERROR --->    " << error << std::endl;
-//        pthread_mutex_unlock(&mutex);
+//        pthread_mutex_unlock(&mutexForData);
     }
 
     void closeFile() {
         loggerFile.close();
     }
 
-//    static pthread_mutex_t mutex;
+//    static pthread_mutex_t mutexForData;
 private:
     Logger() {
-//        pthread_mutex_init(&mutex, NULL);
+//        pthread_mutex_init(&mutexForData, NULL);
         openFile();
     }
 
     ~Logger() { //???
         loggerFile.close();
-//        pthread_mutex_destroy(&mutex);
+//        pthread_mutex_destroy(&mutexForData);
     }
 
     std::ofstream loggerFile;
