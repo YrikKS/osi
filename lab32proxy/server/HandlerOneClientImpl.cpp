@@ -182,9 +182,11 @@ bool HandlerOneClientImpl::handlingEvent() {
 
                     std::cout << "wright to client " << std::endl;
                     (*it)->getBuffer()->sendBuf(&buffer);
+                    std::cout << "send buff end to client " << std::endl;
                     (*it)->sendBuf(&buffer);
+                    std::cout << "wright to socket to client " << std::endl;
                     (*it)->getBuffer()->proofSend(&buffer);
-                    std::cout << "end wright to client " << std::endl;
+                    std::cout << "proof send end wright to client " << std::endl;
                     if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                         (*it)->getBuffer()->getStatusHttpServer() == WRITE_RESPONSE_HEADING
                         && !(*it)->getBuffer()->isReadyToSend()) {
