@@ -151,16 +151,21 @@ void BufferImpl::sendBuf(std::string *binaryString) {
         std::cout << "2" << std::endl;
         if (_cashElement->getLength() > _countByteReadFromCash) {
             std::cout << "3" << std::endl;
+            // или тут
             if (_cashElement->getLength() >= _countByteReadFromCash + BUF_SIZE - 1) {
                 (binaryString)->resize(BUF_SIZE - 1);
+                std::cout << "3.1" << std::endl;
                 _cashElement->memCopyFromCash(binaryString, _countByteReadFromCash,
                                               BUF_SIZE - 1);
+                std::cout << "3.2" << std::endl;
 //                std::memcpy((void *) (binaryString)->c_str(), _cashElement->getCash()->c_str() +
 //                                                              _countByteReadFromCash, BUF_SIZE - 1);
             } else {
                 (binaryString)->resize(_cashElement->getLength() - _countByteReadFromCash);
+                std::cout << "3.3" << std::endl;
                 _cashElement->memCopyFromCash(binaryString, _countByteReadFromCash,
                                               _cashElement->getLength() - _countByteReadFromCash);
+                std::cout << "3.4" << std::endl;
 //                std::memcpy((void *) (binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash,
 //                            _cashElement->getCash()->length() - _countByteReadFromCash);
             }
@@ -171,10 +176,15 @@ void BufferImpl::sendBuf(std::string *binaryString) {
         // ТУТ
         if (_buf->length() >= BUF_SIZE - 1) {
             (binaryString)->resize(BUF_SIZE - 1);
+            std::cout << "5.1" << std::endl;
             std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), BUF_SIZE - 1);
+            std::cout << "5.2" << std::endl;
         } else {
+            std::cout << "5.3" << std::endl;
             (binaryString)->resize(_buf->length());
+            std::cout << "5.4" << std::endl;
             std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), _buf->length());
+            std::cout << "5.5" << std::endl;
         }
         std::cout << "6" << std::endl;
     }
