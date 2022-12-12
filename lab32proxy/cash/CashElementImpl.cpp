@@ -144,3 +144,7 @@ void CashElementImpl::signalUsers() {
     std::cout << "end signal cash size listUsers == " << listUsers.size() << std::endl;
     pthread_mutex_unlock(&mutexForList);
 }
+
+pthread_mutex_t* CashElementImpl::getMutex() {
+    return &mutexForData;
+}

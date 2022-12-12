@@ -51,6 +51,7 @@ namespace ProxyServer {
 
         void dellCondVar(pthread_cond_t *condVar) override;
 
+        pthread_mutex_t* getMutex() override;
     private:
         int _countUsers = 0;
         bool _isCashEnd = false;
