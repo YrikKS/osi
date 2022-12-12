@@ -387,6 +387,7 @@ void HandlerOneClientImpl::sendAll() {
         _client->sendBuf(&buf);
         _client->getBuffer()->proofSend(&buf);
     }
+    std::cout << "end send cash in iteration"
 }
 
 
