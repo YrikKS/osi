@@ -47,7 +47,7 @@ ClientImpl::ClientImpl(int sock, TypeClient typeClient, Buffer *buf) {
 
 ClientImpl::~ClientImpl() {
     LOG_EVENT("destructor client");
-    std::cout << "close " << _fd << std::endl;
+//    std::cout << "close " << _fd << std::endl;
     close(_fd);
 }
 
