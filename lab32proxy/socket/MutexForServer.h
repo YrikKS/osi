@@ -7,6 +7,6 @@
 
 #include <pthread.h>
 
-pthread_mutex_t mutexForServer;
+//pthread_mutex_t mutexForServer;
 
 #endif //LAB32PROXY_MUTEXFORSERVER_H
