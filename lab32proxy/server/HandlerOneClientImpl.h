@@ -18,7 +18,7 @@
 #include "../socket/ServerSocket.h"
 #include "../socket/ServerSocketImpl.h"
 
-#define SUCCSEC 0
+#define SUCCESS 0
 #define FAILURE 1
 
 namespace ProxyServer {

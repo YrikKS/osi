@@ -310,7 +310,7 @@ void HandlerOneClientImpl::getFromCash() {
     std::cout << "start getting" << std::endl;
     pthread_mutex_t mutexForCond;
     pthread_cond_t cond;
-    if(initializeResources(&mutexForCond, &cond) != SUCCSEC) {
+    if(initializeResources(&mutexForCond, &cond) != SUCCESS) {
         return;
     }
     pthread_mutex_lock(&mutexForCond);
@@ -323,7 +323,7 @@ void HandlerOneClientImpl::getFromCash() {
         while(_client->getBuffer()->getCashElement()->isIsServerConnected() &&
               !_client->getBuffer()->isReadyToSend()) {
             std::cout << "cash sleep" << std::endl;
-            if(condWait(&mutexForCond, &cond) != SUCCSEC) {
+            if(condWait(&mutexForCond, &cond) != SUCCESS) {
                 run = false;
                 break;
             }
@@ -336,6 +336,7 @@ void HandlerOneClientImpl::getFromCash() {
             break;
         }
         if(_client->getBuffer()->isReadyToSend()) {
+            std::cout << "start send all" << std::endl;
             sendAll();
         }
     }
@@ -346,45 +347,45 @@ void HandlerOneClientImpl::getFromCash() {
 
 bool HandlerOneClientImpl::initializeResources(pthread_mutex_t* mutex, pthread_cond_t* cond) {
     errno = pthread_mutex_init(mutex, NULL);
-    if (errno != SUCCSEC) {
+    if (errno != SUCCESS) {
         perror("mutex init");
         return FAILURE;
     }
 
     errno = pthread_cond_init(cond, NULL);
-    if(errno != SUCCSEC) {
+    if(errno != SUCCESS) {
         pthread_mutex_destroy(mutex);
         perror("cond init");
         return FAILURE;
     }
-    return SUCCSEC;
+    return SUCCESS;
 }
 
 bool HandlerOneClientImpl::deleteResources(pthread_mutex_t* mutex, pthread_cond_t* cond) {
     errno = pthread_mutex_destroy(mutex);
-    if (errno != SUCCSEC) {
+    if (errno != SUCCESS) {
         perror("mutex destroy");
         return FAILURE;
     }
 
     errno = pthread_cond_destroy(cond);
-    if(errno != SUCCSEC) {
+    if(errno != SUCCESS) {
         pthread_mutex_destroy(mutex);
         perror("cond destroy");
         return FAILURE;
     }
-    return SUCCSEC;
+    return SUCCESS;
 }
 
 bool HandlerOneClientImpl::condWait(pthread_mutex_t* mutex, pthread_cond_t* cond) {
     errno = pthread_cond_wait(cond, mutex);
-    if(errno != SUCCSEC) {
+    if(errno != SUCCESS) {
         perror("wait error");
 //        pthread_mutex_unlock(mutex);
 //        deleteResources(mutex, cond);
         return FAILURE;
     }
-    return SUCCSEC;
+    return SUCCESS;
 }
 
 void HandlerOneClientImpl::sendAll() {
