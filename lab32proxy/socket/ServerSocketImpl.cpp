@@ -88,7 +88,7 @@ ServerSocketImpl::~ServerSocketImpl() {
 }
 
 Client *ServerSocketImpl::connectToClient(std::string url, int port) {
-    pthread_mutex_lock(&mutexForServer);
+    pthread_mutex_lock(&ProxyServer::ServerSocketImpl::MutexForServer::mutexForServer);
     struct hostent *hostent = gethostbyname(url.data());
     if (hostent == NULL) {
         LOG_ERROR("gethostbyname");
@@ -115,11 +115,11 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
 
     LOG_EVENT("http server connect");
     Client *client = new ClientImpl(sock, TypeClient::HTTP_SERVER, NULL);
-    pthread_mutex_unlock(&mutexForServer);
+    pthread_mutex_unlock(&(ProxyServer::ServerSocketImpl::MutexForServer::mutexForServer));
     return client;
 }
 
-ServerSocketImpl::ServerSocketImpl() {
-    pthread_mutex_init(&mutexForServer, NULL);
-}
+//ServerSocketImpl::ServerSocketImpl() {
+//    pthread_mutex_init(&mutexForServer, NULL);
+//}
 
