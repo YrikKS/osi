@@ -150,6 +150,7 @@ void BufferImpl::sendBuf(std::string *binaryString) {
     if (_isDataGetCash) {
         std::cout << "2" << std::endl;
         if (_cashElement->getLength() > _countByteReadFromCash) {
+            std::cout << "3" << std::endl;
             if (_cashElement->getLength() >= _countByteReadFromCash + BUF_SIZE - 1) {
                 (binaryString)->resize(BUF_SIZE - 1);
                 _cashElement->memCopyFromCash(binaryString, _countByteReadFromCash,
@@ -164,9 +165,10 @@ void BufferImpl::sendBuf(std::string *binaryString) {
 //                            _cashElement->getCash()->length() - _countByteReadFromCash);
             }
         }
-        std::cout << "3" << std::endl;
-    } else {
         std::cout << "4" << std::endl;
+    } else {
+        std::cout << "5" << std::endl;
+        // ТУТ
         if (_buf->length() >= BUF_SIZE - 1) {
             (binaryString)->resize(BUF_SIZE - 1);
             std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), BUF_SIZE - 1);
@@ -174,9 +176,9 @@ void BufferImpl::sendBuf(std::string *binaryString) {
             (binaryString)->resize(_buf->length());
             std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), _buf->length());
         }
-        std::cout << "5" << std::endl;
+        std::cout << "6" << std::endl;
     }
-    std::cout << "6" << std::endl;
+    std::cout << "7" << std::endl;
 }
 
 void BufferImpl::proofSend(std::string *binaryString) {
