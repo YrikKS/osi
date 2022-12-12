@@ -8,6 +8,7 @@
 //#include "../parser/ResultParseHeading.h"
 //#include "../binaryString/BinaryString.h"
 #include <memory>
+#include <string.h>
 #include "../cash/CashElement.h"
 #include "../cash/Cash.h"
 #include "../parser/ResultParseHeading.h"
