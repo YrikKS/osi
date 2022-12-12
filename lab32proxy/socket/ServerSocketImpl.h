@@ -17,7 +17,6 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <netdb.h>
-#include "MutexForServer.h"
 #include "../Constants.h"
 #include "../client/Client.h"
 #include "../client/ClientImpl.h"
