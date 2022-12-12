@@ -87,37 +87,37 @@ ServerSocketImpl::~ServerSocketImpl() {
     close(serverSocket_);
 }
 
-//Client *connectToClient(std::string url, int port) {
-////    pthread_mutex_lock(&mutexForServer);
-//    struct hostent *hostent = gethostbyname(url.data());
-//    if (hostent == NULL) {
-//        LOG_ERROR("gethostbyname");
-//        herror("gethostbyname");
-//        throw ConnectException("gethostbyname");
-//    }
-//    struct sockaddr_in sockAddr;
-//    bcopy(hostent->h_addr, &sockAddr.sin_addr, hostent->h_length);
-//    sockAddr.sin_port = htons(port);
-//    sockAddr.sin_family = AF_INET;
-//
-//    int sock = socket(AF_INET, SOCK_STREAM, 0);
-//    if (sock == ERROR_CODE) {
-//        LOG_ERROR_WITH_ERRNO("setsockopt");
-//        throw ConnectException("setsockport");
-//    }
-//    if (connect(sock, (struct sockaddr *) &sockAddr, sizeof(struct sockaddr_in)) == ERROR_CODE) {
-//        LOG_ERROR_WITH_ERRNO("connect: ");
-//        throw ConnectException("connect error");
-//    }
-//    if(sock == 0){
-//        std::cout << "POMOGITEEEEEEEEEEEEEEEEEEE" << std::endl;
-//    }
-//
-//    LOG_EVENT("http server connect");
-//    Client *client = new ClientImpl(sock, TypeClient::HTTP_SERVER, NULL);
-////    pthread_mutex_unlock(&mutexForServer);
-//    return client;
-//}
+Client *ServerSocketImpl::connectToClient(std::string url, int port) {
+//    pthread_mutex_lock(&mutexForServer);
+    struct hostent *hostent = gethostbyname(url.data());
+    if (hostent == NULL) {
+        LOG_ERROR("gethostbyname");
+        herror("gethostbyname");
+        throw ConnectException("gethostbyname");
+    }
+    struct sockaddr_in sockAddr;
+    bcopy(hostent->h_addr, &sockAddr.sin_addr, hostent->h_length);
+    sockAddr.sin_port = htons(port);
+    sockAddr.sin_family = AF_INET;
+
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock == ERROR_CODE) {
+        LOG_ERROR_WITH_ERRNO("setsockopt");
+        throw ConnectException("setsockport");
+    }
+    if (connect(sock, (struct sockaddr *) &sockAddr, sizeof(struct sockaddr_in)) == ERROR_CODE) {
+        LOG_ERROR_WITH_ERRNO("connect: ");
+        throw ConnectException("connect error");
+    }
+    if(sock == 0){
+        std::cout << "POMOGITEEEEEEEEEEEEEEEEEEE" << std::endl;
+    }
+
+    LOG_EVENT("http server connect");
+    Client *client = new ClientImpl(sock, TypeClient::HTTP_SERVER, NULL);
+//    pthread_mutex_unlock(&mutexForServer);
+    return client;
+}
 
 ServerSocketImpl::ServerSocketImpl() {
 

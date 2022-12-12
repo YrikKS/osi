@@ -33,6 +33,8 @@ namespace ProxyServer {
 
         int getFdSocket() override;
 
+        static Client *connectToClient(std::string url, int port);
+
         Client *acceptNewClient(Cash *cash) override;
 
         int acceptNewClientSock() override;
