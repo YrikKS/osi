@@ -24,8 +24,6 @@
 #include "../buffer/BufferImpl.h"
 
 namespace ProxyServer {
-    pthread_mutex_t mutexForServer;
-
     class ServerSocketImpl : public ServerSocket {
     public:
         ServerSocketImpl();
@@ -43,6 +41,8 @@ namespace ProxyServer {
         void closeSocket() override;
 
         ~ServerSocketImpl();
+
+        pthread_mutex_t mutexForServer;
     private:
         int serverSocket_ = 0;
     };
