@@ -228,7 +228,7 @@ void HandlerOneClientImpl::deleteClientUser(Client *client) {
 
 void HandlerOneClientImpl::deleteClientServer(Client *client) {
     LOG_EVENT("http server logout");
-    std::cout << "server logout" << std::endl;
+//    std::cout << "server logout" << std::endl;
     std::list<Client *> fromServ = client->getListHandlingEvent();
     for (auto itList = fromServ.begin(); itList != fromServ.end(); itList++) {
         (*itList)->setPair(NULL);
