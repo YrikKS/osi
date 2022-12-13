@@ -64,24 +64,16 @@ bool HandlerOneClientImpl::handlingEvent() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
         buffer.clear();
         if ((*it)->getPollFd().revents & POLLRDHUP) {
-            std::cout << "logout0" << std::endl;
             deleteClient(&it);
             continue;
         }
-//        if ((*it)->getTypeClient() == USER) {
-//            std::cout << "user start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
-//        } else {
-//            std::cout << "server start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
-//        }
         if ((*it)->getPollFd().revents & POLLIN) {
             (*it)->setReventsZero();
-//            std::cout << "read from sock == " << (*it)->getFdClient() << std::endl;
             int code = (*it)->readBuf(&buffer);
             if (code < 0) {
                 continue;
             }
             if (buffer.length() == 0) {
-                std::cout << "logout main" << std::endl;
                 deleteClient(&it);
                 continue;
             } else {
@@ -90,32 +82,18 @@ bool HandlerOneClientImpl::handlingEvent() {
                     if ((*it)->getTypeClient() == USER) {
                         if ((*it)->getBuffer()->getStatusClient() == READ_RESPONSE
                             && (*it)->getBuffer()->isIsDataGetCash()) {
-//                            if ((*it)->getBuffer()->getCashElement()->isCashEnd()) {
-//                                return 1;
-//                                (*it)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
-//                                continue;
-//                            }
                             return 1;
                         }
                     }
-//                    std::cout << "end read from socket" << std::endl;
                     if ((*it)->getTypeClient() == HTTP_SERVER) {
-//                        std::cout << "try add to list from HTTP_SERVER " << std::endl;
                         std::list<Client *> fromServ = (*it)->getListHandlingEvent();
                         for (auto itList = fromServ.begin();
                              itList != fromServ.end(); itList++) {
                             (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                         }
                     } else if ((*it)->getTypeClient() == USER) {
-//                        std::cout << "try add to list from user " << std::endl;
                         if ((*it)->getPair() != NULL) {
-                            if (!(*it)->getPair()->isInClientList()) {
-                                (*it)->getPair()->setInClientList(true);
                                 (*it)->getPair()->setEvents(POLLOUT | POLLIN | POLLRDHUP);
-                                _clientList.push_back((*it)->getPair());
-                            } else {
-                                (*it)->getPair()->setEvents(POLLOUT | POLLIN | POLLRDHUP);
-                            }
                         }
                     }
                 } catch (ParseException &ex) {
@@ -138,7 +116,6 @@ bool HandlerOneClientImpl::handlingEvent() {
                         (*it)->setPair(client);
                         client->addClientToHandlingEvent(*it);
                         client->setEvents(POLLOUT | POLLIN | POLLRDHUP);
-                        client->setInClientList(true);
                         _clientList.push_front(client);
 //                        std::cout << "end connect server " << std::endl;
                     } catch (std::exception &ex) {
@@ -153,29 +130,24 @@ bool HandlerOneClientImpl::handlingEvent() {
         if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
             (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
             !(*it)->getBuffer()->isIsAddDataToCash()) {
-            std::cout << "logout1" << std::endl;
             deleteClient(&it);
             continue;
         } else if ((*it)->getTypeClient() == TypeClient::USER &&
                    (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
-            std::cout << "logout1" << std::endl;
             deleteClient(&it);
             continue;
         } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                    (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
-            std::cout << "logout1" << std::endl;
             deleteClient(&it);
             continue;
         } else if ((*it)->getTypeClient() == TypeClient::USER &&
                    (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
                    !(*it)->getBuffer()->isReadyToSend()) {
-            std::cout << "logout1" << std::endl;
             deleteClient(&it);
             continue;
         } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                    (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
                    (*it)->getBuffer()->isSendEnd()) {
-            std::cout << "logout1" << std::endl;
             deleteClient(&it);
             continue;
         }
@@ -187,40 +159,18 @@ bool HandlerOneClientImpl::handlingEvent() {
                     ((*it)->getTypeClient() == TypeClient::USER
                      && (*it)->getBuffer()->getStatusClient() == StatusHttp::READ_RESPONSE)) {
 
-//                    if ((*it)->getTypeClient() == USER) {
-//                        std::cout << "4user start for list size : " << _clientList.size() << " silka: " << *it << std::endl;
-//                    }
-//                    if ((*it)->getBuffer()->getCashElement() != NULL)
-//                        pthread_mutex_lock((*it)->getBuffer()->getCashElement()->getMutex());
-//                    std::cout << "wright to client " << std::endl;
                     (*it)->getBuffer()->sendBuf(&buffer);
-
-//                    std::cout << "main send buff end to client " << std::endl;
                     (*it)->sendBuf(&buffer);
-//                    std::cout << "wright to socket to client " << std::endl;
                     (*it)->getBuffer()->proofSend(&buffer);
-//                    if ((*it)->getBuffer()->getCashElement() != NULL)
-//                        pthread_mutex_unlock((*it)->getBuffer()->getCashElement()->getMutex());
 
-//                    std::cout << "proof send end wright to client " << std::endl;
                     if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                         (*it)->getBuffer()->getStatusHttpServer() == WRITE_RESPONSE_HEADING
                         && !(*it)->getBuffer()->isReadyToSend()) {
-
-//                        std::cout << "pereclich " << std::endl;
                         (*it)->setEvents(POLLIN | POLLRDHUP);
                         std::list<Client *> fromServ = (*it)->getListHandlingEvent();
-//                        std::cout << fromServ.size() << std::endl;
                         for (auto itList = fromServ.begin();
                              itList != fromServ.end(); itList++) {
-//                            std::cout << "itearion " << std::endl;
-                            if (!(*itList)->isInClientList()) {
-                                (*itList)->setInClientList(true);
                                 (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
-                                _clientList.push_back(*itList);
-                            } else {
-                                (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
-                            }
                         }
 //                        std::cout << "end pereclich " << std::endl;
                     } else if ((*it)->getTypeClient() == TypeClient::USER && // при отключении сервера
@@ -240,7 +190,6 @@ bool HandlerOneClientImpl::handlingEvent() {
 //                    std::cout << "end iteration :" << (*it) << std::endl;
                 }
             } else {
-                (*it)->getPair()->setInClientList(true);
                 (*it)->setEvents(POLLRDHUP);
                 continue;
             }
@@ -301,10 +250,6 @@ void HandlerOneClientImpl::deleteClientServer(Client *client) {
         }
         (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
     }
-//    if(client->getBuffer()->isIsClientConnect()) {
-//        _client->setInClientList(true);
-//        _clientList.push_back(_client);
-//    }
     if (client->getBuffer() != NULL) {
         if (client->getBuffer()->isIsAddDataToCash()) {
             client->getBuffer()->getCashElement()->setIsServerConnect(false);
