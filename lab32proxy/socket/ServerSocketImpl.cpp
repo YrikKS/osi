@@ -52,8 +52,8 @@ Client *ServerSocketImpl::acceptNewClient(Cash *cash) {
     struct sockaddr clientAddr;
     socklen_t len = 0;
     if ((clientSock = accept(serverSocket_, (struct sockaddr *) &clientAddr, &len)) < 0) {
-        LOG_ERROR_WITH_ERRNO("accept new client");
-        throw ConnectException("accept new client");
+        LOG_ERROR_WITH_ERRNO("error accept new client");
+        throw ConnectException("error accept new client");
     }
 
     Client *client = new ClientImpl(clientSock, TypeClient::USER, new BufferImpl(cash));
@@ -68,10 +68,10 @@ int ServerSocketImpl::acceptNewClientSock() {
     struct sockaddr clientAddr;
     socklen_t len = 0;
     if ((clientSock = accept(serverSocket_, (struct sockaddr *) &clientAddr, &len)) < 0) {
-        LOG_ERROR_WITH_ERRNO("accept new client");
-        throw ConnectException("accept new client");
+        LOG_ERROR_WITH_ERRNO("error accept new client");
+        throw ConnectException("error accept new client");
     }
-    LOG_EVENT("accept new client");
+    LOG_EVENT("accept new client with out problem");
     return clientSock;
 }
 
@@ -103,6 +103,7 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
         throw ConnectException("setsockport");
     }
     if (connect(sock, (struct sockaddr *) &sockAddr, sizeof(struct sockaddr_in)) == ERROR_CODE) {
+        perror("connect: ");
         LOG_ERROR_WITH_ERRNO("connect: ");
         throw ConnectException("connect error");
     }

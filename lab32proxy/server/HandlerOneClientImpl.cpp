@@ -117,6 +117,7 @@ bool HandlerOneClientImpl::handlingEvent() {
                         std::cerr << ex.what() << std::endl;
                         LOG_ERROR("can't connect to http server");
                         deleteClient(&it);
+                        pthread_exit(NULL);
                         return 0;
                     }
                 }
