@@ -90,6 +90,7 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
     if (hostent == NULL) {
         LOG_ERROR("gethostbyname");
         herror("gethostbyname");
+        pthread_mutex_unlock(&mutexForServer);
         throw ConnectException("gethostbyname");
     }
     struct sockaddr_in sockAddr;
@@ -100,11 +101,13 @@ Client *ServerSocketImpl::connectToClient(std::string url, int port) {
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock == ERROR_CODE) {
         LOG_ERROR_WITH_ERRNO("setsockopt");
+        pthread_mutex_unlock(&mutexForServer);
         throw ConnectException("setsockport");
     }
     if (connect(sock, (struct sockaddr *) &sockAddr, sizeof(struct sockaddr_in)) == ERROR_CODE) {
         perror("connect: ");
         LOG_ERROR_WITH_ERRNO("connect: ");
+        pthread_mutex_unlock(&mutexForServer);
         throw ConnectException("connect error");
     }
     LOG_EVENT("http server connect");
