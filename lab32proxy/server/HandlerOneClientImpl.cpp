@@ -291,6 +291,7 @@ void HandlerOneClientImpl::deleteClientServer(Client *client) {
             (*itList)->setInClientList(true);
             _clientList.push_back((*itList));
         }
+        (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
     }
 //    if(client->getBuffer()->isIsClientConnect()) {
 //        _client->setInClientList(true);
