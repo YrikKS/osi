@@ -152,7 +152,7 @@ bool HandlerOneClientImpl::handlingEvent() {
         }
         if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
             (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
-            !(*it)->getBuffer()->isIsDataGetCash()) {
+            !(*it)->getBuffer()->isIsAddDataToCash()) {
             std::cout << "logout1" << std::endl;
             deleteClient(&it);
             continue;
