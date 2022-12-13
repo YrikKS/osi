@@ -64,6 +64,7 @@ bool HandlerOneClientImpl::handlingEvent() {
     for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
         buffer.clear();
         if ((*it)->getPollFd().revents & POLLRDHUP) {
+            std::cout << "logout0" << std::endl;
             deleteClient(&it);
             continue;
         }
@@ -80,6 +81,7 @@ bool HandlerOneClientImpl::handlingEvent() {
                 continue;
             }
             if (buffer.length() == 0) {
+                std::cout << "logout main" << std::endl;
                 deleteClient(&it);
                 continue;
             } else {
@@ -100,10 +102,10 @@ bool HandlerOneClientImpl::handlingEvent() {
                     if ((*it)->getTypeClient() == HTTP_SERVER) {
 //                        std::cout << "try add to list from HTTP_SERVER " << std::endl;
                         std::list<Client *> fromServ = (*it)->getListHandlingEvent();
-//                        for (auto itList = fromServ.begin();
-//                             itList != fromServ.end(); itList++) {
-                        _client->setEvents(POLLOUT | POLLIN | POLLRDHUP);
-//                        }
+                        for (auto itList = fromServ.begin();
+                             itList != fromServ.end(); itList++) {
+                            (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
+                        }
                     } else if ((*it)->getTypeClient() == USER) {
 //                        std::cout << "try add to list from user " << std::endl;
                         if ((*it)->getPair() != NULL) {
@@ -151,24 +153,29 @@ bool HandlerOneClientImpl::handlingEvent() {
         if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
             (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
             !(*it)->getBuffer()->isIsDataGetCash()) {
+            std::cout << "logout1" << std::endl;
             deleteClient(&it);
             continue;
         } else if ((*it)->getTypeClient() == TypeClient::USER &&
                    (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
+            std::cout << "logout1" << std::endl;
             deleteClient(&it);
             continue;
         } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                    (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK) {
+            std::cout << "logout1" << std::endl;
             deleteClient(&it);
             continue;
         } else if ((*it)->getTypeClient() == TypeClient::USER &&
                    (*it)->getBuffer()->getStatusHttpServer() == StatusHttp::END_WORK &&
                    !(*it)->getBuffer()->isReadyToSend()) {
+            std::cout << "logout1" << std::endl;
             deleteClient(&it);
             continue;
         } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                    (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
                    (*it)->getBuffer()->isSendEnd()) {
+            std::cout << "logout1" << std::endl;
             deleteClient(&it);
             continue;
         }
@@ -219,6 +226,7 @@ bool HandlerOneClientImpl::handlingEvent() {
                     } else if ((*it)->getTypeClient() == TypeClient::USER && // при отключении сервера
                                (*it)->getBuffer()->getStatusHttpServer() == END_WORK
                                && !(*it)->getBuffer()->isReadyToSend()) {
+                        std::cout << "logout5" << std::endl;
                         deleteClient(&it);
                         continue;
                     }
