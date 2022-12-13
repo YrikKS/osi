@@ -267,7 +267,7 @@ void HandlerOneClientImpl::deleteClientUser(Client *client) {
         client->getPair()->eraseIt(client);
 
         if (client->getBuffer() != NULL) {
-            if (!client->getBuffer()->isIsDataGetCash()) {
+            if (!client->getBuffer()->isIsAddDataToCash()) {
                 for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
                     if (*it == client->getPair())
                         deleteClient(&it);
