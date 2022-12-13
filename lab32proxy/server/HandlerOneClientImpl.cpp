@@ -284,18 +284,18 @@ void HandlerOneClientImpl::deleteClientUser(Client *client) {
 
 void HandlerOneClientImpl::deleteClientServer(Client *client) {
     LOG_EVENT("http server logout");
-//    std::list<Client *> fromServ = client->getListHandlingEvent();
-////    for (auto itList = fromServ.begin(); itList != fromServ.end(); itList++) {
-////        (*itList)->setPair(NULL);
-////        if (!(*itList)->isInClientList()) {
-////            (*itList)->setInClientList(true);
-////            _clientList.push_back((*itList));
-////        }
-////    }
-    if(client->getBuffer()->isIsClientConnect()) {
-        _client->setInClientList(true);
-        _clientList.push_back(_client);
+    std::list<Client *> fromServ = client->getListHandlingEvent();
+    for (auto itList = fromServ.begin(); itList != fromServ.end(); itList++) {
+        (*itList)->setPair(NULL);
+        if (!(*itList)->isInClientList()) {
+            (*itList)->setInClientList(true);
+            _clientList.push_back((*itList));
+        }
     }
+//    if(client->getBuffer()->isIsClientConnect()) {
+//        _client->setInClientList(true);
+//        _clientList.push_back(_client);
+//    }
     if (client->getBuffer() != NULL) {
         if (client->getBuffer()->isIsAddDataToCash()) {
             client->getBuffer()->getCashElement()->setIsServerConnect(false);
