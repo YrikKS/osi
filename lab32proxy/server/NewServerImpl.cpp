@@ -42,6 +42,7 @@ void *NewServerImpl::startingMethodForThread(void *args) {
     client->getBuffer()->setIsClientConnect(true);
     HandlerOneClientImpl handlerOneClient = HandlerOneClientImpl(client);
     handlerOneClient.startHandler();
+    pthread_exit(NULL);
 //    std::cout << "thread end work" << std::endl;
 }
 
