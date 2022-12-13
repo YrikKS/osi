@@ -104,20 +104,15 @@ bool HandlerOneClientImpl::handlingEvent() {
                 if ((*it)->getBuffer()->isReadyConnectHttpServer()) {
                     (*it)->getBuffer()->setReadyConnectHttpServer(false);
                     try {
-//                        std::cout << "try connect server " << std::endl;
                         Client *client = ServerSocketImpl::connectToClient(
                                 (*it)->getBuffer()->getParseResult().getHostName(),
                                 (*it)->getBuffer()->getParseResult().getPort());
-//                        Client *client = ServerSocket->->connectToClient
-//                                ((*it)->getBuffer()->getParseResult().getHostName(),
-//                                 (*it)->getBuffer()->getParseResult().getPort());
                         client->setBuffer((*it)->getBuffer());
                         client->getBuffer()->setIsServerConnect(true);
                         (*it)->setPair(client);
                         client->addClientToHandlingEvent(*it);
                         client->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                         _clientList.push_front(client);
-//                        std::cout << "end connect server " << std::endl;
                     } catch (std::exception &ex) {
                         std::cerr << ex.what() << std::endl;
                         LOG_ERROR("can't connect to http server");
@@ -163,7 +158,7 @@ bool HandlerOneClientImpl::handlingEvent() {
                     (*it)->sendBuf(&buffer);
                     (*it)->getBuffer()->proofSend(&buffer);
 
-                    if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
+                    if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER && //переключение
                         (*it)->getBuffer()->getStatusHttpServer() == WRITE_RESPONSE_HEADING
                         && !(*it)->getBuffer()->isReadyToSend()) {
                         (*it)->setEvents(POLLIN | POLLRDHUP);
@@ -172,22 +167,13 @@ bool HandlerOneClientImpl::handlingEvent() {
                              itList != fromServ.end(); itList++) {
                                 (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                         }
-//                        std::cout << "end pereclich " << std::endl;
+
                     } else if ((*it)->getTypeClient() == TypeClient::USER && // при отключении сервера
                                (*it)->getBuffer()->getStatusHttpServer() == END_WORK
                                && !(*it)->getBuffer()->isReadyToSend()) {
-                        std::cout << "logout5" << std::endl;
                         deleteClient(&it);
                         continue;
                     }
-//                    } else if ((*it)->getTypeClient() == TypeClient::USER // при отключении сервера
-//                               && (*it)->getBuffer()->isIsDataGetCash()
-//                               && (*it)->getBuffer()->getCashElement()->isCashEnd()
-//                               && !(*it)->getBuffer()->isReadyToSend()) {
-//                        deleteClient(&it);
-//                        continue;
-//                    }
-//                    std::cout << "end iteration :" << (*it) << std::endl;
                 }
             } else {
                 (*it)->setEvents(POLLRDHUP);
@@ -200,7 +186,8 @@ bool HandlerOneClientImpl::handlingEvent() {
 }
 
 void HandlerOneClientImpl::deleteClient(std::list<Client *>::iterator *iterator) {
-    std::cout << "dell client " << std::endl;
+    LOG_EVENT("logout");
+//    std::cout << "dell client " << std::endl;
     if ((**iterator)->getTypeClient() == TypeClient::USER) {
         deleteClientUser(**iterator);
     } else if ((**iterator)->getTypeClient() == TypeClient::HTTP_SERVER) {
@@ -211,7 +198,7 @@ void HandlerOneClientImpl::deleteClient(std::list<Client *>::iterator *iterator)
 
 void HandlerOneClientImpl::deleteClientUser(Client *client) {
     LOG_EVENT("user logout");
-    std::cout << "user logout" << std::endl;
+//    std::cout << "user logout" << std::endl;
     if (client->getPair() != NULL) {
         client->getPair()->eraseIt(client);
 
@@ -241,13 +228,10 @@ void HandlerOneClientImpl::deleteClientUser(Client *client) {
 
 void HandlerOneClientImpl::deleteClientServer(Client *client) {
     LOG_EVENT("http server logout");
+    std::cout << "server logout" << std::endl;
     std::list<Client *> fromServ = client->getListHandlingEvent();
     for (auto itList = fromServ.begin(); itList != fromServ.end(); itList++) {
         (*itList)->setPair(NULL);
-        if (!(*itList)->isInClientList()) {
-            (*itList)->setInClientList(true);
-            _clientList.push_back((*itList));
-        }
         (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
     }
     if (client->getBuffer() != NULL) {
@@ -276,7 +260,6 @@ void HandlerOneClientImpl::saveResultPollSet() {
 }
 
 void HandlerOneClientImpl::getFromCash() {
-//    std::cout << "start getting" << std::endl;
     pthread_mutex_t mutexForCond;
     pthread_cond_t cond;
     if (initializeResources(&mutexForCond, &cond) != SUCCESS) {
@@ -286,24 +269,18 @@ void HandlerOneClientImpl::getFromCash() {
     _client->getBuffer()->getCashElement()->addCondVar(&cond);
     bool run = true;
     while (run) {
-//        std::cout << "start getting in while" << std::endl;
         while (_client->getBuffer()->getCashElement()->isIsServerConnected() &&
                !_client->getBuffer()->isReadyToSend()) {
-//            std::cout << "cash sleep" << std::endl;
             if (condWait(&mutexForCond, &cond) != SUCCESS) {
                 run = false;
                 break;
             }
         }
-
-//        std::cout << "cash not sleep" << std::endl;
         if (!_client->getBuffer()->getCashElement()->isIsServerConnected()) {
             sendAll();
-//            std::cout << "one send all" << std::endl;
             break;
         }
         if (_client->getBuffer()->isReadyToSend()) {
-//            std::cout << "start send all" << std::endl;
             if(sendAll() == FAILURE) {
                 break;
             }
@@ -350,8 +327,6 @@ bool HandlerOneClientImpl::condWait(pthread_mutex_t *mutex, pthread_cond_t *cond
     errno = pthread_cond_wait(cond, mutex);
     if (errno != SUCCESS) {
         perror("wait error");
-//        pthread_mutex_unlock(mutex);
-//        deleteResources(mutex, cond);
         return FAILURE;
     }
     return SUCCESS;
@@ -359,26 +334,14 @@ bool HandlerOneClientImpl::condWait(pthread_mutex_t *mutex, pthread_cond_t *cond
 
 int HandlerOneClientImpl::sendAll() {
     while (_client->getBuffer()->isReadyToSend()) {
-//        if (_client->getBuffer()->getCashElement() != NULL)
-//            pthread_mutex_lock(_client->getBuffer()->getCashElement()->getMutex());
-//        std::string buf;
-//        buf.resize(BUF_SIZE);
         buffer.clear();
-//        std::cout << "child start send" << std::endl;
         _client->getBuffer()->sendBuf(&buffer);
-//        std::cout << "child send in socket" << std::endl;
         int code = _client->sendBuf(&buffer);
         if (code < 0) {
             return FAILURE;
         }
-//        std::cout << "child end send in socket" << std::endl;
         _client->getBuffer()->proofSend(&buffer);
-//        std::cout << "child end proof" << std::endl;
-//        if (_client->getBuffer()->getCashElement() != NULL)
-//            pthread_mutex_unlock(_client->getBuffer()->getCashElement()->getMutex());
-
     }
-//    std::cout << "end send cash in iteration" << std::endl;
 }
 
 

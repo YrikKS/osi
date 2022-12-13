@@ -9,7 +9,6 @@ using namespace ProxyServer;
 
 void BufferImpl::readFromSocket(std::string *binaryString) {
     _buf->append(*binaryString);
-//    std::cout << *_buf << std::endl;
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
         wrightRequestHeading(binaryString);
     } else if (_statusClient == StatusHttp::WRITE_REQUEST_BODY) {
@@ -38,7 +37,6 @@ void BufferImpl::wrightRequestHeading(std::string *binaryString) {
         }
 
         _isReadyConnectHttpServer = true;
-//        std::cout << "ready connect to server" << std::endl;
         if (_resultParseHeading->getType() == GET_REQUEST) {
             _isReadyToSend = true;
             _isEndSend = true;
@@ -81,7 +79,6 @@ void BufferImpl::wrightResponseHeading(std::string *binaryString) {
                 _isAddDataToCash = false;
             }
         }
-//        _isAddDataToCash = false;
 
         _isReadyToSend = true;
         _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
@@ -111,10 +108,8 @@ void BufferImpl::wrightResponseHeading(std::string *binaryString) {
 void BufferImpl::wrightResponseBody(std::string *binaryString) {
     int posEnd = 0;
     _isReadyToSend = true;
-//    std::cout << "read from server = " << (binaryString)->length() << std::endl;
     if (_isAddDataToCash) {
         _cashElement->appendStringToCash(binaryString);
-//        *_cashElement->getCash() += (*binaryString);
     }
     if (_isHaveContentLengthresponse) {
         _lengthBody -= (binaryString)->length();
@@ -153,14 +148,10 @@ void BufferImpl::sendBuf(std::string *binaryString) {
                 (binaryString)->resize(BUF_SIZE - 1);
                 _cashElement->memCopyFromCash(binaryString, _countByteReadFromCash,
                                               BUF_SIZE - 1);
-//                std::memcpy((void *) (binaryString)->c_str(), _cashElement->getCash()->c_str() +
-//                                                              _countByteReadFromCash, BUF_SIZE - 1);
             } else {
                 (binaryString)->resize(_cashElement->getLength() - _countByteReadFromCash);
                 _cashElement->memCopyFromCash(binaryString, _countByteReadFromCash,
                                               _cashElement->getLength() - _countByteReadFromCash);
-//                std::memcpy((void *) (binaryString)->c_str(), _cashElement->getCash()->c_str() + _countByteReadFromCash,
-//                            _cashElement->getCash()->length() - _countByteReadFromCash);
             }
         }
     } else {
@@ -168,11 +159,9 @@ void BufferImpl::sendBuf(std::string *binaryString) {
         if (_buf->length() >= BUF_SIZE - 1) {
             (binaryString)->resize(BUF_SIZE - 1);
             memcpy((void *)(binaryString)->c_str(), (void *)_buf->c_str(), BUF_SIZE - 1);
-//            std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), BUF_SIZE - 1);
         } else {
             (binaryString)->resize(_buf->length());
             memcpy((void *)(binaryString)->c_str(), (void *)_buf->c_str(), _buf->length());
-//            std::memcpy((void *) (binaryString)->c_str(), _buf->c_str(), _buf->length());
         }
     }
 }
