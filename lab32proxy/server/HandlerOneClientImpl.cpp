@@ -217,17 +217,18 @@ bool HandlerOneClientImpl::handlingEvent() {
                         }
 //                        std::cout << "end pereclich " << std::endl;
                     } else if ((*it)->getTypeClient() == TypeClient::USER && // при отключении сервера
-                               (*it)->getBuffer()->getStatusClient() == END_WORK
-                               && !(*it)->getBuffer()->isReadyToSend()) {
-                        deleteClient(&it);
-                        continue;
-                    } else if ((*it)->getTypeClient() == TypeClient::USER // при отключении сервера
-                               && (*it)->getBuffer()->isIsDataGetCash()
-                               && (*it)->getBuffer()->getCashElement()->isCashEnd()
+                               (*it)->getBuffer()->getStatusHttpServer() == END_WORK
                                && !(*it)->getBuffer()->isReadyToSend()) {
                         deleteClient(&it);
                         continue;
                     }
+//                    } else if ((*it)->getTypeClient() == TypeClient::USER // при отключении сервера
+//                               && (*it)->getBuffer()->isIsDataGetCash()
+//                               && (*it)->getBuffer()->getCashElement()->isCashEnd()
+//                               && !(*it)->getBuffer()->isReadyToSend()) {
+//                        deleteClient(&it);
+//                        continue;
+//                    }
 //                    std::cout << "end iteration :" << (*it) << std::endl;
                 }
             } else {
@@ -283,13 +284,17 @@ void HandlerOneClientImpl::deleteClientUser(Client *client) {
 
 void HandlerOneClientImpl::deleteClientServer(Client *client) {
     LOG_EVENT("http server logout");
-    std::list<Client *> fromServ = client->getListHandlingEvent();
-    for (auto itList = fromServ.begin(); itList != fromServ.end(); itList++) {
-        (*itList)->setPair(NULL);
-        if (!(*itList)->isInClientList()) {
-            (*itList)->setInClientList(true);
-            _clientList.push_back((*itList));
-        }
+//    std::list<Client *> fromServ = client->getListHandlingEvent();
+////    for (auto itList = fromServ.begin(); itList != fromServ.end(); itList++) {
+////        (*itList)->setPair(NULL);
+////        if (!(*itList)->isInClientList()) {
+////            (*itList)->setInClientList(true);
+////            _clientList.push_back((*itList));
+////        }
+////    }
+    if(client->getBuffer()->isIsClientConnect()) {
+        _client->setInClientList(true);
+        _clientList.push_back(_client);
     }
     if (client->getBuffer() != NULL) {
         if (client->getBuffer()->isIsAddDataToCash()) {

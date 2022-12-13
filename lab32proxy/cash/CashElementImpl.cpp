@@ -140,11 +140,9 @@ void CashElementImpl::dellCondVar(pthread_cond_t *condVar) {
 
 void CashElementImpl::signalUsers() {
     pthread_mutex_lock(&mutexForList);
-    std::cout << "signal cash" << std::endl;
     for (auto &item: listUsers) {
         pthread_cond_signal(item);
     }
-    std::cout << "end signal cash size listUsers == " << listUsers.size() << std::endl;
     pthread_mutex_unlock(&mutexForList);
 }
 
