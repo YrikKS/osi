@@ -59,8 +59,8 @@ namespace ProxyServer {
         std::shared_ptr<std::string> _cash = std::make_shared<std::string>();
         std::list<pthread_cond_t*> _listSubscribers;
         void signalUsers();
-        pthread_mutex_t _mutexForSubscribers = PTHREAD_MUTEX_INITIALIZER;
-        pthread_mutex_t _mutexForData = PTHREAD_MUTEX_INITIALIZER; // блокировки
+        pthread_mutex_t _mutexForSubscribers ;
+        pthread_mutex_t _mutexForData ; // блокировки
     };
 }
 

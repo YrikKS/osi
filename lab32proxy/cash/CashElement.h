@@ -47,8 +47,6 @@ namespace ProxyServer {
         virtual void addCondVar(pthread_cond_t *condVar) = 0;
 
         virtual void dellCondVar(pthread_cond_t *condVar) = 0;
-
-        virtual pthread_mutex_t *getMutex() = 0;
     };
 }
 #endif //LAB31PROXY_CASHELEMENT_H
