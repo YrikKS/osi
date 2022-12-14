@@ -20,8 +20,8 @@ std::shared_ptr<std::string> CashElementImpl::getCash() {
 }
 
 CashElementImpl::CashElementImpl(std::string heading) {
-    pthread_mutex_init(&_mutexForData, NULL);
-    pthread_mutex_init(&_mutexForSubscribers, NULL);
+//    pthread_mutex_init(&_mutexForData, NULL);
+//    pthread_mutex_init(&_mutexForSubscribers, NULL);
     _requestHeading = heading;
     std::hash<std::string> hasher;
     _hashRequestHeading = hasher(heading);
