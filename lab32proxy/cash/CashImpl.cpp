@@ -35,7 +35,7 @@ ProxyServer::CashElement *ProxyServer::CashImpl::addStringToCash(std::string req
         for (auto it = _listCash.begin(); it != _listCash.end(); it++) {
             if ((*it)->getCountUsers() <= 0) {
                 byteInCash -= (*it)->getLength();
-                byteInCash -= (*it)->getHead().length();
+                byteInCash -= (*it)->getHeading().length();
                 it = _listCash.erase(it);
                 if (byteInCash + dataSize < MAX_CASH_SIZE) {
                     break;

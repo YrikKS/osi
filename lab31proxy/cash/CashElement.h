@@ -20,7 +20,7 @@ namespace ProxyServer {
 
         virtual bool isDownloadEnd() = 0;
 
-        virtual void setIsCashEnd(bool var) = 0;
+        virtual void setDownloadEnd(bool var) = 0;
 
         virtual std::shared_ptr<std::string> getCash() = 0;
 
@@ -36,7 +36,7 @@ namespace ProxyServer {
 
         virtual void setIsServerConnect(bool isServerConnected) = 0;
 
-        virtual const std::string &getHead() = 0;
+        virtual const std::string &getHeading() = 0;
     };
 }
 #endif //LAB31PROXY_CASHELEMENT_H

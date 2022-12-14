@@ -17,7 +17,7 @@ namespace ProxyServer {
 
         virtual bool isDownloadEnd() = 0;
 
-        virtual void setIsCashEnd(bool var) = 0;
+        virtual void setDownloadEnd(bool var) = 0;
 
         virtual std::shared_ptr<std::string> getCash() = 0;
 
@@ -33,7 +33,7 @@ namespace ProxyServer {
 
         virtual void setIsServerConnect(bool isServerConnected) = 0;
 
-        virtual const std::string &getHead() = 0;
+        virtual const std::string &getHeading() = 0;
 
         virtual long long int getLength() = 0;
 
@@ -41,8 +41,6 @@ namespace ProxyServer {
                                      long long int _countByteReadFromCash, long long int sizeCopy) = 0;
 
         virtual void appendStringToCash(std::string *binaryString) = 0;
-
-        virtual void appendStringToCash(std::string binaryString) = 0;
 
         virtual void addCondVar(pthread_cond_t *condVar) = 0;
 

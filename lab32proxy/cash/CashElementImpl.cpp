@@ -11,7 +11,7 @@ bool CashElementImpl::isDownloadEnd() {
     return _isDownloadEnd;
 }
 
-void CashElementImpl::setIsCashEnd(bool var) {
+void CashElementImpl::setDownloadEnd(bool var) {
     _isDownloadEnd = var;
 }
 
@@ -72,7 +72,7 @@ void CashElementImpl::setIsServerConnect(bool isServerConnected) {
 
 }
 
-const std::string &CashElementImpl::getHead() {
+const std::string &CashElementImpl::getHeading() {
     return _requestHeading;
 }
 
@@ -93,13 +93,6 @@ void CashElementImpl::memCopyFromCash(std::string *target, long long int offset,
 void CashElementImpl::appendStringToCash(std::string *binaryString) {
     pthread_mutex_lock(&_mutexForData);
     _cash->append(*binaryString);
-    pthread_mutex_unlock(&_mutexForData);
-    signalUsers();
-}
-
-void CashElementImpl::appendStringToCash(std::string binaryString) {
-    pthread_mutex_lock(&_mutexForData);
-    _cash->append(binaryString);
     pthread_mutex_unlock(&_mutexForData);
     signalUsers();
 }

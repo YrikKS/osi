@@ -18,7 +18,7 @@ namespace ProxyServer {
 
         bool isDownloadEnd() override;
 
-        void setIsCashEnd(bool var) override;
+        void setDownloadEnd(bool var) override;
 
         std::shared_ptr<std::string> getCash() override;
 
@@ -36,7 +36,7 @@ namespace ProxyServer {
 
         void setIsServerConnect(bool isServerConnected) override;
 
-        const std::string &getHead() override;
+        const std::string &getHeading() override;
 
         long long int getLength() override;
 
@@ -44,8 +44,6 @@ namespace ProxyServer {
                              long long int sizeCopy) override;
 
         void appendStringToCash(std::string *binaryString) override;
-
-        void appendStringToCash(std::string binaryString) override;
 
         void addCondVar(pthread_cond_t *condVar) override;
 

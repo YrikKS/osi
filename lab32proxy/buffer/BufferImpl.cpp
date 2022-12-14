@@ -72,8 +72,8 @@ void BufferImpl::wrightResponseHeading(std::string *binaryString) {
                                                   resultParseHeading.getContentLength() + responseHead.size());
             if (_cashElement != NULL) {
                 _isAddDataToCash = true;
-                _cashElement->appendStringToCash(*_buf);
-                _cashElement->setIsCashEnd(false);
+                _cashElement->appendStringToCash(&(*_buf));
+                _cashElement->setDownloadEnd(false);
                 _cashElement->setIsServerConnect(true);
             } else {
                 _isAddDataToCash = false;
@@ -90,7 +90,7 @@ void BufferImpl::wrightResponseHeading(std::string *binaryString) {
             if (_lengthBody <= 0) {
                 _isEndSend = true;
                 if (_isAddDataToCash) {
-                    _cashElement->setIsCashEnd(true);
+                    _cashElement->setDownloadEnd(true);
                 }
             }
         } else {
@@ -116,7 +116,7 @@ void BufferImpl::wrightResponseBody(std::string *binaryString) {
         if (_lengthBody <= 0) {
             _isEndSend = true;
             if (_isAddDataToCash) {
-                _cashElement->setIsCashEnd(true);
+                _cashElement->setDownloadEnd(true);
             }
             LOG_EVENT("end body response read");
         }
