@@ -93,7 +93,7 @@ bool HandlerOneClientImpl::handlingEvent() {
                         }
                     } else if ((*it)->getTypeClient() == USER) {
                         if ((*it)->getPair() != NULL) {
-                                (*it)->getPair()->setEvents(POLLOUT | POLLIN | POLLRDHUP);
+                            (*it)->getPair()->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                         }
                     }
                 } catch (ParseException &ex) {
@@ -126,6 +126,11 @@ bool HandlerOneClientImpl::handlingEvent() {
         if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
             (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
             !(*it)->getBuffer()->isIsAddDataToCash()) {
+            deleteClient(&it);
+            continue;
+        } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
+                   (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
+                   !(*it)->getBuffer()->isIsAddDataToCash()) {
             deleteClient(&it);
             continue;
         } else if ((*it)->getTypeClient() == TypeClient::USER &&
@@ -166,7 +171,7 @@ bool HandlerOneClientImpl::handlingEvent() {
                         std::list<Client *> fromServ = (*it)->getListHandlingEvent();
                         for (auto itList = fromServ.begin();
                              itList != fromServ.end(); itList++) {
-                                (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
+                            (*itList)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                         }
 
                     } else if ((*it)->getTypeClient() == TypeClient::USER && // при отключении сервера
@@ -205,6 +210,12 @@ void HandlerOneClientImpl::deleteClientUser(Client *client) {
 
         if (client->getBuffer() != NULL) {
             if (!client->getBuffer()->isIsAddDataToCash()) {
+                for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
+                    if (*it == client->getPair())
+                        deleteClient(&it);
+                }
+            }
+            if (!client->getBuffer()->isIsDataGetCash()) {
                 for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
                     if (*it == client->getPair())
                         deleteClient(&it);
@@ -282,7 +293,7 @@ void HandlerOneClientImpl::getFromCash() {
             break;
         }
         if (_client->getBuffer()->isReadyToSend()) {
-            if(sendAll() == FAILURE) {
+            if (sendAll() == FAILURE) {
                 break;
             }
         }

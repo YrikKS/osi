@@ -173,6 +173,11 @@ void ProxyServer::NewServerImpl::handlingEvent() {
             !(*it)->getBuffer()->isIsDataGetCash()) {
             deleteClient(&it);
             continue;
+        } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
+                   (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
+                   !(*it)->getBuffer()->isIsAddDataToCash()) {
+            deleteClient(&it);
+            continue;
         } else if ((*it)->getTypeClient() == TypeClient::USER &&
                    (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK) {
             deleteClient(&it);
@@ -291,10 +296,16 @@ void ProxyServer::NewServerImpl::deleteClientUser(Client *client) {
         client->getPair()->eraseIt(client);
 
         if (client->getBuffer() != NULL) {
-            if(!client->getBuffer()->isIsDataGetCash()) {
+            if (!client->getBuffer()->isIsDataGetCash()) {
                 for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
-                    if(*it == client->getPair())
-                    deleteClient(&it);
+                    if (*it == client->getPair())
+                        deleteClient(&it);
+                }
+            }
+            if (!client->getBuffer()->isIsAddDataToCash()) {
+                for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
+                    if (*it == client->getPair())
+                        deleteClient(&it);
                 }
             }
         }
