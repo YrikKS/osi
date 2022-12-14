@@ -130,7 +130,7 @@ bool HandlerOneClientImpl::handlingEvent() {
             continue;
         } else if ((*it)->getTypeClient() == TypeClient::HTTP_SERVER &&
                    (*it)->getBuffer()->getStatusClient() == StatusHttp::END_WORK &&
-                   !(*it)->getBuffer()->isIsAddDataToCash()) {
+                   !(*it)->getBuffer()->isIsDataGetCash()) {
             deleteClient(&it);
             continue;
         } else if ((*it)->getTypeClient() == TypeClient::USER &&
