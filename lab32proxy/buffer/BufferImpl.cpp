@@ -8,7 +8,11 @@
 using namespace ProxyServer;
 
 void BufferImpl::readFromSocket(std::string *binaryString) {
-    _buf->append(*binaryString);
+    if(_isClientConnect == false && _statusHttpServer == StatusHttp::WRITE_RESPONSE_BODY) {
+        _buf->clear();
+    } else {
+        _buf->append(*binaryString);
+    }
     if (_statusClient == StatusHttp::WRITE_REQUEST_HEADING) {
         wrightRequestHeading(binaryString);
     } else if (_statusClient == StatusHttp::WRITE_REQUEST_BODY) {
