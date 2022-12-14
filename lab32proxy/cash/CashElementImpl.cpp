@@ -24,8 +24,8 @@ CashElementImpl::CashElementImpl(std::string heading, long long int dataSize) {
     pthread_mutex_init(&_mutexForSubscribers, NULL);
     _requestHeading = heading;
     std::hash<std::string> hasher;
-//    _cash->resize(dataSize);
-//    _cash->clear();
+    _cash->resize(dataSize - heading.size());
+    _cash->clear();
     _hashRequestHeading = hasher(heading);
 }
 
