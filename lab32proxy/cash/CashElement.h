@@ -15,7 +15,7 @@ namespace ProxyServer {
     public:
         virtual ~CashElement() = default;
 
-        virtual bool isCashEnd() = 0;
+        virtual bool isDownloadEnd() = 0;
 
         virtual void setIsCashEnd(bool var) = 0;
 

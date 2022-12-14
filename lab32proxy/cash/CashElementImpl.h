@@ -16,7 +16,7 @@ namespace ProxyServer {
     public:
         explicit CashElementImpl(std::string heading);
 
-        bool isCashEnd() override;
+        bool isDownloadEnd() override;
 
         void setIsCashEnd(bool var) override;
 
@@ -40,7 +40,7 @@ namespace ProxyServer {
 
         long long int getLength() override;
 
-        void memCopyFromCash(std::string *binaryString, long long int _countByteReadFromCash,
+        void memCopyFromCash(std::string *target, long long int offset,
                              long long int sizeCopy) override;
 
         void appendStringToCash(std::string *binaryString) override;
@@ -50,20 +50,17 @@ namespace ProxyServer {
         void addCondVar(pthread_cond_t *condVar) override;
 
         void dellCondVar(pthread_cond_t *condVar) override;
-
-        pthread_mutex_t* getMutex() override;
     private:
-        int _countUsers = 0;
-        bool _isCashEnd = false;
+        int _countConnectedUsers = 0;
+        bool _isDownloadEnd = false;
         bool _isServerConnected = false;
-        long long int _hashHead = 0;
-        std::string _head;
+        long long int _hashRequestHeading = 0;
+        std::string _requestHeading;
         std::shared_ptr<std::string> _cash = std::make_shared<std::string>();
-        std::list<pthread_cond_t*> listUsers;
+        std::list<pthread_cond_t*> _listSubscribers;
         void signalUsers();
-        pthread_mutex_t mutexForList;
-        pthread_mutex_t mutexForData;
-        pthread_mutex_t mutexForCopy;
+        pthread_mutex_t _mutexForSubscribers;
+        pthread_mutex_t _mutexForData; // блокировки
     };
 }
 

@@ -155,7 +155,6 @@ void BufferImpl::sendBuf(std::string *binaryString) {
             }
         }
     } else {
-        // ТУТ
         if (_buf->length() >= BUF_SIZE - 1) {
             (binaryString)->resize(BUF_SIZE - 1);
             memcpy((void *)(binaryString)->c_str(), (void *)_buf->c_str(), BUF_SIZE - 1);
@@ -172,7 +171,7 @@ void BufferImpl::proofSend(std::string *binaryString) {
         if (_cashElement->getLength() == _countByteReadFromCash) {
             _isReadyToSend = false;
         }
-        if (_cashElement->isCashEnd()) {
+        if (_cashElement->isDownloadEnd()) {
             _isEndSend = true;
             _statusClient = StatusHttp::END_WORK;
             return;

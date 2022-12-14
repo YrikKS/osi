@@ -18,7 +18,7 @@ namespace ProxyServer {
 
 //        virtual void addToObserver(Client* client) = 0;
 
-        virtual bool isCashEnd() = 0;
+        virtual bool isDownloadEnd() = 0;
 
         virtual void setIsCashEnd(bool var) = 0;
 

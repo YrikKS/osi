@@ -27,11 +27,11 @@ ProxyServer::CashElement *ProxyServer::CashImpl::findResponseInCash(std::string 
 ProxyServer::CashElement *ProxyServer::CashImpl::addStringToCash(std::string request, long long int dataSize) {
     dataSize += request.length();
     pthread_mutex_lock(&mutex);
+    if (dataSize > SIZE_EACH_CASH_ELEMENT) {
+        pthread_mutex_unlock(&mutex);
+        return NULL;
+    }
     if (byteInCash + dataSize >= MAX_CASH_SIZE) {
-        if (dataSize > SIZE_EACH_CASH_ELEMENT) {
-            pthread_mutex_unlock(&mutex);
-            return NULL;
-        }
         for (auto it = _listCash.begin(); it != _listCash.end(); it++) {
             if ((*it)->getCountUsers() <= 0) {
                 byteInCash -= (*it)->getLength();

@@ -7,17 +7,12 @@
 
 using namespace ProxyServer;
 
-bool CashElementImpl::isCashEnd() {
-    pthread_mutex_lock(&mutexForData);
-    bool local = _isCashEnd;
-    pthread_mutex_unlock(&mutexForData);
-    return local;
+bool CashElementImpl::isDownloadEnd() {
+    return _isDownloadEnd;
 }
 
 void CashElementImpl::setIsCashEnd(bool var) {
-    pthread_mutex_lock(&mutexForData);
-    _isCashEnd = var;
-    pthread_mutex_unlock(&mutexForData);
+    _isDownloadEnd = var;
 }
 
 std::shared_ptr<std::string> CashElementImpl::getCash() {
@@ -25,60 +20,51 @@ std::shared_ptr<std::string> CashElementImpl::getCash() {
 }
 
 CashElementImpl::CashElementImpl(std::string heading) {
-    pthread_mutex_init(&mutexForData, NULL);
-    pthread_mutex_init(&mutexForList, NULL);
-    pthread_mutex_init(&mutexForCopy, NULL);
-    _head = heading;
+    pthread_mutex_init(&_mutexForData, NULL);
+    pthread_mutex_init(&_mutexForSubscribers, NULL);
+    _requestHeading = heading;
     std::hash<std::string> hasher;
-    _hashHead = hasher(heading);
+    _hashRequestHeading = hasher(heading);
 }
 
 long long int CashElementImpl::getHash() {
-    return _hashHead;
+    return _hashRequestHeading;
 }
 
 CashElementImpl::~CashElementImpl() {
     LOG_EVENT("delete cash ");
-    errno = pthread_mutex_destroy(&mutexForData);
+    errno = pthread_mutex_destroy(&_mutexForData);
     if (errno != 0) {
         perror("destroy mutex error");
     }
-    errno = pthread_mutex_destroy(&mutexForList);
+    errno = pthread_mutex_destroy(&_mutexForSubscribers);
     if (errno != 0) {
         perror("destroy mutex error");
     }
 }
 
 int CashElementImpl::getCountUsers() {
-    pthread_mutex_lock(&mutexForData);
-    int local = _countUsers;
-    pthread_mutex_unlock(&mutexForData);
-    return local;
+    return _countConnectedUsers;
 }
 
 void CashElementImpl::addCountUsers() {
-    pthread_mutex_lock(&mutexForData);
-    _countUsers++;
-    pthread_mutex_unlock(&mutexForData);
+    pthread_mutex_lock(&_mutexForData);
+    _countConnectedUsers++;
+    pthread_mutex_unlock(&_mutexForData);
 }
 
 void CashElementImpl::minusCountUsers() {
-    pthread_mutex_lock(&mutexForData);
-    _countUsers--;
-    pthread_mutex_unlock(&mutexForData);
+    pthread_mutex_lock(&_mutexForData);
+    _countConnectedUsers--;
+    pthread_mutex_unlock(&_mutexForData);
 }
 
 bool CashElementImpl::isIsServerConnected() {
-    pthread_mutex_lock(&mutexForData);
-    size_t local = _isServerConnected;
-    pthread_mutex_unlock(&mutexForData);
-    return local;
+    return _isServerConnected;
 }
 
 void CashElementImpl::setIsServerConnect(bool isServerConnected) {
-    pthread_mutex_lock(&mutexForData);
     _isServerConnected = isServerConnected;
-    pthread_mutex_unlock(&mutexForData);
 
     if (!isServerConnected) {
         signalUsers();
@@ -87,65 +73,64 @@ void CashElementImpl::setIsServerConnect(bool isServerConnected) {
 }
 
 const std::string &CashElementImpl::getHead() {
-    return _head;
+    return _requestHeading;
 }
 
 long long int CashElementImpl::getLength() {
-    pthread_mutex_lock(&mutexForData);
-    long long int local = _cash->size();
-    pthread_mutex_unlock(&mutexForData);
-    return local;
+    return _cash->size();
 }
 
-void CashElementImpl::memCopyFromCash(std::string *binaryString, long long int _countByteReadFromCash,
+void CashElementImpl::memCopyFromCash(std::string *target, long long int offset,
                                       long long int sizeCopy) {
-    pthread_mutex_lock(&mutexForData);
-    memcpy((void *) (binaryString)->c_str(), _cash->c_str() +
-                                             _countByteReadFromCash, sizeCopy);
-//    std::memcpy((void *) (binaryString)->c_str(), _cash->c_str() +
-//                                                  _countByteReadFromCash, sizeCopy);
-    pthread_mutex_unlock(&mutexForData);
+    pthread_mutex_lock(&_mutexForData);
+    memcpy((void *) (target)->c_str(), _cash->c_str() +
+                                       offset, sizeCopy);
+//    std::memcpy((void *) (target)->c_str(), _cash->c_str() +
+//                                                  offset, sizeCopy);
+    pthread_mutex_unlock(&_mutexForData);
 }
 
 void CashElementImpl::appendStringToCash(std::string *binaryString) {
-    pthread_mutex_lock(&mutexForData);
+    pthread_mutex_lock(&_mutexForData);
     _cash->append(*binaryString);
-    pthread_mutex_unlock(&mutexForData);
+    pthread_mutex_unlock(&_mutexForData);
     signalUsers();
 }
 
 void CashElementImpl::appendStringToCash(std::string binaryString) {
-    pthread_mutex_lock(&mutexForData);
+    pthread_mutex_lock(&_mutexForData);
     _cash->append(binaryString);
-    pthread_mutex_unlock(&mutexForData);
+    pthread_mutex_unlock(&_mutexForData);
     signalUsers();
 }
 
 void CashElementImpl::addCondVar(pthread_cond_t *condVar) {
-    pthread_mutex_lock(&mutexForList);
-    listUsers.push_front(condVar);
-    pthread_mutex_unlock(&mutexForList);
+    pthread_mutex_lock(&_mutexForSubscribers);
+    _listSubscribers.push_front(condVar);
+    pthread_mutex_unlock(&_mutexForSubscribers);
 }
 
 void CashElementImpl::dellCondVar(pthread_cond_t *condVar) {
-    pthread_mutex_lock(&mutexForList);
-    for (auto it = listUsers.begin(); it != listUsers.end(); it++) {
+    pthread_mutex_lock(&_mutexForSubscribers);
+    for (auto it = _listSubscribers.begin(); it != _listSubscribers.end(); it++) {
         if ((*it) == condVar) {
-            listUsers.erase(it);
+            _listSubscribers.erase(it);
             break;
         }
     }
-    pthread_mutex_unlock(&mutexForList);
+    pthread_mutex_unlock(&_mutexForSubscribers);
 }
 
 void CashElementImpl::signalUsers() {
-    pthread_mutex_lock(&mutexForList);
-    for (auto &item: listUsers) {
+    pthread_mutex_lock(&_mutexForSubscribers);
+    for (auto &item: _listSubscribers) {
         pthread_cond_signal(item);
     }
-    pthread_mutex_unlock(&mutexForList);
+    pthread_mutex_unlock(&_mutexForSubscribers);
 }
 
-pthread_mutex_t* CashElementImpl::getMutex() {
-    return &mutexForCopy;
-}
+// list subers
+//blokirovka на течение \ запись mutex lock
+// удалить на атомарных операциях
+// передавать указщатель в append
+// (нэйминг поправить)
