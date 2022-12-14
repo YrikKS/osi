@@ -20,7 +20,7 @@ std::shared_ptr<std::string> CashElementImpl::getCash() {
 }
 
 CashElementImpl::CashElementImpl(std::string heading) {
-    pthread_mutex_init(&_mutexForData, NULL);
+    pthread_rwlock_init(&_mutexForData, NULL);
     pthread_mutex_init(&_mutexForSubscribers, NULL);
     _requestHeading = heading;
     std::hash<std::string> hasher;
@@ -33,7 +33,7 @@ long long int CashElementImpl::getHash() {
 
 CashElementImpl::~CashElementImpl() {
     LOG_EVENT("delete cash ");
-    errno = pthread_mutex_destroy(&_mutexForData);
+    errno = pthread_rwlock_destroy(&_mutexForData);
     if (errno != 0) {
         perror("destroy mutex error");
     }
@@ -48,15 +48,15 @@ int CashElementImpl::getCountUsers() {
 }
 
 void CashElementImpl::addCountUsers() {
-    pthread_mutex_lock(&_mutexForData);
+//    pthread_mutex_lock(&_mutexForData);
     _countConnectedUsers++;
-    pthread_mutex_unlock(&_mutexForData);
+//    pthread_mutex_unlock(&_mutexForData);
 }
 
 void CashElementImpl::minusCountUsers() {
-    pthread_mutex_lock(&_mutexForData);
+//    pthread_mutex_lock(&_mutexForData);
     _countConnectedUsers--;
-    pthread_mutex_unlock(&_mutexForData);
+//    pthread_mutex_unlock(&_mutexForData);
 }
 
 bool CashElementImpl::isIsServerConnected() {
@@ -82,18 +82,18 @@ long long int CashElementImpl::getLength() {
 
 void CashElementImpl::memCopyFromCash(std::string *target, long long int offset,
                                       long long int sizeCopy) {
-    pthread_mutex_lock(&_mutexForData);
+    pthread_rwlock_rdlock(&_mutexForData);
     memcpy((void *) (target)->c_str(), _cash->c_str() +
                                        offset, sizeCopy);
 //    std::memcpy((void *) (target)->c_str(), _cash->c_str() +
 //                                                  offset, sizeCopy);
-    pthread_mutex_unlock(&_mutexForData);
+    pthread_rwlock_unlock(&_mutexForData);
 }
 
 void CashElementImpl::appendStringToCash(std::string *binaryString) {
-    pthread_mutex_lock(&_mutexForData);
+    pthread_rwlock_wrlock(&_mutexForData);
     _cash->append(*binaryString);
-    pthread_mutex_unlock(&_mutexForData);
+    pthread_rwlock_unlock(&_mutexForData);
     signalUsers();
 }
 
