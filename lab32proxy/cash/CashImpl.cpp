@@ -49,7 +49,7 @@ ProxyServer::CashElement *ProxyServer::CashImpl::addStringToCash(std::string req
     }
     LOG_EVENT("add to cash");
     byteInCash += dataSize;
-    CashElementImpl *cash = new CashElementImpl(request);
+    CashElementImpl *cash = new CashElementImpl(request, dataSize);
     _listCash.push_back(cash);
     pthread_mutex_unlock(&mutex);
     return cash;

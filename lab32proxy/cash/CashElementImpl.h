@@ -14,7 +14,7 @@
 namespace ProxyServer {
     class CashElementImpl : public CashElement {
     public:
-        explicit CashElementImpl(std::string heading);
+        explicit CashElementImpl(std::string heading, long long int dataSize);
 
         bool isDownloadEnd() override;
 

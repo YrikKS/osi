@@ -19,11 +19,13 @@ std::shared_ptr<std::string> CashElementImpl::getCash() {
     return _cash;
 }
 
-CashElementImpl::CashElementImpl(std::string heading) {
+CashElementImpl::CashElementImpl(std::string heading, long long int dataSize) {
     pthread_rwlock_init(&_mutexForData, NULL);
     pthread_mutex_init(&_mutexForSubscribers, NULL);
     _requestHeading = heading;
     std::hash<std::string> hasher;
+    _cash->resize(dataSize);
+    _cash->clear();
     _hashRequestHeading = hasher(heading);
 }
 
