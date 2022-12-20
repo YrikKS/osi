@@ -8,8 +8,6 @@ namespace ProxyServer {
     typedef enum {
         GET_REQUEST,
         NORMAL_RESPONSE,
-        NOT_CASH_RESPONSE,
-        GET_REQUEST_NOT_CASH,
         NOT_GET_REQUEST,
         INVALID
     } TypeRequestAndResponse;

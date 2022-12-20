@@ -4,7 +4,6 @@
 
 #include "CashImpl.h"
 #include "CashElementImpl.h"
-#include "../logger/Logger.h"
 
 ProxyServer::CashElement *ProxyServer::CashImpl::findResponseInCash(std::string heading) {
     std::hash<std::string> hasher;

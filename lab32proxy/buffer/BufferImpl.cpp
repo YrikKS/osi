@@ -86,9 +86,9 @@ void BufferImpl::wrightResponseHeading(std::string *binaryString) {
 
         _isReadyToSend = true;
         _statusHttpServer = StatusHttp::WRITE_RESPONSE_BODY;
-        _isHaveContentLengthresponse = resultParseHeading.isHaveContentLength();
+        isHaveContentLengthResponse = resultParseHeading.isHaveContentLength();
 
-        if (_isHaveContentLengthresponse) {
+        if (isHaveContentLengthResponse) {
             _lengthBody = resultParseHeading.getContentLength();
             _lengthBody -= _buf->length() - responseHead.size();
             if (_lengthBody <= 0) {
@@ -115,7 +115,7 @@ void BufferImpl::wrightResponseBody(std::string *binaryString) {
     if (_isAddDataToCash) {
         _cashElement->appendStringToCash(binaryString);
     }
-    if (_isHaveContentLengthresponse) {
+    if (isHaveContentLengthResponse) {
         _lengthBody -= (binaryString)->length();
         if (_lengthBody <= 0) {
             _isEndSend = true;

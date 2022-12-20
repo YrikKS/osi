@@ -20,8 +20,6 @@ namespace ProxyServer {
 
         void setDownloadEnd(bool var) override;
 
-        std::shared_ptr<std::string> getCash() override;
-
         long long int getHash() override;
 
         ~CashElementImpl() override;

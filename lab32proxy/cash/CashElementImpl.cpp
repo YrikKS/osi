@@ -15,10 +15,6 @@ void CashElementImpl::setDownloadEnd(bool var) {
     _isDownloadEnd = var;
 }
 
-std::shared_ptr<std::string> CashElementImpl::getCash() {
-    return _cash;
-}
-
 CashElementImpl::CashElementImpl(std::string heading, long long int dataSize) {
     pthread_rwlock_init(&_mutexForData, NULL);
     pthread_mutex_init(&_mutexForSubscribers, NULL);
@@ -87,8 +83,6 @@ void CashElementImpl::memCopyFromCash(std::string *target, long long int offset,
     pthread_rwlock_rdlock(&_mutexForData);
     memcpy((void *) (target)->c_str(), _cash->c_str() +
                                        offset, sizeCopy);
-//    std::memcpy((void *) (target)->c_str(), _cash->c_str() +
-//                                                  offset, sizeCopy);
     pthread_rwlock_unlock(&_mutexForData);
 }
 

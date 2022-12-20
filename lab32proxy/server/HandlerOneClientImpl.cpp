@@ -215,12 +215,6 @@ void HandlerOneClientImpl::deleteClientUser(Client *client) {
                         deleteClient(&it);
                 }
             }
-//            if (!client->getBuffer()->isIsDataGetCash()) {
-//                for (auto it = _clientList.begin(); it != _clientList.end(); it++) {
-//                    if (*it == client->getPair())
-//                        deleteClient(&it);
-//                }
-//            }
         }
     }
 

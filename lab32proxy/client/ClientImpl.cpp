@@ -6,10 +6,6 @@
 
 using namespace ProxyServer;
 
-int ClientImpl::getFdClient() {
-    return _fd;
-}
-
 int ClientImpl::sendBuf(std::string *buf) {
     int code = write(_fd, (buf)->c_str(), (buf)->length());
     return code;
@@ -75,14 +71,6 @@ void ClientImpl::setReventsZero() {
 
 void ClientImpl::setEvents(int event) {
     _structPollFd.events = event;
-}
-
-bool ClientImpl::isInClientList() {
-    return _isInClientList;
-}
-
-void ClientImpl::setInClientList(bool value) {
-    _isInClientList = value;
 }
 
 Client *ClientImpl::getPair() {

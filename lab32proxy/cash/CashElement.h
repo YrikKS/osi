@@ -19,8 +19,6 @@ namespace ProxyServer {
 
         virtual void setDownloadEnd(bool var) = 0;
 
-        virtual std::shared_ptr<std::string> getCash() = 0;
-
         virtual long long int getHash() = 0;
 
         virtual int getCountUsers() = 0;

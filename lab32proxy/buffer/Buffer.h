@@ -22,14 +22,11 @@ namespace ProxyServer {
         WRITE_RESPONSE_HEADING,
         WRITE_RESPONSE_BODY,
         END_WORK
-        //WRITE_REQUEST
     } StatusHttp;
 
     class Buffer {
     public:
         virtual void readFromSocket(std::string *binaryString) = 0;
-
-//        virtual void readResponse(char *buf) = 0;
 
         virtual void sendBuf(std::string *binaryString) = 0;
 

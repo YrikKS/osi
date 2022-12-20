@@ -65,13 +65,12 @@ namespace ProxyServer {
         std::shared_ptr<std::string> _buf = std::make_shared<std::string>();
         bool _isClientConnect = false;
         bool _isServerConnect = false;
-        std::string _sendingString;
         bool _isReadyToSend = false;
         bool _isEndSend = false;
         bool _isReadyConnectHttpServer = false;
         long long int _lengthBody = 0;
         ResultParseHeading *_resultParseHeading = NULL;
-        bool _isHaveContentLengthresponse = false;
+        bool isHaveContentLengthResponse = false;
 
         bool _isAddDataToCash = false;
         bool _isDataGetCash = false;

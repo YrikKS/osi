@@ -12,16 +12,8 @@ namespace ProxyServer {
             return _sock;
         }
 
-        void setSock(int sock) {
-            _sock = sock;
-        }
-
         Cash *getCash() const {
             return _cash;
-        }
-
-        void setCash(Cash *cash) {
-            _cash = cash;
         }
 
         int _sock;

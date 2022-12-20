@@ -18,8 +18,6 @@ namespace ProxyServer {
     public:
         explicit ClientImpl(int sock, TypeClient typeClient, Buffer *buf);
 
-        int getFdClient() override;
-
         int sendBuf(std::string *buf) override;
 
         int readBuf(std::string *buf) override;
@@ -39,10 +37,6 @@ namespace ProxyServer {
         void setPollElement(struct pollfd pollfd) override;
 
         void setReventsZero() override;
-
-        bool isInClientList() override;
-
-        void setInClientList(bool value) override;
 
         Client *getPair();
 
