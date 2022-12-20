@@ -46,14 +46,13 @@ void *NewServerImpl::startingMethodForThread(void *args) {
 }
 
 NewServerImpl::NewServerImpl() {
-    _serverSocket = new ServerSocketImpl();
+    _serverSocket = std::unique_ptr<ServerSocket>(new ServerSocketImpl());
     _serverSocket->connectSocket();
     _cash = new CashImpl();
 }
 
 NewServerImpl::~NewServerImpl() {
     _serverSocket->closeSocket();
-    delete (ServerSocketImpl *) _serverSocket;
     delete _cash;
 }
 

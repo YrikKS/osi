@@ -84,7 +84,7 @@ void ParserImpl::findHostAndPort(ResultParseHeading *result, std::string buf) {
             if (resRegex[2].str().size() > 1) {
                 result->setPort(atoi(resRegex[2].str().substr(1).c_str()));
             } else {
-                result->setPort(80);
+                result->setPort(DEFAULT_PORT);
             }
         }
     } else {

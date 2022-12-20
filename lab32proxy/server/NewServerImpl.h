@@ -29,21 +29,15 @@ namespace ProxyServer {
     class NewServerImpl : public Server {
     public:
         NewServerImpl();
+
         void startServer() override;
+
         ~NewServerImpl() override;
+
         static void *startingMethodForThread(void *args);
+
     private:
-
-//        void saveResultPollSet();
-//        void setPollSetBeforePoll();
-//        void handlingEvent();
-
-//        void deleteClient(std::list<Client*>::iterator* iterator);
-//        void deleteClientUser(Client* client);
-//        void deleteClientServer(Client* client);
-//        void findElementWithCurrentCash(Client* client);
-
-        ServerSocket* _serverSocket;
+        std::unique_ptr<ServerSocket> _serverSocket;
         Cash *_cash;
     };
 }

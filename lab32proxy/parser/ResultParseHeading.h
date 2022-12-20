@@ -7,6 +7,7 @@
 
 #include <string>
 #include "ParserTypeRequest.h"
+#include "../Constants.h"
 
 namespace ProxyServer {
     class ResultParseHeading {
@@ -35,11 +36,9 @@ namespace ProxyServer {
             ResultParseHeading::type = type;
         }
 
-        ~ResultParseHeading() {
+        ~ResultParseHeading() = default;
 
-        }
-
-        bool isResponseWithError() {
+        bool isResponseWithError() const {
             return responseWithError;
         }
 
@@ -68,7 +67,7 @@ namespace ProxyServer {
         long long int contentLength = 0;
         TypeRequestAndResponse type;
         bool responseWithError = false;
-        int port = 80;
+        int port = DEFAULT_PORT;
         bool haveContentLength = false;
 
     };
