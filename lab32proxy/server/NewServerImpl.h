@@ -30,7 +30,7 @@ namespace ProxyServer {
     public:
         NewServerImpl();
         void startServer() override;
-        ~NewServerImpl();
+        ~NewServerImpl() override;
         static void *startingMethodForThread(void *args);
     private:
 

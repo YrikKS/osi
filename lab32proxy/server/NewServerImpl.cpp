@@ -37,10 +37,10 @@ void NewServerImpl::startServer() {
 
 void *NewServerImpl::startingMethodForThread(void *args) {
     ArgsForThread *argsForThread = (ArgsForThread *) args;
-    Client *client = new ClientImpl(argsForThread->getSock(), TypeClient::USER,
-                                    new BufferImpl(argsForThread->getCash()));
-    client->getBuffer()->setIsClientConnect(true);
-    HandlerOneClientImpl handlerOneClient = HandlerOneClientImpl(client);
+    auto pBuffer = std::make_shared<Buffer *>(new BufferImpl(argsForThread->getCash()));
+    auto pClient = std::make_shared<Client *>(new ClientImpl(argsForThread->getSock(), TypeClient::USER, *pBuffer));
+    (*pClient)->getBuffer()->setIsClientConnect(true);
+    HandlerOneClientImpl handlerOneClient = HandlerOneClientImpl(*pClient);
     handlerOneClient.startHandler();
     pthread_exit(NULL);
 }
