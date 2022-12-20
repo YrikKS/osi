@@ -38,7 +38,7 @@ namespace ProxyServer {
 
     private:
         std::unique_ptr<ServerSocket> _serverSocket;
-        Cash *_cash;
+        std::shared_ptr<Cash*> _cash;
     };
 }
 

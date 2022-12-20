@@ -12,7 +12,7 @@ void NewServerImpl::startServer() {
     while (true) {
         try {
             int sock = _serverSocket->acceptNewClientSock();
-            listFd.push_front(ArgsForThread(sock, _cash));
+            listFd.push_front(ArgsForThread(sock, *_cash));
             pthread_t pthread;
             errno = pthread_create(&pthread, NULL, &NewServerImpl::startingMethodForThread,
                                    (void *) &(*listFd.begin()));
@@ -48,11 +48,10 @@ void *NewServerImpl::startingMethodForThread(void *args) {
 NewServerImpl::NewServerImpl() {
     _serverSocket = std::unique_ptr<ServerSocket>(new ServerSocketImpl());
     _serverSocket->connectSocket();
-    _cash = new CashImpl();
+    _cash = std::make_shared<Cash *>(new CashImpl());
 }
 
 NewServerImpl::~NewServerImpl() {
     _serverSocket->closeSocket();
-    delete _cash;
 }
 
