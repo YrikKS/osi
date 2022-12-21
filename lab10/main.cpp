@@ -73,7 +73,7 @@ philosopher(void *num) {
             sleep(sleep_seconds);
 
         printf("Philosopher %d: get dish %d.\n", id, f);
-        if (id == 2) {
+        if (id == 1) {
             get_fork(id, left_fork, "left ");
             get_fork(id, right_fork, "right");
         } else {
@@ -88,7 +88,7 @@ philosopher(void *num) {
 
         printf("Philosopher %d: eating.\n", id);
         usleep(DELAY * (FOOD - f + 1));
-        if(id == 2) {
+        if(id == 1) {
             down_forks(right_fork, left_fork);
         }
         down_forks(left_fork, right_fork);
