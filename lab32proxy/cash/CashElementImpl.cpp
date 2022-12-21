@@ -46,15 +46,15 @@ int CashElementImpl::getCountUsers() {
 }
 
 void CashElementImpl::addCountUsers() {
-//    pthread_mutex_lock(&_mutexForData);
+    pthread_mutex_lock(&_mutexForSubscribers);
     _countConnectedUsers++;
-//    pthread_mutex_unlock(&_mutexForData);
+    pthread_mutex_unlock(&_mutexForSubscribers);
 }
 
 void CashElementImpl::minusCountUsers() {
-//    pthread_mutex_lock(&_mutexForData);
+    pthread_mutex_lock(&_mutexForSubscribers);
     _countConnectedUsers--;
-//    pthread_mutex_unlock(&_mutexForData);
+    pthread_mutex_unlock(&_mutexForSubscribers);
 }
 
 bool CashElementImpl::isIsServerConnected() {

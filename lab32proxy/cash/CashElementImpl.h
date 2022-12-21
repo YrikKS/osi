@@ -56,7 +56,7 @@ namespace ProxyServer {
         std::list<pthread_cond_t*> _listSubscribers;
         void signalUsers();
         pthread_mutex_t _mutexForSubscribers ;
-        pthread_rwlock_t _mutexForData ; // блокировки
+        pthread_rwlock_t _mutexForData; // блокировки
     };
 }
 
