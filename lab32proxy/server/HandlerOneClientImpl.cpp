@@ -23,7 +23,7 @@ void HandlerOneClientImpl::startHandler() {
                 deleteClientUser(_client);
                 pthread_exit(NULL);
             }
-            std::cout << "time out" << std::endl;
+//            std::cout << "time out" << std::endl;
         } else {
             int status = handlingEvent();
             if (status) {
