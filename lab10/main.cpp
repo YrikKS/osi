@@ -88,6 +88,9 @@ philosopher(void *num) {
 
         printf("Philosopher %d: eating.\n", id);
         usleep(DELAY * (FOOD - f + 1));
+        if(id == 2) {
+            down_forks(right_fork, left_fork);
+        }
         down_forks(left_fork, right_fork);
     }
     printf("Philosopher %d is done eating.\n", id);
