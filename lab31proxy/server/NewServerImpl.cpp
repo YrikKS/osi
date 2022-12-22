@@ -101,7 +101,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                     if ((*it)->getTypeClient() == USER) {
                         if ((*it)->getBuffer()->getStatusClient() == READ_RESPONSE
                             && (*it)->getBuffer()->isIsDataGetCash()) {
-                            if ((*it)->getBuffer()->getCashElement()->isCashEnd()) {
+                            if ((*it)->getBuffer()->getCashElement()->isDownloadEnd()) {
                                 (*it)->setEvents(POLLOUT | POLLIN | POLLRDHUP);
                                 continue;
                             } else {
@@ -237,7 +237,7 @@ void ProxyServer::NewServerImpl::handlingEvent() {
                         continue;
                     } else if ((*it)->getTypeClient() == TypeClient::USER // при отключении сервера
                                && (*it)->getBuffer()->isIsDataGetCash()
-                               && (*it)->getBuffer()->getCashElement()->isCashEnd()
+                               && (*it)->getBuffer()->getCashElement()->isDownloadEnd()
                                && !(*it)->getBuffer()->isReadyToSend()) {
                         deleteClient(&it);
                         continue;

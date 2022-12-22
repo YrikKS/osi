@@ -14,14 +14,14 @@ namespace ProxyServer {
     public:
         explicit CashElementImpl(std::string heading);
 
-        bool isCashEnd() override;
+        bool isDownloadEnd() override;
 
 
 //        void addToObserver(Client* client) override {
 //            std::cout << "test" << std::endl;
 //        }
 
-        void setIsCashEnd(bool var) override;
+        void setDownloadEnd(bool var) override;
 
         std::shared_ptr<std::string> getCash() override;
 
@@ -39,7 +39,7 @@ namespace ProxyServer {
 
         void setIsServerConnect(bool isServerConnected) override;
 
-        const std::string &getHead() override;
+        std::string &getHeading() override;
 
     private:
         int _countUsers = 0;

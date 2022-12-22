@@ -6,11 +6,11 @@
 
 using namespace ProxyServer;
 
-bool CashElementImpl::isCashEnd() {
+bool CashElementImpl::isDownloadEnd() {
     return _isCashEnd;
 }
 
-void CashElementImpl::setIsCashEnd(bool var) {
+void CashElementImpl::setDownloadEnd(bool var) {
     _isCashEnd = var;
 }
 
@@ -52,6 +52,6 @@ void CashElementImpl::setIsServerConnect(bool isServerConnected) {
     _isServerConnected = isServerConnected;
 }
 
-const std::string &CashElementImpl::getHead() {
+std::string &CashElementImpl::getHeading() {
     return _head;
 }

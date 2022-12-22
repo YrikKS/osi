@@ -80,7 +80,7 @@ void BufferImpl::wrightResponseHeading(std::string *binaryString) {
 //                _cashElement->getCash()->resize(resultParseHeading.getContentLength() + responseHead.size());
 //                _cashElement->getCash()->clear();
                 _cashElement->getCash()->append(*_buf);
-                _cashElement->setIsCashEnd(false);
+                _cashElement->setDownloadEnd(false);
                 _cashElement->setIsServerConnect(true);
             } else {
                 _isAddDataToCash = false;
@@ -97,7 +97,7 @@ void BufferImpl::wrightResponseHeading(std::string *binaryString) {
             if (_lengthBody <= 0) {
                 _isEndSend = true;
                 if (_isAddDataToCash) {
-                    _cashElement->setIsCashEnd(true);
+                    _cashElement->setDownloadEnd(true);
                 }
             }
         } else {
@@ -124,7 +124,7 @@ void BufferImpl::wrightResponseBody(std::string *binaryString) {
         if (_lengthBody <= 0) {
             _isEndSend = true;
             if (_isAddDataToCash) {
-                _cashElement->setIsCashEnd(true);
+                _cashElement->setDownloadEnd(true);
             }
             LOG_EVENT("end body response read");
         }
@@ -178,7 +178,7 @@ void BufferImpl::proofSend(std::string *binaryString) {
         if (_cashElement->getCash()->length() == _countByteReadFromCash) {
             _isReadyToSend = false;
         }
-        if (_cashElement->isCashEnd()) {
+        if (_cashElement->isDownloadEnd()) {
             _isEndSend = true;
             _statusClient = StatusHttp::END_WORK;
             return;

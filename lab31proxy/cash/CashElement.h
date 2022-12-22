@@ -36,7 +36,7 @@ namespace ProxyServer {
 
         virtual void setIsServerConnect(bool isServerConnected) = 0;
 
-        virtual const std::string &getHeading() = 0;
+        virtual std::string &getHeading() = 0;
     };
 }
 #endif //LAB31PROXY_CASHELEMENT_H
